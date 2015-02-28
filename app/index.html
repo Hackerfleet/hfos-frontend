@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu.css" />
     <link rel="stylesheet" href="bower_components/leaflet.fullscreen/Control.FullScreen.css" />
     <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-additions/dist/bootstrap-additions.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
       <link rel="stylesheet" href="bower_components/leaflet.draw/dist/leaflet.draw.css"/>
@@ -38,6 +39,9 @@
                 <a class="navbar-brand" href="#/"><img src="/assets/images/hackerfleet.svg" height="23"></a>
                 <button type="button" ng-click="userprofile();" class="navbar-brand navbar-inverse btn" style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
                     <span ngClick="userprofile()" class="glyphicon glyphicon-user"></span>
+                </button>
+                <button type="button" ng-click="chattoggle();" class="navbar-brand navbar-inverse btn" style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-bullhorn"></span>
                 </button>
             </div>
             <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
@@ -113,6 +117,6 @@
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/map.js"></script>
         <script src="scripts/controllers/dashboard.js"></script>
-        <!-- endbuild -->
+    <!-- endbuild -->
 </body>
 </html>
