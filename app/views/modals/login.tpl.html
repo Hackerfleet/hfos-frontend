@@ -1,35 +1,24 @@
-<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:50px;">
-    <p class="modal">Login to HFOS</p>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Login to HFOS</h4>
+<form ng-controller="LoginCtrl">
+    <div class="modal-body container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <label>Username:</label>
             </div>
-            <form>
-                <div class="modal-body container-fluid">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label>Username:</label>
-                        </div>
-                        <div class="col-md-8">
-                            <input type="text" ng-model="user.username" /><br />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label>Password:</label>
-                        </div>
-                        <div class="col-md-8">
-                            <input type="password" ng-model="user.password"><br />
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-lg" ng-click="$hide()">Cancel</button>
-                    <button type="submit" class="btn btn-lg btn-default" ng-click="userlogin(); close()">Login</button>
-                </div>
-            </form>
+            <div class="col-md-8">
+                <input type="text" ng-model="username"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Password:</label>
+            </div>
+            <div class="col-md-8">
+                <input type="password" ng-model="password"><br/>
+            </div>
         </div>
     </div>
-</div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg" ng-click="$modalCancel()">Cancel</button>
+        <button type="submit" class="btn btn-lg btn-default" ng-click="login(); $modalSuccess()">Login</button>
+    </div>
+</form>

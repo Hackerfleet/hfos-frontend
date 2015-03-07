@@ -1,23 +1,10 @@
-<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:50px;">
-    <p class="modal">Edit Profile</p>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Profile for {{user.username}}</h4>
-            </div>
-            <form>
-                <div class="modal-body">
-                    <label>Username:</label><input type="text" ng-model="user.username" /><br />
-                    <label>Password:</label><input type="password" ng-model="user.password"><br />
-                    <label>Name:</label><input type="text" ng-model="user.name" /><br />
-                    <label>Profile:</label> <input type="text" ng-model="user.profile" /><br />
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn" ng-click="userupdate()">Update</button>
-                    <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
-                </div>
-            </form>
-        </div>
+<div ng-controller="ProfileCtrl">
+
+    <div class="modal-body">
+        <form>
+            <a class="btn btn-large" href="#/profile" role="button">Edit Profile</a>
+            <button type="button" ng-click="logout(); $modalSuccess()" class="btn btn-danger btn-large">Logout</button>
+        </form>
     </div>
+
 </div>

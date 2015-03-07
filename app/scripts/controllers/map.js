@@ -12,24 +12,28 @@ angular.module('frontendApp')
   .controller('MapCtrl', ["$scope", "leafletData", "socket", function ($scope, leafletData, socket) {
 
     $scope.editableFields = new L.FeatureGroup();
-
+    console.log("Starting Map Controller");
     socket.send("Firing up Map!");
 
-    $scope.helgoland = {
-        lat: 52.513,
-        lon: 13.41998,
-        zoom: 12
-      };
+    socket.onMessage(function(message) {
+        var data = JSON.parse(message.data);
+
+        if(data.type === 'map') {
+            console.log('Map data: ', data);
+        }
+    });
 
     angular.extend($scope, {
-      helgoland: {
-        lat: 52.513,
-        lon: 13.41998,
-        zoom: 12
+      center: {
+        lat: 0,
+        lon: 0,
+        zoom: 2
       },
       Vessel: {
-        lat: 52.67,
-        lon: 13.43,
+        coords: {
+            lat: 54.17825,
+            lon: 7.88888,
+        },
         course: 0,
         speed: 0,
         radiorange: 700
@@ -191,11 +195,76 @@ angular.module('frontendApp')
       }
     });
     leafletData.getMap().then(function (map) {
-      console.log(map);
-      L.map.panTo({lat: 52.513, lon: 13.41998})
-      L.map.ZoomIn();
-      L.map.ZoomIn();
+      console.log('Setting up initial map settings.');
+      //map.setZoom(12);
+      //map.panTo({lat: 52.513, lon: 13.41998});
+
+      var Terminator = terminator().addTo(map);
+      var GraticuleOne = L.graticule({style: {color: '#55A', weight: 1, dashArray: '.'}, interval: 1}).addTo(map);
+      var Zoomslider = new L.Control.Zoomslider().addTo(map);
+      var MousePosition = L.control.mousePosition().addTo(map);
+      var PanControl = L.control.pan().addTo(map);
+      var courseplot = L.polyline([], {color: 'red'}).addTo(map);
+
       var drawnItems = $scope.controls.edit.featureGroup;
+
+      L.RotatedMarker = L.Marker.extend({
+         options: {angle: 0},
+         _setPos: function (pos) {
+            L.Marker.prototype._setPos.call(this, pos);
+            if (L.DomUtil.TRANSFORM) {
+                // use the CSS transform rule if available
+                this._icon.style[L.DomUtil.TRANSFORM] += ' rotate(' + this.options.angle + 'deg)';
+            } else if (L.Browser.ie) {
+                // fallback for IE6, IE7, IE8
+                var rad = this.options.angle * L.LatLng.DEG_TO_RAD,
+                costheta = Math.cos(rad),
+                sintheta = Math.sin(rad);
+                this._icon.style.filter += ' progid:DXImageTransform.Microsoft.Matrix(sizingMethod=\'auto expand\', M11=' +
+                costheta + ', M12=' + (-sintheta) + ', M21=' + sintheta + ', M22=' + costheta + ')';
+            }
+         }
+      });
+
+      L.rotatedMarker = function (pos, options) {
+        return new L.RotatedMarker(pos, options);
+      };
+
+      var Icons = {Vessel: L.icon({
+            iconUrl: '/assets/images/icons/vessel.png',
+            //shadowUrl: 'leaf-shadow.png',
+
+            iconSize: [25, 25], // size of the icon
+            //shadowSize:   [50, 64], // size of the shadow
+            iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
+            //shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+          }),
+          VesselMoving: L.icon({
+            iconUrl: '/assets/images/icons/vessel-moving.png',
+            //shadowUrl: 'leaf-shadow.png',
+
+            iconSize: [25, 25], // size of the icon
+            //shadowSize:   [50, 64], // size of the shadow
+            iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
+            //shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+          }),
+          VesselStopped: L.icon({
+            iconUrl: '/assets/images/icons/vessel-stopped.png',
+            //shadowUrl: 'leaf-shadow.png',
+
+            iconSize: [25, 25], // size of the icon
+            //shadowSize:   [50, 64], // size of the shadow
+            iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
+            //shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+          })
+      }
+
+      console.log(L.rotatedMarker);
+      var VesselMarker = L.rotatedMarker($scope.Vessel.coords, {icon: Icons.Vessel}).addTo(map);
+      console.log(VesselMarker);
 
       map.on('draw:created', function (e) {
         var layer = e.layer;
@@ -216,105 +285,6 @@ angular.module('frontendApp')
 
 
     /*
-
-     $scope.init = function (scope) {
-     console.log('Hello Mapviewer!');
-
-     L.RotatedMarker = L.Marker.extend({
-     options: {angle: 0},
-     _setPos: function (pos) {
-     L.Marker.prototype._setPos.call(this, pos);
-     if (L.DomUtil.TRANSFORM) {
-     // use the CSS transform rule if available
-     this._icon.style[L.DomUtil.TRANSFORM] += ' rotate(' + this.options.angle + 'deg)';
-     } else if (L.Browser.ie) {
-     // fallback for IE6, IE7, IE8
-     var rad = this.options.angle * L.LatLng.DEG_TO_RAD,
-     costheta = Math.cos(rad),
-     sintheta = Math.sin(rad);
-     this._icon.style.filter += ' progid:DXImageTransform.Microsoft.Matrix(sizingMethod=\'auto expand\', M11=' +
-     costheta + ', M12=' + (-sintheta) + ', M21=' + sintheta + ', M22=' + costheta + ')';
-     }
-     }
-     });
-     L.rotatedMarker = function (pos, options) {
-     return new L.RotatedMarker(pos, options);
-     };
-
-
-     var cm;
-
-     var VesselIcon = L.icon({
-     iconUrl: '/assets/icons/vessel.png',
-     //shadowUrl: 'leaf-shadow.png',
-
-     iconSize: [25, 25], // size of the icon
-     //shadowSize:   [50, 64], // size of the shadow
-     iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
-     //shadowAnchor: [4, 62],  // the same for the shadow
-     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-     });
-
-     var VesselMovingIcon = L.icon({
-     iconUrl: '/assets/icons/vessel-moving.png',
-     //shadowUrl: 'leaf-shadow.png',
-
-     iconSize: [25, 25], // size of the icon
-     //shadowSize:   [50, 64], // size of the shadow
-     iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
-     //shadowAnchor: [4, 62],  // the same for the shadow
-     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-     });
-
-     var VesselStoppedIcon = L.icon({
-     iconUrl: '/assets/icons/vessel-stopped.png',
-     //shadowUrl: 'leaf-shadow.png',
-
-     iconSize: [25, 25], // size of the icon
-     //shadowSize:   [50, 64], // size of the shadow
-     iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
-     //shadowAnchor: [4, 62],  // the same for the shadow
-     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-     });
-
-     // TODO: This is madness and needs to be simplified, standardized, along with the geojson map feature rendering.
-
-     var LighthouseIcon = L.icon({
-     iconUrl: '/assets/icons/lighthouse.png',
-     //shadowUrl: 'leaf-shadow.png',
-
-     iconSize: [25, 25], // size of the icon
-     //shadowSize:   [50, 64], // size of the shadow
-     iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
-     //shadowAnchor: [4, 62],  // the same for the shadow
-     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-     });
-
-
-     // VesselMarker = L.rotatedMarker(Coords, {icon: VesselIcon}).addTo(map);
-
-
-     function centerMap(e) {
-     console.log(e.latlng);
-     map.panTo(e.latlng);
-     }
-
-     function zoomIn(e) {
-     map.zoomIn();
-     }
-
-     function zoomOut(e) {
-     map.zoomOut();
-     }
-
-     function zoomHere(e) {
-     map.panTo(e.latlng);
-     map.zoomIn();
-     }
-
-     function centerVessel(e) {
-     map.panTo(Coords);
-     }
 
      var map = L.map('map', {
      zoom: 16,
@@ -351,15 +321,6 @@ angular.module('frontendApp')
      }]
      });
 
-     var Terminator = terminator(); //.addTo(map);
-
-     var GraticuleOne = L.graticule({style: {color: '#55A', weight: 1, dashArray: '.'}, interval: 1}).addTo(map);
-
-     //var MousePosition = L.control.mousePosition().addTo(map);
-
-     //var PanControl = L.control.pan().addTo(map);
-
-
      var style = {color: 'red', opacity: 1.0, fillOpacity: 1.0, weight: 2, clickable: false};
 
      /*L.Control.FileLayerLoad.LABEL = '<i class="fa fa-folder-open filelayer-icon"></i>';
@@ -372,8 +333,6 @@ angular.module('frontendApp')
      }).addTo(map);
      /**/
     /*
-     var courseplot = L.polyline([], {color: 'red'}).addTo(map);
-
      function onMapClick(e) {
      if ($('#cb_identify').is(':checked')) {
 

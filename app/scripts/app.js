@@ -19,7 +19,12 @@ angular
     'ngSanitize',
     'ngTouch',
     'angular-md5',
-    'leaflet-directive'
+    'leaflet-directive',
+    'fundoo.services',
+    'schemaForm',
+    'schemaForm-tinymce',
+    //'schemaForm-colorpicker',
+    //'schemaForm-datepicker'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -39,15 +44,11 @@ angular
         templateUrl: 'views/dashboard.html',
         controller: 'DashboardCtrl'
       })
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
-  })
-  .factory('socket', function(ngSocket) {
-    var sock = ngSocket('ws://localhost:8055/websocket');
-    //sock.onMessage(function(args) {
-    //    console.log(args);
-    //});
-
-    return sock;
   });

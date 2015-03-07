@@ -2,6 +2,73 @@
   font-family: "Clear Sans";
   src: url(/assets/fonts/clearsans/ClearSans-Regular.ttf) format("truetype");
 }
+
+@font-face {
+    font-family: 'misc-icons';
+    src:url('/assets/fonts/misc-icons.eot?-3u7zq');
+    src:url('/assets/fonts/misc-icons.eot?#iefix-3u7zq') format('embedded-opentype'),
+        url('/assets/fonts/misc-icons.woff?-3u7zq') format('woff'),
+        url('/assets/fonts/misc-icons.ttf?-3u7zq') format('truetype'),
+        url('/assets/fonts/misc-icons.svg?-3u7zq#misc-icons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'misc-icons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-qrcode:before {
+    content: "\e938";
+}
+
+.icon-bubble:before {
+    content: "\e96b";
+}
+
+.icon-bubbles:before {
+    content: "\e96c";
+}
+
+.icon-bubbles2:before {
+    content: "\e96d";
+}
+
+.icon-user:before {
+    content: "\e971";
+}
+
+.icon-users:before {
+    content: "\e972";
+}
+
+.icon-user-plus:before {
+    content: "\e973";
+}
+
+.icon-user-minus:before {
+    content: "\e974";
+}
+
+.icon-user-check:before {
+    content: "\e975";
+}
+
+.icon-hf-logo:before {
+    content: "\e600";
+    font-size: 120%;
+}
+
 p.customfont {
   font-family: "Clear Sans", Verdana, Tahoma;
 }
@@ -16,6 +83,10 @@ body {
   color: #3a75a8;
   font-family: "Clear Sans";
   padding-top: 23px;
+}
+
+.aside {
+    margin-top: 51px;
 }
 
 .jumbotron {

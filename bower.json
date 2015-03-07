@@ -35,11 +35,25 @@
     "angular-motion": "~0.3.4",
     "angular-strap": "~2.2.0",
     "bootstrap-additions": "~0.2.2",
-    "angular-md5": "~0.1.7"
+    "angular-md5": "~0.1.7",
+    "leaflet-mouseposition": "ardhi/Leaflet.MousePosition",
+    "leaflet-pancontrol": "kartena/Leaflet.Pancontrol",
+    "leaflet.vector-markers": "~0.0.3",
+    "angular-schema-form": "~0.7.13",
+    "angularjs-modal-service": "*",
+    "angular-schema-form-datepicker": "~0.3.0",
+    "angular-schema-form-colorpicker": "~0.1.1",
+    "angular-schema-form-tinymce": "~0.1.0",
+    "angular-spectrum": "~0.0.1",
+    "pickadate": "~3.5.5"
   },
   "devDependencies": {
     "angular-mocks": "~1.3.0",
     "angular-scenario": "~1.3.0"
   },
-  "appPath": "app"
+  "appPath": "app",
+  "resolutions": {
+    "angular": "1.3.14",
+    "spectrum": "1.6.0"
+  }
 }

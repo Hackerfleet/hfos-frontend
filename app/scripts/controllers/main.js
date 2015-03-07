@@ -8,31 +8,33 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
-  .controller('MainCtrl', function ($scope, $modal, $aside, socket, md5) {
+  .controller('MainCtrl', function ($scope, $route, $modal, $aside, $interval, socket, user) {
     //var ws = ngSocket('ws://localhost:8055/websocket');
 
     //ws.send({Hello: 'bar'});
 
-    var loginModal = $modal({scope: $scope, template: 'views/modals/login.tpl.html', show: false});
-    var profileModal = $modal({scope: $scope, template: 'views/modals/profile.tpl.html', show: false});
 
-    var chatAside = $aside({scope: $scope, template: 'views/aside/chat.tpl.html', show:false});
+    /* var profileModal = $modal({scope: $scope, template: 'views/modals/profile.tpl.html', show: false});
+    var loginModal = $modal({scope: $scope, template: 'views/modals/login.tpl.html', show: false}); */
 
-    $scope.user = { username: '',
-                    password: '',
-                    profile: {},
-                    uid: false,
-                    uuid: false,
-    };
-
-    $scope.status = { connected: false,
-                      signedin: false
-    };
+    var chatAside = $aside({scope: $scope, template: 'views/aside/chat.tpl.html', show:false, backdrop: false});
+    var blinkstate = 0
+    var blinker = false;
 
     $scope.chat = { messages: [],
-                    input: "",
+                    input: '',
                     open: false,
     };
+
+    $scope.home = function(event) {
+        if (event.shiftKey === true) {
+            console.log('Reloading route.');
+            $route.reload();
+        }
+        socket.check();
+        user.check();
+        console.log("Main profile: ", user.profile);
+    }
 
     $scope.chattoggle = function() {
         if ($scope.chat.open) {
@@ -40,112 +42,75 @@ angular.module('frontendApp')
         } else {
             $scope.chatopen();
         }
-    }
+    };
 
     $scope.chatclose= function() {
-        console.log("Closing down chat.");
+        console.log('Closing down chat.');
         socket.send({'type': 'chatevent', 'content': 'part'});
-    }
+        $('#chatbtn').css("color", "");
+        $scope.chat.open = false;
+    };
 
     $scope.chatopen = function() {
         console.log('Trying to open chat.');
-        if ($scope.status.signedin) {
-            console.log("Opening chat.");
+        if (user.signedin()) {
+            console.log('Opening chat.');
             chatAside.$promise.then(chatAside.show());
             socket.send({'type': 'chatevent', 'content': 'join'});
+            $('#chatbtn').css("color", "#0f0");
+            $scope.chat.open = true;
         }
 
     //data-template="views/aside/chat.tpl.html" style="border-color: transparent; margin-left:5px;" data-placement="left" data-animation="am-slide-left" bs-aside="aside" data-container="body"
 
-    }
-
-    $scope.chatsend = function() {
-        console.log("Transmitting current message.");
-        socket.send({'type': 'chatmessage', 'content': $scope.chat.input});
-        $scope.chat.input = "";
-    }
-
-    $scope.userlogin = function() {
-        console.log('Trying to login.');
-
-        var authpacket = {'type': 'auth', 'content': {
-            'username': $scope.user.username,
-            'password': md5.createHash($scope.user.password || ''),
-            }
-        };
-
-        console.log('Sent:', authpacket);
-        socket.send(authpacket);
-
     };
 
-    $scope.userupdate = function() {
-        if ($scope.status.connected === true) {
+    $scope.chatsend = function() {
+        console.log('Transmitting current message.');
+        socket.send({'type': 'chatmessage', 'content': $scope.chat.input});
+        $scope.chat.input = '';
+    };
 
-            console.log('Trying to update profile');
-
-            if ($scope.status.signedin === false) {
-                console.log('Not signed in, yet. Showing Login Modal');
-                loginModal.$promise.then(loginModal.show);
-            } else {
-                console.log('Updating profile');
-            }
-        } else {
-            console.log('I am not connected!');
-        }
-
-    }
-
-    $scope.userprofile = function() {
-        if ($scope.status.connected === true) {
-
-            console.log('Handling login/profile display');
-
-            if ($scope.status.signedin === false) {
-                console.log('Not signed in, yet. Showing Login Modal');
-                loginModal.$promise.then(loginModal.show);
-            } else {
-                console.log('Already signed in. Showing profile Modal');
-                profileModal.$promise.then(profileModal.show);
-            }
-        } else {
-            console.log('I am not connected!');
-        }
-
+    $scope.userbutton = function(event) {
+        console.log('USERBUTTON: ', event);
+        user.login();
+        //user.onAuth(loginModal.hide);
     };
 
     socket.send({'type': 'info', 'content':'Menu activated'});
+
+    var blinkfunc = function() {
+        if(blinkstate === 0) {
+            if($scope.chat.open === true) {
+                $('#chatbtn').css('color', '#0f0');
+            } else {
+                $('#chatbtn').css('color', '');
+            }
+            return;
+        } else if(blinkstate === 1) {
+            $('#chatbtn').css('color', '#ff0');
+            blinkstate++;
+        } else if(blinkstate === 2) {
+            $('#chatbtn').css('color', '');
+            blinkstate = 1;
+        };
+    }
 
     socket.onMessage(function(message) {
         var data = JSON.parse(message.data);
 
         console.log(data);
 
-        if(data.type === 'info') {
-          if (data.content === 'Connected') {
-            console.log('Client connected to HFOS');
-            $scope.status.connected = true;
-          } else {
-            console.log('Unknown info message:', data.content);
-          }
-        } else if(data.type === 'warning') {
+        if(data.type === 'warning') {
           var warningmodal = $modal({title: 'Warning!', content: String(data.content), show:true});
-        } else if(data.type === 'auth') {
-            console.log('Got an auth packet!');
-            var auth = data.content;
-            console.log(auth);
-            if(auth.success) {
-                console.log('Logged in successfully!');
-                loginModal.hide();
-                $scope.status.signedin = true;
-                $scope.user.profile = auth.profile;
-            } else {
-                console.log('Failed to log in.');
-            }
         } else if(data.type === 'chat') {
             console.log('Incoming chat data: ', data);
             $scope.chat.messages.push(data.content);
             console.log($scope.chat);
-        };
+            if($scope.chat.open === false) {
+                blinkstate = 1;
+                blinker = $interval(blinkfunc, 500, 5);
+            }
+        }
     });
   });
