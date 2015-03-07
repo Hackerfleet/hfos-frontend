@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name frontendApp.controller:ProfileCtrl
+ * @name hfosFrontendApp.controller:ProfileCtrl
  * @description
  * # ProfileCtrl
- * Controller of the frontendApp
+ * Controller of the hfosFrontendApp
  */
-angular.module('frontendApp')
+angular.module('hfosFrontendApp')
   .controller('ProfileCtrl', function ($scope, user) {
     console.log('ProfileCtrl loaded!');
 

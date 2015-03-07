@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name frontendApp
+ * @name hfosFrontendApp
  * @description
- * # frontendApp
+ * # hfosFrontendApp
  *
  * Main module of the application.
  */
 angular
-  .module('frontendApp', [
+  .module('hfosFrontendApp', [
     'ngAnimate',
     'mgcrea.ngStrap',
     'ngCookies',

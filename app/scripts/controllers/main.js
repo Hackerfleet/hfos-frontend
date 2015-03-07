@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name frontendApp.controller:MainCtrl
+ * @name hfosFrontendApp.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the frontendApp
+ * Controller of the hfosFrontendApp
  */
-angular.module('frontendApp')
+angular.module('hfosFrontendApp')
   .controller('MainCtrl', function ($scope, $route, $modal, $aside, $interval, socket, user) {
     //var ws = ngSocket('ws://localhost:8055/websocket');
 

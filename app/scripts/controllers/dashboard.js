@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name frontendApp.controller:DashboardCtrl
+ * @name hfosFrontendApp.controller:DashboardCtrl
  * @description
  * # HudCtrl
- * Controller of the frontendApp
+ * Controller of the hfosFrontendApp
  */
-angular.module('frontendApp')
+angular.module('hfosFrontendApp')
   .controller('DashboardCtrl', function ($scope, socket) {
 
     $scope.true_course = 0;

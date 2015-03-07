@@ -3,12 +3,12 @@
 
 /**
  * @ngdoc function
- * @name frontendApp.controller:MapCtrl
+ * @name hfosFrontendApp.controller:MapCtrl
  * @description
  * # MapCtrl
- * Controller of the frontendApp
+ * Controller of the hfosFrontendApp
  */
-angular.module('frontendApp')
+angular.module('hfosFrontendApp')
   .controller('MapCtrl', ["$scope", "leafletData", "socket", function ($scope, leafletData, socket) {
 
     $scope.editableFields = new L.FeatureGroup();
