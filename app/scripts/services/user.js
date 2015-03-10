@@ -21,6 +21,13 @@ angular.module('hfosFrontendApp')
         signedin = true;
     }
 
+    socket.onClose(function() {
+        signedin = false;
+        // TODO: Close chat etc, move this there, use hook
+        $("#btnchat").addClass("hidden");
+    });
+
+
     socket.onMessage(function(message) {
         var data = JSON.parse(message.data);
 
@@ -38,6 +45,7 @@ angular.module('hfosFrontendApp')
 
                 console.log('Setting signedin status.');
                 $("#btnuser").css("color", "#ff0");
+
                 user = auth.useraccount;
                 signIn();
             }
@@ -64,12 +72,12 @@ angular.module('hfosFrontendApp')
     }
 
     var getuser = function() {
-        console.log('User schema requested!');
-        return user;
+        console.log('User data requested!');
+        return user.data;
     }
 
     var getprofile = function() {
-        console.log('User data requested!');
+        console.log('Profile data requested!');
         return profile;
     }
 

@@ -9,26 +9,126 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('MapCtrl', ["$scope", "leafletData", "socket", function ($scope, leafletData, socket) {
+  .controller('MapCtrl', ["$scope", "leafletData", "socket", "user", "createDialog", function ($scope, leafletData, socket, user, createDialog) {
+    console.log('Starting Map Controller');
 
-    $scope.editableFields = new L.FeatureGroup();
-    console.log("Starting Map Controller");
-    socket.send("Firing up Map!");
+
+    $scope.mapviews = {};
+    $scope.mapview = {schema: '',
+        data: {
+            uuid: '',
+            name: 'Unnamed MapView',
+            color: '',
+            shared: false,
+            notes: '',
+            coords: {
+                lat: 0,
+                lon: 0,
+                zoom: 1
+            }
+        }
+    }
+
+
+    $scope.secretfunction = function () { alert(Array(16).join("wat"-1)+" Batman!"); }
+
+    var subscribe = function() {
+        console.log('Hier, geht ja doch!');
+    }
+
+    var selectview = function() {
+        console.log('MVS Calling. scope:', $scope);
+        var mv = $scope.mapview.data;
+        var mvs = $scope.mapviews;
+        console.log('MVS Obj: ', mv, mvs);
+        createDialog('views/modals/mapviewselect.tpl.html', {
+              id: 'mapviewselectDialog',
+              title: 'Select a mapview to follow',
+              success: {label: 'Select', fn: subscribe},
+              controller: 'MapViewSelectCtrl'
+            },
+            {
+                mapview: mv,
+                mapviews: mvs
+            }
+        );
+    };
+
+    socket.send({'type': 'info', 'content':'Map Controller activated'});
+
+    var requestMapData = function() {
+        console.log('Requesting mapdata from server.');
+        socket.send({'type': 'mapview', 'content': {'type': 'list', 'content': ''}});
+        socket.send({'type': 'mapview', 'content': {'type': 'get', 'content': ''}});
+    }
+
+    if (user.signedin()) {
+        requestMapData();
+    };
+
+    user.onAuth(function() {
+        requestMapData();
+    });
 
     socket.onMessage(function(message) {
         var data = JSON.parse(message.data);
 
         if(data.type === 'map') {
             console.log('Map data: ', data);
+        } else if(data.type === 'mapviewupdate') {
+            var mapviewupdate = data.content;
+            console.log('New view update received: ', mapviewupdate);
+
+            $scope.mapview = mapviewupdate['mapview'];
+
+            $scope.center = $scope.mapview.data.coords;
+        } else if(data.type === 'mapviewlist') {
+            console.log("RECEIVED LIST: ", data.content);
+            $scope.mapviews = data.content;
+            selectview();
+        } else if(data.type === 'mapviewget') {
+            console.log('Received our mapview object: ', data.content);
+            $scope.mapview = data.content;
+            $scope.center = $scope.mapview.data.coords;
+
         }
     });
 
+    $scope.subscribe = function() {
+        console.log('Subscribing to mapview! - or not');
+    }
+
+
+    var handleEvent = function(event) {
+        if ($scope)
+        console.log('Map Event:', event);
+        if (event.name === 'leafletDirectiveMap.moveend') {
+            var userobj = user.user();
+            console.log(userobj);
+            if ($scope.mapview != ''){
+                if ($scope.mapview.data.uuid === userobj.uuid) {
+                    $scope.mapview.data.coords = $scope.center;
+                    socket.send({'type': 'mapview', 'content': {'type': 'update', 'mapview': $scope.mapview.data}});
+                } else {
+                    console.log('I think we are remotecontrolled! Not updating.');
+                }
+            } else {
+                console.log('No Mapview object. Hmhmhmm.');
+            }
+        } else if (event.name === 'leafletDirectiveMap.dblclick') {
+            var subscriptionuuid = prompt("Enter subscription uuid:");
+            socket.send({'type': 'mapview', 'content': {'type': 'subscribe', 'mapview': {'uuid': subscriptionuuid}}});
+        }
+    }
+
     angular.extend($scope, {
-      center: {
-        lat: 0,
-        lon: 0,
-        zoom: 2
+      events: {
+        map: {
+            enable: ['moveend', 'dblclick'],
+            logic: 'emit'
+            }
       },
+      center: $scope.mapview.data.coords,
       Vessel: {
         coords: {
             lat: 54.17825,
@@ -44,59 +144,11 @@ angular.module('hfosFrontendApp')
         VesselFollow: true
       },
       OSDMVessels: {
-        'Vessel 1': {
-          'Type': 'vessel',
-          'Coords': [54.1849, 7.9037],
-          'Course': 320,
-          'Speed': 0,
-          'Range': 400,
-          'Marker': false,
-          'Plot': false,
-          'RangeDisplay': false
-        },
-        'Vessel 2': {
-          'Type': 'vessel',
-          'Coords': [54.17683, 7.8931],
-          'Course': 290,
-          'Speed': 0,
-          'Range': 300,
-          'Marker': false,
-          'Plot': false,
-          'RangeDisplay': false
-        },
-        'Vessel 3': {
-          'Type': 'vessel',
-          'Coords': [54.16889, 7.90593],
-          'Course': 30,
-          'Speed': 5,
-          'Range': 700,
-          'Marker': false,
-          'Plot': false,
-          'RangeDisplay': false
-        },
-        'Vessel 4': {
-          'Type': 'vessel',
-          'Coords': [54.1661, 7.90434],
-          'Course': 210,
-          'Speed': 8,
-          'Range': 800,
-          'Marker': false,
-          'Plot': false,
-          'RangeDisplay': false
-        },
-        'Lighthouse Helgoland': {
-          'Type': 'lighthouse',
-          'Coords': [54.18182, 7.88227],
-          'Course': 0,
-          'Speed': 0,
-          'Range': 1500,
-          'Marker': false,
-          'Plot': false,
-          'RangeDisplay': false
-        }
       },
+      editableFields: new L.FeatureGroup(),
       controls: {
-        draw: {}
+        draw: {},
+        scale: {}
       },
       geojson: {
       },
@@ -194,6 +246,18 @@ angular.module('hfosFrontendApp')
         }
       }
     });
+
+
+
+    var mapEvents = $scope.events.map.enable;
+
+    for (var k in mapEvents) {
+        var eventName = 'leafletDirectiveMap.' + mapEvents[k];
+        $scope.$on(eventName, function(event) {
+            handleEvent(event);
+        })
+    }
+
     leafletData.getMap().then(function (map) {
       console.log('Setting up initial map settings.');
       //map.setZoom(12);
@@ -281,8 +345,6 @@ angular.module('hfosFrontendApp')
 
       });
     });
-
-
 
     /*
 
@@ -536,4 +598,12 @@ angular.module('hfosFrontendApp')
      /* $scope.init($scope);
      $("#map").height($(window).height()-100).width($(window).width());
      $scope.map.invalidateSize(); */
-  }]);
+  }]).controller('MapViewSelectCtrl', ['$scope', 'mapview', 'mapviews',
+    function($scope, mapview, mapviews) {
+        $scope.mapview = mapview;
+        $scope.mapviews = mapviews;
+        console.log("MVS Ctrl: ", mapview, mapviews);
+        $scope.selectMV = function(uuid) {
+            console.log('MVS Ctrl: Selected:', uuid)
+        }
+  }]);;

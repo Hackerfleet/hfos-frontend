@@ -21,12 +21,14 @@ angular.module('hfosFrontendApp')
         connected = true;
         $("#btnhome").css("color", "#3a75a8")
         $("#btnuser").removeClass("hidden");
+        $("#btnuser").css("color", "");
     };
 
     var CloseEvent = function(args) {
         console.log('Something closed the websocket!', args);
         connected = false;
         $("#btnhome").css("color", "#f00")
+        $("#btnuser").css("color", "#fa0")
         $("#btnuser").addClass("hidden");
     };
 
@@ -52,6 +54,14 @@ angular.module('hfosFrontendApp')
       onMessage: function (func) {
         console.log('Reception hook registered: ', func);
         return sock.onMessage(func);
+      },
+      onOpen: function (func) {
+        console.log('Reception hook registered: ', func);
+        return sock.onOpen(func);
+      },
+      onClose: function (func) {
+        console.log('Reception hook registered: ', func);
+        return sock.onClose(func);
       },
       send: function(args) {
         console.log('Transmitting: ', args);
