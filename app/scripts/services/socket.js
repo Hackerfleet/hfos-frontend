@@ -8,8 +8,11 @@
  * Factory in the hfosFrontendApp.
  */
 angular.module('hfosFrontendApp')
-  .factory('socket', function (ngSocket) {
-      var sock = ngSocket('ws://localhost:8055/websocket');
+  .factory('socket', function (ngSocket, $location) {
+
+    var host = $location.host();
+    var port = 8055;
+    var sock = ngSocket('ws://' + host + ':' + port +  '/websocket');
     //sock.onMessage(function(args) {
     //    console.log(args);
     //});
