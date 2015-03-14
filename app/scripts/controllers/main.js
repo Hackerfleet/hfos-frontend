@@ -32,26 +32,27 @@ angular.module('hfosFrontendApp')
             console.log('Incoming chat data: ', data);
             $scope.chat.messages.push(data.content);
             console.log($scope.chat);
-            if($scope.chat.open === false) {
+            //if($scope.chat.open === false) {
                 blinkstate = 1;
-                blinker = $interval(blinkfunc, 500, 5);
-            }
+                blinker = $interval(blinkfunc, 1500, 5);
+            //}
         }
     });
 
     var blinkfunc = function() {
+        console.log("Blinkstate:", blinkstate);
         if(blinkstate === 0) {
             if($scope.chat.open === true) {
-                $('#chatbtn').css('color', '#0f0');
+                $('#btnchat').css('color', '#0f0');
             } else {
-                $('#chatbtn').css('color', '');
+                $('#btnchat').css('color', '');
             }
             return;
         } else if(blinkstate === 1) {
-            $('#chatbtn').css('color', '#ff0');
+            $('#btnchat').css('color', '#ff0');
             blinkstate++;
         } else if(blinkstate === 2) {
-            $('#chatbtn').css('color', '');
+            $('#btnchat').css('color', '');
             blinkstate = 1;
         };
     }
@@ -82,8 +83,8 @@ angular.module('hfosFrontendApp')
 
     $scope.chatclose= function() {
         console.log('Closing down chat.');
-
-        $('#chatbtn').css("color", "");
+        chatAside.hide();
+        $('#btnchat').css("color", "");
         $scope.chat.open = false;
     };
 
@@ -93,8 +94,9 @@ angular.module('hfosFrontendApp')
             console.log('Opening chat.');
             chatAside.$promise.then(chatAside.show());
 
-            $('#chatbtn').css("color", "#0f0");
+            $('#btnchat').css("color", "#0f0");
             $scope.chat.open = true;
+            $('#chatinput').focus();
         }
     };
 

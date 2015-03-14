@@ -24,7 +24,7 @@ angular.module('hfosFrontendApp')
             coords: {
                 lat: 0,
                 lon: 0,
-                zoom: 1
+                zoom: 5
             }
         }
     }
@@ -68,6 +68,7 @@ angular.module('hfosFrontendApp')
 
     user.onAuth(function() {
         requestMapData();
+
     });
 
     socket.onMessage(function(message) {
@@ -77,17 +78,17 @@ angular.module('hfosFrontendApp')
             console.log('Map data: ', data);
         } else if(data.type === 'mapviewupdate') {
             var mapviewupdate = data.content;
-            console.log('New view update received: ', mapviewupdate);
+            console.log('MapView update received: ', mapviewupdate);
 
             $scope.mapview = mapviewupdate['mapview'];
 
             $scope.center = $scope.mapview.data.coords;
         } else if(data.type === 'mapviewlist') {
-            console.log("RECEIVED LIST: ", data.content);
+            console.log("MapView list received: ", data.content);
             $scope.mapviews = data.content;
-            selectview();
+            //selectview();
         } else if(data.type === 'mapviewget') {
-            console.log('Received our mapview object: ', data.content);
+            console.log('MapView received: ', data.content);
             $scope.mapview = data.content;
             $scope.center = $scope.mapview.data.coords;
 
@@ -100,24 +101,27 @@ angular.module('hfosFrontendApp')
 
 
     var handleEvent = function(event) {
-        if ($scope)
-        console.log('Map Event:', event);
-        if (event.name === 'leafletDirectiveMap.moveend') {
-            var userobj = user.user();
-            console.log(userobj);
-            if ($scope.mapview != ''){
-                if ($scope.mapview.data.uuid === userobj.uuid) {
-                    $scope.mapview.data.coords = $scope.center;
-                    socket.send({'type': 'mapview', 'content': {'type': 'update', 'mapview': $scope.mapview.data}});
+        if (user.signedin()) {
+            console.log('Map Event:', event);
+            if (event.name === 'leafletDirectiveMap.moveend') {
+                var userobj = user.user();
+
+                if ($scope.mapview != ''){
+                    if ($scope.mapview.data.uuid === userobj.uuid) {
+                        $scope.mapview.data.coords = $scope.center;
+                        socket.send({'type': 'mapview', 'content': {'type': 'update', 'mapview': $scope.mapview.data}});
+                    } else {
+                        console.log('I think we are remotecontrolled! Not updating.');
+                    }
                 } else {
-                    console.log('I think we are remotecontrolled! Not updating.');
+                    console.log('No Mapview object. Hmhmhmm.');
                 }
-            } else {
-                console.log('No Mapview object. Hmhmhmm.');
+            } else if (event.name === 'leafletDirectiveMap.dblclick') {
+                var subscriptionuuid = prompt("Enter subscription uuid:");
+                if (subscriptionuuid != '') {
+                    socket.send({'type': 'mapview', 'content': {'type': 'subscribe', 'mapview': {'uuid': subscriptionuuid}}});
+                }
             }
-        } else if (event.name === 'leafletDirectiveMap.dblclick') {
-            var subscriptionuuid = prompt("Enter subscription uuid:");
-            socket.send({'type': 'mapview', 'content': {'type': 'subscribe', 'mapview': {'uuid': subscriptionuuid}}});
         }
     }
 
@@ -258,6 +262,7 @@ angular.module('hfosFrontendApp')
         })
     }
 
+
     leafletData.getMap().then(function (map) {
       console.log('Setting up initial map settings.');
       //map.setZoom(12);
@@ -269,6 +274,8 @@ angular.module('hfosFrontendApp')
       var MousePosition = L.control.mousePosition().addTo(map);
       var PanControl = L.control.pan().addTo(map);
       var courseplot = L.polyline([], {color: 'red'}).addTo(map);
+
+      L.easyButton('fa-eye', selectview, 'Select MapView to follow', map);
 
       var drawnItems = $scope.controls.edit.featureGroup;
 

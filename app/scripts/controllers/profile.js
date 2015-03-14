@@ -8,14 +8,12 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('ProfileCtrl', function ($scope, user) {
+  .controller('ProfileCtrl', function ($scope, $location, user) {
     console.log('ProfileCtrl loaded!');
 
       var profile = user.profile();
       $scope.schema = profile.schema;
       $scope.model = profile.data;
-
-      $scope.logout = user.logout;
 
       $scope.$on('profileupdate', function(event) {
           var profile = user.profile();

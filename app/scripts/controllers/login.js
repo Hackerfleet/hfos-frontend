@@ -16,4 +16,6 @@ angular.module('hfosFrontendApp')
         console.log('Initiating Login.');
         user.login($scope.username, $scope.password);
     }
+
+    $('#username').focus();
   });

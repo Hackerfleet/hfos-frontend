@@ -1,0 +1,17 @@
+<div ng-controller="UserCtrl">
+    <div class="modal-body">
+        <span>Hello {{user.username}}!</span>
+
+        <div class="modal-footer">
+            <form>
+                <button type="button" ng-click="editprofile(); $modalSuccess()" class="btn btn-large">Edit Profile
+                </button>
+                <button type="button" ng-click="logout(); $modalSuccess()" class="btn btn-danger btn-large">Logout
+                </button>
+                <button id="usercancel" type="button" ng-click="$modalCancel()" class="btn btn-default btn-large">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

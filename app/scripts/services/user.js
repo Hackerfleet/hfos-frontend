@@ -67,7 +67,6 @@ angular.module('hfosFrontendApp')
 
     var isSignedin = function() {
         console.log('Sign in status requested!');
-        console.log(user);
         return signedin;
     }
 
@@ -93,9 +92,9 @@ angular.module('hfosFrontendApp')
     var showprofile = function() {
         console.log('Showing profile.');
 
-        createDialog('/views/modals/profile.tpl.html', {
-                id: 'profileDialog',
-                title: 'Userprofile',
+        createDialog('/views/modals/user.tpl.html', {
+                id: 'UserDialog',
+                title: 'User settings',
                 footerTemplate: '<span></span>',
             }
         );
@@ -175,4 +174,14 @@ angular.module('hfosFrontendApp')
             onAuthCallbacks.push(callback);
           }
         };
+  }).controller('UserCtrl', function ($scope, $location, user) {
+      console.log('UserCtrl loaded!');
+      console.log(user.user())
+      $scope.user = user.user();
+      $scope.logout = user.logout;
+      $scope.editprofile = function() {
+        console.log('Loading profile page.');
+        $location.url('profile');
+      }
+      $('#usercancel').focus();
   });
