@@ -9,9 +9,12 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('MapCtrl', ["$scope", "leafletData", "socket", "user", "createDialog", function ($scope, leafletData, socket, user, createDialog) {
+  .controller('MapCtrl', ["$scope", "leafletData", "socket", "user", "createDialog", "Detector",
+              function ($scope, leafletData, socket, user, createDialog, Detector) {
     console.log('Starting Map Controller');
 
+    console.log(Detector.getResult());
+    var deviceinfo = Detector.getDevice();
 
     $scope.mapviews = {};
     $scope.mapview = {schema: '',
@@ -126,6 +129,9 @@ angular.module('hfosFrontendApp')
     }
 
     angular.extend($scope, {
+      defaults: {
+        zoomControl: false
+      },
       events: {
         map: {
             enable: ['moveend', 'dblclick'],
@@ -268,9 +274,13 @@ angular.module('hfosFrontendApp')
       //map.setZoom(12);
       //map.panTo({lat: 52.513, lon: 13.41998});
 
+      if (deviceinfo.type != "mobile") {
+        var Zoomslider = new L.Control.Zoomslider().addTo(map);
+        $(".leaflet-control-zoom").css("visibility", "hidden");
+      }
+
       var Terminator = terminator().addTo(map);
       var GraticuleOne = L.graticule({style: {color: '#55A', weight: 1, dashArray: '.'}, interval: 1}).addTo(map);
-      var Zoomslider = new L.Control.Zoomslider().addTo(map);
       var MousePosition = L.control.mousePosition().addTo(map);
       var PanControl = L.control.pan().addTo(map);
       var courseplot = L.polyline([], {color: 'red'}).addTo(map);

@@ -23,8 +23,7 @@ angular
     'fundoo.services',
     'schemaForm',
     'schemaForm-tinymce',
-    //'schemaForm-colorpicker',
-    //'schemaForm-datepicker'
+    'angular-detector'
   ])
   .config(function ($routeProvider) {
     $routeProvider

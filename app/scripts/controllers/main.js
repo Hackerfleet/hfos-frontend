@@ -11,7 +11,7 @@ angular.module('hfosFrontendApp')
   .controller('MainCtrl', function ($scope, $route, $modal, $aside, $interval, socket, user) {
 
     socket.send({'type': 'info', 'content':'Main Controller activated'});
-
+    $('#bootscreen').hide();
     var chatAside = $aside({scope: $scope, template: 'views/aside/chat.tpl.html', show:false, backdrop: false});
     var blinkstate = 0
     var blinker = false;
