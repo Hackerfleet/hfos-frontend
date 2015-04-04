@@ -212,3 +212,25 @@ html, body {
 .menuicon {
  width: 50%;
 }
+
+#bootscreen {
+    height: 95%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#compass {
+    width: 330px;
+    height: 330px;
+    background-image:url('/assets/images/hackerfleet.svg');
+    background-size: 100% auto;
+    position: relative;
+}
+
+.vertical-center {
+  min-height: 90%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 90vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
