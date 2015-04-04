@@ -9,12 +9,13 @@
  */
 angular.module('hfosFrontendApp')
   .controller('LoginCtrl', function ($scope, user) {
-    $scope.username = user.username;
-    $scope.password = user.password;
 
     $scope.login = function() {
         console.log('Initiating Login.');
-        user.login($scope.username, $scope.password);
+        var username = $('#username').val();
+        var password = $('#password').val();
+
+        user.login(username, password);
     }
 
     $('#username').focus();
