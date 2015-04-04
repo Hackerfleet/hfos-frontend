@@ -8,17 +8,20 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('ProfileCtrl', function ($scope, $location, user) {
+  .controller('ProfileCtrl', function ($scope, $location, schemata, user) {
     console.log('ProfileCtrl loaded!');
 
       var profile = user.profile();
-      $scope.schema = profile.schema;
-      $scope.model = profile.data;
+      $scope.model = profile;
+      $scope.schema = schemata.get('profile');
 
       $scope.$on('profileupdate', function(event) {
+          console.log('Profile Controller updating.');
           var profile = user.profile();
-          $scope.schema = profile.schema;
-          $scope.model = profile.data;
+          $scope.schema = schemata.get('profile');
+          $scope.model = profile;
+          console.log('New data: ', $scope.schema, $scope.model);
+          $scope.$apply();
           console.log('Profile updated: ', profile);
       })
 
@@ -36,7 +39,7 @@ angular.module('hfosFrontendApp')
                     type: 'section',
                     htmlClass: 'col-xs-4',
                     items: [
-                        'name', 'd-o-b', 'callsign'
+                        'name', 'd-o-b', 'callsign', 'theme'
                     ]
                 },
                 {

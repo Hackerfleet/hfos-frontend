@@ -21,6 +21,12 @@ angular.module('hfosFrontendApp')
         signedin = true;
     }
 
+    var changeCurrentTheme = function(newTheme) {
+        console.log('Switching to theme ', newTheme);
+        $("#BootstrapTheme").attr("href", "bower_components/" + newTheme + "bootstrap-theme.css");
+        $("#Bootstrap").attr("href", "bower_components/" + newTheme + "bootstrap.css");
+    }
+
     socket.onClose(function() {
         signedin = false;
         // TODO: Close chat etc, move this there, use hook
@@ -29,39 +35,37 @@ angular.module('hfosFrontendApp')
 
 
     socket.onMessage(function(message) {
-        var data = JSON.parse(message.data);
+        var msg = JSON.parse(message.data);
 
-        if (data.type === 'auth') {
+        if (msg.component === 'auth') {
             console.log('Got an auth packet!');
-            var auth = data.content;
-            console.log(auth);
 
-            if(auth.success) {
+            if(msg.action === 'login') {
                 console.log('Authenticated successfully!');
+                user = msg.data;
+                signIn();
 
                 for (var i = 0; i < onAuthCallbacks.length; i++) {
-                    onAuthCallbacks[i].call(auth);
+                    onAuthCallbacks[i].call(user);
                 }
 
-                console.log('Setting signedin status.');
                 $("#btnuser").css("color", "#ff0");
-
-                user = auth.useraccount;
-                signIn();
             }
-        } else if (data.type === 'profile') {
+        } else if (msg.component === 'profile') {
             console.log('Profile received.')
-            profile = data.content
+            profile = msg.data;
             $("#btnuser").css("color", "#0f0");
             $("#btnchat").removeClass("hidden")
+            changeCurrentTheme(profile.theme);
             $rootScope.$broadcast('profileupdate');
         }
     });
 
     var updateprofile = function (data) {
-        profile.data = data
-        console.log('Updating profile with ', profile.data);
-        socket.send({'type': 'profile', 'content': profile.data});
+        profile = data
+        // TODO: Validate with schema from newly built schemaservice
+        console.log('Updating profile with ', profile);
+        socket.send({'component': 'profile', 'action': 'update', 'data': profile});
         $rootScope.$broadcast('profileupdate');
     }
 
@@ -72,7 +76,7 @@ angular.module('hfosFrontendApp')
 
     var getuser = function() {
         console.log('User data requested!');
-        return user.data;
+        return user;
     }
 
     var getprofile = function() {
@@ -104,9 +108,10 @@ angular.module('hfosFrontendApp')
         if (socket.connected) {
             console.log('Trying to login.');
 
-            var authpacket = {'type': 'auth', 'content': {
-                'username': username,
-                'password': md5.createHash(password || ''),
+            var authpacket = {'component': 'auth', 'action': 'login',
+                'data': {
+                  'username': username,
+                  'password': md5.createHash(password || ''),
                 }
             };
 
@@ -119,7 +124,7 @@ angular.module('hfosFrontendApp')
     var logout = function(force) {
         if (socket.connected) {
             console.log('Trying to logout.');
-            var authpacket = {'type': 'auth', 'content': 'logout'};
+            var authpacket = {'component': 'auth', 'action': 'logout'};
             socket.send(authpacket);
 
             user = {};
