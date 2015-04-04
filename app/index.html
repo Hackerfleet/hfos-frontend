@@ -6,11 +6,15 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <link id="Bootstrap" rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link id="BootstrapTheme" rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css"/>
+
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"/>
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css"/>
     <link rel="stylesheet" href="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu.css"/>
     <link rel="stylesheet" href="bower_components/leaflet.fullscreen/Control.FullScreen.css"/>
     <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css"/>
@@ -79,8 +83,18 @@
     </div>
 </div>
 
-<div id="bootscreen" class="well">
-    <span><h5>Starting HFOS client - please wait!</h5></span>
+<div id="bootscreen" class="jumbotron vertical-center">
+    <div class="center-block">
+        <table>
+            <tr>
+                <div id="compass" class="center"></div>
+            </tr>
+            <tr>
+                <span><h2>Starting HFOS client</h2></span>
+                <span><h3>..please wait..</h3></span>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <div ng-view="" id="content"></div>
@@ -111,6 +125,8 @@
 <script src="bower_components/angular-timer/dist/angular-timer.js"></script>
 <script src="bower_components/leaflet/dist/leaflet.js"></script>
 <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
+<script src="bower_components/leaflet-dist/leaflet.js"></script>
+<script src="bower_components/leaflet.draw/dist/leaflet.draw-src.js"></script>
 <script src="bower_components/leaflet-providers/leaflet-providers.js"></script>
 <script src="bower_components/leaflet-omnivore/leaflet-omnivore.js"></script>
 <script src="bower_components/leaflet-terminator/leaflet-terminator.js"></script>
@@ -172,6 +188,10 @@ it around all the time :/ -->
 <script src="scripts/services/socket.js"></script>
 <script src="scripts/controllers/profile.js"></script>
 <script src="scripts/controllers/login.js"></script>
+<script src="scripts/services/mapviewservice.js"></script>
+<script src="scripts/controllers/layereditor.js"></script>
+<script src="scripts/services/layerservice.js"></script>
+<script src="scripts/services/schemata.js"></script>
 <!-- endbuild -->
 </body>
 </html>
