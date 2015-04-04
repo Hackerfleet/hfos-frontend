@@ -17,6 +17,10 @@ angular.module('hfosFrontendApp')
     //    console.log(args);
     //});
 
+    var getHost = function() {
+        return host;
+    }
+
     var connected = false;
 
     var OpenEvent = function(args) {
@@ -42,8 +46,14 @@ angular.module('hfosFrontendApp')
         return connected;
     }
 
+    var doDisconnect = function() {
+        sock.close();
+    }
+
     return {
       connected: isConnected,
+      host: getHost,
+      disconnect: doDisconnect,
       check: function () {
         console.log("Connection state: ", connected);
         console.log(sock);
