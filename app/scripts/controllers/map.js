@@ -9,60 +9,67 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('MapCtrl', ["$scope", "leafletData", "socket", "user", "createDialog", "Detector",
-              function ($scope, leafletData, socket, user, createDialog, Detector) {
+  .controller('MapCtrl', ["$scope", "leafletData", "socket", "user", "createDialog", "Detector", "MapViewService",
+              function ($scope, leafletData, socket, user, createDialog, Detector, MapViewService) {
     console.log('Starting Map Controller');
 
     console.log(Detector.getResult());
     var deviceinfo = Detector.getDevice();
+    var host = socket.host();
 
-    $scope.mapviews = {};
-    $scope.mapview = {schema: '',
-        data: {
-            uuid: '',
-            name: 'Unnamed MapView',
-            color: '',
-            shared: false,
-            notes: '',
-            coords: {
-                lat: 0,
-                lon: 0,
-                zoom: 5
-            }
-        }
-    }
+    $scope.mapviewuuid = '';
 
+    $scope.btn_sync = '';
+    $scope.btn_selectview = '';
+    $scope.sync = true;
 
     $scope.secretfunction = function () { alert(Array(16).join("wat"-1)+" Batman!"); }
 
-    var subscribe = function() {
-        console.log('Hier, geht ja doch!');
+    socket.send({'type': 'info', 'content':'Map Controller activated'});
+
+    var syncFromMapview = function(mapview) {
+        $scope.mapview = mapview;
+        $scope.center = mapview.coords;
+        console.log('Sync from MV: ', $scope.mapview);
     }
 
-    var selectview = function() {
-        console.log('MVS Calling. scope:', $scope);
-        var mv = $scope.mapview.data;
-        var mvs = $scope.mapviews;
-        console.log('MVS Obj: ', mv, mvs);
-        createDialog('views/modals/mapviewselect.tpl.html', {
-              id: 'mapviewselectDialog',
-              title: 'Select a mapview to follow',
-              success: {label: 'Select', fn: subscribe},
-              controller: 'MapViewSelectCtrl'
-            },
-            {
-                mapview: mv,
-                mapviews: mvs
-            }
-        );
-    };
+    var syncToMapview = function(center) {
+        $scope.mapview.coords = $scope.center;
+        console.log('Sync to MV: ', $scope.mapview);
+    }
 
-    socket.send({'type': 'info', 'content':'Map Controller activated'});
+    var unsubscribe = function() {
+        MapViewService.unsubscribe($scope.mapviewuuid);
+        $('#btn_view').removeClass('fa-eye');
+        $('#btn_sync').addClass('fa-eye-slash');
+
+    }
+    var subscribe = function() {
+        MapViewService.subscribe($scope.mapviewuuid);
+        $('#btn_view').removeClass('fa-eye');
+        $('#btn_sync').addClass('fa-eye-slash');
+
+    }
+
+    var toggleSync = function() {
+        $scope.sync = !$scope.sync;
+        if ($scope.sync) {
+            console.log('Sync on');
+            $('#btn_sync').addClass('fa-chain');
+            $('#btn_sync').removeClass('fa-chain-broken');
+        } else {
+            $('#btn_sync').addClass('fa-chain-broken');
+            $('#btn_sync').removeClass('fa-chain');
+        }
+        console.log($('#btn_sync'));
+    }
 
     var requestMapData = function() {
         console.log('Requesting mapdata from server.');
-        socket.send({'type': 'mapview', 'content': {'type': 'list', 'content': ''}});
-        socket.send({'type': 'mapview', 'content': {'type': 'get', 'content': ''}});
+        var useruuid = user.user().uuid;
+        console.log('Subscribing to mapview changes: ', useruuid);
+        MapViewService.onChange(syncFromMapview, useruuid);
+        $scope.mapview = MapViewService.mapview();
     }
 
     if (user.signedin()) {
@@ -70,59 +77,41 @@ angular.module('hfosFrontendApp')
     };
 
     user.onAuth(function() {
+        // TODO: This is better to be stored in a client-persistent way (cookie?)
+        $scope.mapviewuuid = user.user().uuid;
         requestMapData();
-
     });
 
     socket.onMessage(function(message) {
-        var data = JSON.parse(message.data);
+        var msg = JSON.parse(message.data);
 
-        if(data.type === 'map') {
+        if(msg.component === 'map') {
             console.log('Map data: ', data);
-        } else if(data.type === 'mapviewupdate') {
-            var mapviewupdate = data.content;
-            console.log('MapView update received: ', mapviewupdate);
-
-            $scope.mapview = mapviewupdate['mapview'];
-
-            $scope.center = $scope.mapview.data.coords;
-        } else if(data.type === 'mapviewlist') {
-            console.log("MapView list received: ", data.content);
-            $scope.mapviews = data.content;
-            //selectview();
-        } else if(data.type === 'mapviewget') {
-            console.log('MapView received: ', data.content);
-            $scope.mapview = data.content;
-            $scope.center = $scope.mapview.data.coords;
-
         }
     });
 
-    $scope.subscribe = function() {
-        console.log('Subscribing to mapview! - or not');
-    }
 
 
     var handleEvent = function(event) {
         if (user.signedin()) {
             console.log('Map Event:', event);
-            if (event.name === 'leafletDirectiveMap.moveend') {
-                var userobj = user.user();
+                if (event.name === 'leafletDirectiveMap.moveend') {
+                    if ($scope.sync) {
+                        console.log('Synchronizing map')
 
-                if ($scope.mapview != ''){
-                    if ($scope.mapview.data.uuid === userobj.uuid) {
-                        $scope.mapview.data.coords = $scope.center;
-                        socket.send({'type': 'mapview', 'content': {'type': 'update', 'mapview': $scope.mapview.data}});
-                    } else {
-                        console.log('I think we are remotecontrolled! Not updating.');
+                        var userobj = user.user();
+
+                        if ($scope.mapviewuuid != userobj){
+                            syncToMapview($scope.center);
+                            MapViewService.update($scope.mapview);
+                        } else {
+                            console.log('I think we are remotecontrolled! Not updating.');
+                        }
+                } else if (event.name === 'leafletDirectiveMap.dblclick') {
+                    var subscriptionuuid = prompt("Enter subscription uuid:");
+                    if (subscriptionuuid != '') {
+                        socket.send({'component': 'mapview', 'action': 'subscribe', 'data': subscriptionuuid});
                     }
-                } else {
-                    console.log('No Mapview object. Hmhmhmm.');
-                }
-            } else if (event.name === 'leafletDirectiveMap.dblclick') {
-                var subscriptionuuid = prompt("Enter subscription uuid:");
-                if (subscriptionuuid != '') {
-                    socket.send({'type': 'mapview', 'content': {'type': 'subscribe', 'mapview': {'uuid': subscriptionuuid}}});
                 }
             }
         }
@@ -138,7 +127,10 @@ angular.module('hfosFrontendApp')
             logic: 'emit'
             }
       },
-      center: $scope.mapview.data.coords,
+      center: {
+        lat: 0,
+        lon: 0
+      },
       Vessel: {
         coords: {
             lat: 54.17825,
@@ -168,7 +160,7 @@ angular.module('hfosFrontendApp')
             name: 'OpenStreetMap',
             type: 'xyz',
             // url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-            url: 'http://localhost:8055/tilecache/a.tile.osm.org/{z}/{x}/{y}.png',
+            url: 'http://'+ host + ':8055/tilecache/a.tile.osm.org/{z}/{x}/{y}.png',
             layerOptions: {
               //subdomains: ['a', 'b', 'c'],
               attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -179,7 +171,7 @@ angular.module('hfosFrontendApp')
             name: 'OpenSeaMap',
             type: 'xyz',
             // http://c.tile.openstreetmap.org/{z}/{x}/{y}.png
-            url: 'http://localhost:8055/tilecache/t1.openseamap.org/seamark/{z}/{x}/{y}.png',
+            url: 'http://' + host + ':8055/tilecache/tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
             layerOptions: {
               attribution: '&copy; OpenSeaMap contributors',
               continuousWorld: true,
@@ -189,11 +181,24 @@ angular.module('hfosFrontendApp')
           cycle: {
             name: 'OpenCycleMap',
             type: 'xyz',
-            url: 'http://localhost:8055/tilecache/a.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+            url: 'http://' + host + ':8055/tilecache/a.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
             layerOptions: {
               //subdomains: ['a', 'b', 'c'],
               attribution: '&copy; <a href="http://www.opencyclemap.org/copyright">OpenCycleMap</a> contributors - &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
               continuousWorld: true
+            }
+          }
+        },
+        foobar: {
+          openseamap: {
+            name: 'OpenSeaMap',
+            type: 'xyz',
+            // http://c.tile.openstreetmap.org/{z}/{x}/{y}.png
+            url: 'http://' + host + ':8055/tilecache/t1.openseamap.org/seamark/{z}/{x}/{y}.png',
+            layerOptions: {
+              attribution: '&copy; OpenSeaMap contributors',
+              continuousWorld: false,
+              tms: true
             }
           }
         },
@@ -202,7 +207,7 @@ angular.module('hfosFrontendApp')
             name: 'OpenSeaMap',
             type: 'xyz',
             // http://c.tile.openstreetmap.org/{z}/{x}/{y}.png
-            url: 'http://localhost:8055/tilecache/t1.openseamap.org/seamark/{z}/{x}/{y}.png',
+            url: 'http://' + host + ':8055/tilecache/t1.openseamap.org/seamark/{z}/{x}/{y}.png',
             layerOptions: {
               attribution: '&copy; OpenSeaMap contributors',
               continuousWorld: false,
@@ -212,7 +217,7 @@ angular.module('hfosFrontendApp')
           openweathermap: {
             name: 'OpenWeatherMap Clouds',
             type: 'xyz',
-            url: 'http://localhost:8055/tilecache/a.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png',
+            url: 'http://' + host + ':8055/tilecache/a.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png',
             layerOptions: {
               attribution: '&copy; OpenWeatherMap',
               continuousWorld: true,
@@ -222,7 +227,7 @@ angular.module('hfosFrontendApp')
           hillshade: {
             name: 'Hillshade Europa',
             type: 'wms',
-            url: 'http://localhost:8055/tilecache/129.206.228.72/cached/hillshade',
+            url: 'http://' + host + ':8055/tilecache/129.206.228.72/cached/hillshade',
             visible: false,
             layerOptions: {
               layers: 'europe_wms:hs_srtm_europa',
@@ -235,7 +240,7 @@ angular.module('hfosFrontendApp')
           fire: {
             name: 'OpenFireMap',
             type: 'xyz',
-            url: 'http://localhost:8055/tilecache/openfiremap.org/hytiles/{z}/{x}/{y}.png',
+            url: 'http://' + host + ':8055/tilecache/openfiremap.org/hytiles/{z}/{x}/{y}.png',
             visible: false,
             layerOptions: {
               attribution: '&copy; <a href="http://www.openfiremap.org">OpenFireMap</a> contributors - &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -245,7 +250,7 @@ angular.module('hfosFrontendApp')
           esriimagery: {
             name: 'Satellite ESRI World Imagery',
             type: 'xyz',
-            url: 'http://localhost:8055/tilecache/server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            url: 'http://' + host + ':8055/tilecache/server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
             visible: false,
             layerOptions: {
               attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
@@ -256,8 +261,6 @@ angular.module('hfosFrontendApp')
         }
       }
     });
-
-
 
     var mapEvents = $scope.events.map.enable;
 
@@ -285,7 +288,8 @@ angular.module('hfosFrontendApp')
       var PanControl = L.control.pan().addTo(map);
       var courseplot = L.polyline([], {color: 'red'}).addTo(map);
 
-      L.easyButton('fa-eye', selectview, 'Select MapView to follow', map);
+      L.easyButton('fa-eye', MapViewService.selectview, 'Select MapView to follow', map, 'btn_selectview');
+      L.easyButton('fa-chain', toggleSync, 'Enable follow synchronization', map, 'btn_sync');
 
       var drawnItems = $scope.controls.edit.featureGroup;
 
@@ -615,12 +619,4 @@ angular.module('hfosFrontendApp')
      /* $scope.init($scope);
      $("#map").height($(window).height()-100).width($(window).width());
      $scope.map.invalidateSize(); */
-  }]).controller('MapViewSelectCtrl', ['$scope', 'mapview', 'mapviews',
-    function($scope, mapview, mapviews) {
-        $scope.mapview = mapview;
-        $scope.mapviews = mapviews;
-        console.log("MVS Ctrl: ", mapview, mapviews);
-        $scope.selectMV = function(uuid) {
-            console.log('MVS Ctrl: Selected:', uuid)
-        }
-  }]);;
+  }]);
