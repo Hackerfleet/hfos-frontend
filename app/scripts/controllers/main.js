@@ -8,7 +8,7 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('MainCtrl', function ($scope, $route, $modal, $aside, $interval, socket, user) {
+  .controller('MainCtrl', function ($scope, $route, $modal, $aside, $interval, schemata, socket, user) {
 
     socket.send({'type': 'info', 'content':'Main Controller activated'});
     $('#bootscreen').hide();
@@ -22,15 +22,15 @@ angular.module('hfosFrontendApp')
     };
 
     socket.onMessage(function(message) {
-        var data = JSON.parse(message.data);
+        var msg = JSON.parse(message.data);
 
-        console.log(data);
+        console.log(msg);
 
-        if(data.type === 'warning') {
-          var warningmodal = $modal({title: 'Warning!', content: String(data.content), show:true});
-        } else if(data.type === 'chat') {
-            console.log('Incoming chat data: ', data);
-            $scope.chat.messages.push(data.content);
+        if(msg.component === 'warning') {
+          var warningmodal = $modal({title: 'Warning!', content: String(msg.data), show:true});
+        } else if(msg.component === 'chat') {
+            console.log('Incoming chat data: ', msg);
+            $scope.chat.messages.push(msg.data);
             console.log($scope.chat);
             //if($scope.chat.open === false) {
                 blinkstate = 1;
@@ -61,10 +61,13 @@ angular.module('hfosFrontendApp')
         if (event.shiftKey === true) {
             console.log('Reloading route.');
             $route.reload();
+        } else if (event.ctrlKey === true) {
+            console.log('Disconnecting');
+            socket.disconnect();
         }
         socket.check();
         user.check();
-        console.log("Main profile: ", user.profile);
+        console.log("Main profile: ", user.profile());
     }
 
     $scope.userbutton = function(event) {
@@ -102,7 +105,7 @@ angular.module('hfosFrontendApp')
 
     $scope.chatsend = function() {
         console.log('Transmitting current message.');
-        socket.send({'type': 'chatrequest', 'content': {'type': 'msg', 'content': $scope.chat.input}});
+        socket.send({'component': 'chat', 'action': 'say', 'data': $scope.chat.input});
         $scope.chat.input = '';
     };
 
