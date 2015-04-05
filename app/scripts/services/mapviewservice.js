@@ -19,14 +19,15 @@ angular.module('hfosFrontendApp')
         coords: {
             lat: 0,
             lon: 0,
-            zoom: 5
+            zoom: 5,
+            autoDiscover: false
         }
     }
 
     var onChangeCallbacks = {};
 
     var requestMapData = function() {
-        console.log('Requesting mapdata from server.');
+        console.log('Requesting map view data from server.');
         socket.send({'component': 'mapview', 'action': 'list'});
         socket.send({'component': 'mapview', 'action': 'get'});
     }
@@ -60,7 +61,9 @@ angular.module('hfosFrontendApp')
         console.log(newmapview);
         var mv = this.mapview();
         console.log(mv);
-        socket.send({'component': 'mapview', 'action': 'update', 'data': mv});
+        if (mv.uuid != '') {
+            socket.send({'component': 'mapview', 'action': 'update', 'data': mv});
+        }
     }
 
     user.onAuth(function() {

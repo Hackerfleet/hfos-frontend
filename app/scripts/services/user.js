@@ -19,6 +19,14 @@ angular.module('hfosFrontendApp')
 
     var signIn = function() {
         signedin = true;
+
+        for (var i = 0; i < onAuthCallbacks.length; i++) {
+            onAuthCallbacks[i].call(user);
+        }
+
+        $("#btnuser").css("color", "#ff0");
+
+        $route.reload();
     }
 
     var changeCurrentTheme = function(newTheme) {
@@ -44,12 +52,6 @@ angular.module('hfosFrontendApp')
                 console.log('Authenticated successfully!');
                 user = msg.data;
                 signIn();
-
-                for (var i = 0; i < onAuthCallbacks.length; i++) {
-                    onAuthCallbacks[i].call(user);
-                }
-
-                $("#btnuser").css("color", "#ff0");
             }
         } else if (msg.component === 'profile') {
             console.log('Profile received.')

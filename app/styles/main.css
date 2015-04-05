@@ -239,12 +239,12 @@ html, body {
     background-size: 80% 400%;
     background-position: -400% 0%;
     background-repeat: no-repeat;
-    -webkit-animation: bootgradient 5s linear infinite;
-    -moz-animation: bootgradient 5s linear infinite;
+    -webkit-animation: bootgradient 2s linear infinite;
+    -moz-animation: bootgradient 2s linear infinite;
     animation: bootgradient 5s linear infinite;
     animation-iteration-count: infinite;
-    animation-duration: 5s;
-    animation-delay: 2s;
+    animation-duration: 2s;
+    animation-delay: 1s;
 }
 
 @-moz-keyframes bootgradient {
