@@ -46,7 +46,7 @@
     "angular-schema-form-tinymce": "~0.1.0",
     "angular-spectrum": "~0.0.1",
     "pickadate": "~3.5.5",
-    "L.EasyButton": "*",
+    "L.EasyButton": "CliffCloud/Leaflet.EasyButton",
     "bower-angular-detector": "~1.2.26",
     "bootstra.386": "*"
   },

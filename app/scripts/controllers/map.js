@@ -174,8 +174,6 @@ angular.module('hfosFrontendApp')
             url: 'http://' + host + ':8055/tilecache/tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
             layerOptions: {
               attribution: '&copy; OpenSeaMap contributors',
-              continuousWorld: true,
-              tms: true
             }
           },
           cycle: {
@@ -189,19 +187,6 @@ angular.module('hfosFrontendApp')
             }
           }
         },
-        foobar: {
-          openseamap: {
-            name: 'OpenSeaMap',
-            type: 'xyz',
-            // http://c.tile.openstreetmap.org/{z}/{x}/{y}.png
-            url: 'http://' + host + ':8055/tilecache/t1.openseamap.org/seamark/{z}/{x}/{y}.png',
-            layerOptions: {
-              attribution: '&copy; OpenSeaMap contributors',
-              continuousWorld: false,
-              tms: true
-            }
-          }
-        },
         overlays: {
           openseamap: {
             name: 'OpenSeaMap',
@@ -209,9 +194,9 @@ angular.module('hfosFrontendApp')
             // http://c.tile.openstreetmap.org/{z}/{x}/{y}.png
             url: 'http://' + host + ':8055/tilecache/t1.openseamap.org/seamark/{z}/{x}/{y}.png',
             layerOptions: {
+              minZoom: 11,
+              maxZoom: 17,
               attribution: '&copy; OpenSeaMap contributors',
-              continuousWorld: false,
-              tms: true
             }
           },
           openweathermap: {

@@ -30,9 +30,13 @@ angular.module('hfosFrontendApp')
     }
 
     var changeCurrentTheme = function(newTheme) {
-        console.log('Switching to theme ', newTheme);
-        $("#BootstrapTheme").attr("href", "bower_components/" + newTheme + "bootstrap-theme.css");
-        $("#Bootstrap").attr("href", "bower_components/" + newTheme + "bootstrap.css");
+        if (typeof newTheme != 'undefined') {
+            console.log('Switching to theme ', newTheme);
+            $("#BootstrapTheme").attr("href", "bower_components/" + newTheme + "bootstrap-theme.css");
+            $("#Bootstrap").attr("href", "bower_components/" + newTheme + "bootstrap.css");
+        } else {
+            console.log('Not switching to undefined theme.');
+        }
     }
 
     socket.onClose(function() {
