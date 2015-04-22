@@ -30,6 +30,7 @@ angular.module('hfosFrontendApp')
     socket.onMessage(registerschemata);
 
     var updateschemata = function() {
+        // Get Schemata
         console.log('Getting update of schemata.');
         socket.send({'component': 'schema', 'action': 'All'});
     }

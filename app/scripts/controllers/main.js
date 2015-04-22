@@ -9,6 +9,15 @@
  */
 angular.module('hfosFrontendApp')
   .controller('MainCtrl', function ($scope, $route, $modal, $aside, $interval, schemata, socket, user) {
+    var arrayGP = navigator.getGamepads();
+    console.log(arrayGP);
+
+    window.addEventListener("gamepadconnected", function(e) {
+      var gp = navigator.getGamepads()[e.gamepad.index];
+      console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+        gp.index, gp.id,
+        gp.buttons.length, gp.axes.length);
+    });
 
     socket.send({'type': 'info', 'content':'Main Controller activated'});
     $('#bootscreen').hide();
@@ -22,6 +31,7 @@ angular.module('hfosFrontendApp')
     };
 
     socket.onMessage(function(message) {
+        // Main and Chat Handler
         var msg = JSON.parse(message.data);
 
         console.log(msg);

@@ -39,21 +39,21 @@ angular.module('hfosFrontendApp')
                     type: 'section',
                     htmlClass: 'col-xs-4',
                     items: [
-                        'name', 'd-o-b', 'callsign', 'theme'
+                        'userdata.name', 'userdata.d-o-b', 'userdata.callsign'
                     ]
                 },
                 {
                     type: 'section',
                     htmlClass: 'col-xs-4',
                     items: [
-                        'familyname', 'nick', 'color'
+                        'userdata.familyname', 'userdata.nick', 'userdata.color'
                     ]
                 },
                 {
                     type: 'section',
                     htmlClass: 'col-xs-4',
                     items: [
-                        'phone', 'shift', 'visa'
+                        'userdata.phone', 'userdata.shift', 'userdata.visa'
                     ]
                 }
             ]

@@ -18,6 +18,7 @@ angular.module('hfosFrontendApp')
     var host = socket.host();
 
     $scope.mapviewuuid = '';
+    $scope.mapview = {};
 
     $scope.btn_sync = '';
     $scope.btn_selectview = '';
@@ -27,27 +28,40 @@ angular.module('hfosFrontendApp')
 
     socket.send({'type': 'info', 'content':'Map Controller activated'});
 
-    var syncFromMapview = function(mapview) {
-        $scope.mapview = mapview;
-        $scope.center = mapview.coords;
-        console.log('Sync from MV: ', $scope.mapview);
-    }
+    $scope.$on('mapviewupdate', function(mapview) {
+        if (mapview.uuid === $scope.mapviewuuid) {
+            $scope.mapview = mapview;
+            $scope.center = mapview.coords;
+            console.log('Sync from MV: ', $scope.mapview);
+        }
+    });
 
     var syncToMapview = function(center) {
-        $scope.mapview.coords = $scope.center;
-        console.log('Sync to MV: ', $scope.mapview);
+        if ($scope.mapviewuuid != '') {
+            $scope.mapview.coords = $scope.center;
+            if ($scope.sync) { MapViewService.update($scope.mapview); }
+            console.log('Sync to MV: ', $scope.mapview);
+
+        }
+
     }
 
     var unsubscribe = function() {
         MapViewService.unsubscribe($scope.mapviewuuid);
+        $scope.mapviewuuid = '';
         $('#btn_view').removeClass('fa-eye');
         $('#btn_sync').addClass('fa-eye-slash');
 
     }
-    var subscribe = function() {
-        MapViewService.subscribe($scope.mapviewuuid);
+    var subscribe = function(uuid) {
+        MapViewService.subscribe(uuid);
+        $scope.mapviewuuid = uuid;
         $('#btn_view').removeClass('fa-eye');
         $('#btn_sync').addClass('fa-eye-slash');
+
+    }
+
+    var selectview = function() {
 
     }
 
@@ -67,9 +81,8 @@ angular.module('hfosFrontendApp')
     var requestMapData = function() {
         console.log('Requesting mapdata from server.');
         var useruuid = user.user().uuid;
-        console.log('Subscribing to mapview changes: ', useruuid);
-        MapViewService.onChange(syncFromMapview, useruuid);
-        $scope.mapview = MapViewService.mapview();
+        console.log('Subscribing to useruuid mapview changes: ', useruuid);
+        subscribe(useruuid);
     }
 
     if (user.signedin()) {
@@ -77,12 +90,11 @@ angular.module('hfosFrontendApp')
     };
 
     user.onAuth(function() {
-        // TODO: This is better to be stored in a client-persistent way (cookie?)
-        $scope.mapviewuuid = user.user().uuid;
         requestMapData();
     });
 
     socket.onMessage(function(message) {
+        // Map data handler
         var msg = JSON.parse(message.data);
 
         if(msg.component === 'map') {
@@ -95,23 +107,15 @@ angular.module('hfosFrontendApp')
     var handleEvent = function(event) {
         if (user.signedin()) {
             console.log('Map Event:', event);
-                if (event.name === 'leafletDirectiveMap.moveend') {
-                    if ($scope.sync) {
-                        console.log('Synchronizing map')
-
-                        var userobj = user.user();
-
-                        if ($scope.mapviewuuid != userobj){
-                            syncToMapview($scope.center);
-                            MapViewService.update($scope.mapview);
-                        } else {
-                            console.log('I think we are remotecontrolled! Not updating.');
-                        }
-                } else if (event.name === 'leafletDirectiveMap.dblclick') {
-                    var subscriptionuuid = prompt("Enter subscription uuid:");
-                    if (subscriptionuuid != '') {
-                        socket.send({'component': 'mapview', 'action': 'subscribe', 'data': subscriptionuuid});
-                    }
+            if (event.name === 'leafletDirectiveMap.moveend') {
+                if ($scope.sync) {
+                    console.log('Synchronizing map');
+                    syncToMapview($scope.center);
+                }
+            } else if (event.name === 'leafletDirectiveMap.dblclick') {
+                var subscriptionuuid = prompt("Enter subscription uuid:");
+                if (subscriptionuuid != '') {
+                    socket.send({'component': 'mapview', 'action': 'subscribe', 'data': subscriptionuuid});
                 }
             }
         }
@@ -129,7 +133,9 @@ angular.module('hfosFrontendApp')
       },
       center: {
         lat: 0,
-        lon: 0
+        lon: 0,
+        zoom: 1,
+        autoDiscover: true
       },
       Vessel: {
         coords: {
@@ -273,7 +279,7 @@ angular.module('hfosFrontendApp')
       var PanControl = L.control.pan().addTo(map);
       var courseplot = L.polyline([], {color: 'red'}).addTo(map);
 
-      L.easyButton('fa-eye', MapViewService.selectview, 'Select MapView to follow', map, 'btn_selectview');
+      L.easyButton('fa-eye-slash', selectview, 'Select MapView to follow', map, 'btn_selectview');
       L.easyButton('fa-chain', toggleSync, 'Enable follow synchronization', map, 'btn_sync');
 
       var drawnItems = $scope.controls.edit.featureGroup;

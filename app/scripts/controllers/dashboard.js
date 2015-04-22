@@ -17,6 +17,7 @@ angular.module('hfosFrontendApp')
 
 
     socket.onMessage(function(message) {
+        // Dashboard handler
         var data = JSON.parse(message.data);
         if(data.type=="navdata") {
             console.log("Updating navigation data.");

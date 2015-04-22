@@ -10,26 +10,13 @@
 angular.module('hfosFrontendApp')
   .service('MapViewService', function (socket, user, schemata, createDialog) {
     var mapviews = {};
-    var mapview = {
-        uuid: '',
-        name: 'Unnamed MapView',
-        color: '',
-        shared: false,
-        notes: '',
-        coords: {
-            lat: 0,
-            lon: 0,
-            zoom: 5,
-            autoDiscover: false
-        }
-    }
 
     var onChangeCallbacks = {};
 
     var requestMapData = function() {
         console.log('Requesting map view data from server.');
         socket.send({'component': 'mapview', 'action': 'list'});
-        socket.send({'component': 'mapview', 'action': 'get'});
+        //socket.send({'component': 'mapview', 'action': 'get'});
     }
 
 
@@ -52,35 +39,30 @@ angular.module('hfosFrontendApp')
         );
     };
 
-    var getdata = function() {
-        console.log('Current mapview requested');
-        return mapview;
+    var getdata = function(uuid) {
+        console.log('Mapview data requested for ', uuid);
+        return mapviews[uuid];
     }
 
-    var updateview = function(newmapview) {
-        console.log(newmapview);
-        var mv = this.mapview();
-        console.log(mv);
-        if (mv.uuid != '') {
-            socket.send({'component': 'mapview', 'action': 'update', 'data': mv});
+    var updateview = function(mapview) {
+        console.log('Sending mapview update.');
+        if (mapview.uuid != '') {
+            socket.send({'component': 'mapview', 'action': 'update', 'data': mapview});
         }
     }
 
     user.onAuth(function() {
+        // Initial MapView getter
         requestMapData();
     });
 
 
     var notifyListeners = function(mapview) {
-        if (onChangeCallbacks[mapview.uuid] != '') {
-            console.log('Executing onChange callback with ', mapview);
-            for (var i = 0; i < onChangeCallbacks[mapview.uuid].length; i++) {
-              onChangeCallbacks[mapview.uuid][i].call(this, mapview);
-            }
-        }
+        $rootscope.$broadcast('mapviewupdate', mapview);
     }
 
     socket.onMessage(function(message) {
+        // Mapview Handler
         var msg = JSON.parse(message.data);
 
         if(msg.component === 'mapview') {
@@ -88,10 +70,6 @@ angular.module('hfosFrontendApp')
                 mapview = msg.data
                 console.log('MapView update received: ', mapview);
                 mapviews[mapview.uuid] = msg.data;
-                notifyListeners(mapview);
-            } else if(msg.action === 'get') {
-                console.log('MapView received: ', msg.data);
-                mapview = msg.data;
                 notifyListeners(mapview);
             } else if(msg.action === 'list') {
                 console.log("MapView list received: ", msg.data);
@@ -102,19 +80,9 @@ angular.module('hfosFrontendApp')
 
 
     return {
-        mapview: getdata,
         update: updateview,
         selectview: selectview,
         subscribe: subscribe,
-        onChange: function (callback, uuid) {
-            if (typeof callback !== 'function') {
-              throw new Error('Callback must be a function');
-            }
-            if (!(uuid in onChangeCallbacks)) {
-                onChangeCallbacks[uuid] = [];
-            }
-            onChangeCallbacks[uuid].push(callback);
-        }
     };
 
 

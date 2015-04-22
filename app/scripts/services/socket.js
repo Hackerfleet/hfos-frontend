@@ -26,17 +26,17 @@ angular.module('hfosFrontendApp')
     var OpenEvent = function(args) {
         console.log('Websocket successfully opened!', args);
         connected = true;
-        $("#btnhome").css("color", "#3a75a8")
-        $("#btnuser").removeClass("hidden");
-        $("#btnuser").css("color", "");
+        $('#btnhome').css('color', '#3a75a8')
+        $('#btnuser').removeClass('hidden');
+        $('#btnuser').css('color', '');
     };
 
     var CloseEvent = function(args) {
         console.log('Something closed the websocket!', args);
         connected = false;
-        $("#btnhome").css("color", "#f00")
-        $("#btnuser").css("color", "#fa0")
-        $("#btnuser").addClass("hidden");
+        $('#btnhome').css('color', '#f00')
+        $('#btnuser').css('color', '#fa0')
+        $('#btnuser').addClass('hidden');
     };
 
     sock.onOpen(OpenEvent);
@@ -55,7 +55,7 @@ angular.module('hfosFrontendApp')
       host: getHost,
       disconnect: doDisconnect,
       check: function () {
-        console.log("Connection state: ", connected);
+        console.log('Connection state: ', connected);
         console.log(sock);
         if (connected) {
             console.log('All nice, we are still connected');
@@ -65,15 +65,15 @@ angular.module('hfosFrontendApp')
         }
       },
       onMessage: function (func) {
-        console.log('Reception hook registered: ', func);
+        console.log('Reception hook registered: ', String(func).slice(0, 50));
         return sock.onMessage(func);
       },
       onOpen: function (func) {
-        console.log('Reception hook registered: ', func);
+        console.log('Reception hook registered: ', String(func).slice(0, 50));
         return sock.onOpen(func);
       },
       onClose: function (func) {
-        console.log('Reception hook registered: ', func);
+        console.log('Reception hook registered: ', String(func).slice(0, 50));
         return sock.onClose(func);
       },
       send: function(args) {
