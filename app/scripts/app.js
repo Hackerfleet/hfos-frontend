@@ -23,7 +23,8 @@ angular
     'fundoo.services',
     'schemaForm',
     'schemaForm-tinymce',
-    'angular-detector'
+    'angular-detector',
+    'routeStyles'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -47,6 +48,12 @@ angular
         templateUrl: 'views/profile.html',
         controller: 'ProfileCtrl'
       })
+      .when('/gamepadremote', {
+        templateUrl: 'views/gamepadremote.html',
+        controller: 'GamepadRemoteCtrl',
+        css: 'styles/gamepadremote.css'
+      })
+
       .otherwise({
         redirectTo: '/'
       });
