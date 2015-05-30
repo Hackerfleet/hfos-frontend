@@ -4,6 +4,12 @@
 }
 
 @font-face {
+  font-family: "Digital";
+  src: url(/assets/fonts/letsgodigital-regular.ttf) format("truetype");
+}
+
+
+@font-face {
     font-family: 'misc-icons';
     src:url('/assets/fonts/misc-icons.eot?-3u7zq');
     src:url('/assets/fonts/misc-icons.eot?#iefix-3u7zq') format('embedded-opentype'),
@@ -71,6 +77,10 @@
 
 p.customfont {
   font-family: "Clear Sans", Verdana, Tahoma;
+}
+
+.digital {
+  font-family: "Digital";
 }
 
 body {
@@ -218,10 +228,10 @@ html, body {
     color: white;
 }
 
-#compass {
+#hflogo {
     position: relative;
-    width: 330px;
-    height: 330px;
+    width: 350px;
+    height: 350px;
     background-image:url('/assets/images/hackerfleet.svg');
     background-size: 100% auto;
 }
@@ -239,10 +249,10 @@ html, body {
     background-size: 80% 400%;
     background-position: -400% 0%;
     background-repeat: no-repeat;
-    -webkit-animation: bootgradient 2s linear infinite;
-    -moz-animation: bootgradient 2s linear infinite;
-    animation: bootgradient 5s linear infinite;
-    animation-iteration-count: infinite;
+    -webkit-animation: bootgradient 2s linear 5;
+    -moz-animation: bootgradient 2s linear 5;
+    animation: bootgradient 5s linear 5;
+    animation-iteration-count: 5;
     animation-duration: 2s;
     animation-delay: 1s;
 }

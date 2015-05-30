@@ -24,9 +24,12 @@ angular
     'schemaForm',
     'schemaForm-tinymce',
     'angular-detector',
-    'routeStyles'
+    'routeStyles',
+    'angularDeckster',
+    'ngFitTextDynamic',
+    'ngRadialGauge'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, decksterConfigProvider ) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -57,4 +60,46 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
+    decksterConfigProvider.set({
+      /*decks: {  // TODO: evaluate if this feat is really useful to us. I think so.
+      'testDeck': {
+        cards: [
+          {
+            title: 'Card 1',
+            id: 'card-1',
+            size: {x: 1, y: 1},
+            position: [0, 0]
+          },
+          {
+            title: 'Card 2',
+            id: 'card-2',
+            size: {x: 2, y: 2},
+            position: [0, 1],
+            value: 0.5
+          },
+          {
+            title: 'Card 3',
+            id: 'card-3',
+            size: {x: 1, y: 1},
+            position: [0, 2]
+          }
+        ]
+      }
+    },*/
+    cardDefaults: {
+      'course': {
+        summaryTemplateUrl: 'views/cards/courseSummaryTemplate.html',
+        detailTemplateUrl: 'views/cards/courseDetailsTemplate.html'
+      },
+      'analog': {
+        summaryTemplateUrl: 'views/cards/analogReadoutSummaryTemplate.html',
+        detailTemplateUrl: 'views/cards/analogReadoutDetailsTemplate.html'
+      },
+      'digital': {
+        summaryTemplateUrl: 'views/cards/digitalReadoutSummaryTemplate.html',
+        detailTemplateUrl: 'views/cards/digitalReadoutDetailsTemplate.html'
+      }
+    }
+    });
   });
