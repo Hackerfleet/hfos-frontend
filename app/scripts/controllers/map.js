@@ -23,6 +23,7 @@ angular.module('hfosFrontendApp')
     $scope.btn_sync = '';
     $scope.btn_selectview = '';
     $scope.sync = true;
+    $scope.follow = false;
 
     $scope.secretfunction = function () { alert(Array(16).join("wat"-1)+" Batman!"); }
 
@@ -31,7 +32,9 @@ angular.module('hfosFrontendApp')
     $scope.$on('mapviewupdate', function(mapview) {
         if (mapview.uuid === $scope.mapviewuuid) {
             $scope.mapview = mapview;
-            $scope.center = mapview.coords;
+            if ($scope.follow) {
+                $scope.center = mapview.coords;
+            }
             console.log('Sync from MV: ', $scope.mapview);
         }
     });
@@ -49,33 +52,35 @@ angular.module('hfosFrontendApp')
     var unsubscribe = function() {
         MapViewService.unsubscribe($scope.mapviewuuid);
         $scope.mapviewuuid = '';
-        $('#btn_view').removeClass('fa-eye');
-        $('#btn_sync').addClass('fa-eye-slash');
-
     }
+
     var subscribe = function(uuid) {
         MapViewService.subscribe(uuid);
         $scope.mapviewuuid = uuid;
-        $('#btn_view').removeClass('fa-eye');
-        $('#btn_sync').addClass('fa-eye-slash');
-
     }
 
-    var selectview = function() {
-
+    var togglefollow = function() {
+        $scope.follow = !$scope.follow;
+        if ($scope.sync) {
+            console.log('Follow on');
+            $('#btn_togglefollow').addClass('fa-eye');
+            $('#btn_togglefollow').removeClass('fa-eye-slash');
+        v} else {
+            $('#btn_togglefollow').addClass('fa-eye-slash');
+            $('#btn_togglefollow').removeClass('fa-eye');
+        }
     }
 
     var toggleSync = function() {
         $scope.sync = !$scope.sync;
         if ($scope.sync) {
             console.log('Sync on');
-            $('#btn_sync').addClass('fa-chain');
-            $('#btn_sync').removeClass('fa-chain-broken');
+            $('#btn_togglesync').addClass('fa-chain');
+            $('#btn_togglesync').removeClass('fa-chain-broken');
         } else {
-            $('#btn_sync').addClass('fa-chain-broken');
-            $('#btn_sync').removeClass('fa-chain');
+            $('#btn_togglesync').addClass('fa-chain-broken');
+            $('#btn_togglesync').removeClass('fa-chain');
         }
-        console.log($('#btn_sync'));
     }
 
     var requestMapData = function() {
@@ -279,8 +284,8 @@ angular.module('hfosFrontendApp')
       var PanControl = L.control.pan().addTo(map);
       var courseplot = L.polyline([], {color: 'red'}).addTo(map);
 
-      L.easyButton('fa-eye-slash', selectview, 'Select MapView to follow', map, 'btn_selectview');
-      L.easyButton('fa-chain', toggleSync, 'Enable follow synchronization', map, 'btn_sync');
+      L.easyButton('fa-eye-slash', togglefollow, 'Toggle map following', map, 'btn_togglefollow');
+      L.easyButton('fa-chain', toggleSync, 'Toggle synchronization to ship', map, 'btn_togglesync');
 
       var drawnItems = $scope.controls.edit.featureGroup;
 
