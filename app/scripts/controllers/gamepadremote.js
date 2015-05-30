@@ -8,7 +8,7 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('GamepadRemoteCtrl', function ($scope, socket) {
+  .controller('GamepadRemoteCtrl', function ($scope, user, socket) {
     $scope.status = 'Initializing';
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
@@ -20,6 +20,18 @@ angular.module('hfosFrontendApp')
     $scope.controlling = false;
     $scope.activeGamepad = 0;
     $scope.axes = '';
+    $scope.controldata = {};
+
+    function getcontroldata() {
+        socket.send({'component': 'remotectrl', 'action': 'list'});
+        socket.send({'component': 'camera', 'action': 'list'});
+    }
+
+    $scope.$on('profileupdate', getcontroldata);
+    if (user.signedin()) {
+        getcontroldata();
+    }
+
 
     socket.onMessage(function(message){
         // RemoteCtrl Handler
@@ -29,10 +41,17 @@ angular.module('hfosFrontendApp')
             if(msg.action === 'takeControl') {
                 $scope.controlling = msg.data === true;
                 console.log('Toggled remote control to ', $scope.controlling);
+            } else if((msg.action === 'list')) {
+                console.log('GRC:', msg.data);
+                $scope.controldata = msg.data;
+            }
+        } else if (msg.component === 'camera') {
+            if(msg.action === 'list') {
+                console.log('Subscribing to first camera.');
+                socket.send({'component': 'camera', 'action': 'subscribe', 'data': msg.data.Camera1});
             }
         }
-
-    })
+    });
 
     var toggleControl = function() {
         console.log('Toggling remote control');
@@ -52,6 +71,7 @@ angular.module('hfosFrontendApp')
       window.webkitRequestAnimationFrame;
 
     function connecthandler(e) {
+      console.log('Gamepad connected: ', e.gamepad);
       addgamepad(e.gamepad);
     }
 
