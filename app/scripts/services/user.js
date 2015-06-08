@@ -45,7 +45,6 @@ angular.module('hfosFrontendApp')
     }
 
     function getUUID() {
-        console.log("HALLO WELT!");
         var uuid = $cookieStore.get('hfosclientuuid');
         if (typeof uuid === 'undefined') {
             uuid = '';
@@ -110,6 +109,7 @@ angular.module('hfosFrontendApp')
         createDialog('/views/modals/login.tpl.html', {
                 id: 'loginDialog',
                 title: 'Login to HFOS',
+                backdrop: false,
                 footerTemplate: '<span></span>',
             }
         );
@@ -121,6 +121,7 @@ angular.module('hfosFrontendApp')
         createDialog('/views/modals/user.tpl.html', {
                 id: 'UserDialog',
                 title: 'User settings',
+                backdrop: false,
                 footerTemplate: '<span></span>',
             }
         );
