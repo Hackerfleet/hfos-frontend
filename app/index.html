@@ -12,21 +12,20 @@
 
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"/>
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
     <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css"/>
-    <link rel="stylesheet" href="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu.css"/>
-    <link rel="stylesheet" href="bower_components/leaflet.fullscreen/Control.FullScreen.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap-additions/dist/bootstrap-additions.css"/>
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
     <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css"/>
-    <link rel="stylesheet" href="bower_components/bootstrap-additions/dist/bootstrap-additions.min.css"/>
-    <link rel="stylesheet" href="bower_components/leaflet.vector-markers/dist/Leaflet.vector-markers.css"/>
-    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.css"/>
-    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.date.css"/>
-    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.time.css"/>
     <link rel="stylesheet" href="bower_components/spectrum/spectrum.css"/>
+    <link rel="stylesheet" href="bower_components/angularjs-toaster/toaster.css"/>
     <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
     <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css"/>
-    <link rel="stylesheet" href="bower_components/angularjs-toaster/toaster.css"/>
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu.css"/>
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="bower_components/leaflet.locatecontrol/dist/L.Control.Locate.css"/>
+    <link rel="stylesheet" href="bower_components/leaflet.fullscreen/Control.FullScreen.css"/>
+    <link rel="stylesheet" href="bower_components/leaflet.vector-markers/dist/Leaflet.vector-markers.css"/>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -34,7 +33,7 @@
     <link rel="stylesheet" href="bower_components/leaflet-mouseposition/src/L.Control.MousePosition.css"/>
     <link rel="stylesheet" href="bower_components/leaflet-pancontrol/src/L.Control.Pan.css"/>
     <link rel="stylesheet" href="bower_components/leaflet-zoomslider/src/L.Control.Zoomslider.css"/>
-
+    <link rel="stylesheet" href="bower_components/leaflet-coordinates/dist/Leaflet.Coordinates-0.1.4.css"/>
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
@@ -74,11 +73,11 @@
                 <li id="nav-dashboard"><a href="#/dashboard">Dashboard</a></li>
                 <li id="nav-weather" class="hidden"><a href="#/weather">Weather</a></li>
                 <li id="nav-map"><a href="#/map">Map</a></li>
-                <li id="nav-crew hidden"><a href="/crew_list.html">Crew</a></li>
-                <li id="nav-logbook" class="hidden"><a href="/logbook.html">Logbook</a></li>
-                <li id="nav-switchboard" class="hidden"><a href="/switchboard.html">Switchboard</a></li>
-                <li id="nav-communication" class="hidden"><a href="/communication.html">Communication</a></li>
-                <li id="nav-settings" class="hidden"><a href="/settings.html">Settings</a></li>
+                <li id="nav-crew" class="hidden"><a href="#/crew">Crew</a></li>
+                <li id="nav-logbook" class="hidden"><a href="#/logbook">Logbook</a></li>
+                <li id="nav-switchboard" class="hidden"><a href="#/switchboard">Switchboard</a></li>
+                <li id="nav-communication" class="hidden"><a href="#/communication">Communication</a></li>
+                <li id="nav-settings" class="hidden"><a href="#/settings">Settings</a></li>
                 <li id="nav-about"><a href="#/about">?</a></li>
             </ul>
         </div>
@@ -115,40 +114,34 @@
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/togeojson/togeojson.js"></script>
+<script src="bower_components/proj4/dist/proj4.js"></script>
+<script src="bower_components/leaflet-dist/leaflet.js"></script>
+<script src="bower_components/proj4leaflet/src/proj4leaflet.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="bower_components/ngSocket/dist/ngSocket.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+<script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+<script src="bower_components/humanize-duration/humanize-duration.js"></script>
+<script src="bower_components/pickadate/lib/shadow.js"></script>
+<script src="bower_components/pickadate/lib/ui-picker.js"></script>
+<script src="bower_components/pickadate/lib/ui-pickadate.js"></script>
+<script src="bower_components/pickadate/lib/ui-pickatime.js"></script>
+<script src="bower_components/bower-angular-detector/detector.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-touch/angular-touch.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/ngSocket/dist/ngSocket.js"></script>
 <script src="bower_components/momentjs/moment.js"></script>
-<script src="bower_components/humanize-duration/humanize-duration.js"></script>
-<script src="bower_components/angular-mocks/angular-mocks.js"></script>
 <script src="bower_components/angular-timer/dist/angular-timer.js"></script>
-<script src="bower_components/leaflet/dist/leaflet.js"></script>
-<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
-<script src="bower_components/leaflet-dist/leaflet.js"></script>
-<script src="bower_components/leaflet.draw/dist/leaflet.draw-src.js"></script>
-<script src="bower_components/leaflet-providers/leaflet-providers.js"></script>
-<script src="bower_components/leaflet-omnivore/leaflet-omnivore.js"></script>
-<script src="bower_components/leaflet-terminator/leaflet-terminator.js"></script>
-<script src="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu-src.js"></script>
-<script src="bower_components/togeojson/togeojson.js"></script>
-<script src="bower_components/leaflet.locatecontrol/src/L.Control.Locate.js"></script>
-<script src="bower_components/leaflet.fullscreen/Control.FullScreen.js"></script>
-<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
-<script src="bower_components/angular-strap/dist/angular-strap.js"></script>
-<script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
 <script src="bower_components/angular-md5/angular-md5.js"></script>
-<script src="bower_components/leaflet.vector-markers/dist/Leaflet.vector-markers.js"></script>
 <script src="bower_components/tv4/tv4.js"></script>
 <script src="bower_components/objectpath/lib/ObjectPath.js"></script>
 <script src="bower_components/angularjs-modal-service/src/createDialog.js"></script>
-<script src="bower_components/L.EasyButton/easy-button.js"></script>
-<script src="bower_components/bower-angular-detector/detector.js"></script>
+<script src="bower_components/angularjs-toaster/toaster.js"></script>
 <script src="bower_components/angular-route-styles/route-styles.js"></script>
 <script src="bower_components/javascript-detect-element-resize/detect-element-resize.js"></script>
 <script src="bower_components/angular-gridster/src/angular-gridster.js"></script>
@@ -157,7 +150,18 @@
 <script src="bower_components/ngFitTextDynamic/ng-FitTextDynamic.js"></script>
 <script src="bower_components/d3/d3.js"></script>
 <script src="bower_components/ngRadialGauge/src/ng-radial-gauge-dir.js"></script>
-<script src="bower_components/angularjs-toaster/toaster.js"></script>
+<script src="bower_components/leaflet/dist/leaflet.js"></script>
+<script src="bower_components/leaflet/dist/leaflet-src.js"></script>
+<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+<script src="bower_components/leaflet.draw/dist/leaflet.draw-src.js"></script>
+<script src="bower_components/leaflet-providers/leaflet-providers.js"></script>
+<script src="bower_components/leaflet-omnivore/leaflet-omnivore.js"></script>
+<script src="bower_components/leaflet-terminator/leaflet-terminator.js"></script>
+<script src="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu-src.js"></script>
+<script src="bower_components/leaflet.locatecontrol/src/L.Control.Locate.js"></script>
+<script src="bower_components/leaflet.fullscreen/Control.FullScreen.js"></script>
+<script src="bower_components/leaflet.vector-markers/dist/Leaflet.vector-markers.js"></script>
+<script src="bower_components/L.EasyButton/easy-button.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -169,9 +173,6 @@ it around all the time :/ -->
 <script src="bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js"></script>
 <script src="bower_components/angular-schema-form/dist/schema-form.js"></script>
 <script src="bower_components/angular-schema-form/dist/bootstrap-decorator.js"></script>
-<script src="bower_components/pickadate/lib/picker.js"></script>
-<script src="bower_components/pickadate/lib/picker.date.js"></script>
-<script src="bower_components/pickadate/lib/picker.time.js"></script>
 <script src="bower_components/angular-schema-form-datepicker/bootstrap-datepicker.min.js"></script>
 <script src="bower_components/angular-schema-form-colorpicker/bootstrap-colorpicker.min.js"></script>
 <script src="bower_components/tx-tinymce/tx-tinymce.js"></script>
@@ -183,8 +184,8 @@ it around all the time :/ -->
 <script src="bower_components/leaflet.Graticule/src/L.Graticule.js"></script>
 <script src="bower_components/leaflet.draw/dist/leaflet.draw.js"></script>
 <script src="bower_components/leaflet-MiniMap/src/Control.MiniMap.js"></script>
-<script src="bower_components/leaflet-coordinates/dist/Leaflet.Coordinates-0.1.3.min.js"></script>
-<script src="bower_components/proj4leaflet/lib/proj4-compressed.js"></script>
+<script src="bower_components/leaflet-coordinates/dist/Leaflet.Coordinates-0.1.4.min.js"></script>
+<script src="bower_components/leaflet.Graticule/examples/lib/proj4js-compressed.js"></script>
 <script src="bower_components/leaflet-tilelayer-geojson/TileLayer.GeoJSON.js"></script>
 <script src="bower_components/leaflet-zoomslider/src/L.Control.Zoomslider.js"></script>
 <script src="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu.js"></script>
