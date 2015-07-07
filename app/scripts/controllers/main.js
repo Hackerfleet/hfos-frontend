@@ -13,7 +13,7 @@ angular.module('hfosFrontendApp')
     socket.send({'type': 'info', 'content':'Main Controller activated'});
     $('#bootscreen').hide();
     var chatAside = $aside({scope: $scope, template: 'views/aside/chat.tpl.html', show:false, backdrop: false});
-    var blinkstate = 0
+    var blinkstate = 0;
     var blinker = false;
 
     $scope.chat = { messages: [],
@@ -41,7 +41,7 @@ angular.module('hfosFrontendApp')
     });
 
     var blinkfunc = function() {
-        console.log("Blinkstate:", blinkstate);
+        console.log('Blinkstate:', blinkstate);
         if(blinkstate === 0) {
             if($scope.chat.open === true) {
                 $('#btnchat').css('color', '#0f0');
@@ -55,8 +55,8 @@ angular.module('hfosFrontendApp')
         } else if(blinkstate === 2) {
             $('#btnchat').css('color', '');
             blinkstate = 1;
-        };
-    }
+        }
+    };
 
     $scope.home = function(event) {
         if (event.shiftKey === true) {
@@ -68,8 +68,8 @@ angular.module('hfosFrontendApp')
         }
         socket.check();
         user.check();
-        console.log("Main profile: ", user.profile());
-    }
+        console.log('Main profile: ', user.profile());
+    };
 
     $scope.userbutton = function(event) {
         console.log('USERBUTTON: ', event);
@@ -88,7 +88,7 @@ angular.module('hfosFrontendApp')
     $scope.chatclose= function() {
         console.log('Closing down chat.');
         chatAside.hide();
-        $('#btnchat').css("color", "");
+        $('#btnchat').css('color', '');
         $scope.chat.open = false;
     };
 
@@ -98,7 +98,7 @@ angular.module('hfosFrontendApp')
             console.log('Opening chat.');
             chatAside.$promise.then(chatAside.show());
 
-            $('#btnchat').css("color", "#0f0");
+            $('#btnchat').css('color', '#0f0');
             $scope.chat.open = true;
             $('#chatinput').focus();
         }

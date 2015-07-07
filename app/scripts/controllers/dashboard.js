@@ -4,11 +4,12 @@
  * @ngdoc function
  * @name hfosFrontendApp.controller:DashboardCtrl
  * @description
- * # HudCtrl
+ * # DashboardCtrl
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('DashboardCtrl', function ($scope, decksterService, socket, navdata) {
+  .controller('DashboardCtrl', ['$scope', 'decksterService', 'socket', 'navdata',
+              function ($scope, decksterService, socket, navdata) {
 
     $scope.true_course = 0;
     $scope.spd_over_grnd = 0;
@@ -19,8 +20,8 @@ angular.module('hfosFrontendApp')
     socket.onMessage(function(message) {
         // Dashboard handler
         var msg = JSON.parse(message.data);
-        if(msg.component == "dashboard") {
-            console.log("Data for the dasboard received: ", msg.action, msg.data);
+        if(msg.component === 'dashboard') {
+            console.log('Data for the dasboard received: ', msg.action, msg.data);
         }
     });
 
@@ -34,7 +35,7 @@ angular.module('hfosFrontendApp')
   };
 
   $scope.analogvalue = 0;
-  $scope.digitalvalue = "spd_over_gnd";
+  $scope.digitalvalue = 'spd_over_gnd';
   $scope.course = 0;
 
   $scope.cards = [
@@ -73,7 +74,7 @@ angular.module('hfosFrontendApp')
     $scope.value = 1.5;
     $scope.upperLimit = 6;
     $scope.lowerLimit = 0;
-    $scope.unit = "kW";
+    $scope.unit = 'kW';
     $scope.precision = 2;
     $scope.ranges = [
         {
@@ -102,4 +103,4 @@ angular.module('hfosFrontendApp')
             color: '#C50200'
         }
     ];
-  });
+  }]);

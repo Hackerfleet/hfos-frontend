@@ -8,7 +8,7 @@
  * Service in the hfosFrontendApp.
  */
 angular.module('hfosFrontendApp')
-  .service('MapViewService', function (socket, user, schemata, createDialog) {
+  .service('MapViewService', function ($rootScope, socket, user, schemata, createDialog) {
     var mapviews = {};
 
     var onChangeCallbacks = {};
@@ -17,13 +17,13 @@ angular.module('hfosFrontendApp')
         console.log('Requesting map view data from server.');
         socket.send({'component': 'mapview', 'action': 'list'});
         //socket.send({'component': 'mapview', 'action': 'get'});
-    }
+    };
 
 
     var subscribe = function(args) {
         console.log('Subscribing to mapview ', args);
-        socket.send({'component': 'mapview', 'action': 'subscribe', 'data': args})
-    }
+        socket.send({'component': 'mapview', 'action': 'subscribe', 'data': args});
+    };
 
     var selectview = function() {
         createDialog('views/modals/mapviewselect.tpl.html', {
@@ -42,14 +42,14 @@ angular.module('hfosFrontendApp')
     var getdata = function(uuid) {
         console.log('Mapview data requested for ', uuid);
         return mapviews[uuid];
-    }
+    };
 
     var updateview = function(mapview) {
         console.log('Sending mapview update.');
-        if (mapview.uuid != '') {
+        if (mapview.uuid !== '') {
             socket.send({'component': 'mapview', 'action': 'update', 'data': mapview});
         }
-    }
+    };
 
     user.onAuth(function() {
         // Initial MapView getter
@@ -58,8 +58,8 @@ angular.module('hfosFrontendApp')
 
 
     var notifyListeners = function(mapview) {
-        $rootscope.$broadcast('mapviewupdate', mapview);
-    }
+        $rootScope.$broadcast('mapviewupdate', mapview);
+    };
 
     socket.onMessage(function(message) {
         // Mapview Handler
@@ -67,12 +67,12 @@ angular.module('hfosFrontendApp')
 
         if(msg.component === 'mapview') {
             if(msg.action === 'update'){
-                mapview = msg.data
+                mapview = msg.data;
                 console.log('MapView update received: ', mapview);
                 mapviews[mapview.uuid] = msg.data;
                 notifyListeners(mapview);
             } else if(msg.action === 'list') {
-                console.log("MapView list received: ", msg.data);
+                console.log('MapView list received: ', msg.data);
                 mapviews = msg.data;
             }
         }
@@ -90,9 +90,9 @@ angular.module('hfosFrontendApp')
     function($scope, mapview, mapviews, MapViewService) {
         $scope.mapview = mapview;
         $scope.mapviews = mapviews;
-        console.log("MVS Ctrl: ", mapview, mapviews);
+        console.log('MVS Ctrl: ', mapview, mapviews);
         $scope.selectMV = function(uuid) {
             console.log('MVS Ctrl: Selected:', uuid);
             MapViewService.subscribe(uuid);
-        }
-  }]);;
+        };
+  }]);

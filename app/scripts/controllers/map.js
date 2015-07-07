@@ -9,8 +9,10 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('MapCtrl', ["$scope", "leafletData", "socket", "user", "createDialog", "Detector", "MapViewService",
-              function ($scope, leafletData, socket, user, createDialog, Detector, MapViewService) {
+  .controller('MapCtrl', ['$scope', 'leafletData', 'navdata', 'socket', 'user', 'createDialog', 'Detector',
+                          'MapViewService', 'LayerService',
+                          function ($scope, leafletData, navdata, socket, user, createDialog, Detector, MapViewService,
+                                    LayerService) {
     console.log('Starting Map Controller');
 
     console.log(Detector.getResult());
@@ -25,7 +27,7 @@ angular.module('hfosFrontendApp')
     $scope.sync = true;
     $scope.follow = false;
 
-    $scope.secretfunction = function () { alert(Array(16).join("wat"-1)+" Batman!"); }
+    $scope.secretfunction = function () { alert(new Array(16).join('wat'-1)+' Batman!'); };
 
     socket.send({'type': 'info', 'content':'Map Controller activated'});
 
@@ -40,24 +42,24 @@ angular.module('hfosFrontendApp')
     });
 
     var syncToMapview = function(center) {
-        if ($scope.mapviewuuid != '') {
+        if ($scope.mapviewuuid !== '') {
             $scope.mapview.coords = $scope.center;
             if ($scope.sync) { MapViewService.update($scope.mapview); }
             console.log('Sync to MV: ', $scope.mapview);
 
         }
 
-    }
+    };
 
     var unsubscribe = function() {
         MapViewService.unsubscribe($scope.mapviewuuid);
         $scope.mapviewuuid = '';
-    }
+    };
 
     var subscribe = function(uuid) {
         MapViewService.subscribe(uuid);
         $scope.mapviewuuid = uuid;
-    }
+    };
 
     var togglefollow = function() {
         $scope.follow = !$scope.follow;
@@ -65,11 +67,11 @@ angular.module('hfosFrontendApp')
             console.log('Follow on');
             $('#btn_togglefollow').addClass('fa-eye');
             $('#btn_togglefollow').removeClass('fa-eye-slash');
-        v} else {
+        } else {
             $('#btn_togglefollow').addClass('fa-eye-slash');
             $('#btn_togglefollow').removeClass('fa-eye');
         }
-    }
+    };
 
     var toggleSync = function() {
         $scope.sync = !$scope.sync;
@@ -81,18 +83,19 @@ angular.module('hfosFrontendApp')
             $('#btn_togglesync').addClass('fa-chain-broken');
             $('#btn_togglesync').removeClass('fa-chain');
         }
-    }
+    };
 
     var requestMapData = function() {
         console.log('Requesting mapdata from server.');
         var useruuid = user.user().uuid;
         console.log('Subscribing to useruuid mapview changes: ', useruuid);
         subscribe(useruuid);
-    }
+        LayerService.requestData();
+    };
 
     if (user.signedin()) {
         requestMapData();
-    };
+    }
 
     user.onAuth(function() {
         requestMapData();
@@ -118,13 +121,13 @@ angular.module('hfosFrontendApp')
                     syncToMapview($scope.center);
                 }
             } else if (event.name === 'leafletDirectiveMap.dblclick') {
-                var subscriptionuuid = prompt("Enter subscription uuid:");
-                if (subscriptionuuid != '') {
+                var subscriptionuuid = prompt('Enter subscription uuid:');
+                if (subscriptionuuid !== '') {
                     socket.send({'component': 'mapview', 'action': 'subscribe', 'data': subscriptionuuid});
                 }
             }
         }
-    }
+    };
 
     angular.extend($scope, {
       defaults: {
@@ -264,7 +267,7 @@ angular.module('hfosFrontendApp')
         var eventName = 'leafletDirectiveMap.' + mapEvents[k];
         $scope.$on(eventName, function(event) {
             handleEvent(event);
-        })
+        });
     }
 
 
@@ -273,9 +276,9 @@ angular.module('hfosFrontendApp')
       //map.setZoom(12);
       //map.panTo({lat: 52.513, lon: 13.41998});
 
-      if (deviceinfo.type != "mobile") {
+      if (deviceinfo.type !== 'mobile') {
         var Zoomslider = new L.Control.Zoomslider().addTo(map);
-        $(".leaflet-control-zoom").css("visibility", "hidden");
+        $('.leaflet-control-zoom').css('visibility', 'hidden');
       }
 
       var Terminator = terminator().addTo(map);
@@ -341,7 +344,7 @@ angular.module('hfosFrontendApp')
             //shadowAnchor: [4, 62],  // the same for the shadow
             popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
           })
-      }
+      };
 
       console.log(L.rotatedMarker);
       var VesselMarker = L.rotatedMarker($scope.Vessel.coords, {icon: Icons.Vessel}).addTo(map);
@@ -353,7 +356,7 @@ angular.module('hfosFrontendApp')
 
         drawnItems.addLayer(layer);
 
-        var geojson = layer.toGeoJSON()
+        var geojson = layer.toGeoJSON();
 
         $scope.controls.geojson = geojson;
 
@@ -402,7 +405,7 @@ angular.module('hfosFrontendApp')
 
      var style = {color: 'red', opacity: 1.0, fillOpacity: 1.0, weight: 2, clickable: false};
 
-     /*L.Control.FileLayerLoad.LABEL = '<i class="fa fa-folder-open filelayer-icon"></i>';
+     /*L.Control.FileLayerLoad.LABEL = '<i class='fa fa-folder-open filelayer-icon'></i>';
      L.Control.fileLayerLoad({
      fitBounds: true,
      layerOptions: {style: style,
@@ -613,6 +616,6 @@ angular.module('hfosFrontendApp')
      $scope.$on('$viewContentLoaded', function () {
      console.log('Fertig!');
      /* $scope.init($scope);
-     $("#map").height($(window).height()-100).width($(window).width());
+     $('#map').height($(window).height()-100).width($(window).width());
      $scope.map.invalidateSize(); */
   }]);

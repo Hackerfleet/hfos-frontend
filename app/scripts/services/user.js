@@ -13,7 +13,7 @@ angular.module('hfosFrontendApp')
 
     var user = {};
     var profile = {};
-    var clientuuid = {}
+    var clientuuid = {};
 
     var signedin = false;
     var onAuthCallbacks = [];
@@ -28,17 +28,17 @@ angular.module('hfosFrontendApp')
         $('#btnuser').css('color', '#ff0');
 
         $route.reload();
-    }
+    };
 
     var changeCurrentTheme = function(newTheme) {
-        if (typeof newTheme != 'undefined') {
+        if (typeof newTheme !== 'undefined') {
             console.log('Switching to theme ', newTheme);
             $('#BootstrapTheme').attr('href', 'bower_components/' + newTheme + 'bootstrap-theme.css');
             $('#Bootstrap').attr('href', 'bower_components/' + newTheme + 'bootstrap.css');
         } else {
             console.log('Not switching to undefined theme.');
         }
-    }
+    };
 
     function storeUUID(clientuuid) {
         $cookieStore.put('hfosclientuuid', clientuuid);
@@ -73,37 +73,37 @@ angular.module('hfosFrontendApp')
                 signIn();
             }
         } else if (msg.component === 'profile') {
-            console.log('Profile received.')
+            console.log('Profile received.');
             profile = msg.data;
             $('#btnuser').css('color', '#0f0');
-            $('#btnchat').removeClass('hidden')
+            $('#btnchat').removeClass('hidden');
             changeCurrentTheme(profile.theme);
             $rootScope.$broadcast('profileupdate');
         }
     });
 
     var updateprofile = function (data) {
-        profile = data
+        profile = data;
         // TODO: Validate with schema from newly built schemaservice
         console.log('Updating profile with ', profile);
         socket.send({'component': 'profile', 'action': 'update', 'data': profile});
         $rootScope.$broadcast('profileupdate');
-    }
+    };
 
     var isSignedin = function() {
         console.log('Sign in status requested!');
         return signedin;
-    }
+    };
 
     var getuser = function() {
         console.log('User data requested!');
         return user;
-    }
+    };
 
     var getprofile = function() {
         console.log('Profile data requested!');
         return profile;
-    }
+    };
 
     var showlogin = function() {
         createDialog('/views/modals/login.tpl.html', {
@@ -113,7 +113,7 @@ angular.module('hfosFrontendApp')
                 footerTemplate: '<span></span>',
             }
         );
-    }
+    };
 
     var showprofile = function() {
         console.log('Showing profile.');
@@ -125,7 +125,7 @@ angular.module('hfosFrontendApp')
                 footerTemplate: '<span></span>',
             }
         );
-    }
+    };
 
     var dologin = function(username, password) {
         if (socket.connected) {
@@ -145,7 +145,7 @@ angular.module('hfosFrontendApp')
         } else {
             console.log('Not connected, cannot login.');
         }
-    }
+    };
 
     var logout = function(force) {
         if (socket.connected) {
@@ -156,13 +156,13 @@ angular.module('hfosFrontendApp')
             user = {};
             signedin = false;
             $('#btnuser').css('color', '');
-            $('#btnchat').addClass('hidden')
+            $('#btnchat').addClass('hidden');
             $location.url('');
             $route.reload();
         } else {
             console.log('Cannot logout - not connected.');
         }
-    }
+    };
 
     var login = function(username, password) {
         console.log('Service Login triggered');
@@ -177,13 +177,13 @@ angular.module('hfosFrontendApp')
                 dologin(username, password);
             }
         }
-    }
+    };
 
     var check = function() {
         console.log('Signed in: ', signedin);
         console.log('User: ', user);
         console.log('Profile:', profile);
-    }
+    };
 
     return {
         login: login,
@@ -207,12 +207,12 @@ angular.module('hfosFrontendApp')
         };
   }).controller('UserCtrl', function ($scope, $location, user) {
       console.log('UserCtrl loaded!');
-      console.log(user.user())
+      console.log(user.user());
       $scope.user = user.user();
       $scope.logout = user.logout;
       $scope.editprofile = function() {
         console.log('Loading profile page.');
         $location.url('profile');
-      }
+      };
       $('#usercancel').focus();
   });

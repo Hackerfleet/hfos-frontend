@@ -19,14 +19,14 @@ angular.module('hfosFrontendApp')
 
     var getHost = function() {
         return host;
-    }
+    };
 
     var connected = false;
 
     var OpenEvent = function(args) {
         console.log('Websocket successfully opened!', args);
         connected = true;
-        $('#btnhome').css('color', '#3a75a8')
+        $('#btnhome').css('color', '#3a75a8');
         $('#btnuser').removeClass('hidden');
         $('#btnuser').css('color', '');
     };
@@ -34,8 +34,8 @@ angular.module('hfosFrontendApp')
     var CloseEvent = function(args) {
         console.log('Something closed the websocket!', args);
         connected = false;
-        $('#btnhome').css('color', '#f00')
-        $('#btnuser').css('color', '#fa0')
+        $('#btnhome').css('color', '#f00');
+        $('#btnuser').css('color', '#fa0');
         $('#btnuser').addClass('hidden');
     };
 
@@ -44,11 +44,11 @@ angular.module('hfosFrontendApp')
 
     var isConnected = function() {
         return connected;
-    }
+    };
 
     var doDisconnect = function() {
         sock.close();
-    }
+    };
 
     return {
       connected: isConnected,

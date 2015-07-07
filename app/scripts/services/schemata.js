@@ -25,7 +25,7 @@ angular.module('hfosFrontendApp')
                 schemata = msg.data;
             }
         }
-    }
+    };
 
     socket.onMessage(registerschemata);
 
@@ -33,14 +33,15 @@ angular.module('hfosFrontendApp')
         // Get Schemata
         console.log('Getting update of schemata.');
         socket.send({'component': 'schema', 'action': 'All'});
-    }
+    };
 
     var getschema = function(schemaname) {
         console.log('Schema requested: ', schemaname, schemata[schemaname], schemata);
         return schemata[schemaname];
-    }
+    };
 
     user.onAuth(updateschemata);
+
     if(user.signedin() === true) {
         updateschemata();
     }
@@ -48,5 +49,5 @@ angular.module('hfosFrontendApp')
     return {
         get: getschema,
         updateall: updateschemata
-    }
+    };
   });

@@ -23,12 +23,12 @@ angular.module('hfosFrontendApp')
           console.log('New data: ', $scope.schema, $scope.model);
           $scope.$apply();
           console.log('Profile updated: ', profile);
-      })
+      });
 
       $scope.submitForm = function (model) {
         console.log('Profile update initiated.');
         user.updateprofile(model);
-      }
+      };
 
       $scope.form = [
         {
@@ -60,8 +60,8 @@ angular.module('hfosFrontendApp')
         },
         'notes',
         {
-          type: "submit",
-          title: "Save",
+          type: 'submit',
+          title: 'Save',
         }
       ];
   });

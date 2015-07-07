@@ -16,7 +16,7 @@ angular.module('hfosFrontendApp')
         var password = $('#password').val();
 
         user.login(username, password);
-    }
+    };
 
     $('#username').focus();
   });
