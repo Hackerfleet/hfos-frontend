@@ -142,7 +142,7 @@ angular.module('hfosFrontendApp')
       center: {
         lat: 0,
         lon: 0,
-        zoom: 1,
+        zoom: 3,
         autoDiscover: true
       },
       Vessel: {
@@ -273,7 +273,7 @@ angular.module('hfosFrontendApp')
 
     leafletData.getMap().then(function (map) {
       console.log('Setting up initial map settings.');
-      //map.setZoom(12);
+      map.setZoom(3);
       //map.panTo({lat: 52.513, lon: 13.41998});
 
       if (deviceinfo.type !== 'mobile') {
