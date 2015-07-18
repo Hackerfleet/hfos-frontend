@@ -18,17 +18,17 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'bower_components/angular/angular.js',
-      'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-animate/angular-animate.js',
-      'bower_components/angular-cookies/angular-cookies.js',
-      'bower_components/angular-resource/angular-resource.js',
-      'bower_components/angular-route/angular-route.js',
-      'bower_components/angular-sanitize/angular-sanitize.js',
-      'bower_components/angular-touch/angular-touch.js',
-      'bower_components/angular-strap/dist/angular-strap.js',
-      'bower_components/ngSocket/dist/ngSocket.js',
-      'bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
+      'app/bower_components/angular/angular.js',
+      'app/bower_components/angular-mocks/angular-mocks.js',
+      'app/bower_components/angular-animate/angular-animate.js',
+      'app/bower_components/angular-cookies/angular-cookies.js',
+      'app/bower_components/angular-resource/angular-resource.js',
+      'app/bower_components/angular-route/angular-route.js',
+      'app/bower_components/angular-sanitize/angular-sanitize.js',
+      'app/bower_components/angular-touch/angular-touch.js',
+      'app/bower_components/angular-strap/dist/angular-strap.js',
+      'app/bower_components/ngSocket/dist/ngSocket.js',
+      'app/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'

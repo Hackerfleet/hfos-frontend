@@ -78,8 +78,8 @@ module.exports = function (grunt) {
             return [
               connect.static('.tmp'),
               connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
+                '/app/bower_components',
+                connect.static('./app/bower_components')
               ),
               connect.static(appConfig.app)
             ];
@@ -94,8 +94,8 @@ module.exports = function (grunt) {
               connect.static('.tmp'),
               connect.static('test'),
               connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
+                'bower_components',
+                connect.static('./app/bower_components')
               ),
               connect.static(appConfig.app)
             ];
@@ -245,16 +245,16 @@ module.exports = function (grunt) {
       }
     },
 
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/assets/images',
-          src: '{,*/}*.svg',
-          dest: '<%= yeoman.dist %>/assets/images'
-        }]
-      }
-    },
+//    svgmin: {
+//      dist: {
+//        files: [{
+//          expand: true,
+//          cwd: '<%= yeoman.app %>/assets/images',
+//          src: '{,*/}*.svg',
+//          dest: '<%= yeoman.dist %>/assets/images'
+//        }]
+//      }
+//    },
 
     htmlmin: {
       dist: {
@@ -296,6 +296,17 @@ module.exports = function (grunt) {
 
     // Copies remaining files to places other tasks can use
     copy: {
+      dev: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '/var/lib/hfos/static/',
+          src: [
+            '**'
+          ]
+        }]
+      },
       dist: {
         files: [{
           expand: true,
@@ -308,7 +319,8 @@ module.exports = function (grunt) {
             '*.html',
             'views/{,*/}*.html',
             'assets/images/{,*/}*.{webp}',
-            'fonts/*'
+            'assets/fonts/*',
+            'bower_components/**',
           ]
         }, {
           expand: true,
@@ -317,7 +329,7 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }, {
           expand: true,
-          cwd: 'bower_components/bootstrap/dist',
+          cwd: '<%= yeoman.app%>/bower_components/bootstrap/dist',
           src: 'fonts/*',
           dest: '<%= yeoman.dist %>'
         }]
@@ -347,7 +359,7 @@ module.exports = function (grunt) {
       dist: [
         'copy:styles',
         'imagemin',
-        'svgmin'
+        // 'svgmin'
       ]
     },
 
