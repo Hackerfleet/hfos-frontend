@@ -13,7 +13,7 @@ angular.module('hfosFrontendApp')
 
     var user = {};
     var profile = {};
-    var clientuuid = {};
+    var clientconfiguration = {};
 
     var signedin = false;
     var onAuthCallbacks = [];
@@ -41,6 +41,7 @@ angular.module('hfosFrontendApp')
     };
 
     function storeUUID(clientuuid) {
+        console.log('Storing configuration UUID cookie: ', clientuuid);
         $cookieStore.put('hfosclientuuid', clientuuid);
     }
 
@@ -79,8 +80,22 @@ angular.module('hfosFrontendApp')
             $('#btnchat').removeClass('hidden');
             changeCurrentTheme(profile.theme);
             $rootScope.$broadcast('profileupdate');
+        } else if (msg.component === 'clientconfig') {
+            console.log('Client configuration received.');
+            clientconfiguration = msg.data;
+            console.log('Client config: ', clientconfiguration);
+            storeUUID(clientconfiguration.clientuuid);
+            $rootScope.$broadcast('clientconfigupdate');
         }
     });
+
+    var updateclientconfig = function (data) {
+        clientconfig = data;
+        // TODO: Validate with schema from newly built schemaservice
+        console.log('Updating client configuration with ', clientconfig);
+        socket.send({'component': 'clientconfig', 'action': 'update', 'data': clientconfig});
+        $rootScope.$broadcast('clientconfigupdate');
+    };
 
     var updateprofile = function (data) {
         profile = data;
@@ -103,6 +118,11 @@ angular.module('hfosFrontendApp')
     var getprofile = function() {
         console.log('Profile data requested!');
         return profile;
+    };
+
+    var getclientconfig = function() {
+        console.log('Profile data requested!');
+        return clientconfiguration;
     };
 
     var showlogin = function() {
@@ -193,9 +213,12 @@ angular.module('hfosFrontendApp')
         signedin: isSignedin,
 
         user: getuser,
-        profile: getprofile,
 
+        profile: getprofile,
         updateprofile: updateprofile,
+
+        clientconfig: getclientconfig,
+        updateclientconfig: updateclientconfig,
 
         onAuth: function (callback) {
             if (typeof callback !== 'function') {
