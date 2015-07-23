@@ -16,15 +16,6 @@ angular.module('hfosFrontendApp')
 
     socket.send({'type': 'info', 'content':'Dashboard activated'});
 
-
-    socket.onMessage(function(message) {
-        // Dashboard handler
-        var msg = JSON.parse(message.data);
-        if(msg.component === 'dashboard') {
-            console.log('Data for the dasboard received: ', msg.action, msg.data);
-        }
-    });
-
   $scope.deckOptions = {
     id: 'Dashboard',
     gridsterOpts: { // any options that you can set for angular-gridster (see:  http://manifestwebdesign.github.io/angular-gridster/)
