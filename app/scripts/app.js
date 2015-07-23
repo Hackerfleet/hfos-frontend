@@ -56,6 +56,15 @@ angular
         controller: 'GamepadRemoteCtrl',
         css: 'styles/gamepadremote.css'
       })
+        .when('/wiki', {
+            templateUrl: 'views/wiki.html',
+            controller: 'WikiCtrl',
+        })
+        .when('/wiki/:slug*', {
+            templateUrl: 'views/wiki.html',
+            controller: 'WikiCtrl'
+        })
+
 
       .otherwise({
         redirectTo: '/'
