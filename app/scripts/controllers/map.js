@@ -27,8 +27,6 @@ angular.module('hfosFrontendApp')
     $scope.sync = true;
     $scope.follow = false;
 
-    $scope.secretfunction = function () { alert(new Array(16).join('wat'-1)+' Batman!'); };
-
     socket.send({'type': 'info', 'content':'Map Controller activated'});
 
     $scope.$on('mapviewupdate', function(mapview) {
@@ -42,10 +40,13 @@ angular.module('hfosFrontendApp')
     });
 
     var syncToMapview = function(center) {
+        console.log('MAPVIEWUUID: ', $scope.mapviewuuid);
         if ($scope.mapviewuuid !== '') {
             $scope.mapview.coords = $scope.center;
-            if ($scope.sync) { MapViewService.update($scope.mapview); }
             console.log('Sync to MV: ', $scope.mapview);
+            if ($scope.sync) {
+                MapViewService.update($scope.mapview);
+            }
 
         }
 
@@ -56,12 +57,8 @@ angular.module('hfosFrontendApp')
         $scope.mapviewuuid = '';
     };
 
-    var subscribe = function(uuid) {
-        MapViewService.subscribe(uuid);
-        $scope.mapviewuuid = uuid;
-    };
 
-    var togglefollow = function() {
+                              var togglefollow = function () {
         $scope.follow = !$scope.follow;
         if ($scope.sync) {
             console.log('Follow on');
@@ -89,28 +86,24 @@ angular.module('hfosFrontendApp')
         console.log('Requesting mapdata from server.');
         var useruuid = user.user().uuid;
         console.log('Subscribing to useruuid mapview changes: ', useruuid);
-        subscribe(useruuid);
-        LayerService.requestData();
+        MapViewService.subscribe(useruuid);
     };
+
+                              $scope.$on('clientlogin', function (event) {
+                                  console.log('Map Controller updating.');
+                                  requestMapData();
+                              });
 
     if (user.signedin()) {
         requestMapData();
     }
 
-    user.onAuth(function() {
-        requestMapData();
+                              $scope.$on('mapviewupdate', function (mapview) {
+                                  if (mapview.uuid === $scope.mapviewuuid) {
+                                      console.log('Map Controller updating.');
+                                      $scope.mapview = mapview;
+                                  }
     });
-
-    socket.onMessage(function(message) {
-        // Map data handler
-        var msg = JSON.parse(message.data);
-
-        if(msg.component === 'map') {
-            console.log('Map data: ', data);
-        }
-    });
-
-
 
     var handleEvent = function(event) {
         if (user.signedin()) {
@@ -273,7 +266,7 @@ angular.module('hfosFrontendApp')
 
     leafletData.getMap().then(function (map) {
       console.log('Setting up initial map settings.');
-      map.setZoom(3);
+        map.setZoom(2);
       //map.panTo({lat: 52.513, lon: 13.41998});
 
       if (deviceinfo.type !== 'mobile') {

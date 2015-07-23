@@ -45,7 +45,7 @@ angular.module('hfosFrontendApp')
     };
 
     var updateview = function(mapview) {
-        console.log('Sending mapview update.');
+        console.log('Sending mapview update: ', mapview);
         if (mapview.uuid !== '') {
             socket.send({'component': 'mapview', 'action': 'update', 'data': mapview});
         }
@@ -67,7 +67,7 @@ angular.module('hfosFrontendApp')
 
         if(msg.component === 'mapview') {
             if(msg.action === 'update'){
-                mapview = msg.data;
+                var mapview = msg.data;
                 console.log('MapView update received: ', mapview);
                 mapviews[mapview.uuid] = msg.data;
                 notifyListeners(mapview);

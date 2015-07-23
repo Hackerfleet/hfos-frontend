@@ -8,13 +8,8 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('GamepadRemoteCtrl', function ($scope, user, socket) {
+    .controller('GamepadRemoteCtrl', function ($scope, $timeout, user, socket) {
     $scope.status = 'Initializing';
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
 
     $scope.controlActive = false;
     $scope.controlling = false;
@@ -32,7 +27,7 @@ angular.module('hfosFrontendApp')
         getcontroldata();
     }
 
-
+        // TODO: Move to service
     socket.onMessage(function(message){
         // RemoteCtrl Handler
         var msg = JSON.parse(message.data);
@@ -226,7 +221,12 @@ angular.module('hfosFrontendApp')
     window.addEventListener('gamepaddisconnected', disconnecthandler);
 
     if (!haveEvents) {
-      setInterval(scangamepads, 1000);
+        $timeout(scangamepads, 1000);
+        //setInterval(scangamepads, 1000);
       console.log('Gamepad control active');
     }
+
+        $scope.$on('$destroy', function (e) {
+            $timeout.cancel(scangamepads);
+        });
   });

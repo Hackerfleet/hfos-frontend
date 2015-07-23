@@ -13,7 +13,7 @@ angular.module('hfosFrontendApp')
 
     var user = {};
     var profile = {};
-    var clientconfiguration = {};
+        var clientconfig = {};
 
     var signedin = false;
     var onAuthCallbacks = [];
@@ -26,8 +26,9 @@ angular.module('hfosFrontendApp')
         }
 
         $('#btnuser').css('color', '#ff0');
+        $rootScope.$broadcast('clientlogin');
 
-        $route.reload();
+        //$route.reload();
     };
 
     var changeCurrentTheme = function(newTheme) {
@@ -82,9 +83,9 @@ angular.module('hfosFrontendApp')
             $rootScope.$broadcast('profileupdate');
         } else if (msg.component === 'clientconfig') {
             console.log('Client configuration received.');
-            clientconfiguration = msg.data;
-            console.log('Client config: ', clientconfiguration);
-            storeUUID(clientconfiguration.clientuuid);
+            clientconfig = msg.data;
+            console.log('Client config: ', clientconfig);
+            storeUUID(clientconfig.clientuuid);
             $rootScope.$broadcast('clientconfigupdate');
         }
     });
@@ -122,7 +123,7 @@ angular.module('hfosFrontendApp')
 
     var getclientconfig = function() {
         console.log('Profile data requested!');
-        return clientconfiguration;
+        return clientconfig;
     };
 
     var showlogin = function() {
