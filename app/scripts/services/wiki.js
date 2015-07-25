@@ -22,15 +22,20 @@ angular.module('hfosFrontendApp')
                 if (msg.action === 'get') {
                     var pagename = msg.data.name;
                     console.log('Updated wiki page from node: ', pagename);
-                    wikipages[pagename] = msg.data.text;
+                    wikipages[pagename] = msg.data;
                     $rootScope.$broadcast('Wiki.Change', pagename);
                 } else if (msg.action === 'list') {
                     console.log('Updated wiki pagelist from node: ', msg.data);
                     pagelist = msg.data;
                     $rootScope.$broadcast('Wiki.List');
                 }
+                console.log('Wiki pages: ', wikipages);
             }
-            console.log('Wiki pages: ', wikipages);
+
+        });
+
+        $rootScope.$on('User.Login', function (ev) {
+            getPageList();
         });
 
         var getPage = function (pagename) {

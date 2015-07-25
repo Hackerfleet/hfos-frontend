@@ -1,4 +1,12 @@
 <div class="well">
-    <H1>Wiki - {{pagename}}</H1>
-    {{pagedata}}
+    <H1>Wiki - {{pagedata.title}}</H1>
+    <span>Pagename: <a href="{{url}}">{{pagedata.name}}</a></span>
+
+    <div>
+        {{pagedata.text}}
+    </div>
+    <hr/>
+    <div>
+        <form sf-schema="schema" sf-form="form" sf-model="model" ng-submit="submitForm(model)"></form>
+    </div>
 </div>
