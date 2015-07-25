@@ -8,15 +8,15 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('LoginCtrl', function ($scope, user) {
+    .controller('LoginCtrl', function ($scope, user) {
 
-    $scope.login = function() {
-        console.log('Initiating Login.');
-        var username = $('#username').val();
-        var password = $('#password').val();
+        $scope.login = function () {
+            console.log('Initiating Login.');
+            var username = $('#username').val();
+            var password = $('#password').val();
 
-        user.login(username, password);
-    };
+            user.login(username, password);
+        };
 
-    $('#username').focus();
-  });
+        $('#username').focus();
+    });

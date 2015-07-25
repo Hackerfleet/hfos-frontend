@@ -8,10 +8,10 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-  .controller('LayereditorCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+    .controller('LayereditorCtrl', function ($scope) {
+        $scope.awesomeThings = [
+            'HTML5 Boilerplate',
+            'AngularJS',
+            'Karma'
+        ];
+    });
