@@ -89,7 +89,7 @@ angular.module('hfosFrontendApp')
         MapViewService.subscribe(useruuid);
     };
 
-                              $scope.$on('clientlogin', function (event) {
+                              $scope.$on('User.Login', function (event) {
                                   console.log('Map Controller updating.');
                                   requestMapData();
                               });

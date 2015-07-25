@@ -22,7 +22,7 @@ angular.module('hfosFrontendApp')
         socket.send({'component': 'camera', 'action': 'list'});
     }
 
-    $scope.$on('profileupdate', getcontroldata);
+        $scope.$on('Profile.Update', getcontroldata);
     if (user.signedin()) {
         getcontroldata();
     }

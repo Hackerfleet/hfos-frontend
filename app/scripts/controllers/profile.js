@@ -15,7 +15,7 @@ angular.module('hfosFrontendApp')
       $scope.model = profile;
       $scope.schema = schemata.get('profile');
 
-      $scope.$on('profileupdate', function(event) {
+        $scope.$on('Profile.Update', function (event) {
           console.log('Profile Controller updating.');
           var profile = user.profile();
           $scope.schema = schemata.get('profile');
@@ -58,7 +58,7 @@ angular.module('hfosFrontendApp')
                 }
             ]
         },
-        'notes',
+          'userdata.notes',
         {
           type: 'submit',
           title: 'Save',
