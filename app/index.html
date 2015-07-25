@@ -78,7 +78,20 @@
                 <li id="nav-switchboard" class="hidden"><a href="#/switchboard">Switchboard</a></li>
                 <li id="nav-communication" class="hidden"><a href="#/communication">Communication</a></li>
                 <li id="nav-settings" class="hidden"><a href="#/settings">Settings</a></li>
-                <li id="nav-about"><a href="#/about">?</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">?<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/docs/index.html" target="_blank">Documentation</a></li>
+                        <li><a href="/docs/manual/index.html" target="_blank">Manual</a></li>
+                        <li><a href="/docs/tutorials/index.html" target="_blank">Tutorials</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/docs/readme.html" target="_blank">Readme</a></li>
+                        <li><a href="/docs/dev/index.html" target="_blank">Developer documentation</a></li>
+                        <li><a href="#/about">About</a></li>
+                    </ul>
+                </li>
+                <!-- <li id="nav-about"><a href="#/about">?</a></li> -->
             </ul>
         </div>
         <!--/.nav-collapse -->
@@ -94,7 +107,6 @@
             <tr>
                 <div class="dark">
                     <span><h2>Starting HFOS client</h2></span>
-                    <span><h3>..please wait..</h3></span>
                 </div>
             </tr>
         </table>
@@ -126,7 +138,6 @@
 <script src="bower_components/pickadate/lib/shadow.js"></script>
 <script src="bower_components/pickadate/lib/ui-picker.js"></script>
 <script src="bower_components/pickadate/lib/ui-pickadate.js"></script>
-<script src="bower_components/pickadate/lib/ui-pickatime.js"></script>
 <script src="bower_components/bower-angular-detector/detector.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -169,14 +180,14 @@
 it around all the time :/ -->
 
 <script src="bower_components/spectrum/spectrum.js"></script>
-<script src="bower_components/angular-spectrum/dist/angular-spectrum.min.js"></script>
 <script src="bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js"></script>
+<script src="bower_components/angular-spectrum/dist/angular-spectrum.min.js"></script>
+<script src="bower_components/tinymce/tinymce.min.js"></script>
+<script src="bower_components/tx-tinymce/tx-tinymce.js"></script>
 <script src="bower_components/angular-schema-form/dist/schema-form.js"></script>
 <script src="bower_components/angular-schema-form/dist/bootstrap-decorator.js"></script>
 <script src="bower_components/angular-schema-form-datepicker/bootstrap-datepicker.min.js"></script>
 <script src="bower_components/angular-schema-form-colorpicker/bootstrap-colorpicker.min.js"></script>
-<script src="bower_components/tx-tinymce/tx-tinymce.js"></script>
-<script src="bower_components/tinymce/tinymce.min.js"></script>
 <script src="bower_components/angular-schema-form-tinymce/bootstrap-tinymce.min.js"></script>
 
 <!-- angular-schema-form -->
