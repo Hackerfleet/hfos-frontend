@@ -21,8 +21,8 @@ angular.module('hfosFrontendApp')
             if (msg.component === 'schema') {
                 console.log('Schemata interaction:', msg.action);
                 if (msg.action === 'All') {
-                    console.log('Received all schemata.');
                     schemata = msg.data;
+                    console.log("[SCHEMATA] New schemata received:", schemata);
                     $rootScope.$broadcast("Schemata.Update");
                 }
             }
