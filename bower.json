@@ -4,7 +4,6 @@
   "dependencies": {
     "json3": "~3.3.1",
     "es5-shim": "~3.1.0",
-    "togeojson": "~0.8.1",
     "proj4leaflet": "~0.7.0",
     "bootstrap": "~3.3.5",
     "angular-strap": "~2.2.4",
@@ -12,7 +11,6 @@
     "font-awesome": "~4.3.0",
     "bootstra.386": "*",
     "humanize-duration": "3.1.0",
-    "pickadate": "~4.0.0",
     "angular": "~1.4.0",
     "bower-angular-detector": "~1.2.26",
     "angular-resource": "~1.4.2",
@@ -23,11 +21,8 @@
     "angular-route": "~1.4.2",
     "ngSocket": "Hackerfleet/ngSocket",
     "angular-timer": "~1.3.3",
-    "angular-motion": "~0.3.4",
     "angular-md5": "~0.1.7",
-    "angular-schema-form": "~0.7.13",
     "angularjs-modal-service": "*",
-    "angular-schema-form-datepicker": "~0.3.0",
     "angular-schema-form-colorpicker": "~0.1.1",
     "angular-schema-form-tinymce": "~0.1.0",
     "angular-spectrum": "~0.0.1",
@@ -53,7 +48,13 @@
     "leaflet-mouseposition": "ardhi/Leaflet.MousePosition",
     "leaflet-pancontrol": "kartena/Leaflet.Pancontrol",
     "leaflet.vector-markers": "~0.0.3",
-    "L.EasyButton": "CliffCloud/Leaflet.EasyButton"
+      "L.EasyButton": "CliffCloud/Leaflet.EasyButton",
+      "angular-schema-form": "0.8.4",
+      "angular-motion": "0.4.2",
+      "togeojson": "0.12.1",
+      "angular-schema-form-datepicker": "~0.4.0",
+      "angular-mocks": "~1.4.3",
+      "angular-scenario": "~1.4.3"
   },
   "devDependencies": {
     "angular-mocks": "~1.3.0",
@@ -61,9 +62,10 @@
   },
   "appPath": "app",
   "resolutions": {
-    "angular": "1.4.x",
+      "angular": "1.4.3",
     "spectrum": "1.7.0",
     "humanize-duration": "3.1.0",
-    "pickadate": "~4.0.0"
+      "angular-mocks": "~1.4.3",
+      "angular-scenario": "~1.4.3"
   }
 }
