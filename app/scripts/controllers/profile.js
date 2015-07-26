@@ -14,6 +14,7 @@ angular.module('hfosFrontendApp')
         var profile = user.profile();
         $scope.model = profile;
         $scope.schema = schemata.get('profile');
+        console.log('[PROFILE] Schema: ', $scope.schema);
 
         $scope.$on('Profile.Update', function (event) {
             console.log('Profile Controller updating.');
@@ -30,7 +31,47 @@ angular.module('hfosFrontendApp')
             user.updateprofile(model);
         };
 
-        $scope.form = [
+        $scope.opentab = function (tabname) {
+            console.log('[PROFILE] Switching tab to ', tabname);
+            $('.nav-tabs .active, .tab-content .active').removeClass('active');
+            $('#' + tabname).addClass('active');
+        }
+
+        $scope.tabs = [
+            {
+                'title': 'User data',
+                'content': '<form sf-schema="schema" sf-form="userdataform" sf-model="model" ng-submit="submitForm(model)"></form>'
+            },
+            {
+                'title': 'Settings',
+                'content': '<form sf-schema="schema" sf-form="settingsform" sf-model="model" ng-submit="submitForm(model)"></form>'
+            }
+        ];
+
+        $scope.tabs.activeTab = "User data";
+
+        $scope.settingsform = [
+            {
+                type: 'section',
+                htmlClass: 'row',
+                items: [
+                    {
+                        type: 'section',
+                        htmlClass: 'col-xs-4',
+                        items: [
+                            'settings.color', 'settings.theme'
+                        ]
+                    }
+                ]
+            },
+            'settings.notes',
+            {
+                type: 'submit',
+                title: 'Save Settings'
+            }
+        ];
+
+        $scope.userdataform = [
             {
                 type: 'section',
                 htmlClass: 'row',
@@ -46,7 +87,7 @@ angular.module('hfosFrontendApp')
                         type: 'section',
                         htmlClass: 'col-xs-4',
                         items: [
-                            'userdata.familyname', 'userdata.nick', 'userdata.color'
+                            'userdata.familyname', 'userdata.nick'
                         ]
                     },
                     {
@@ -61,7 +102,7 @@ angular.module('hfosFrontendApp')
             'userdata.notes',
             {
                 type: 'submit',
-                title: 'Save',
+                title: 'Save Userdata',
             }
         ];
     });
