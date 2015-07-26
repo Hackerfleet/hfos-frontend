@@ -1,12 +1,18 @@
 <div class="well">
-    <H1>Wiki - {{pagedata.title}}</H1>
-    <span>Pagename: <a href="{{url}}">{{pagedata.name}}</a></span>
+    <H1>{{pagedata.title}}</H1>
+    <span>
+        <a href="#/wiki/">Wiki</a> >
+        <a href="{{url}}">{{pagedata.name}}</a> |
+        <button id="wikiEditButton" type="button" ng-click="openEditor()" class="hidden btn btn-xs btn-primary">Edit
+        </button>
+        <span id="wikiPageStored" class="label label-success hidden">Stored</span>
+        <span id="wikiPageModified" class="label label-danger hidden">Modified</span>
+    </span>
 
-    <div>
-        {{pagedata.text}}
+    <div ng-bind-html="pagedata.text">
     </div>
     <hr/>
-    <div>
+    <div id="wikiEditor" class="hidden">
         <form sf-schema="schema" sf-form="form" sf-model="model" ng-submit="submitForm(model)"></form>
     </div>
 </div>

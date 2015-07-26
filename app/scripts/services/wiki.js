@@ -24,6 +24,15 @@ angular.module('hfosFrontendApp')
                     console.log('Updated wiki page from node: ', pagename);
                     wikipages[pagename] = msg.data;
                     $rootScope.$broadcast('Wiki.Change', pagename);
+                } else if (msg.action === 'put') {
+                    var result = msg.data[0];
+                    var putpagename = msg.data[1];
+                    if (result === true) {
+                        console.log('[WIKI] Page successfully stored.');
+                        $rootScope.$broadcast('Wiki.Stored', putpagename);
+                    } else {
+                        console.log('[WIKI] Page was not stored correctly: ', putpagename);
+                    }
                 } else if (msg.action === 'list') {
                     console.log('Updated wiki pagelist from node: ', msg.data);
                     pagelist = msg.data;
@@ -45,12 +54,16 @@ angular.module('hfosFrontendApp')
 
         var putPage = function (pagename, pagedata) {
             console.log('Putting wiki page: ', pagename);
-            socket.send({'component': 'wiki', 'action': 'put', 'data': {'pagename': pagename, 'pagedata': pagedata}});
+
+            // is this necessary? Should've been auto updated from the damn controller
+            wikipages[pagename] = pagedata;
+
+            socket.send({'component': 'wiki', 'action': 'put', 'data': pagedata});
         };
 
         var getPageList = function () {
             console.log('Getting wiki page directory');
-            socket.send({'component': 'wiki', 'action': 'put', 'data': ''});
+            socket.send({'component': 'wiki', 'action': 'list', 'data': ''});
         };
 
         var getPages = function () {
