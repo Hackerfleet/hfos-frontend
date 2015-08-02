@@ -11,19 +11,21 @@ angular.module('hfosFrontendApp')
     .service('schemata', function (user, socket, $rootScope) {
         // AngularJS will instantiate a singleton by calling "new" on this function
 
-        console.log('SchemataService initializing.');
+        console.log('[SCHEMATA] SchemataService initializing.');
 
         var schemata = {};
 
         var registerschemata = function (message) {
+            // Schemata reception hook
+
             var msg = JSON.parse(message.data);
 
             if (msg.component === 'schema') {
-                console.log('Schemata interaction:', msg.action);
+                console.log('[SCHEMATA] Schemata interaction:', msg.action);
                 if (msg.action === 'All') {
                     schemata = msg.data;
-                    console.log("[SCHEMATA] New schemata received:", schemata);
-                    $rootScope.$broadcast("Schemata.Update");
+                    console.log('[SCHEMATA] New schemata received:', schemata);
+                    $rootScope.$broadcast('Schemata.Update');
                 }
             }
         };
@@ -32,13 +34,23 @@ angular.module('hfosFrontendApp')
 
         var updateschemata = function () {
             // Get Schemata
-            console.log('Getting update of schemata.');
+            console.log('[SCHEMATA] Getting update of schemata.');
             socket.send({'component': 'schema', 'action': 'All'});
         };
 
-        var getschema = function (schemaname) {
-            console.log('Schema requested: ', schemaname, schemata[schemaname], schemata);
+        var getschemadata = function (schemaname) {
+            console.log('[SCHEMATA] Full schema requested: ', schemaname, schemata[schemaname]);
             return schemata[schemaname];
+        };
+
+        var getschema = function (schemaname) {
+            console.log('[SCHEMATA] Schema requested: ', schemaname, schemata[schemaname]['schema']);
+            return schemata[schemaname]['schema'];
+        };
+
+        var getform = function (schemaname) {
+            console.log('[SCHEMATA] Schema requested: ', schemaname, schemata[schemaname]['form']);
+            return schemata[schemaname]['form'];
         };
 
         user.onAuth(updateschemata);
@@ -52,8 +64,9 @@ angular.module('hfosFrontendApp')
         };
 
         return {
-            get: getschema,
-            schema: schemata,
+            form: getform,
+            schema: getschema,
+            get: getschemadata,
             check: check,
             updateall: updateschemata
         };

@@ -8,8 +8,10 @@
  * Service in the hfosFrontendApp.
  */
 angular.module('hfosFrontendApp')
-    .service('LayerService', function (schemata, user, socket) {
+    .service('LayerService', function ($rootScope, schemata, user, socket) {
         // AngularJS will instantiate a singleton by calling "new" on this function
+
+        console.log('[LS] Layerservice starting');
 
         var onLayerChangeCallbacks = {};
         var layers = {};
@@ -19,7 +21,7 @@ angular.module('hfosFrontendApp')
             // Layer Handler
             var msg = JSON.parse(message.data);
 
-            if (msg.component === 'layer') {
+            if (msg.component === 'layers') {
                 console.log('Got a layer packet!');
 
                 if (msg.action === 'list') {
@@ -32,14 +34,20 @@ angular.module('hfosFrontendApp')
             }
         });
 
-        var getData = function () {
+        var updateLayers = function () {
+            console.log('[LS] Requesting current data');
             socket.send({'component': 'layer', 'action': 'list', 'data': 'layers'});
             // socket.send({'component': 'layer', 'action': 'list', 'data': 'groups'});
         };
 
-        user.onAuth(getData);
+        $rootScope.$on("User.Login", updateLayers);
+
+        if (user.signedin()) {
+            updateLayers();
+        }
 
         var notifyLayerChange = function (change) {
+            console.log('[LS] Notifying change callbacks');
             for (var i = 0; i < onLayerChangeCallbacks.length; i++) {
                 onLayerChangeCallbacks[i].call(change);
             }
@@ -54,7 +62,7 @@ angular.module('hfosFrontendApp')
         };
 
         return {
-            requestData: getData,
+            requestData: updateLayers,
             layers: getLayers,
 
             onLayerChange: function (callback) {

@@ -8,7 +8,7 @@
  * Service in the hfosFrontendApp.
  */
 angular.module('hfosFrontendApp')
-    .service('user', function ($rootScope, $route, $location, $cookieStore, socket, md5, createDialog) {
+    .service('user', function ($cookies, $rootScope, $route, $location, socket, md5, createDialog) {
         // AngularJS will instantiate a singleton by calling 'new' on this function
 
         var user = {};
@@ -35,21 +35,21 @@ angular.module('hfosFrontendApp')
 
         var changeCurrentTheme = function (newTheme) {
             if (typeof newTheme !== 'undefined') {
-                console.log('Switching to theme ', newTheme);
+                console.log('[USER] Switching to theme ', newTheme);
                 $('#BootstrapTheme').attr('href', 'bower_components/' + newTheme + 'bootstrap-theme.css');
                 $('#Bootstrap').attr('href', 'bower_components/' + newTheme + 'bootstrap.css');
             } else {
-                console.log('Not switching to undefined theme.');
+                console.log('[USER] Not switching to undefined theme.');
             }
         };
 
         function storeUUID(clientuuid) {
-            console.log('Storing configuration UUID cookie: ', clientuuid);
-            $cookieStore.put('hfosclientuuid', clientuuid);
+            console.log('[USER] Storing configuration UUID cookie: ', clientuuid);
+            $cookies.put('hfosclientuuid', clientuuid);
         }
 
         function getUUID() {
-            var uuid = $cookieStore.get('hfosclientuuid');
+            var uuid = $cookies.get('hfosclientuuid');
             if (typeof uuid === 'undefined') {
                 uuid = '';
             }
@@ -68,15 +68,15 @@ angular.module('hfosFrontendApp')
             var msg = JSON.parse(message.data);
 
             if (msg.component === 'auth') {
-                console.log('Got an auth packet!');
+                console.log('[USER] Got an auth packet!');
 
                 if (msg.action === 'login') {
-                    console.log('Authenticated successfully!');
+                    console.log('[USER] Authenticated successfully!');
                     user = msg.data;
                     signIn();
                 }
             } else if (msg.component === 'profile') {
-                console.log('Profile received.');
+                console.log('[USER] Profile received.');
                 profile = msg.data;
                 $('#btnuser').css('color', '#0f0');
                 $('#btnchat').removeClass('hidden');
@@ -84,10 +84,10 @@ angular.module('hfosFrontendApp')
 
                 $rootScope.$broadcast('Profile.Update');
             } else if (msg.component === 'clientconfig') {
-                console.log('Client configuration received.');
+                console.log('[USER] Client configuration received.');
                 clientconfig = msg.data;
-                console.log('Client config: ', clientconfig);
-                storeUUID(clientconfig.clientuuid);
+                console.log('[USER] Client config: ', clientconfig);
+                storeUUID(clientconfig.uuid);
 
                 $rootScope.$broadcast('Clientconfig.Update');
             }
@@ -96,7 +96,7 @@ angular.module('hfosFrontendApp')
         var updateclientconfig = function (data) {
             clientconfig = data;
             // TODO: Validate with schema from newly built schemaservice
-            console.log('Updating client configuration with ', clientconfig);
+            console.log('[USER] Updating client configuration with ', clientconfig);
             socket.send({'component': 'clientconfig', 'action': 'update', 'data': clientconfig});
 
             $rootScope.$broadcast('Clientconfig.Update');
@@ -105,7 +105,7 @@ angular.module('hfosFrontendApp')
         var updateprofile = function (data) {
             profile = data;
             // TODO: Validate with schema from newly built schemaservice
-            console.log('Updating profile with ', profile);
+            console.log('[USER] Updating profile with ', profile);
             socket.send({'component': 'profile', 'action': 'update', 'data': profile});
 
 
@@ -113,22 +113,22 @@ angular.module('hfosFrontendApp')
         };
 
         var isSignedin = function () {
-            console.log('Sign in status requested!');
+            console.log('[USER] Sign in status requested!');
             return signedin;
         };
 
         var getuser = function () {
-            console.log('User data requested!');
+            console.log('[USER] User data requested!');
             return user;
         };
 
         var getprofile = function () {
-            console.log('Profile data requested!');
+            console.log('[USER] Profile data requested!');
             return profile;
         };
 
         var getclientconfig = function () {
-            console.log('Profile data requested!');
+            console.log('[USER] Client configuration requested!');
             return clientconfig;
         };
 
@@ -137,28 +137,28 @@ angular.module('hfosFrontendApp')
                     id: 'loginDialog',
                     title: 'Login to HFOS',
                     backdrop: false,
-                    footerTemplate: '<span></span>',
+                    footerTemplate: '<span></span>'
                 }
             );
         };
 
         var showprofile = function () {
-            console.log('Showing profile.');
+            console.log('[USER] Showing profile.');
 
             createDialog('/views/modals/user.tpl.html', {
                     id: 'UserDialog',
                     title: 'User settings',
                     backdrop: false,
-                    footerTemplate: '<span></span>',
+                    footerTemplate: '<span></span>'
                 }
             );
         };
 
         var dologin = function (username, password) {
             if (socket.connected) {
-                console.log('Trying to login.');
+                console.log('[USER] Trying to login.');
                 var uuid = getUUID();
-                console.log('Client UUID: ', uuid);
+                console.log('[USER] Client UUID: ', uuid);
 
                 var authpacket = {
                     'component': 'auth', 'action': 'login',
@@ -171,13 +171,13 @@ angular.module('hfosFrontendApp')
 
                 socket.send(authpacket);
             } else {
-                console.log('Not connected, cannot login.');
+                console.log('[USER] Not connected, cannot login.');
             }
         };
 
         var logout = function (force) {
-            if (socket.connected === true || force === true) {
-                console.log('Trying to logout.');
+            if (socket.connected() === true || force === true) {
+                console.log('[USER] Trying to logout.');
                 var authpacket = {'component': 'auth', 'action': 'logout'};
                 socket.send(authpacket);
 
@@ -188,18 +188,18 @@ angular.module('hfosFrontendApp')
                 $location.url('');
                 $route.reload();
             } else {
-                console.log('Cannot logout - not connected.');
+                console.log('[USER] Cannot logout - not connected.');
             }
         };
 
         var login = function (username, password) {
-            console.log('Service Login triggered');
+            console.log('[USER] Service Login triggered');
             if (isSignedin() === true) {
-                console.log('Already logged in. Showing Profile.');
+                console.log('[USER] Already logged in. Showing Profile.');
                 showprofile();
             } else {
                 if (typeof(username) === 'undefined') {
-                    console.log('No username given, showing login dialog.');
+                    console.log('[USER] No username given, showing login dialog.');
                     showlogin();
                 } else {
                     dologin(username, password);
@@ -211,6 +211,7 @@ angular.module('hfosFrontendApp')
             console.log('[USER] Signed in: ', signedin);
             console.log('[USER] User: ', user);
             console.log('[USER] Profile: ', profile);
+            console.log('[USER] Client configuration: ', clientconfig);
         };
 
         return {
@@ -230,19 +231,19 @@ angular.module('hfosFrontendApp')
 
             onAuth: function (callback) {
                 if (typeof callback !== 'function') {
-                    throw new Error('Callback must be a function');
+                    throw new Error('[USER] Callback must be a function');
                 }
 
                 onAuthCallbacks.push(callback);
             }
         };
     }).controller('UserCtrl', function ($scope, $location, user) {
-        console.log('UserCtrl loaded!');
+        console.log('[USER] UserCtrl loaded!');
         console.log(user.user());
         $scope.user = user.user();
         $scope.logout = user.logout;
         $scope.editprofile = function () {
-            console.log('Loading profile page.');
+            console.log('[USER] Loading profile page.');
             $location.url('profile');
         };
         $('#usercancel').focus();
