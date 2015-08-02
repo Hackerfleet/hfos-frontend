@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="bower_components/leaflet.locatecontrol/dist/L.Control.Locate.css"/>
     <link rel="stylesheet" href="bower_components/leaflet.fullscreen/Control.FullScreen.css"/>
     <link rel="stylesheet" href="bower_components/leaflet.vector-markers/dist/Leaflet.vector-markers.css"/>
+    <link rel="stylesheet" href="bower_components/L.EasyButton/src/easy-button.css"/>
     <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css"/>
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.css"/>
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.date.css"/>
@@ -49,6 +50,16 @@
 
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="mainmenu">
     <div class="container-fluid">
+
+        <div class="navbar-center">
+            <button id="btnmob" type="button" ng-click="mobAlert();"
+                    class="navbar-mob navbar-brand navbar-inverse btn"
+                    style="text-align: center; border-color: transparent; margin-left:5px; color: red"
+                    aria-label="Center Align">
+                <span class="fa fa-life-ring"></span>
+            </button>
+        </div>
+
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
@@ -56,20 +67,24 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+
             <button id="btnhome" type="button" ng-click="home($event);" class="navbar-brand navbar-inverse btn"
-                    style="border-color: transparent;">
-                <span class="icon-hf-logo"></span>
+                    style="border-color: transparent; margin-left: 2px;" aria-label="Left Align">
+                <span class="glyphicon icon-hf-logo"></span>
             </button>
+
             <button id="btnuser" type="button" ng-click="userbutton($event);"
                     class="hidden navbar-brand navbar-inverse btn" style="border-color: transparent; margin-left:5px;"
                     aria-label="Left Align">
                 <span class="glyphicon glyphicon-user"></span>
             </button>
+
             <button id="btnchat" type="button" ng-click="chattoggle();" class="hidden navbar-brand navbar-inverse btn"
                     style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
-                <span class="icon-bubble"></span>
+                <span class="glyphicon icon-bubble"></span>
             </button>
         </div>
+
         <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li id="nav-"><a href="#/"><span class="glyphicon glyphicon-home"></span></a></li>
@@ -169,7 +184,7 @@
 <script src="bower_components/leaflet.locatecontrol/src/L.Control.Locate.js"></script>
 <script src="bower_components/leaflet.fullscreen/Control.FullScreen.js"></script>
 <script src="bower_components/leaflet.vector-markers/dist/Leaflet.vector-markers.js"></script>
-<script src="bower_components/L.EasyButton/easy-button.js"></script>
+<script src="bower_components/L.EasyButton/src/easy-button.js"></script>
 <script src="bower_components/tv4/tv4.js"></script>
 <script src="bower_components/objectpath/lib/ObjectPath.js"></script>
 <script src="bower_components/togeojson/togeojson.js"></script>
@@ -230,7 +245,10 @@ it around all the time :/ -->
 <script src="scripts/controllers/chat.js"></script>
 <script src="scripts/services/wiki.js"></script>
 <script src="scripts/controllers/wiki.js"></script>
-
+<script src="scripts/services/objectproxy.js"></script>
+<script src="scripts/controllers/objecteditor.js"></script>
+<script src="scripts/controllers/objectlist.js"></script>
+<script src="scripts/controllers/logbook.js"></script>
 <!-- endbuild -->
 </body>
 </html>

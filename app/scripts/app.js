@@ -64,6 +64,10 @@ angular
                 templateUrl: 'views/wiki.html',
                 controller: 'WikiCtrl'
             })
+            .when('/obj/:schema/:uuid', {
+                templateUrl: 'views/objecteditor.html',
+                controller: 'ObjectEditorCtrl'
+            })
 
 
             .otherwise({

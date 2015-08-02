@@ -92,6 +92,19 @@ body {
   background-image: url('/assets/images/backdrop_texture.png');
 }
 
+.navbar-center {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin: auto;
+}
+
+.navbar-mob {
+    float: none;
+    width: 33%;
+}
+
 .aside {
     margin-top: 51px;
 }
