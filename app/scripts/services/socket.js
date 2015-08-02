@@ -8,14 +8,14 @@
  * Factory in the hfosFrontendApp.
  */
 angular.module('hfosFrontendApp')
-    .factory('socket', function (ngSocket, $location) {
+    .factory('socket', ['ngSocket', '$location', function (ngSocket, $location) {
 
         var host = $location.host();
         var port = 8055;
         var sock = ngSocket('ws://' + host + ':' + port + '/websocket');
-        //sock.onMessage(function(args) {
-        //    console.log(args);
-        //});
+        sock.onMessage(function (args) {
+            console.log(args);
+        });
 
         var getHost = function () {
             return host;
@@ -24,14 +24,14 @@ angular.module('hfosFrontendApp')
         var connected = false;
 
         var OpenEvent = function (args) {
-            console.log('Websocket successfully opened!', args);
+            console.log('[SOCKET] Websocket successfully opened!', args);
             connected = true;
             $('#btnhome').css('color', '#3a75a8');
             $('#btnuser').removeClass('hidden').css('color', '');
         };
 
         var CloseEvent = function (args) {
-            console.log('Something closed the websocket!', args);
+            console.log('[SOCKET] Something closed the websocket!', args);
             connected = false;
             $('#btnhome').css('color', '#f00');
             $('#btnuser').css('color', '#fa0').addClass('hidden');
@@ -49,15 +49,19 @@ angular.module('hfosFrontendApp')
         };
 
         var check = function () {
+            console.log('[SOCKET] Connection state: ', connected);
 
-            console.log('Connection state: ', connected);
-            console.log(sock);
             if (connected) {
-                console.log('All nice, we are still connected');
+                console.log('[SOCKET] All nice, we are still connected');
             } else {
-                console.log('Reconnecting...');
+                console.log('[SOCKET] Reconnecting...');
                 sock.reconnect();
             }
+        };
+
+        var send = function (msg) {
+            console.log('[SOCKET] Transmitting: ', msg);
+            sock.send(msg);
         };
 
         return {
@@ -65,22 +69,20 @@ angular.module('hfosFrontendApp')
             host: getHost,
             disconnect: doDisconnect,
             check: check,
+            send: send,
 
+            // TODO: I think, working with signals could be better than this hooky mess:
             onMessage: function (func) {
-                console.log('Reception hook registered: ', String(func).slice(0, 50));
+                console.log('[SOCKET] Reception hook registered: ', String(func).slice(0, 50));
                 return sock.onMessage(func);
             },
             onOpen: function (func) {
-                console.log('Reception hook registered: ', String(func).slice(0, 50));
+                console.log('[SOCKET] Reception hook registered: ', String(func).slice(0, 50));
                 return sock.onOpen(func);
             },
             onClose: function (func) {
-                console.log('Reception hook registered: ', String(func).slice(0, 50));
+                console.log('[SOCKET] Reception hook registered: ', String(func).slice(0, 50));
                 return sock.onClose(func);
-            },
-            send: function (args) {
-                console.log('Transmitting: ', args);
-                sock.send(args);
             }
         };
-    });
+    }]);
