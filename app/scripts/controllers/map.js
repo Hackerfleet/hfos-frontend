@@ -57,36 +57,12 @@ angular.module('hfosFrontendApp')
                 $scope.mapviewuuid = '';
             };
 
-
-            var togglefollow = function () {
-                $scope.follow = !$scope.follow;
-                if ($scope.sync) {
-                    console.log('Follow on');
-                    $('#btn_togglefollow').addClass('fa-eye');
-                    $('#btn_togglefollow').removeClass('fa-eye-slash');
-                } else {
-                    $('#btn_togglefollow').addClass('fa-eye-slash');
-                    $('#btn_togglefollow').removeClass('fa-eye');
-                }
-            };
-
-            var toggleSync = function () {
-                $scope.sync = !$scope.sync;
-                if ($scope.sync) {
-                    console.log('Sync on');
-                    $('#btn_togglesync').addClass('fa-chain');
-                    $('#btn_togglesync').removeClass('fa-chain-broken');
-                } else {
-                    $('#btn_togglesync').addClass('fa-chain-broken');
-                    $('#btn_togglesync').removeClass('fa-chain');
-                }
-            };
-
             var requestMapData = function () {
                 console.log('Requesting mapdata from server.');
                 var useruuid = user.user().uuid;
                 console.log('Subscribing to useruuid mapview changes: ', useruuid);
                 MapViewService.subscribe(useruuid);
+                LayerService.requestData();
             };
 
             $scope.$on('User.Login', function (event) {
@@ -153,7 +129,6 @@ angular.module('hfosFrontendApp')
                     VesselFollow: true
                 },
                 OSDMVessels: {},
-                editableFields: new L.FeatureGroup(),
                 controls: {
                     draw: {},
                     scale: {}
@@ -193,6 +168,14 @@ angular.module('hfosFrontendApp')
                         }
                     },
                     overlays: {
+                        draw: {
+                            name: 'draw',
+                            type: 'group',
+                            visible: true,
+                            layerParams: {
+                                showOnSelector: false
+                            }
+                        },
                         openseamap: {
                             name: 'OpenSeaMap',
                             type: 'xyz',
@@ -281,10 +264,67 @@ angular.module('hfosFrontendApp')
                 var PanControl = L.control.pan().addTo(map);
                 var courseplot = L.polyline([], {color: 'red'}).addTo(map);
 
-                L.easyButton('fa-eye-slash', togglefollow, 'Toggle map following', map, 'btn_togglefollow');
-                L.easyButton('fa-chain', toggleSync, 'Toggle synchronization to ship', map, 'btn_togglesync');
+                var togglefollow = L.easyButton({
+                    id: 'btn_togglefollow',
+                    states: [{
+                        stateName: 'following',
+                        icon: 'fa-eye',
+                        onClick: function (control) {
+                            $scope.follow = true;
+                            control.state('static');
+                        }
+                    }, {
+                        stateName: 'static',
+                        icon: 'fa-eye-slash',
+                        onClick: function (control) {
+                            $scope.follow = false;
+                            control.state('following');
+                        }
+                    }],
+                    title: 'Toggle map following'
+                });
 
-                var drawnItems = $scope.controls.edit.featureGroup;
+                var togglesync = L.easyButton({
+                    id: 'btn_togglesync',
+                    states: [{
+                        stateName: 'synchronized',
+                        icon: 'fa-chain',
+                        onClick: function (control) {
+                            console.log('[MAP] Disabling synchronization');
+                            $scope.sync = false;
+                            control.state('unsynchronized');
+                        }
+                    }, {
+                        stateName: 'unsynchronized',
+                        icon: 'fa-chain-broken',
+                        onClick: function (control) {
+                            console.log('[MAP] Enabling synchronization');
+                            $scope.sync = true;
+                            control.state('synchronized');
+                        }
+                    }],
+                    title: 'Toggle synchronization to ship'
+                });
+
+                var selectView = L.easyButton({
+                    id: 'btn_selectview',
+                    states: [{
+                        stateName: 'select',
+                        icon: 'fa-list-alt',
+                        onClick: function (control) {
+                            console.log('[MAP] Triggering view selection');
+                            MapViewService.selectview();
+
+                        }
+                    }],
+                    title: 'Select a view'
+                });
+
+                togglefollow.addTo(map);
+                togglesync.addTo(map);
+                selectView.addTo(map);
+
+                console.log(togglefollow, togglesync, '########');
 
                 L.RotatedMarker = L.Marker.extend({
                     options: {angle: 0},
@@ -345,21 +385,23 @@ angular.module('hfosFrontendApp')
                 var VesselMarker = L.rotatedMarker($scope.Vessel.coords, {icon: Icons.Vessel}).addTo(map);
                 console.log(VesselMarker);
 
-                map.on('draw:created', function (e) {
-                    var layer = e.layer;
-                    console.log(e);
+                leafletData.getLayers().then(function (baselayers) {
+                    var drawnItems = baselayers.overlays.draw;
+                    map.on('draw:created', function (e) {
+                        var layer = e.layer;
+                        drawnItems.addLayer(layer);
 
-                    drawnItems.addLayer(layer);
+                        var geojson = layer.toGeoJSON();
 
-                    var geojson = layer.toGeoJSON();
+                        console.log(geojson);
 
-                    $scope.controls.geojson = geojson;
+                        $scope.geojson = geojson;
+                        socket.send(geojson);
 
-                    console.log(geojson);
-                    socket.send(geojson);
-
+                    });
                 });
-            });
+            })
+            ;
 
             /*
 
