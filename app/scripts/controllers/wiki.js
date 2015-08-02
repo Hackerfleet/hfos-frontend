@@ -21,14 +21,14 @@ angular.module('hfosFrontendApp')
 
         $scope.url = window.location.href;
         $scope.editing = false;
-        $scope.schema = schemata.get('wikipage');
+        $scope.schema = schemata.schema('wikipage');
         $scope.pagedata = 'No specific text';
         $scope.pagedata = Wiki.pages[$scope.pagename];
         $scope.model = {};
 
         $scope.$on('Schemata.Update', function () {
             console.log('Got a schema update:', schemata.schema['wikipage']);
-            $scope.schema = schemata.get('wikipage');
+            $scope.schema = schemata.schema('wikipage');
         });
 
         $scope.$on('User.Login', function () {
@@ -85,6 +85,8 @@ angular.module('hfosFrontendApp')
             //user.updateprofile(model);
         };
 
+        $scope.config = {toolbar: 'link | unlink'};
+
         $scope.form = [
             {
                 type: 'section',
@@ -110,6 +112,12 @@ angular.module('hfosFrontendApp')
             },
             {
                 key: 'text',
+                tinymceOptions: {
+                    "toolbar": [
+                        "styleselect | bold italic | link unlink | link image",
+                        "alignleft aligncenter alignright | link | undo redo"
+                    ]
+                }
             },
             {
                 type: 'submit',
