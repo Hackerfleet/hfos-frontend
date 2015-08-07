@@ -50,16 +50,6 @@
 
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="mainmenu">
     <div class="container-fluid">
-
-        <div class="navbar-center">
-            <button id="btnmob" type="button" ng-click="mobAlert();"
-                    class="navbar-mob navbar-brand navbar-inverse btn"
-                    style="text-align: center; border-color: transparent; margin-left:5px; color: red"
-                    aria-label="Center Align">
-                <span class="fa fa-life-ring"></span>
-            </button>
-        </div>
-
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
@@ -74,14 +64,23 @@
             </button>
 
             <button id="btnuser" type="button" ng-click="userbutton($event);"
-                    class="hidden navbar-brand navbar-inverse btn" style="border-color: transparent; margin-left:5px;"
+                    class="hidden navbar-brand navbar-inverse btn"
+                    style="border-color: transparent; margin-left:5px;"
                     aria-label="Left Align">
                 <span class="glyphicon glyphicon-user"></span>
             </button>
 
-            <button id="btnchat" type="button" ng-click="chattoggle();" class="hidden navbar-brand navbar-inverse btn"
+            <button id="btnchat" type="button" ng-click="chattoggle();"
+                    class="hidden navbar-brand navbar-inverse btn"
                     style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
                 <span class="glyphicon icon-bubble"></span>
+            </button>
+
+            <button id="btnmob" type="button" ng-click="mobbutton();"
+                    class="pagination-centered navbar-brand navbar-inverse btn hidden"
+                    style="text-align: center; border-color: transparent; margin-left:5px; color: red"
+                    aria-label="Center Align">
+                <span class="fa fa-life-ring"></span>
             </button>
         </div>
 
@@ -247,8 +246,8 @@ it around all the time :/ -->
 <script src="scripts/controllers/wiki.js"></script>
 <script src="scripts/services/objectproxy.js"></script>
 <script src="scripts/controllers/objecteditor.js"></script>
-<script src="scripts/controllers/objectlist.js"></script>
 <script src="scripts/controllers/logbook.js"></script>
+<script src="scripts/services/alert.js"></script>
 <!-- endbuild -->
 </body>
 </html>
