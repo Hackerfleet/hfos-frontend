@@ -9,14 +9,23 @@
  */
 angular.module('hfosFrontendApp')
     .service('navdata', function ($rootScope, socket) {
-        console.log('Hello world, im the navdata thing.');
+        console.log('[NAVDATA] Service starting.');
+
+        var referenceframe = {};
+        var referenceages = {};
+
+
         socket.onMessage(function (message) {
             // Dashboard handler
             var msg = JSON.parse(message.data);
             if (msg.component === 'navdata' && msg.action === 'update') {
                 console.log('Updating navigation data.');
-                console.log(msg.action, msg.data);
-                $rootScope.$broadcast('hfos.NavdataUpdate');
+
+                var refdata = msg.data;
+                referenceframe = refdata['data'];
+                referenceages = refdata['ages'];
+
+                $rootScope.$broadcast('hfos.NavdataUpdate', referenceframe);
             }
         });
 
