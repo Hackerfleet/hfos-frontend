@@ -1,21 +1,20 @@
 @font-face {
-  font-family: "Clear Sans";
-  src: url(/assets/fonts/clearsans/ClearSans-Regular.ttf) format("truetype");
+    font-family: "Clear Sans";
+    src: url(/assets/fonts/clearsans/ClearSans-Regular.ttf) format("truetype");
 }
 
 @font-face {
-  font-family: "Digital";
-  src: url(/assets/fonts/letsgodigital-regular.ttf) format("truetype");
+    font-family: "Digital";
+    src: url(/assets/fonts/letsgodigital-regular.ttf) format("truetype");
 }
-
 
 @font-face {
     font-family: 'misc-icons';
-    src:url('/assets/fonts/misc-icons.eot?-3u7zq');
-    src:url('/assets/fonts/misc-icons.eot?#iefix-3u7zq') format('embedded-opentype'),
-        url('/assets/fonts/misc-icons.woff?-3u7zq') format('woff'),
-        url('/assets/fonts/misc-icons.ttf?-3u7zq') format('truetype'),
-        url('/assets/fonts/misc-icons.svg?-3u7zq#misc-icons') format('svg');
+    src: url('/assets/fonts/misc-icons.eot?-3u7zq');
+    src: url('/assets/fonts/misc-icons.eot?#iefix-3u7zq') format('embedded-opentype'),
+    url('/assets/fonts/misc-icons.woff?-3u7zq') format('woff'),
+    url('/assets/fonts/misc-icons.ttf?-3u7zq') format('truetype'),
+    url('/assets/fonts/misc-icons.svg?-3u7zq#misc-icons') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -76,20 +75,21 @@
 }
 
 p.customfont {
-  font-family: "Clear Sans", Verdana, Tahoma;
+    font-family: "Clear Sans", Verdana, Tahoma;
 }
 
 .digital {
-  font-family: "Digital";
+    font-family: "Digital";
+    font-size: 42px;
 }
 
 body {
-  padding-top: 23px;
-  font-family: "Clear Sans";
-  //color: white;
-  color: #3a75a8;
-  background-color: #3a75a8;
-  background-image: url('/assets/images/backdrop_texture.png');
+    padding-top: 23px;
+    font-family: "Clear Sans";
+    /*color : white;*/
+    color: #3a75a8;
+    background-color: #3a75a8;
+    background-image: url('/assets/images/backdrop_texture.png');
 }
 
 .navbar-center {
@@ -110,37 +110,35 @@ body {
 }
 
 .jumbotron {
-  margin-right: 5px;
-  margin-left: 5px;
-  background-color: rgba(255, 255, 255, 0.35);
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-right: 5px;
+    margin-left: 5px;
+    background-color: rgba(255, 255, 255, 0.35);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .well {
-  background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 #mainmenu {
-  z-index: 100;
+    z-index: 100;
 }
-
 
 a:link,
 a:visited,
 a:active {
-  color: #414141;
-  text-decoration: none;
-  -webkit-transition: .5s;
-  -moz-transition: .5s;
-  -ms-transition: .5s;
-  -o-transition: .5s;
+    color: #414141;
+    text-decoration: none;
+    -webkit-transition: .5s;
+    -moz-transition: .5s;
+    -ms-transition: .5s;
+    -o-transition: .5s;
 }
 
 a:hover {
-  color: #ffffff;
-  /*text-decoration: underline;*/
+    color: #ffffff;
+    /*text-decoration: underline;*/
 }
-
 
 /* Space out content a bit */
 
@@ -158,80 +156,85 @@ html, body {
 .header,
 .marketing,
 .footer {
-  padding-right: 15px;
-  padding-left: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 /* Custom page header */
 .header {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
+
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
-  padding-bottom: 19px;
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
+    padding-bottom: 19px;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
 
 }
 
 /* Custom page footer */
 .footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
+    padding-top: 19px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
 }
 
 /* Customize container */
 @media (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
+    .container {
+        max-width: 730px;
+    }
 }
+
 .container-narrow > hr {
-  margin: 30px 0;
+    margin: 30px 0;
 }
 
 /* Main marketing message and sign up button */
 .jumbotron {
-  text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-.jumbotron .btn {
-  padding: 14px 24px;
-  font-size: 21px;
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
 }
 
+.jumbotron .btn {
+    padding: 14px 24px;
+    font-size: 21px;
+}
 
 /* Supporting marketing content */
 .marketing {
-  margin: 40px 0;
+    margin: 40px 0;
 }
+
 .marketing p + h4 {
-  margin-top: 28px;
+    margin-top: 28px;
 }
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
+    /* Remove the padding we set earlier */
+    .header,
+    .marketing,
+    .footer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* Space out the masthead */
+    .header {
+        margin-bottom: 30px;
+    }
+
+    /* Remove the bottom border on the jumbotron for visual effect */
+    .jumbotron {
+        border-bottom: 0;
+    }
 }
 
 .menuicon {
- width: 50%;
+    width: 50%;
 }
 
 #bootscreen {
@@ -245,12 +248,12 @@ html, body {
     position: relative;
     width: 350px;
     height: 350px;
-    background-image:url('/assets/images/hackerfleet.svg');
+    background-image: url('/assets/images/hackerfleet.svg');
     background-size: 100% auto;
 }
 
 .vertical-center {
-    min-height: 90%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 90%; /* Fallback for browsers do NOT support vh unit */
     min-height: 90vh; /* These two lines are counted as one :-)       */
 
     display: flex;
@@ -272,16 +275,28 @@ html, body {
 }
 
 @-moz-keyframes bootgradient {
-    0%{background-position:-400% 0%}
-    100%{background-position:1000% 0%}
+    0% {
+        background-position: -400% 0%
+    }
+    100% {
+        background-position: 1000% 0%
+    }
 }
 
 @-webkit-keyframes bootgradient {
-    0%{background-position:-400% 0%}
-    100%{background-position:1000% 0%}
+    0% {
+        background-position: -400% 0%
+    }
+    100% {
+        background-position: 1000% 0%
+    }
 }
 
 @keyframes bootgradient {
-    0%{background-position:-400% 10%}
-    100%{background-position:1000% 10%}
+    0% {
+        background-position: -400% 10%
+    }
+    100% {
+        background-position: 1000% 10%
+    }
 }
