@@ -8,7 +8,7 @@
  * Service in the hfosFrontendApp.
  */
 angular.module('hfosFrontendApp')
-    .service('user', function ($cookies, $rootScope, $route, $location, socket, md5, createDialog) {
+    .service('user', function ($cookies, $rootScope, $route, $location, $alert, socket, md5, createDialog) {
         // AngularJS will instantiate a singleton by calling 'new' on this function
 
         var user = {};
@@ -74,6 +74,17 @@ angular.module('hfosFrontendApp')
                     console.log('[USER] Authenticated successfully!');
                     user = msg.data;
                     signIn();
+                } else if (msg.action === 'new') {
+                    console.log('[USER] Aaah, a fresh one. Displaying welcome.');
+                    $alert({
+                        'title': 'Registration successful',
+                        'type': 'success',
+                        'content': '<br />Welcome to HFOS! Your account has been successfully created.<br />' +
+                        'Click this button again to edit your profile or logout.',
+                        'show': true,
+                        'placement': 'top-left',
+                        'duration': 30
+                    });
                 }
             } else if (msg.component === 'profile') {
                 console.log('[USER] Profile received.');
@@ -185,6 +196,7 @@ angular.module('hfosFrontendApp')
                 signedin = false;
                 $('#btnuser').css('color', '');
                 $('#btnchat').addClass('hidden');
+                $('#btnmob').addClass('hidden');
                 $location.url('');
                 $route.reload();
             } else {
