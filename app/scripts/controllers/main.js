@@ -8,7 +8,7 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-    .controller('MainCtrl', function ($scope, $route, $modal, $aside, $interval, Alert, schemata, socket, user) {
+    .controller('MainCtrl', function ($scope, $route, $aside, Alert, schemata, socket, user) {
 
         console.log('[MAIN] Controller started');
 
@@ -77,6 +77,5 @@ angular.module('hfosFrontendApp')
                 $('#chatinput').focus();
             }
         };
-
 
     });
