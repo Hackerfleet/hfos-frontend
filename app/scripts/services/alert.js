@@ -8,7 +8,7 @@
  * Service in the hfosFrontendApp.
  */
 angular.module('hfosFrontendApp')
-    .service('Alert', function ($rootScope, $interval, socket, createDialog) {
+    .service('Alert', function ($rootScope, $interval, socket, createDialog, $alert) {
 
         console.log('[ALERT] Service ready.');
 
@@ -87,6 +87,8 @@ angular.module('hfosFrontendApp')
                     console.log('[ALERT] Activating MOB alert!');
                     if (msg.data === true) {
                         mobAlert();
+                        add('info', 'MOB alert confirmation', 'Alert successfully triggered shipwide.', 5);
+
                     } else if (msg.data === false) {
                         mobDeactivate();
                     }
@@ -98,7 +100,22 @@ angular.module('hfosFrontendApp')
             $('#btnmob').removeClass('hidden');
         });
 
+        var add = function (type, title, msg, duration) {
+            console.log('[ALERT] Emitting new alert');
+            $alert({
+                'title': title,
+                'content': msg,
+                'placement': 'top',
+                'type': type,
+                'show': true,
+                'duration': duration
+            });
+            //$rootScope.$broadcast("Alert.Add", type, msg);
+        };
+
+
         return {
+            add: add,
             mobTrigger: mobTrigger,
             cancelAlarm: cancelAlarm,
             deactivateAlarm: deactivateAlarm
