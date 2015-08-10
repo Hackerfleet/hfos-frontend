@@ -9,6 +9,9 @@
  */
 angular.module('hfosFrontendApp')
     .controller('DigitalreadoutCtrl', function ($scope) {
-        console.log('Hello, i am the digital readout controller, my scope is:', $scope);
-        console.log('My value is: ', $scope.$parent.card.value);
+        var key = $scope.$parent.card.value;
+        $scope.$on('hfos.NavdataUpdate', function (event, frame) {
+            console.log('[DIGIREADOUT] My new value is: ', frame[key]);
+            $scope.value = frame[key];
+        });
     });

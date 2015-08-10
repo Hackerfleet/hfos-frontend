@@ -75,41 +75,43 @@ angular
             });
 
         decksterConfigProvider.set({
-            /*decks: {  // TODO: evaluate if this feat is really useful to us. I think so.
-             'testDeck': {
-             cards: [
-             {
-             title: 'Card 1',
-             id: 'card-1',
-             size: {x: 1, y: 1},
-             position: [0, 0]
-             },
-             {
-             title: 'Card 2',
-             id: 'card-2',
-             size: {x: 2, y: 2},
-             position: [0, 1],
-             value: 0.5
-             },
-             {
-             title: 'Card 3',
-             id: 'card-3',
-             size: {x: 1, y: 1},
-             position: [0, 2]
-             }
-             ]
-             }
-             },*/
+            decks: {  // TODO: evaluate if this feat is really useful to us. I think so.
+                'Dashboard': {
+                    'cards': [
+                        {
+                            id: 'bearing',
+                            size: {x: 2, y: 1},
+                            position: [2, 0],
+                            value: 'Heading_True'
+                        },
+                        {
+                            id: 'gauge',
+                            size: {x: 2, y: 2},
+                            position: [0, 2],
+                            value: 'GPS_SatCount'
+                        },
+                        {
+
+                            id: 'digital',
+                            size: {x: 2, y: 1},
+                            position: [0, 0],
+                            value: 'GPS_LatLon'
+                        }]
+                }
+            },
             cardDefaults: {
-                'course': {
+                'bearing': {
+                    title: 'Bearing',
                     summaryTemplateUrl: 'views/cards/courseSummaryTemplate.html',
                     detailTemplateUrl: 'views/cards/courseDetailsTemplate.html'
                 },
-                'analog': {
+                'gauge': {
+                    title: 'Gauge',
                     summaryTemplateUrl: 'views/cards/analogReadoutSummaryTemplate.html',
                     detailTemplateUrl: 'views/cards/analogReadoutDetailsTemplate.html'
                 },
                 'digital': {
+                    title: 'Digital',
                     summaryTemplateUrl: 'views/cards/digitalReadoutSummaryTemplate.html',
                     detailTemplateUrl: 'views/cards/digitalReadoutDetailsTemplate.html'
                 }

@@ -1,0 +1,21 @@
+<div ng-controller="DashboardConfigCtrl">
+    <div class="modal-body">
+        <span>Dashboard Configuration</span>
+
+        <div ng-repeat="card in config track by card.id">
+            {{card.title}}
+            {{card.value}}
+            {{card.type}}
+        </div>
+
+        <div class="modal-footer">
+            <form>
+                <button type="button" ng-click="saveConfig(); $modalSuccess()" class="btn btn-large">Save dashboard
+                </button>
+                <button id="usercancel" type="button" ng-click="$modalCancel()" class="btn btn-default btn-large">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
