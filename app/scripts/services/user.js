@@ -91,7 +91,7 @@ angular.module('hfosFrontendApp')
                 profile = msg.data;
                 $('#btnuser').css('color', '#0f0');
                 $('#btnchat').removeClass('hidden');
-                changeCurrentTheme(profile.theme);
+                changeCurrentTheme(profile.settings.theme);
 
                 $rootScope.$broadcast('Profile.Update');
             } else if (msg.component === 'clientconfig') {
