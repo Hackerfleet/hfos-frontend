@@ -1,8 +1,31 @@
-<button type="button" ng-click="configureCards()" class="btn-sm btn-block">Configure Dashboard</button>
-<div class="jumbotron">
+<div class="jumbotron" style="padding-top: 5px">
+    <button type="button" ng-click="configureCards()" class="btn-sm" style="margin: 0px; padding:0px;">Configure
+        Dashboard
+    </button>
+
+    <div gridster="gridsterOptions">
+        <ul>
+            <li gridster-item="widget" ng-repeat="widget in dashboard.cards">
+                <div class="box" ng-controller="CustomWidgetCtrl">
+                    <div class="box-header">
+                        <h3>{{ widget.title }}</h3>
+                        <span>{{widget}}</span>
+
+                        <div class="box-header-btns pull-right">
+                            <a title="settings" ng-click="openSettings(widget)"><i class="glyphicon glyphicon-cog"></i></a>
+                            <a title="Remove widget" ng-click="remove(widget)"><i class="glyphicon glyphicon-trash"></i></a>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="jumbotron hidden" style="padding-top: 5px">
     <deckster-deck deck-cards="cards" deck-options="deckOptions"></deckster-deck>
 </div>
-
 <div class="well" style="">
     {{cards}}
     <hr/>

@@ -8,10 +8,16 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-    .controller('DashboardCtrl', function ($scope, navdata, decksterService, socket, createDialog) {
+    .controller('DashboardCtrl', function ($scope, navdata, user, socket, createDialog, ObjectProxy) {
 
 
         socket.send({'type': 'info', 'content': 'Dashboard activated'});
+
+        /*decksterConfig.set({
+         decks: {  // TODO: evaluate if this feat is really useful to us. I think so.
+         }
+         });*/
+
 
         $scope.deckOptions = {
             id: 'Dashboard',
@@ -22,73 +28,86 @@ angular.module('hfosFrontendApp')
             }
         };
 
-        $scope.analogvalue = 0;
-        $scope.digitalvalue = 'GPS_LatLon';
-        $scope.course = 0;
+        $scope.dashboarduuid = user.clientconfig()['dashboarduuid'];
+        $scope.dashboard = {};
+
+        ObjectProxy.get('dashboard', $scope.dashboarduuid);
+
+        var resetDashboard = function () {
+            console.log('[DASH] Resetting dashboard to ', $scope.dashboarduuid);
+            $scope.dashboard = ObjectProxy.obj[$scope.dashboarduuid];
+            console.log($scope.dashboard);
+            //console.log(decksterConfig);
 
 
-        $scope.cards = []
-        /*
-         {
-         title: 'Bearing Readout',
-         id: 'bearing',
-         size: {x: 2, y: 3},
-         position: [0, 0],
-         value: $scope.course,
-         summaryTemplateUrl: 'views/cards/courseSummaryTemplate.html',
-         detailTemplateUrl: 'views/cards/courseDetailsTemplate.html' // Required for popout feature to work
+        };
 
-         },
-         {
-         title: 'Gauge Readout',
-         id: 'gauge',
-         size: {x: 2, y: 2},
-         position: [0, 2],
-         value: $scope.analogvalue,
-         summaryTemplateUrl: 'views/cards/analogReadoutSummaryTemplate.html',
-         detailTemplateUrl: 'views/cards/analogReadoutDetailsTemplate.html'
+        $scope.$on('OP.Change', function (ev, uuid) {
+            if (uuid === $scope.dashboarduuid) {
+                console.log('[DASH] Received dashboard configuration');
+                resetDashboard();
+            }
+        });
 
-         },
-         {
-         title: 'Digital Readout',
-         id: 'digital',
-         size: {x: 1, y: 1},
-         position: [2, 2],
-         value: $scope.digitalvalue,
-         summaryTemplateUrl: 'views/cards/digitalReadoutSummaryTemplate.html',
-         detailTemplateUrl: 'views/cards/digitalReadoutDetailsTemplate.html'
-         }];
+        $scope.$on('Clientconfig.Update', function () {
+            console.log('[DASH] New dashboard configured, adapting');
+            $scope.dashboarduuid = user.clientconfig()['dashboarduuid'];
+            ObjectProxy.get('dashboard', $scope.dashboarduuid);
+        });
 
-         $scope.cardDefaults= {
-         'bearing': {
-         summaryTemplateUrl: 'views/cards/courseSummaryTemplate.html',
-         detailTemplateUrl: 'views/cards/courseDetailsTemplate.html'
-         },
-         'gauge': {
-         summaryTemplateUrl: 'views/cards/analogReadoutSummaryTemplate.html',
-         detailTemplateUrl: 'views/cards/analogReadoutDetailsTemplate.html'
-         },
-         'digital': {
-         summaryTemplateUrl: 'views/cards/digitalReadoutSummaryTemplate.html',
-                    detailTemplateUrl: 'views/cards/digitalReadoutDetailsTemplate.html'
-         }
-         };
-
-         */
         $scope.configureCards = function () {
             console.log('[DASH] Opening configuration');
             createDialog('/views/modals/dashboardconfig.tpl.html', {
                     id: 'DashboardConfig',
                     title: 'Dashboard configuration',
                     backdrop: false,
-                    footerTemplate: '<span></span>'
-                }, {'config': 'FOOBAR'} //$scope.cards}
+                    footerTemplate: '<span></span>',
+                    controller: 'DashboardConfigCtrl'
+                }, {}
             );
         };
 
-        // Setup the cards for this deck
-        decksterService.buildCards('Dashboard', $scope.cards);
-    }).controller('DashboardConfigCtrl', function ($scope, navdata, config) {
-        $scope.config = config;
-        console.log('[DASHBOARDCONFIG] Scope: ', $scope, $scope.config);
-    });
+    }).controller('CustomWidgetCtrl', ['$scope', '$modal',
+        function ($scope, $modal) {
+
+            $scope.remove = function (widget) {
+                $scope.dashboard.cards.splice($scope.dashboard.cards.indexOf(widget), 1);
+            };
+
+            $scope.openSettings = function (widget) {
+                $modal.open({
+                    scope: $scope,
+                    templateUrl: 'demo/dashboard/widget_settings.html',
+                    controller: 'WidgetSettingsCtrl',
+                    resolve: {
+                        widget: function () {
+                            return widget;
+                        }
+                    }
+                });
+            };
+
+        }
+    ]).controller('DashboardConfigCtrl', ['$scope', 'navdata', 'config', 'user', 'ObjectProxy',
+        function ($scope, navdata, config, user, ObjectProxy) {
+            $scope.dashboardlist = ObjectProxy.getlist('dashboard', {'useruuid': user.user().uuid}, ['name', 'description']);
+
+            $scope.$on('OP.ListUpdate', function (ev, schema) {
+                console.log('[DASHBOARDCONFIG] List update:', schema);
+
+                if (schema === 'dashboard') {
+                    console.log('[DASHBOARDCONFIG] Dashboardconfig list updating');
+                    $scope.dashboardlist = ObjectProxy.lists['dashboard'];
+                    $scope.$apply();
+                }
+            });
+
+            $scope.selectDashboard = function (uuid) {
+                console.log('[DASHBOARDCONFIG] Updating dashboard selection');
+                var origconf = user.clientconfig();
+                console.log(origconf);
+                origconf.dashboarduuid = uuid;
+                user.updateclientconfig(origconf);
+            };
+
+        }]);

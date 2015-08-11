@@ -1,21 +1,25 @@
-<div ng-controller="DashboardConfigCtrl">
-    <div class="modal-body">
-        <span>Dashboard Configuration</span>
-
-        <div ng-repeat="card in config track by card.id">
-            {{card.title}}
-            {{card.value}}
-            {{card.type}}
+<div class="modal-body">
+    <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
+        <div class="panel panel-default" ng-repeat="dashboard in dashboardlist">
+            <div class="panel-heading">
+                <a bs-collapse-toggle>{{dashboard.name}}</a>
+                <a ng-click="$modalCancel()" href="#/obj/dashboard/{{dashboard.uuid}}" class="btn-primary">Edit</a>
+                <a ng-click="$modalCancel()" href="#/obj/dashboard/{{dashboard.uuid}}/delete"
+                   class="btn-danger">Delete</a>
+                <button ng-click="selectDashboard(dashboard.uuid)" class="btn-success">Select</button>
+            </div>
+            <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                <div class="panel-body" ng-bind-html="dashboard.description">
+                </div>
+            </div>
         </div>
+    </div>
 
-        <div class="modal-footer">
-            <form>
-                <button type="button" ng-click="saveConfig(); $modalSuccess()" class="btn btn-large">Save dashboard
-                </button>
-                <button id="usercancel" type="button" ng-click="$modalCancel()" class="btn btn-default btn-large">
-                    Cancel
-                </button>
-            </form>
-        </div>
+    <div class="modal-footer">
+        <form>
+            <button id="usercancel" type="button" ng-click="$modalCancel()" class="btn btn-default btn-large">
+                Close
+            </button>
+        </form>
     </div>
 </div>

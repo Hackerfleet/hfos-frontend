@@ -54,16 +54,16 @@
       "togeojson": "0.12.1",
       "angular-schema-form-datepicker": "~0.4.0",
       "angular-mocks": "~1.4.3",
-      "angular-scenario": "~1.4.3"
+      "angular-scenario": "~1.4.3",
+      "angular-gridster": "~0.13.5"
   },
-  "devDependencies": {
-  },
+    "devDependencies": {},
   "appPath": "app",
   "resolutions": {
       "angular": "1.4.3",
     "spectrum": "1.7.0",
     "humanize-duration": "3.1.0",
       "angular-mocks": "~1.4.3",
-      "angular-scenario": "~1.4.3"
+      "angular-scenario": "~1.4.3",
   }
 }

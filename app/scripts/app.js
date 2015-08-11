@@ -25,11 +25,12 @@ angular
         'schemaForm-tinymce',
         'angular-detector',
         'routeStyles',
-        'angularDeckster',
+        // 'angularDeckster',
         'ngFitTextDynamic',
-        'ngRadialGauge'
+        'ngRadialGauge',
+        'gridster'
     ])
-    .config(function ($routeProvider, decksterConfigProvider) {
+    .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
@@ -73,9 +74,9 @@ angular
             .otherwise({
                 redirectTo: '/'
             });
-
+        /*
         decksterConfigProvider.set({
-            decks: {  // TODO: evaluate if this feat is really useful to us. I think so.
+         decks: {
                 'Dashboard': {
                     'cards': [
                         {
@@ -116,5 +117,5 @@ angular
                     detailTemplateUrl: 'views/cards/digitalReadoutDetailsTemplate.html'
                 }
             }
-        });
+         }); */
     });
