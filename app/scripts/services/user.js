@@ -34,7 +34,8 @@ angular.module('hfosFrontendApp')
         };
 
         var changeCurrentTheme = function (newTheme) {
-            if (typeof newTheme !== 'undefined') {
+            // TODO: Better check for unset theme or better unsetting
+            if ((typeof newTheme !== 'undefined') && (newTheme.length > 5)) {
                 console.log('[USER] Switching to theme ', newTheme);
                 $('#BootstrapTheme').attr('href', 'bower_components/' + newTheme + 'bootstrap-theme.css');
                 $('#Bootstrap').attr('href', 'bower_components/' + newTheme + 'bootstrap.css');
@@ -104,21 +105,34 @@ angular.module('hfosFrontendApp')
             }
         });
 
+        var saveClientconfig = function () {
+            console.log('[USER] Storing profile on node');
+            socket.send({
+                'component': 'objectmanager',
+                'action': 'put',
+                'data': {'schema': 'client', 'obj': clientconfig}
+            });
+        };
+
         var updateclientconfig = function (data) {
             clientconfig = data;
             // TODO: Validate with schema from newly built schemaservice
             console.log('[USER] Updating client configuration with ', clientconfig);
-            socket.send({'component': 'clientconfig', 'action': 'update', 'data': clientconfig});
+            saveClientconfig();
 
             $rootScope.$broadcast('Clientconfig.Update');
+        };
+
+        var saveProfile = function () {
+            console.log('[USER] Storing profile on node');
+            socket.send({'component': 'profile', 'action': 'update', 'data': profile});
         };
 
         var updateprofile = function (data) {
             profile = data;
             // TODO: Validate with schema from newly built schemaservice
             console.log('[USER] Updating profile with ', profile);
-            socket.send({'component': 'profile', 'action': 'update', 'data': profile});
-
+            saveProfile();
 
             $rootScope.$broadcast('Profile.Update');
         };
@@ -239,6 +253,7 @@ angular.module('hfosFrontendApp')
             updateprofile: updateprofile,
 
             clientconfig: getclientconfig,
+            saveClientconfig: saveClientconfig,
             updateclientconfig: updateclientconfig,
 
             onAuth: function (callback) {
