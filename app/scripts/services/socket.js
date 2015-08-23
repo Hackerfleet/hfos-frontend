@@ -8,18 +8,25 @@
  * Factory in the hfosFrontendApp.
  */
 angular.module('hfosFrontendApp')
-    .factory('socket', function (ngSocket, $timeout, $location) {
+    .factory('socket', function (ngSocket, $timeout, $location, $alert) {
 
         var host = $location.host();
         var port = 8055;
 
         var sock = ngSocket('ws://' + host + ':' + port + '/websocket');
+
         var reconnecttimer = '';
         var reconnecttries = 0;
-
         var stayonline = true;
         var connected = false;
         var trying = false;
+
+        var disconnectalert = $alert({
+            'title': 'Offline',
+            'placement': 'top',
+            'type': 'warning',
+            'show': false
+        });
 
         sock.onMessage(function (args) {
             console.log(args);
@@ -36,20 +43,43 @@ angular.module('hfosFrontendApp')
             reconnecttries++;
             trying = true;
 
-            var interval = Math.min(30, Math.pow(reconnecttries, 2)) * 1000;
-            reconnecttimer = $timeout(doReconnect, interval);
-            console.log('[SOCKET] Resetting interval to ', interval);
+            var interval = Math.min(30, Math.pow(reconnecttries, 2));
+
+            disconnectalert.hide();
+
+            disconnectalert = $alert({
+                'title': 'Offline',
+                'content': 'You have been disconnected from the node. Retry interval is at ' + humanizeDuration(interval * 1000),
+                'placement': 'top',
+                'type': 'warning',
+                'show': true,
+                'duration': interval
+            });
+
+            var color = function (value) {
+                return '#FF' + parseInt((1 - value) * 255).toString(16) + '00'; // .toString(16);
+            };
+
+            $('#btnhome').css('color', color(interval / 30));
+
+            reconnecttimer = $timeout(doReconnect, interval * 1000);
             //reconnecttimer = $interval(doReconnect, interval);
         };
 
         var finallyClosed = function () {
             console.log('[SOCKET] Something closed the websocket!');
             connected = false;
-            $('#btnhome').css('color', '#f00');
-            $('#btnmob').addClass('hidden');
+            $('#btnhome').css('color', 'red');
+
+            hideElements();
+        };
+
+        var hideElements = function () {
+            $('#btnuser').addClass('hidden');
             // TODO: Mob button should rather be gray and recording the MOB alert for later,
-            // if possible with local GPS coords
-            $('#btnuser').css('color', '#fa0').addClass('hidden');
+            // if possible with phone-local GPS coords
+            $('#btnmob').addClass('hidden');
+            $('#btnchat').addClass('hidden');
         };
 
         var OpenEvent = function () {
@@ -58,6 +88,20 @@ angular.module('hfosFrontendApp')
             stayonline = true;
             trying = false;
             reconnecttries = 0;
+
+            disconnectalert.hide();
+
+            var currentdate = new Date();
+            document.getElementById('btnhome').title = 'Connected since ' + currentdate;
+
+            $alert({
+                'title': 'Online',
+                'content': "The connection to the node has been established. You're online!",
+                'placement': 'top-left',
+                'type': 'info',
+                'show': true,
+                'duration': 5
+            });
 
             $timeout.cancel(reconnecttimer);
             $('#btnhome').css('color', '#3a75a8');
@@ -68,8 +112,13 @@ angular.module('hfosFrontendApp')
             console.log('[SOCKET] Close event called.');
 
             connected = false;
-            $('#btnhome').css('color', '#FF0');
 
+            var currentdate = new Date();
+
+            document.getElementById('btnhome').title = 'Disconnected since ' + currentdate;
+            //$('#btnhome').prop('title', 'Disconnected since ' + currentdate);
+
+            hideElements();
             if (trying === true) {
                 console.log('[SOCKET] Already trying');
                 return;
@@ -91,6 +140,7 @@ angular.module('hfosFrontendApp')
         var doDisconnect = function () {
             stayonline = false;
             sock.close();
+            //hideElements();
         };
 
         var check = function () {

@@ -86,6 +86,9 @@ p.customfont {
 body {
     padding-top: 23px;
     font-family: "Clear Sans";
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
     /*color : white;*/
     color: #3a75a8;
     background-color: #3a75a8;
@@ -148,8 +151,9 @@ html, body {
 }
 
 #content, #map {
-    height: 100%;
-    padding-top: 23px;
+    height: 100vh;
+    padding-top: 42px;
+    padding-bottom: 5px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */

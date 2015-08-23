@@ -22,7 +22,7 @@ angular.module('hfosFrontendApp')
         $scope.deckOptions = {
             id: 'Dashboard',
             gridsterOpts: { // any options that you can set for angular-gridster (see:  http://manifestwebdesign.github.io/angular-gridster/)
-                columns: 5,
+                columns: 3,
                 rowHeight: 150,
                 margins: [10, 10]
             }
@@ -90,7 +90,11 @@ angular.module('hfosFrontendApp')
         }
     ]).controller('DashboardConfigCtrl', ['$scope', 'navdata', 'config', 'user', 'ObjectProxy',
         function ($scope, navdata, config, user, ObjectProxy) {
-            $scope.dashboardlist = ObjectProxy.getlist('dashboard', {'useruuid': user.user().uuid}, ['name', 'description']);
+            $scope.dashboardlist = ObjectProxy.getlist('dashboard', {
+                '$or': [
+                    {'useruuid': user.user().uuid},
+                    {'shared': true}]
+            }, ['name', 'description']);
 
             $scope.$on('OP.ListUpdate', function (ev, schema) {
                 console.log('[DASHBOARDCONFIG] List update:', schema);
@@ -110,4 +114,61 @@ angular.module('hfosFrontendApp')
                 user.updateclientconfig(origconf);
             };
 
-        }]);
+        }]).directive('ngDynamicController', ['$compile', '$http', function ($compile, $http) {
+        return {
+            scope: {
+                widgettype: '=ngDynamicController',
+                valuetype: '='
+            },
+            restrict: 'A',
+            transclude: true,
+//            terminal: true,
+//            priority: 100000,
+            link: function (scope, elem, attrs) {
+                console.log('[NGDC] SCOPE:', scope, attrs);
+                elem.attr('ng-controller', scope.widgettype);
+                elem.removeAttr('ng-dynamic-controller');
+
+                $http.get('/views/cards/' + scope.widgettype + '.html')
+                    .then(function (response) {
+                        console.log('[NGDC] Html Response:', response.data);
+                        elem.append(response.data);
+                        $compile(elem)(scope);
+                    });
+                /*var build = function (html) {
+                 element.empty().append($compile(html)(scope));
+                 };
+                 scope.$watch('widget.template', function (newValue, oldValue){
+                 if (newValue) {
+                 build(newValue);
+                 }
+                 });
+
+                 /*
+                 var build = function (html) {
+                 //    $http.get('/views/cards/' + html + '.html')
+                 .then(function(response){
+                 //var linkFn = $compile(response.data)(scope);
+                 //elem.html(linkFn(scope));
+                 console.log(elem);
+                 elem.attr('ng-controller', scope.widgettype);
+                 console.log(elem);
+                 elem.removeAttr('ng-dynamic-controller');
+                 console.log(elem);
+                 elem.append($compile(response.data)(scope));
+                 console.log(elem);
+                 });
+                 //elem.empty().append($compile(html)(scope));
+                 };
+                 scope.$watch('widgettype', function (newValue, oldValue) {
+                 console.log('[NGDC] Adding html for widgettype: ', scope.widgettype);
+                 if (newValue) {
+                 build(newValue);
+                 }
+                 });*/
+
+                // $compile(elem)(scope);
+            }
+        };
+    }]);
+;
