@@ -87,10 +87,11 @@ angular.module('hfosFrontendApp')
                     console.log('[ALERT] Activating MOB alert!');
                     if (msg.data === true) {
                         mobAlert();
-                        add('info', 'MOB alert confirmation', 'Alert successfully triggered shipwide.', 5);
+                        add('danger', 'MOB Alert', 'A man over board alert has been triggered shipwide.', 5);
 
                     } else if (msg.data === false) {
                         mobDeactivate();
+                        add('success', 'MOB Cancelled', 'A triggered man over board alert has been cancelled.', 5);
                     }
                 }
             }

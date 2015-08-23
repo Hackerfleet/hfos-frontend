@@ -46,7 +46,8 @@ angular
             })
             .when('/dashboard', {
                 templateUrl: 'views/dashboard.html',
-                controller: 'DashboardCtrl'
+                controller: 'DashboardCtrl',
+                css: 'styles/dashboard.css'
             })
             .when('/profile', {
                 templateUrl: 'views/profile.html',
@@ -69,7 +70,9 @@ angular
                 templateUrl: 'views/objecteditor.html',
                 controller: 'ObjectEditorCtrl'
             })
-
+            .when('/docs', {
+                templateUrl: 'views/docs.html'
+            })
 
             .otherwise({
                 redirectTo: '/'
