@@ -20,6 +20,7 @@ angular.module('hfosFrontendApp')
         });
 
         $scope.isChatOpen = false;
+        $scope.signedin = false;
 
         socket.send({'type': 'info', 'content': 'Main Controller activated'});
 
@@ -77,5 +78,11 @@ angular.module('hfosFrontendApp')
                 $('#chatinput').focus();
             }
         };
+        console.log(user.signedin());
+
+        $scope.$on('User.Login', function () {
+            console.log('[MAIN] Logged in - updating menu');
+            $scope.signedin = true;
+        });
 
     });

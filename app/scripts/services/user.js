@@ -26,6 +26,8 @@ angular.module('hfosFrontendApp')
             }
 
             $('#btnuser').css('color', '#ff0');
+            $('#nav-dashboard, #nav-logbook, #nav-settings').removeClass('hidden');
+            //$('#nav-crew', '#nav-switchboard').removeClass('hidden');
 
 
             $rootScope.$broadcast('User.Login');
@@ -92,6 +94,7 @@ angular.module('hfosFrontendApp')
                 profile = msg.data;
                 $('#btnuser').css('color', '#0f0');
                 $('#btnchat').removeClass('hidden');
+                console.log('[USER] Profile: ', profile);
                 changeCurrentTheme(profile.settings.theme);
 
                 $rootScope.$broadcast('Profile.Update');

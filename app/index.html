@@ -12,24 +12,24 @@
 
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css"/>
-    <link rel="stylesheet" href="bower_components/bootstrap-additions/dist/bootstrap-additions.css"/>
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
-    <link rel="stylesheet" href="bower_components/spectrum/spectrum.css"/>
-    <link rel="stylesheet" href="bower_components/angularjs-toaster/toaster.css"/>
-    <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css"/>
-    <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css"/>
-    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css"/>
-    <link rel="stylesheet" href="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu.css"/>
-    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css"/>
-    <link rel="stylesheet" href="bower_components/leaflet.locatecontrol/dist/L.Control.Locate.css"/>
-    <link rel="stylesheet" href="bower_components/leaflet.fullscreen/Control.FullScreen.css"/>
-    <link rel="stylesheet" href="bower_components/leaflet.vector-markers/dist/Leaflet.vector-markers.css"/>
-    <link rel="stylesheet" href="bower_components/L.EasyButton/src/easy-button.css"/>
-    <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css"/>
-    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.css"/>
-    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.date.css"/>
-    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.time.css"/>
+    <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-additions/dist/bootstrap-additions.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/spectrum/spectrum.css" />
+    <link rel="stylesheet" href="bower_components/angularjs-toaster/toaster.css" />
+    <link rel="stylesheet" href="bower_components/angular-gridster/dist/angular-gridster.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/leaflet.locatecontrol/dist/L.Control.Locate.css" />
+    <link rel="stylesheet" href="bower_components/leaflet.fullscreen/Control.FullScreen.css" />
+    <link rel="stylesheet" href="bower_components/leaflet.vector-markers/dist/Leaflet.vector-markers.css" />
+    <link rel="stylesheet" href="bower_components/L.EasyButton/src/easy-button.css" />
+    <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css" />
+    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.css" />
+    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.date.css" />
+    <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.time.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -87,15 +87,15 @@
         <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li id="nav-"><a href="#/"><span class="glyphicon glyphicon-home"></span></a></li>
-                <li id="nav-dashboard"><a href="#/dashboard">Dashboard</a></li>
+                <li id="nav-map"><a href="#/map">Chart</a></li>
+                <li id="nav-dashboard" class="hidden"><a href="#/dashboard">Dashboard</a></li>
                 <li id="nav-weather" class="hidden"><a href="#/weather">Weather</a></li>
-                <li id="nav-map"><a href="#/map">Map</a></li>
                 <li id="nav-crew" class="hidden"><a href="#/crew">Crew</a></li>
                 <li id="nav-logbook" class="hidden"><a href="#/logbook">Logbook</a></li>
                 <li id="nav-switchboard" class="hidden"><a href="#/switchboard">Switchboard</a></li>
                 <li id="nav-communication" class="hidden"><a href="#/communication">Communication</a></li>
-                <li id="nav-settings" class="hidden"><a href="#/settings">Settings</a></li>
-                <li class="dropdown">
+                <li id="nav-settings" class="hidden"><a href="#/obj/vessel/00000000-0000-0000-0000-000000000000">Vessel settings</a></li>
+                <!-- <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">?<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -107,13 +107,15 @@
                         <li><a href="/docs/dev/index.html" target="_blank">Developer documentation</a></li>
                         <li><a href="#/about">About</a></li>
                     </ul>
-                </li>
-                <!-- <li id="nav-about"><a href="#/about">?</a></li> -->
+                </li> -->
+                <li id="nav-about"><a href="#/about">?</a></li>
             </ul>
         </div>
         <!--/.nav-collapse -->
     </div>
 </div>
+
+
 
 <div id="bootscreen" class="well vertical-center gradient">
     <div class="center-block">
@@ -129,6 +131,7 @@
         </table>
     </div>
 </div>
+
 
 <div ng-view="" id="content"></div>
 

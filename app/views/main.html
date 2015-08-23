@@ -1,21 +1,22 @@
-<div class="jumbotron">
+
+<div class="$jumbotron">
     <div class="container" id="menu">
         <div class="col-md-4">
-            <div class="menu-item" id="navdisplay">
-                <a href="#/dashboard">
-                    <img src="/assets/images/icons/iconmonstr-compass-6-icon.svg" type="image/svg+xml" class="menuicon"/>
+            <div class="menu-item" id="map">
+                <a href="#/map">
+                    <img src="/assets/images/icons/iconmonstr-map-2-icon.svg" type="image/svg+xml" class="menuicon"/>
 
-                    <div class="menu-label">Dashboard</div>
+                    <div class="menu-label">Chart</div>
                 </a>
             </div>
-            <div class="menu-item hidden" id="switchboard">
+            <div class="menu-item hidden" id="switchboard" ng-show="signedin">
                 <a href="/switchboard.html">
                     <img src="/assets/images/icons/iconmonstr-control-panel-icon.svg" type="image/svg+xml" class="menuicon"/>
 
                     <div class="menu-label">Switchboard</div>
                 </a>
             </div>
-            <div class="menu-item hidden" id="communication">
+            <div class="menu-item hidden" id="communication" ng-show="signedin">
                 <a href="/communication.html">
                     <img src="/assets/images/icons/iconmonstr-radio-tower-icon.svg" type="image/svg+xml" class="menuicon"/>
 
@@ -24,6 +25,13 @@
             </div>
         </div>
         <div class="col-md-4">
+            <div class="menu-item" id="wiki" ng-show="signedin">
+                <a href="#/wiki/Index">
+                    <img src="/assets/images/icons/iconmonstr-note-21-icon.svg" type="image/svg+xml" class="menuicon"/>
+
+                    <div class="menu-label">Wiki</div>
+                </a>
+            </div>
             <div class="menu-item hidden" id="weather">
                 <a href="/weather.html">
                     <img src="/assets/images/icons/iconmonstrandhackerfleet-weather-icon.svg" type="image/svg+xml"
@@ -32,7 +40,7 @@
                     <div class="menu-label">Weather</div>
                 </a>
             </div>
-            <div class="menu-item hidden" id="logbook">
+            <div class="menu-item hidden" id="logbook" ng-show="signedin">
                 <a href="/logbook.html">
                     <img src="/assets/images/icons/iconmonstr-printer-icon.svg" type="image/svg+xml" class="menuicon"/>
 
@@ -41,21 +49,21 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="menu-item" id="map">
-                <a href="#/map">
-                    <img src="/assets/images/icons/iconmonstr-map-2-icon.svg" type="image/svg+xml" class="menuicon"/>
+            <div class="menu-item" id="navdisplay" ng-show="signedin">
+                <a href="#/dashboard">
+                    <img src="/assets/images/icons/iconmonstr-compass-6-icon.svg" type="image/svg+xml" class="menuicon"/>
 
-                    <div class="menu-label">Navigation</div>
+                    <div class="menu-label">Dashboard</div>
                 </a>
             </div>
-            <div class="menu-item hidden" id="settings">
+            <div class="menu-item hidden" id="settings" ng-show="signedin">
                 <a href="#/settings">
                     <img src="/assets/images/icons/iconmonstr-wrench-4-icon.svg" type="image/svg+xml" class="menuicon"/>
 
                     <div class="menu-label">Settings</div>
                 </a>
             </div>
-            <div class="menu-item" id="gamepadremote">
+            <div class="menu-item hidden" id="gamepadremote" ng-show="signedin">
                 <a href="#/gamepadremote">
                     <img src="/assets/images/icons/iconmonstr-gamepad-2-icon.svg" type="image/svg+xml"
                          class="menuicon"/>
@@ -64,6 +72,5 @@
                 </a>
             </div>
         </div>
-
     </div>
 </div>
