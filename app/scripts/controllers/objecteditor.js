@@ -11,6 +11,7 @@ angular.module('hfosFrontendApp')
     .controller('ObjectEditorCtrl', function ($scope, $routeParams, ObjectProxy, user, schemata) {
         $scope.uuid = $routeParams.uuid;
 
+
         if ($scope.uuid === 'create') {
             $scope.action = 'Create';
             $('#objModified').removeClass('hidden');
@@ -65,6 +66,7 @@ angular.module('hfosFrontendApp')
         $scope.$on('OP.Change', function (ev, uuid) {
             console.log('[OE] Object has been updated from node, checking..', ev, uuid);
 
+            // TODO: This could fail and possibly catch the wrong object
             if ($scope.uuid === 'create') {
                 $scope.uuid = uuid;
             }
@@ -72,6 +74,7 @@ angular.module('hfosFrontendApp')
             if (uuid === $scope.uuid) {
                 console.log('[OE] Object changed, updating content.');
                 $scope.model = ObjectProxy.obj[uuid];
+                console.log('[OE] Object model: ', $scope.model);
                 $('#objectModified').addClass('hidden');
                 $('#objectEditButton').removeClass('hidden');
                 $scope.$apply();
