@@ -23,7 +23,7 @@ angular.module('hfosFrontendApp')
 
         var disconnectalert = $alert({
             'title': 'Offline',
-            'placement': 'top',
+            'placement': 'top-left',
             'type': 'warning',
             'show': false
         });
@@ -50,7 +50,7 @@ angular.module('hfosFrontendApp')
             disconnectalert = $alert({
                 'title': 'Offline',
                 'content': 'You have been disconnected from the node. Retry interval is at ' + humanizeDuration(interval * 1000),
-                'placement': 'top',
+                'placement': 'top-left',
                 'type': 'warning',
                 'show': true,
                 'duration': interval
