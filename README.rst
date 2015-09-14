@@ -1,20 +1,3 @@
-.. image:: https://travis-ci.org/Hackerfleet/hfos-frontend.svg?branch=master
-    :target: https://travis-ci.org/Hackerfleet/hfos-frontend
-    :alt: Build Status
-
-.. image:: https://landscape.io/github/Hackerfleet/hfos-frontend/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/Hackerfleet/hfos-frontend/master
-    :alt: Quality
-
-.. image:: https://requires.io/github/Hackerfleet/hfos-frontend/requirements.svg?branch=master
-    :target: https://requires.io/github/Hackerfleet/hfos-frontend/requirements/?branch=master
-    :alt: Requirements Status
-
-.. image:: https://badge.waffle.io/hackerfleet/hfos.svg?label=ready&title=Ready
-    :target: https://waffle.io/hackerfleet/hfos
-    :alt: Stories Ready
-
-
 HFOS - The Hackerfleet Operating System
 =======================================
 
