@@ -1,5 +1,10 @@
 {
   "name": "hfos-frontend",
+  "description": "This is the Hackerfleet OS Frontend",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hackerfleet/hfos"
+  },
   "version": "0.1.0",
   "dependencies": {},
   "devDependencies": {
