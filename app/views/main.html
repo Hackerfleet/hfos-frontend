@@ -1,76 +1,19 @@
+<div class="jumbotron">
+    <div gridster="gridsterOptions">
+        <ul>
+            <li data-gridster-item
+                data-row="item.row"
+                data-col="item.col"
+                data-sizex="1"
+                data-sizey="1"
+                ng-repeat="item in items"
+                class="menu-box">
+                <a href="#/{{item.url}}" class="center-block">
+                    <img src="/assets/images/icons/{{item.svg}}" type="image/svg+xml" class="menu-icon"/>
 
-<div class="$jumbotron">
-    <div class="container" id="menu">
-        <div class="col-md-4">
-            <div class="menu-item" id="map">
-                <a href="#/map">
-                    <img src="/assets/images/icons/iconmonstr-map-2-icon.svg" type="image/svg+xml" class="menuicon"/>
-
-                    <div class="menu-label">Chart</div>
+                    <div class="menu-label center-block">{{item.title}}</div>
                 </a>
-            </div>
-            <div class="menu-item hidden" id="switchboard" ng-show="signedin">
-                <a href="/switchboard.html">
-                    <img src="/assets/images/icons/iconmonstr-control-panel-icon.svg" type="image/svg+xml" class="menuicon"/>
-
-                    <div class="menu-label">Switchboard</div>
-                </a>
-            </div>
-            <div class="menu-item hidden" id="communication" ng-show="signedin">
-                <a href="/communication.html">
-                    <img src="/assets/images/icons/iconmonstr-radio-tower-icon.svg" type="image/svg+xml" class="menuicon"/>
-
-                    <div class="menu-label">Communication</div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="menu-item" id="wiki" ng-show="signedin">
-                <a href="#/wiki/Index">
-                    <img src="/assets/images/icons/iconmonstr-note-21-icon.svg" type="image/svg+xml" class="menuicon"/>
-
-                    <div class="menu-label">Wiki</div>
-                </a>
-            </div>
-            <div class="menu-item hidden" id="weather">
-                <a href="/weather.html">
-                    <img src="/assets/images/icons/iconmonstrandhackerfleet-weather-icon.svg" type="image/svg+xml"
-                         class="menuicon"/>
-
-                    <div class="menu-label">Weather</div>
-                </a>
-            </div>
-            <div class="menu-item hidden" id="logbook" ng-show="signedin">
-                <a href="/logbook.html">
-                    <img src="/assets/images/icons/iconmonstr-printer-icon.svg" type="image/svg+xml" class="menuicon"/>
-
-                    <div class="menu-label">Logbook</div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="menu-item" id="navdisplay" ng-show="signedin">
-                <a href="#/dashboard">
-                    <img src="/assets/images/icons/iconmonstr-compass-6-icon.svg" type="image/svg+xml" class="menuicon"/>
-
-                    <div class="menu-label">Dashboard</div>
-                </a>
-            </div>
-            <div class="menu-item hidden" id="settings" ng-show="signedin">
-                <a href="#/settings">
-                    <img src="/assets/images/icons/iconmonstr-wrench-4-icon.svg" type="image/svg+xml" class="menuicon"/>
-
-                    <div class="menu-label">Settings</div>
-                </a>
-            </div>
-            <div class="menu-item hidden" id="gamepadremote" ng-show="signedin">
-                <a href="#/gamepadremote">
-                    <img src="/assets/images/icons/iconmonstr-gamepad-2-icon.svg" type="image/svg+xml"
-                         class="menuicon"/>
-
-                    <div class="menu-label">Remote control</div>
-                </a>
-            </div>
-        </div>
+            </li>
+        </ul>
     </div>
 </div>
