@@ -1,14 +1,13 @@
+<div class="container">
+    <div class="well">
+        <div id="about" class="center-block" style="width:95%">
+            <div class="center-block">
+                <span class="center-block glyphicon icon-hf-logo hflogodark"></span>
+            </div>
 
-<div class="jumbotron">
-    <center>
-        <a href="https://hackerfleet.org">
-            <div id="compass"></div>
-        </a>
-
-        <div class="container">
             <H2>HFOS - Hackerfleet Operating System (Beta)</H2>
 
-            <div id="links">
+            <div id="links" class="center-block" style="width:80%">
                 <ul>
                     <li><a href="mailto:info@hackerfleet.org">Contact</a></li>
                     <li><a href="https://hackerfleet.org">Homepage</a></li>
@@ -17,12 +16,27 @@
                             <li><a href="mailto:bugs@hackerfleet.org">Report via mail</a></li>
                             <li><a href="https://github.com/hackerfleet/hfos/issues" target="_blank">Browse on
                                 Github</a></li>
-                            <li><a href="https://github.com/hackerfleet/hfos/issues/new" target="_blank">Report on
+                            <li><a href="https://github.com/hackerfleet/hfos/issues/new" target="_blank">Report
+                                on
                                 Github</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
+            <a ng-click="enableDebug()" type="button" class="btn btn-warning" style="align: center">Debug</a>
         </div>
-    </center>
+
+        <div id="debug" class="hidden">
+            <a ng-click="memdebug()" type="button" class="btn btn-danger">Memory Top</a>
+            <a ng-click="graph()" type="button" class="btn btn-danger">Generate Graph</a>
+
+
+            <div class="input-group">
+                <input type="text" class="form-control" id="commandinput" ng-model="consoleinput">
+                <span class="input-group-btn">
+                    <button ng-click="sendcommand()" class="btn btn-success">Transmit</button>
+                </span>
+            </div>
+        </div>
+    </div>
 </div>
