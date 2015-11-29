@@ -10,6 +10,7 @@
 angular.module('hfosFrontendApp')
     .controller('ObjectEditorCtrl', function ($scope, $routeParams, ObjectProxy, user, schemata) {
         $scope.uuid = $routeParams.uuid;
+        $scope.action = $routeParams.action;
 
 
         if ($scope.uuid === 'create') {
@@ -20,28 +21,51 @@ angular.module('hfosFrontendApp')
         }
 
         $scope.schemaname = $routeParams.schema;
+        $scope.schemascreenname = $scope.schemaname.charAt(0).toUpperCase() + $scope.schemaname.slice(1);
         $scope.schemadata = {};
         $scope.model = {};
 
-        if (user.signedin()) {
-            console.log('[OE] Requesting schemata and object.');
+        var getData = function () {
+            console.log('[OE] Requesting schemata.');
             $scope.schemadata = schemata.get($scope.schemaname);
-            ObjectProxy.get($scope.schemaname, $scope.uuid);
+            if ($scope.action !== 'Create') {
+                console.log('[OE] Requesting object.');
+                ObjectProxy.get($scope.schemaname, $scope.uuid);
+            }
+        };
+
+        if (user.signedin()) {
+            getData();
         }
 
-        ObjectProxy.get($scope.schemaname, $scope.uuid);
+        $scope.callBackSD = function (schema) {
+            console.log('[OE] Callback getting entries: ', schema);
+            var origlist = ObjectProxy.lists[schema];
+            console.log('[OE] Callback results: ', origlist);
+            return origlist;
+
+        };
+
+        $scope.getFormData = function (options, search) {
+            console.log('[OE] Trying to obtain proxy list.', options, search);
+            var result = ObjectProxy.newgetlist(options.type, search);
+            console.log(result);
+            return result;
+        };
+
+        //console.log("[OE] CB Results: ", $scope.Callback('mapview'));
+
+        $scope.$on('User.Login', function () {
+            console.log('[OE] User logged in, getting current page.');
+            // TODO: Check if user modified object - offer merging
+            getData();
+        });
 
         $scope.$on('Schemata.Update', function () {
             var newschema = schemata.schema($scope.schemaname);
             console.log('[OE] Got a schema update:', newschema);
             $scope.schemadata = schemata.get($scope.schemaname);
-        });
-
-        $scope.$on('User.Login', function () {
-            console.log('[OE] User logged in, getting current page.');
-            // TODO: Check if user modified object - offer merging
-            $scope.schemadata = schemata.get($scope.schemaname);
-            ObjectProxy.get($scope.schemaname, $scope.uuid);
+            // TODO: getData?
         });
 
         var markStored = function () {
@@ -51,7 +75,7 @@ angular.module('hfosFrontendApp')
             $scope.action = 'Edit';
         };
 
-        $scope.$on('OP.Stored', function (ev, uuid) {
+        $scope.$on('OP.Put', function (ev, uuid) {
             if (uuid === $scope.uuid) {
                 markStored();
             } else if ($scope.uuid === 'create') {
@@ -63,7 +87,7 @@ angular.module('hfosFrontendApp')
             }
         });
 
-        $scope.$on('OP.Change', function (ev, uuid) {
+        $scope.$on('OP.Get', function (ev, uuid) {
             console.log('[OE] Object has been updated from node, checking..', ev, uuid);
 
             // TODO: This could fail and possibly catch the wrong object
@@ -95,6 +119,10 @@ angular.module('hfosFrontendApp')
          $scope.$watchCollection('model', editorChange);
          */
         $scope.submitForm = function (model) {
+
+            if ($scope.action === 'Create') {
+                model.uuid = 'create';
+            }
             console.log('[OE] Object update initiated with ', model);
             ObjectProxy.put($scope.schemaname, model);
         };
