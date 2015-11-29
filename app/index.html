@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu.css" />
+    <link rel="stylesheet" href="bower_components/leaflet-coordinates/dist/Leaflet.Coordinates-0.1.5.css"/>
     <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/leaflet.locatecontrol/dist/L.Control.Locate.css" />
     <link rel="stylesheet" href="bower_components/leaflet.fullscreen/Control.FullScreen.css" />
@@ -30,6 +31,8 @@
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.css" />
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.date.css" />
     <link rel="stylesheet" href="bower_components/pickadate/lib/themes/default.time.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css"/>
+    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"/>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -37,7 +40,6 @@
     <link rel="stylesheet" href="bower_components/leaflet-mouseposition/src/L.Control.MousePosition.css"/>
     <link rel="stylesheet" href="bower_components/leaflet-pancontrol/src/L.Control.Pan.css"/>
     <link rel="stylesheet" href="bower_components/leaflet-zoomslider/src/L.Control.Zoomslider.css"/>
-    <link rel="stylesheet" href="bower_components/leaflet-coordinates/dist/Leaflet.Coordinates-0.1.4.css"/>
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
@@ -110,13 +112,15 @@
     </div>
 </div>
 
-
-
 <div id="bootscreen" class="well vertical-center gradient">
     <div class="center-block">
         <table>
             <tr>
-                <div id="hflogo" class="center"></div>
+                <div class="center-block">
+                    <span class="center-block glyphicon icon-hf-logo hflogo"></span>
+                </div>
+
+                <div id="hflogo" class="hidden center"></div>
             </tr>
             <tr>
                 <div class="dark">
@@ -129,6 +133,33 @@
 
 
 <div ng-view="" id="content"></div>
+
+<noscript>
+    <div class="well vertical-center" style="height: 100vh;">
+        <style type="text/css">
+            #bootscreen {
+                display: none;
+            }
+
+            #content {
+                display: none;
+            }
+
+            #mainmenu {
+                display: none;
+            }
+        </style>
+
+        <span>
+            <h1><span><i class="fa fa-exclamation-circle"></i></span> Javascript deactivated!</h1>
+            <br/>
+            <p>
+                Please check your browser and plugin settings and make sure, Javascript is allowed for this site, then
+                reload the page.
+            </p>
+        </span>
+    </div>
+</noscript>
 
 
 <!-- build:js(.) scripts/oldieshim.js -->
@@ -170,7 +201,7 @@
 <script src="bower_components/ngFitTextDynamic/ng-FitTextDynamic.js"></script>
 <script src="bower_components/d3/d3.js"></script>
 <script src="bower_components/ngRadialGauge/src/ng-radial-gauge-dir.js"></script>
-<script src="bower_components/leaflet/dist/leaflet.js"></script>
+<script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
 <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
 <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
 <script src="bower_components/leaflet.draw/dist/leaflet.draw-src.js"></script>
@@ -178,6 +209,7 @@
 <script src="bower_components/leaflet-omnivore/leaflet-omnivore.js"></script>
 <script src="bower_components/leaflet-terminator/leaflet-terminator.js"></script>
 <script src="bower_components/Leaflet.contextmenu/dist/leaflet.contextmenu-src.js"></script>
+<script src="bower_components/leaflet-coordinates/dist/Leaflet.Coordinates-0.1.5.min.js"></script>
 <script src="bower_components/leaflet.locatecontrol/src/L.Control.Locate.js"></script>
 <script src="bower_components/leaflet.fullscreen/Control.FullScreen.js"></script>
 <script src="bower_components/leaflet.vector-markers/dist/Leaflet.vector-markers.js"></script>
@@ -190,6 +222,12 @@
 <script src="bower_components/pickadate/lib/picker.time.js"></script>
 <script src="bower_components/angular-mocks/angular-mocks.js"></script>
 <script src="bower_components/angular-scenario/angular-scenario.js"></script>
+<script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+<script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js"></script>
+<script src="bower_components/angular-ui-select/dist/select.js"></script>
+<script src="bower_components/angular-schema-form-dynamic-select/angular-schema-form-dynamic-select.min.js"></script>
+<script src="bower_components/angular-translate/angular-translate.js"></script>
+<script src="bower_components/ngDraggable/ngDraggable.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -206,13 +244,14 @@ it around all the time :/ -->
 <script src="bower_components/angular-schema-form-datepicker/bootstrap-datepicker.min.js"></script>
 <script src="bower_components/angular-schema-form-colorpicker/bootstrap-colorpicker.min.js"></script>
 <script src="bower_components/angular-schema-form-tinymce/bootstrap-tinymce.min.js"></script>
+<script src="bower_components/angular-schema-form-dynamic-select/angular-schema-form-dynamic-select.js"></script>
+
 
 <!-- angular-schema-form -->
 
 <script src="bower_components/leaflet.Graticule/src/L.Graticule.js"></script>
 <script src="bower_components/leaflet.draw/dist/leaflet.draw.js"></script>
 <script src="bower_components/leaflet-MiniMap/src/Control.MiniMap.js"></script>
-<script src="bower_components/leaflet-coordinates/dist/Leaflet.Coordinates-0.1.4.min.js"></script>
 <script src="bower_components/leaflet.Graticule/examples/lib/proj4js-compressed.js"></script>
 <script src="bower_components/leaflet-tilelayer-geojson/TileLayer.GeoJSON.js"></script>
 <script src="bower_components/leaflet-zoomslider/src/L.Control.Zoomslider.js"></script>
@@ -246,6 +285,11 @@ it around all the time :/ -->
 <script src="scripts/controllers/objecteditor.js"></script>
 <script src="scripts/controllers/logbook.js"></script>
 <script src="scripts/services/alert.js"></script>
+<script src="scripts/filters/toarray.js"></script>
+<script src="scripts/controllers/objectlist.js"></script>
+<script src="scripts/controllers/library.js"></script>
+<script src="scripts/controllers/taskgrid.js"></script>
+<script src="scripts/directives/objectlist.js"></script>
 <!-- endbuild -->
 </body>
 </html>
