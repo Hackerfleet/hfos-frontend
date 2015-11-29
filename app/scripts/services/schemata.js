@@ -45,7 +45,11 @@ angular.module('hfosFrontendApp')
 
         var getschema = function (schemaname) {
             console.log('[SCHEMATA] Schema requested: ', schemaname, schemata[schemaname]['schema']);
-            return schemata[schemaname]['schema'];
+            if (user.signedin()) {
+                return schemata[schemaname]['schema'];
+            } else {
+                console.log('[SCHEMATA] But we are not logged in!');
+            }
         };
 
         var getform = function (schemaname) {
