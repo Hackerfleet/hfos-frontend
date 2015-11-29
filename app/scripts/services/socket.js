@@ -38,7 +38,7 @@ angular.module('hfosFrontendApp')
 
         var doReconnect = function () {
             console.log('[SOCKET] Trying to reconnect.');
-            sock.reconnect();
+            //sock.reconnect();
 
             reconnecttries++;
             trying = true;
