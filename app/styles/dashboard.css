@@ -40,6 +40,7 @@
 
 .box-content {
     padding: 0px;
+    vertical-align: middle;
 }
 
 .box-header-btns {

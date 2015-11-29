@@ -31,18 +31,54 @@ angular.module('hfosFrontendApp')
         $scope.dashboarduuid = user.clientconfig()['dashboarduuid'];
         $scope.dashboard = {};
 
+        $scope.referenceframe = {};
+        $scope.observed = [];
+
         ObjectProxy.get('dashboard', $scope.dashboarduuid);
+
+        var updateObserved = function () {
+            console.log('[DASH] Updating observed values from ', $scope.dashboard.cards);
+            $scope.observed = [];
+            for (var card in $scope.dashboard.cards) {
+                console.log('[DASH]', $scope.dashboard.cards[card]);
+                $scope.observed.push($scope.dashboard.cards[card].valuetype);
+            }
+            console.log($scope.observed);
+        };
 
         var resetDashboard = function () {
             console.log('[DASH] Resetting dashboard to ', $scope.dashboarduuid);
             $scope.dashboard = ObjectProxy.obj[$scope.dashboarduuid];
             console.log($scope.dashboard);
             //console.log(decksterConfig);
-
-
+            updateObserved();
         };
 
-        $scope.$on('OP.Change', function (ev, uuid) {
+        $scope.opentab = function (tabname) {
+            console.log('[DASH] Switching tab to ', tabname);
+            $('.nav-pills .active, .tab-content .active').removeClass('active');
+            $('#' + tabname).addClass('active');
+        };
+
+        $scope.$on('hfos.NavdataUpdate', function () {
+            var framedata = navdata.frame();
+            var frameages = navdata.ages();
+            var now = new Date().getTime();
+            console.log("Updating Dashboard");
+            for (var property in framedata) {
+                var data = {
+                    value: framedata[property],
+                    birth: frameages[property],
+                    age: humanizeDuration(((now / 1000) - frameages[property]) * 1000, {round: true}),
+                    observed: $scope.observed.indexOf(property) >= 0
+                };
+                $scope.referenceframe[property] = data;
+            }
+
+
+        });
+
+        $scope.$on('OP.Get', function (ev, uuid) {
             if (uuid === $scope.dashboarduuid) {
                 console.log('[DASH] Received dashboard configuration');
                 resetDashboard();
@@ -54,6 +90,29 @@ angular.module('hfosFrontendApp')
             $scope.dashboarduuid = user.clientconfig()['dashboarduuid'];
             ObjectProxy.get('dashboard', $scope.dashboarduuid);
         });
+
+        $scope.toggleDashboardItem = function (key) {
+            if ($scope.observed.indexOf(key) >= 0) {
+                console.log('[DASH] Removing ', key, ' from dashboard.');
+                for (card in $scope.dashboard.cards) {
+                    if ($scope.dashboard.cards[card].valuetype === key) {
+                        $scope.dashboard.cards.pop(card);
+                    }
+                }
+            } else {
+                console.log('[DASH] Adding ', key, ' to dashboard.');
+                var card = {
+                    'widgettype': 'DigitalDashboardCtrl',
+                    'valuetype': key,
+                    'title': key
+                };
+                $scope.dashboard.cards.push(card);
+            }
+            console.log('[DASH] Putting new dashboard: ', $scope.dashboard);
+            ObjectProxy.put('dashboard', $scope.dashboard);
+            updateObserved();
+        };
+
 
         $scope.configureCards = function () {
             console.log('[DASH] Opening configuration');
@@ -171,4 +230,4 @@ angular.module('hfosFrontendApp')
             }
         };
     }]);
-;
+
