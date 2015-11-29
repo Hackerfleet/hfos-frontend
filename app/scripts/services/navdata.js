@@ -29,4 +29,17 @@ angular.module('hfosFrontendApp')
             }
         });
 
+        var getFrame = function () {
+            return referenceframe;
+        };
+
+        var getAges = function () {
+            return referenceages;
+        };
+
+        return {
+            frame: getFrame,
+            ages: getAges
+        }
+
     });

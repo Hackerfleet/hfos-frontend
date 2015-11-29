@@ -9,6 +9,7 @@
  */
 angular.module('hfosFrontendApp')
     .service('MapViewService', function ($rootScope, socket, user, schemata, createDialog) {
+        /*
         var mapviews = {};
 
         var onChangeCallbacks = {};
@@ -82,17 +83,8 @@ angular.module('hfosFrontendApp')
         return {
             update: updateview,
             selectview: selectview,
-            subscribe: subscribe,
+         subscribe: subscribe
         };
+         */
 
-
-    }).controller('MapViewSelectCtrl', ['$scope', 'mapview', 'mapviews', 'MapViewService',
-        function ($scope, mapview, mapviews, MapViewService) {
-            $scope.mapview = mapview;
-            $scope.mapviews = mapviews;
-            console.log('MVS Ctrl: ', mapview, mapviews);
-            $scope.selectMV = function (uuid) {
-                console.log('MVS Ctrl: Selected:', uuid);
-                MapViewService.subscribe(uuid);
-            };
-        }]);
+    });

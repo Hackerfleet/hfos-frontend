@@ -47,7 +47,7 @@ angular.module('hfosFrontendApp')
             }
         });
 
-        $scope.$on('OP.Change', function (ev, uuid) {
+        $scope.$on('OP.Get', function (ev, uuid) {
             console.log('[PROFILE] Clientconfig update:', uuid);
 
             if (uuid === configedituuid) {
@@ -127,6 +127,7 @@ angular.module('hfosFrontendApp')
                 ]
             },
             'settings.notes',
+            'settings.mapviewuuid',
             {
                 type: 'submit',
                 title: 'Save Settings'
