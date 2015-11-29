@@ -17,18 +17,21 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div class="well">
-    <H1>{{action}}: {{schemaname}}</H1>
-    <span id="objStored" class="label label-success hidden">Stored</span>
-    <span id="objModified" class="label label-danger hidden">Modified</span>
+<div class="container">
+    <div class="well">
+        <H1>{{action}}: {{schemascreenname}}/{{model.name}}</H1>
+        <span id="objStored" class="label label-success hidden">Stored</span>
+        <span id="objModified" class="label label-danger hidden">Modified</span>
 
-    <form sf-schema="schemadata.schema" sf-form="schemadata.form" sf-model="model" ng-submit="submitForm(model)"></form>
-    <div class="hidden">
-        <hr>
-        <span>Model: {{model}}</span>
-        <br>
-        <span>Schema: {{schemadata.schema}}</span>
-        <br>
-        <span>Form: {{schemadata.form}}</span>
+        <form sf-schema="schemadata.schema" sf-form="schemadata.form" sf-model="model"
+              ng-submit="submitForm(model)"></form>
+        <div class="hidden">
+            <hr>
+            <span>Model: {{model}}</span>
+            <br>
+            <span>Schema: {{schemadata.schema}}</span>
+            <br>
+            <span>Form: {{schemadata.form}}</span>
+        </div>
     </div>
 </div>
