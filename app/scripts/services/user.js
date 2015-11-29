@@ -16,10 +16,15 @@ angular.module('hfosFrontendApp')
         var clientconfig = {};
 
         var signedin = false;
+        var signingIn = false;
         var onAuthCallbacks = [];
+
+        var unauthorized = ['wiki', 'logbook', 'dashboard', 'obj', 'list', 'library'];
+        var desiredcontext = false;
 
         var signIn = function () {
             signedin = true;
+            signingIn = false;
 
             for (var i = 0; i < onAuthCallbacks.length; i++) {
                 onAuthCallbacks[i].call(user);
@@ -32,7 +37,12 @@ angular.module('hfosFrontendApp')
 
             $rootScope.$broadcast('User.Login');
 
-            //$route.reload();
+            if (desiredcontext !== false) {
+                console.log('[USER] HOORAY! ', desiredcontext);
+                $location.path(desiredcontext);
+                $rootScope.apply();
+            }
+            $route.reload();
         };
 
         var changeCurrentTheme = function (newTheme) {
@@ -160,14 +170,23 @@ angular.module('hfosFrontendApp')
             return clientconfig;
         };
 
+        var logincancel = function () {
+            signingIn = false;
+        };
+
         var showlogin = function () {
-            createDialog('/views/modals/login.tpl.html', {
-                    id: 'loginDialog',
-                    title: 'Login to HFOS',
-                    backdrop: false,
-                    footerTemplate: '<span></span>'
-                }
-            );
+            if (signingIn !== true) {
+
+                createDialog('/views/modals/login.tpl.html', {
+                        id: 'loginDialog',
+                        title: 'Login to HFOS',
+                        backdrop: false,
+                        cancel: {fn: logincancel},
+                        footerTemplate: '<span></span>'
+                    }
+                );
+                signingIn = true;
+            }
         };
 
         var showprofile = function () {
@@ -236,6 +255,7 @@ angular.module('hfosFrontendApp')
             }
         };
 
+
         var check = function () {
             console.log('[USER] Signed in: ', signedin);
             console.log('[USER] User: ', user);
@@ -243,9 +263,31 @@ angular.module('hfosFrontendApp')
             console.log('[USER] Client configuration: ', clientconfig);
         };
 
+        // register listener to watch route changes
+        $rootScope.$on("$locationChangeStart", function (event, next, current) {
+            if (signedin !== true) {
+                // no logged user, we should be going to #login
+                console.log('[USER] Route changing while not logged in.');
+                console.log(next);
+
+                var newPath = $location.path();
+                console.log(newPath);
+
+                if (unauthorized.indexOf(newPath.split('/')[1]) >= 0) {
+                    console.log('[USER] Not authorized - showing login dialog');
+                    showlogin();
+                    desiredcontext = newPath;
+                    event.preventDefault();
+                }
+            } else {
+                console.log('[USER] Route changing while logged in.');
+            }
+        });
+
         return {
             login: login,
             logout: logout,
+            logincancel: logincancel,
             check: check,
 
             signedin: isSignedin,
