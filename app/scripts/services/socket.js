@@ -21,6 +21,12 @@ angular.module('hfosFrontendApp')
         var connected = false;
         var trying = false;
 
+        var stats = {
+            tx: 0,
+            rx: 0,
+            start: 0
+        };
+
         var disconnectalert = $alert({
             'title': 'Offline',
             'placement': 'top-left',
@@ -30,6 +36,7 @@ angular.module('hfosFrontendApp')
 
         sock.onMessage(function (args) {
             console.log(args);
+            stats.rx++;
         });
 
         var getHost = function () {
@@ -93,6 +100,7 @@ angular.module('hfosFrontendApp')
 
             var currentdate = new Date();
             document.getElementById('btnhome').title = 'Connected since ' + currentdate;
+            stats.start = currentdate;
 
             $alert({
                 'title': 'Online',
@@ -157,9 +165,12 @@ angular.module('hfosFrontendApp')
         var send = function (msg) {
             console.log('[SOCKET] Transmitting: ', msg);
             sock.send(msg);
+            console.log('[SOCKET] Here is the socket after this:', sock);
+            stats.tx++;
         };
 
         return {
+            stats: stats,
             connected: isConnected,
             host: getHost,
             disconnect: doDisconnect,

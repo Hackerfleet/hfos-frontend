@@ -8,8 +8,10 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-    .controller('AboutCtrl', function ($scope, socket, Alert) {
+    .controller('AboutCtrl', function ($scope, $interval, socket, Alert) {
         $scope.consoleinput = "";
+
+        var updater = {};
 
         $('#path').css({fill: "#afafff"});
 
@@ -23,7 +25,8 @@ angular.module('hfosFrontendApp')
         };
 
         $scope.enableDebug = function () {
-            $('#debug').toggleClass('hidden');
+            updateStats();
+            updater = $interval(updateStats, 1);
         };
 
         $scope.sendcommand = function () {
@@ -37,4 +40,15 @@ angular.module('hfosFrontendApp')
         $scope.graph = function () {
             command('graph');
         };
+
+        var updateStats = function () {
+            $scope.stats = {
+                rx: socket.stats.rx,
+                tx: socket.stats.tx,
+                start: socket.stats.start,
+                lag: 'N/A'
+            };
+        };
+
+        // $scope.enableDebug();
     });
