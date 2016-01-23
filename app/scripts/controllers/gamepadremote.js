@@ -8,7 +8,7 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-    .controller('GamepadRemoteCtrl', function ($scope, $timeout, user, socket) {
+    .controller('GamepadRemoteCtrl', function ($scope, $timeout, user, socket, ObjectProxy) {
         $scope.status = 'Initializing';
 
         $scope.controlActive = false;
@@ -18,8 +18,8 @@ angular.module('hfosFrontendApp')
         $scope.controldata = {};
 
         function getcontroldata() {
-            socket.send({'component': 'remotectrl', 'action': 'list'});
-            socket.send({'component': 'camera', 'action': 'list'});
+            ObjectProxy.getlist('controllable', {}, '*');
+            ObjectProxy.getlist('controller', {}, '*');
         }
 
         $scope.$on('Profile.Update', getcontroldata);
