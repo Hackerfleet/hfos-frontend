@@ -9,8 +9,7 @@
  * Controller of the hfosFrontendApp
  */
 angular.module('hfosFrontendApp')
-    .controller('MapCtrl', function ($scope, leafletData, navdata, socket, user, createDialog, ObjectProxy, Detector, MapViewService,
-                                     LayerService) {
+    .controller('MapCtrl', function ($scope, leafletData, navdata, socket, user, createDialog, ObjectProxy, Detector) {
         console.log('Starting Map Controller');
 
         console.log(Detector.getResult());
@@ -25,8 +24,6 @@ angular.module('hfosFrontendApp')
         $scope.btn_selectview = '';
         $scope.sync = true;
         $scope.follow = false;
-
-        socket.send({'type': 'info', 'content': 'Map Controller activated'});
 
         var updateMapview = function (objuuid) {
             if (objuuid === $scope.mapviewuuid) {

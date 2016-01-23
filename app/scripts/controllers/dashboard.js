@@ -10,15 +10,6 @@
 angular.module('hfosFrontendApp')
     .controller('DashboardCtrl', function ($scope, navdata, user, socket, createDialog, ObjectProxy) {
 
-
-        socket.send({'type': 'info', 'content': 'Dashboard activated'});
-
-        /*decksterConfig.set({
-         decks: {  // TODO: evaluate if this feat is really useful to us. I think so.
-         }
-         });*/
-
-
         $scope.deckOptions = {
             id: 'Dashboard',
             gridsterOpts: { // any options that you can set for angular-gridster (see:  http://manifestwebdesign.github.io/angular-gridster/)
