@@ -93,6 +93,8 @@ angular.module('hfosFrontendApp')
                         mobDeactivate();
                         add('success', 'MOB Cancelled', 'A triggered man over board alert has been cancelled.', 5);
                     }
+                } else if (msg.action === 'error') {
+                    add('danger', 'Error!', msg.data, 5);
                 }
             }
         });
