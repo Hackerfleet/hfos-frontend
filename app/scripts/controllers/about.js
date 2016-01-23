@@ -25,6 +25,7 @@ angular.module('hfosFrontendApp')
         };
 
         $scope.enableDebug = function () {
+            $('#debug').toggleClass('hidden');
             updateStats();
             updater = $interval(updateStats, 1);
         };
