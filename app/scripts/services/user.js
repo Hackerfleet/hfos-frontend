@@ -38,8 +38,8 @@ angular.module('hfosFrontendApp')
             $rootScope.$broadcast('User.Login');
 
             if (desiredcontext !== false) {
-                console.log('[USER] HOORAY! ', desiredcontext);
-                $location.path(desiredcontext);
+                console.log('[USER] Reloading to page ', desiredcontext);
+                $location.url(desiredcontext);
                 $rootScope.apply();
             }
             $route.reload();
@@ -113,6 +113,8 @@ angular.module('hfosFrontendApp')
                 clientconfig = msg.data;
                 console.log('[USER] Client config: ', clientconfig);
                 storeUUID(clientconfig.uuid);
+
+                $('#clientname').html('<a href="#/obj/client/' + clientconfig.uuid + '">' + clientconfig.name + '</a>');
 
                 $rootScope.$broadcast('Clientconfig.Update');
             }
