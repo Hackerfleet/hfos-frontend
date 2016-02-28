@@ -1,0 +1,19 @@
+<div class="jumbotron">
+    <div gridster="gridsterOptions">
+        <ul>
+            <li data-gridster-item
+                data-row="item.row"
+                data-col="item.col"
+                data-sizex="1"
+                data-sizey="1"
+                ng-repeat="item in $ctrl.items"
+                class="menu-box">
+                <a href="#/{{item.url}}" class="center-block">
+                    <img src="/assets/images/icons/{{item.svg}}" type="image/svg+xml" class="menu-icon"/>
+
+                    <div class="menu-label center-block">{{item.title}}</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

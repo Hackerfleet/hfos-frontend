@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 
   // Configurable paths for the application
   var appConfig = {
-    app: require('./bower.json').appPath || 'app',
+      app: 'app',
     dist: 'dist'
   };
 
@@ -29,10 +29,6 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      bower: {
-        files: ['bower.json'],
-        tasks: ['wiredep']
-      },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
@@ -63,12 +59,19 @@ module.exports = function (grunt) {
       }
     },
 
+      browserify: {
+          js: {
+              src: appConfig.app + '/scripts/app.js',
+              dest: '.tmp/app.js',
+          },
+      },
+
     // The actual grunt server settings
     connect: {
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: '0.0.0.0',
+          hostname: '127.0.0.1',
         livereload: 35729
       },
       livereload: {
@@ -77,10 +80,6 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               connect.static('.tmp'),
-              connect().use(
-                '/app/bower_components',
-                connect.static('./app/bower_components')
-              ),
               connect.static(appConfig.app)
             ];
           }
@@ -93,10 +92,6 @@ module.exports = function (grunt) {
             return [
               connect.static('.tmp'),
               connect.static('test'),
-              connect().use(
-                'bower_components',
-                connect.static('./app/bower_components')
-              ),
               connect.static(appConfig.app)
             ];
           }
@@ -157,14 +152,6 @@ module.exports = function (grunt) {
           src: '{,*/}*.css',
           dest: '.tmp/styles/'
         }]
-      }
-    },
-
-    // Automatically inject Bower components into the app
-    wiredep: {
-      app: {
-        src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
       }
     },
 
@@ -320,18 +307,12 @@ module.exports = function (grunt) {
             'views/{,*/}*.html',
             'assets/images/{,*/}*.{webp}',
             'assets/fonts/*',
-            'bower_components/**',
           ]
         }, {
           expand: true,
           cwd: '.tmp/assets/images',
           dest: '<%= yeoman.dist %>/assets/images',
           src: ['generated/*']
-        }, {
-          expand: true,
-          cwd: '<%= yeoman.app%>/bower_components/bootstrap/dist',
-          src: 'fonts/*',
-          dest: '<%= yeoman.dist %>'
         }]
       },
       styles: {
@@ -380,7 +361,6 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'wiredep',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -403,7 +383,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'wiredep',
+      'browserify',
       //'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
