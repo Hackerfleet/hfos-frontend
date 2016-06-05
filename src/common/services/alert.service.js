@@ -30,7 +30,33 @@ class AlertService {
         this.alert = alert;
         this.modal = modal;
 
-        // this.sock = $websocket('ws://' + host + ':' + port + '/websocket');
+        var self = this;
+
+        function remoteAlert(msg) {
+            console.log('Alert service remote alert: ');
+            var title = 'Remote Alert';
+            var duration = 30;
+            var message;
+
+            console.log(typeof msg.data);
+            if (typeof msg.data === 'string') {
+                message = msg.data;
+            } else if (typeof msg.data === 'object') {
+                if ('title' in msg.data) {
+                    title = msg.data.title;
+                }
+
+                if ('duration' in msg.data) {
+                    duration = msg.data.duration;
+                }
+
+                message = msg.data.message;
+            }
+
+            self.add(msg.action, title, message, duration);
+        }
+
+        this.socket.listen('alert', remoteAlert);
         console.log('AlertService constructed');
 
     }
@@ -46,10 +72,10 @@ class AlertService {
             'duration': duration
         });
 
-        this.modal({'title': 'Foobar'});
+        //this.modal({'title': 'Foobar'});
 
         //$rootScope.$broadcast("Alert.Add", type, msg);
-    };
+    }
 
 
 }

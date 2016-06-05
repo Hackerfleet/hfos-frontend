@@ -1,18 +1,39 @@
 class AboutComponent {
 
-    constructor(socket, $interval, alert, modal) {
+    constructor(rootscope, socket, $interval, alert, modal, schemaservice, op, state) {
+        this.rootscope = rootscope;
         this.socket = socket;
         this.alert = alert;
         this.modal = modal;
         this.$interval = $interval;
-        this.stats = {};
+        this.state = state;
+        this.schemaservice = schemaservice;
+
+        this.schemata = [];
         this.updater = false;
+        this.stats = {};
 
         this.consoleinput = '';
 
-        console.log("Hello - alert:", this.alert);
-
         $('#path').css({fill: '#afafff'});
+        $('#debug').hide();
+
+        var self = this;
+
+        function updateSchemata() {
+            self.schemata = [];
+
+            for (var schema in self.schemaservice.schemata) {
+                if (self.schemaservice.schemata.hasOwnProperty(schema)) {
+                    self.schemata.push(schema);
+                }
+            }
+            console.log(self.schemata);
+        }
+
+        this.rootscope.$on('Schemata.Update', updateSchemata);
+
+        updateSchemata();
     }
 
     updateStats() {
@@ -34,19 +55,24 @@ class AboutComponent {
         });
         var msg = 'Sent: ' + cmd;
 
-        this.alert.add('info', 'Debugger', msg, 500);
+        this.alert.add('info', 'Debugger', msg, 5);
     }
 
     enableDebug() {
+        console.log('Toggling Debug tools');
         if (this.updater === false) {
-            $('#debug').removeClass('hidden');
+            $('#debug').show();
             this.updateStats();
             this.updater = this.$interval(() => this.updateStats(), 1000);
         } else {
-            $('#debug').addClass('hidden');
+            $('#debug').hide();
             this.$interval.cancel(this.updater);
             this.updater = false;
         }
+    }
+
+    viewlist(schema) {
+        this.state.go('app.list', {schema: schema});
     }
 
     sendcommand() {
@@ -61,9 +87,8 @@ class AboutComponent {
         this.command('graph');
     }
 
-
 }
 
-AboutComponent.$inject = ['socket', '$interval', 'alert', '$modal'];
+AboutComponent.$inject = ['$rootScope', 'socket', '$interval', 'alert', '$modal', 'schemata', 'objectproxy', '$state'];
 
 export default AboutComponent;

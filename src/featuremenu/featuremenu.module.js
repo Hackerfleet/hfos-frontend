@@ -4,8 +4,6 @@ import uirouter from 'angular-ui-router';
 import gridster from 'angular-gridster';
 import 'angular-gridster/dist/angular-gridster.min.css';
 
-console.log(gridster);
-
 import { routing } from './featuremenu.config.js';
 
 import featureMenu from './menu/menu.js';

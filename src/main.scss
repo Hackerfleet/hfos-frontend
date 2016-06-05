@@ -1,0 +1,401 @@
+/*
+ * Hackerfleet Operating System
+ * =====================================================================
+ * Copyright (C) 2011-2015 riot <riot@hackerfleet.org> and others.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* TODO:
+ *  - Split out module css
+ *  - Clean up crufts and unused stuff
+ *  - Make sure about responsive design
+ */
+/* Heya, nice sass: */
+@import 'colors';
+
+@font-face {
+    font-family: "Clear Sans";
+    src: url('../assets/fonts/clearsans/ClearSans-Regular.ttf') format("truetype");
+}
+
+@font-face {
+    font-family: "Digital";
+    src: url('../assets/fonts/letsgodigital-regular.ttf') format("truetype");
+}
+
+@font-face {
+    font-family: 'misc-icons';
+    src: url('../assets/fonts/misc-icons.eot?-3u7zq');
+    src: url('../assets/fonts/misc-icons.eot?#iefix-3u7zq') format('embedded-opentype'),
+    url('../assets/fonts/misc-icons.woff?-3u7zq') format('woff'),
+    url('../assets/fonts/misc-icons.ttf?-3u7zq') format('truetype'),
+    url('../assets/fonts/misc-icons.svg?-3u7zq#misc-icons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'misc-icons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-qrcode:before {
+    content: "\e938";
+}
+
+.icon-bubble:before {
+    content: "\e96b";
+}
+
+.icon-bubbles:before {
+    content: "\e96c";
+}
+
+.icon-bubbles2:before {
+    content: "\e96d";
+}
+
+.icon-user:before {
+    content: "\e971";
+}
+
+.icon-users:before {
+    content: "\e972";
+}
+
+.icon-user-plus:before {
+    content: "\e973";
+}
+
+.icon-user-minus:before {
+    content: "\e974";
+}
+
+.icon-user-check:before {
+    content: "\e975";
+}
+
+.icon-hf-logo:before {
+    content: "\e600";
+    font-size: 120%;
+}
+
+p.customfont {
+    font-family: "Clear Sans", Verdana, Tahoma;
+}
+
+.digital {
+    font-family: "Digital";
+    font-size: 5em;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+body {
+    //padding-top: 23px;
+    font-family: "Clear Sans";
+    margin: 0px;
+    padding: 0px;
+
+    /*color : $color-primary-1;*/
+    color: $color-primary-3;
+    background-color: $color-primary-3;
+    background-image: url('../assets/images/backdrop_texture.png');
+}
+
+.navbar-center {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin: auto;
+}
+
+.navbar-mob {
+    float: none;
+    width: 33%;
+}
+
+.aside {
+    margin-top: 51px;
+}
+
+.jumbotron {
+    margin-right: 5px;
+    margin-left: 5px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.jumbotron,
+.well {
+    background-color: rgba(255, 255, 255, 0.75);
+    background-image: none;
+}
+
+#mainmenu {
+    z-index: 100;
+}
+
+a:link,
+a:visited,
+a:active {
+    color: #414141;
+    text-decoration: none;
+    -webkit-transition: .5s;
+    -moz-transition: .5s;
+    -ms-transition: .5s;
+    -o-transition: .5s;
+}
+
+a:hover {
+    color: $color-primary-1;
+    text-decoration: none;
+}
+
+a:focus {
+    color: $color-secondary-1-1;
+}
+
+.panel-hover:hover {
+    background: $color-primary-3;
+    color: $color-primary-1;
+}
+
+.panel-heading, .panel-title {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0 0;
+}
+
+.panel-heading a {
+    display: block;
+    margin: 0;
+    padding: 1em 1em;
+}
+
+
+/* Space out content a bit */
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
+#content, #map {
+    height: 100vh;
+    padding-top: 50px;
+    //padding-bottom: 5px;
+}
+
+#docs {
+    height: 84vh;
+}
+
+#docs_frame {
+    min-height: 83vh;
+    height: 83vh;
+}
+
+#bootscreen {
+    height: 95%;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+
+.hflogo {
+    font-size: 350px;
+    color: white;
+    text-align: center;
+}
+
+.hflogodark {
+    font-size: 20vw;
+    color: $color-primary-3;
+    text-align: center;
+}
+
+.vertical-center {
+    min-height: 90%; /* Fallback for browsers do NOT support vh unit */
+    min-height: 90vh; /* These two lines are counted as one :-)       */
+
+    display: flex;
+    align-items: center;
+}
+
+.gradient {
+    z-index: 0;
+    background: linear-gradient(82deg, rgba(58, 117, 168, 0), rgba(58, 117, 168, 0.41), rgba(200, 200, 220, 1));
+    background-size: 80% 400%;
+    background-position: -400% 0%;
+    background-repeat: no-repeat;
+    -webkit-animation: bootgradient 2s linear 5;
+    -moz-animation: bootgradient 2s linear 5;
+    animation: bootgradient 5s linear 5;
+    animation-iteration-count: 5;
+    animation-duration: 2s;
+    animation-delay: 1s;
+}
+
+@-moz-keyframes bootgradient {
+    0% {
+        background-position: -400% 0%
+    }
+    100% {
+        background-position: 1000% 0%
+    }
+}
+
+@-webkit-keyframes bootgradient {
+    0% {
+        background-position: -400% 0%
+    }
+    100% {
+        background-position: 1000% 0%
+    }
+}
+
+@keyframes bootgradient {
+    0% {
+        background-position: -400% 10%
+    }
+    100% {
+        background-position: 1000% 10%
+    }
+}
+
+.menu-box {
+    /*background-color: #fff;*/
+    text-align: center;
+}
+
+.menu-box:hover {
+    background: $color-primary-2;
+}
+
+.menu-label {
+    text-align: center;
+}
+
+.module-icon-big {
+    text-align: center;
+    width: 75%;
+    height: 75%;
+}
+
+.module-icon-tiny {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+.menu-icon-tiny {
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.menu-icon-list {
+    text-align: right;
+    display: inline;
+}
+
+#clientmenu {
+    min-width: 300px;
+    line-height: 30px;
+    overflow: auto;
+}
+
+#clientmenu div {
+    padding: 3px 20px;
+}
+
+#clientname {
+    text-align: center;
+}
+
+.taskList {
+    background-color: RGBA(58, 117, 168, 0.5);
+    margin: 5px;
+    padding: 5px;
+    z-index: 11;
+    border-radius: 5px;
+}
+
+.taskBoxHeader {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.taskBox {
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    z-index: 55;
+}
+
+.taskHeader {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    font-size: larger;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.col {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+    z-index: 10;
+}
+
+.col-wrap {
+    overflow: hidden;
+}
+
+.thumbnail {
+    height: 280px !important;
+}
+
+.btn-droppable {
+    width: 180px;
+    height: 30px;
+    padding-left: 4px;
+}
+
+.btn-draggable {
+    width: 160px;
+}
+
+.calendar {
+}
+
+.debug {
+    display: none;
+}
+

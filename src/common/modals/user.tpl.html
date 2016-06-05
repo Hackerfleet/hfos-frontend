@@ -1,0 +1,28 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" aria-label="Close" ng-click="$hide()">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+                <p>Hello</p>
+            </div>
+            <div class="modal-body">
+                <span>Hello {{$ctrl.user.name}}!</span>
+
+                <div class="modal-footer">
+                    <form>
+                        <button type="button" ng-click="$ctrl.showprofile(); $hide()" class="btn btn-large">Edit Profile
+                        </button>
+                        <button type="button" ng-click="$ctrl.logout(); $hide()" class="btn btn-danger btn-large">Logout
+                        </button>
+                        <button id="usercancel" type="button" ng-click="$modalCancel(); $hide()"
+                                class="btn btn-default btn-large">
+                            Cancel
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

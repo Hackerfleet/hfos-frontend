@@ -8,9 +8,15 @@
         "jasmine": true
     },
     "globals": {
-        "angular": false
+        "angular": false,
     },
     "ecmaFeatures": {
         "modules": true
+    },
+    "rules": {
+        "eqeqeq": 1,
+        "no-console": 0,
+        "no-undef": 1,
+        "no-unused-vars": 1
     }
 }

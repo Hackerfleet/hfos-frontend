@@ -31,18 +31,36 @@
                 class="glyphicon glyphicon-alert"></span></a>
         </div>
 
-        <div id="debug" class="debug well hidden">
-            <a ng-click="$ctrl.memdebug()" type="button" class="btn btn-danger">Memory Top</a>
-            <a ng-click="$ctrl.graph()" type="button" class="btn btn-danger">Generate Graph</a>
-
-
-            <div class="input-group">
-                <input type="text" class="form-control" id="commandinput" ng-model="$ctrl.consoleinput">
+        <div id="debug" class="debug well">
+            <div class="well">
+                <h3>Console</h3>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="commandinput" ng-model="$ctrl.consoleinput">
                 <span class="input-group-btn">
                     <button ng-click="$ctrl.sendcommand()" class="btn btn-success">Transmit</button>
                 </span>
+                </div>
             </div>
+
+            <div class="well">
+                <h3>Buttons</h3>
+                <a ng-click="$ctrl.memdebug()" type="button" class="btn btn-danger">Memory Top</a>
+                <a ng-click="$ctrl.graph()" type="button" class="btn btn-danger">Generate Graph</a>
+                <a ng-click="$ctrl.command('buildfrontend')" type="button" class="btn btn-danger">Build frontend</a>
+                <a ng-click="$ctrl.command('exception')" type="button" class="btn btn-danger">Throw a tantrum</a>
+                <a ng-click="$ctrl.command('logtail')" type="button" class="btn btn-danger">Follow logfile</a>
+            </div>
+
+            <div class="well">
+                <h3>Object Lists</h3>
+                <ul>
+                    <li ng-repeat="schema in $ctrl.schemata"><a ng-click="$ctrl.viewlist(schema)">View {{schema}}
+                        list</a></li>
+                </ul>
+            </div>
+
             <div class="well table-responsive">
+                <h3>Stats</h3>
                 <table class="table" id="stats">
                     <tr>
                         <th>Description</th>

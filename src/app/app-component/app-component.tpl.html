@@ -31,7 +31,7 @@
                 </button>
 
                 <button id="btnmob" type="button" ng-click="$ctrl.mobbutton();"
-                        class="pagination-centered navbar-brand navbar-inverse btn hidden"
+                        class="pagination-centered navbar-brand navbar-inverse btn"
                         style="text-align: center; border-color: transparent; margin-left:5px; color: red"
                         aria-label="Center Align">
                     <span class="fa fa-life-ring"></span>
@@ -41,27 +41,42 @@
             <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li id="nav-"><a href="#/"><span class="glyphicon glyphicon-home"></span></a></li>
-                    <li id="nav-map"><a href="#/map">Chart</a></li>
-                    <li id="nav-dashboard" class="hidden"><a href="#/dashboard">Dashboard</a></li>
-                    <li id="nav-weather" class="hidden"><a href="#/weather">Weather</a></li>
-                    <li id="nav-crew" class="hidden"><a href="#/crew">Crew</a></li>
-                    <li id="nav-logbook" class="hidden"><a href="#/logbook">Logbook</a></li>
-                    <li id="nav-switchboard" class="hidden"><a href="#/switchboard">Switchboard</a></li>
-                    <li id="nav-communication" class="hidden"><a href="#/communication">Communication</a></li>
-                    <li id="nav-settings" class="hidden"><a href="#/obj/vessel/00000000-0000-0000-0000-000000000000">Vessel
-                        settings</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Modules<span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="modulemenu">
+                            <li><a href="#/dashboard">Dashboard</a></li>
+                            <li><a href="#/map">Map</a></li>
+                        </ul>
+                    </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Client<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>Client: <span id="clientname">N/A</span></li>
+                        <ul class="dropdown-menu" id="clientmenu">
+                            <li>
+                                <div id="clientname">N/A</div>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li ng-repeat="config in $ctrl.clientconfiglist">
+                                <div>
+                                    <a ng-click="$ctrl.switchClientConfig(config.uuid)">{{config.name}}</a>
+                                    <div class="menu-icon-list pull-right">
+                                        <a type="button" ng-click="$ctrl.switchClientConfig(config.uuid)">
+                                            <i class="fa fa-hand-o-right menu-icon-tiny"></i></a>
+                                        <a type="button" ng-click="$ctrl.deleteClientConfig(config.uuid)">
+                                            <i class="fa fa-remove menu-icon-tiny"></i></a>
+                                        <a type="button" ng-click="$ctrl.editClientConfig(config.uuid)">
+                                            <i class="fa fa-pencil menu-icon-tiny"></i></a>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">?<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#/docs">Documentation</a></li>
+                            <li><a href="#/doc">Documentation</a></li>
                             <li><a href="#/about">About</a></li>
                         </ul>
                     </li>
@@ -90,39 +105,7 @@
         </div>
     </div>
 
-    <div id="content" class="container" ui-view></div>
-    <ul>
-        <li ui-sref-active="active"><a ui-sref="app.feature-a">Feature A</a></li>
-        <li ui-sref-active="active"><a ui-sref="app.feature-b">Feature B</a></li>
-    </ul>
-
-    <noscript>
-        <div class="well vertical-center" style="height: 100vh;">
-            <style type="text/css">
-                #bootscreen {
-                    display: none;
-                }
-
-                #content {
-                    display: none;
-                }
-
-                #mainmenu {
-                    display: none;
-                }
-            </style>
-
-        <span>
-            <h1><span><i class="fa fa-exclamation-circle"></i></span> Javascript deactivated!</h1>
-            <br/>
-            <p>
-                Please check your browser and plugin settings and make sure, Javascript is allowed for this site, then
-                reload the page.
-            </p>
-        </span>
-        </div>
-    </noscript>
-
+    <div id="content" ui-view></div>
 
     <footer class="hidden footer">
         <div class="container">

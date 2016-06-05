@@ -6,13 +6,10 @@ import UserService from './services/user.service';
 import TodoService from './services/todo.service';
 import AlertService from './services/alert.service';
 import SocketService from './services/socket.factory';
+import SchemataService from './services/schemata.service';
+import ObjectProxy from './services/objectproxy.service';
 
-import ngWebSocket from 'angular-websocket';
-
-//console.log(socket);
-
-console.log(SocketService);
-console.log(ngWebSocket);
+import LoginController from './component/login-component';
 
 export default angular
     .module('main.app.common', [])
@@ -21,4 +18,7 @@ export default angular
     .service('alert', AlertService)
     .service('user', UserService)
     .service('socket', SocketService)
+    .service('schemata', SchemataService)
+    .service('objectproxy', ObjectProxy)
+    .controller('LoginCtrl', LoginController)
     .name;

@@ -4,12 +4,12 @@
             <li data-gridster-item
                 data-row="item.row"
                 data-col="item.col"
-                data-sizex="1"
-                data-sizey="1"
+                data-sizex="item.size"
+                data-sizey="item.size"
                 ng-repeat="item in $ctrl.items"
                 class="menu-box">
-                <a href="#/{{item.url}}" class="center-block">
-                    <img src="/assets/images/icons/{{item.svg}}" type="image/svg+xml" class="menu-icon"/>
+                <a href="#{{item.url}}" class="center-block">
+                    <img src="{{item.svg}}" type="image/svg+xml" class="module-icon-big"/>
 
                     <div class="menu-label center-block">{{item.title}}</div>
                 </a>

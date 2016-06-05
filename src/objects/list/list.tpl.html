@@ -1,0 +1,107 @@
+<!--
+  ~ Hackerfleet Operating System
+  ~ =====================================================================
+  ~ Copyright (C) 2011-2015 riot <riot@hackerfleet.org> and others.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<div class="container">
+    <div class="well">
+        <H1>List: <a href="#/list/{{$ctrl.schemaname}}">{{$ctrl.schemascreenname}}</a></H1>
+
+        <div class="panel-group hidden" id="objectlistdetails" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="filterHeading">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion"
+                           aria-expanded="true" aria-controls="filterCollapse">
+                            Filters
+                        </a>
+                    </h4>
+                </div>
+                <div id="filterCollapse" class="panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="filterHeading">
+                    <div class="panel-body">
+                        Not yet :)
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="fieldsHeading">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion"
+                           aria-expanded="true" aria-controls="fieldsCollapse">
+                            Fields
+                        </a>
+                    </h4>
+                </div>
+                <div id="fieldsCollapse" class="panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="fieldsHeading">
+                    <div class="panel-body">
+                        <ul>
+                            <li>No</li>
+                            <li>Checkbox</li>
+                            <li>Name</li>
+                            <li>Controls</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="well" id="ObjectList">
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th><i class="fa fa-check"></i></th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+                <tr ng-repeat="item in $ctrl.objectlistdata">
+                    <td>{{$index+1}}</td>
+                    <td><input type="checkbox" value=""/></td>
+                    <td><a href="#/editor/{{$ctrl.schemaname}}/{{item.uuid}}/edit">{{item.name}}</a></td>
+                    <td>
+                        <a type="button" href="#/editor/{{$ctrl.schemaname}}/{{item.uuid}}/edit"
+                           class="btn btn-xs btn-success">Edit</a>
+                        <a type="button" ng-click="delete(item.uuid)" class="btn btn-xs btn-danger">Delete</a>
+                    </td>
+                </tr>
+                <!--
+                    <tr ng-repeat="(key, item) in $ctrl.objectlistdata | orderBy:'-key':true">
+                        <td>{{key+1}}</td>
+                        <td><input type="checkbox" value=""/></td>
+                        <td><a href="#/obj/{{$ctrl.schemaname}}/{{item.uuid}}/edit">{{item.name}}</a></td>
+                        <td>
+                            <a type="button" href="#/obj/{{$ctrl.schemaname}}/{{item.uuid}}/edit"
+                               class="btn btn-xs btn-success">Edit</a>
+                            <a type="button" ng-click="delete(item.uuid)" class="btn btn-xs btn-danger">Delete</a>
+                        </td>
+                    </tr> -->
+            </table>
+        </div>
+
+        <div class="debug">
+            {{$ctrl.schemadata}}
+            Schema: {{$ctrl.schemaname}}
+            <br>
+            <ol class="breadcrumb">
+                <li ng-repeat="schema in $ctrl.schemadata">{{schema}}</li>
+            </ol>
+            <a role="button" ng-click="$ctrl.reveal()">Reveal</a>
+            {{$ctrl.objectlistdata}}
+        </div>
+    </div>
+</div>

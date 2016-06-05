@@ -1,0 +1,41 @@
+<!--
+  ~ Hackerfleet Operating System
+  ~ =====================================================================
+  ~ Copyright (C) 2011-2015 riot <riot@hackerfleet.org> and others.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<div class="container">
+    <div class="well">
+        <H1>{{$ctrl.action}}: <a href="#/list/{{$ctrl.schemadata.schema.name}}">{{$ctrl.schemascreenname}}</a>/<a
+            href="#/editor/{{$ctrl.schemadata.schema.name}}/{{$ctrl.model.uuid}}/edit">{{$ctrl.model.name}}</a></H1>
+        <span id="objStored" class="label label-success hidden">Stored</span>
+        <span id="objModified" class="label label-danger hidden">Modified</span>
+
+        <form sf-schema="$ctrl.schemadata.schema" sf-form="$ctrl.schemadata.form" sf-model="$ctrl.model">
+        </form>
+        <button class="btn btn-danger" ng-click="$ctrl.deleteObject()"><i class="fa fa-trash"></i>Delete</button>
+        <button class="btn btn-default" ng-click="$ctrl.submitForm()"><i class="fa fa-check"></i>Submit</button>
+
+        <div class="debug">
+            <hr>
+            <span>Model: {{$ctrl.model}}</span>
+            <br>
+            <span>Schema: {{$ctrl.schemadata.schema}}</span>
+            <br>
+            <span>Form: {{$ctrl.schemadata.form}}</span>
+        </div>
+    </div>
+</div>
