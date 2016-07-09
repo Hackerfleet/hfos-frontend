@@ -30,17 +30,28 @@
                     <span class="glyphicon icon-bubble"></span>
                 </button>
 
+                <button id="btnfullscreen" type="button" ng-click="$ctrl.fullscreentoggle();"
+                        class="navbar-brand navbar-inverse btn"
+                        title="Toggle Fullscreen"
+                        style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
+                    <span id="spanfullscreen" class="fa fa-expand"></span>
+                </button>
+                <!-- TODO: See #161
                 <button id="btnmob" type="button" ng-click="$ctrl.mobbutton();"
                         class="pagination-centered navbar-brand navbar-inverse btn"
                         style="text-align: center; border-color: transparent; margin-left:5px; color: red"
                         aria-label="Center Align">
                     <span class="fa fa-life-ring"></span>
                 </button>
+                -->
             </div>
 
             <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li id="nav-"><a href="#/"><span class="glyphicon glyphicon-home"></span></a></li>
+                <ul class="nav navbar-nav navbar-right" id="mainmenunavbar">
+                    <li id="nav-home"><a href="/#"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li id="nav-fullscreen">
+
+                    </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Modules<span class="caret"></span></a>
@@ -52,7 +63,7 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Client<span class="caret"></span></a>
-                        <ul class="dropdown-menu" id="clientmenu">
+                        <ul class="dropdown-menu componentmenu" id="clientmenu">
                             <li>
                                 <div id="clientname">N/A</div>
                             </li>
@@ -60,6 +71,7 @@
                             <li ng-repeat="config in $ctrl.clientconfiglist">
                                 <div>
                                     <a ng-click="$ctrl.switchClientConfig(config.uuid)">{{config.name}}</a>
+
                                     <div class="menu-icon-list pull-right">
                                         <a type="button" ng-click="$ctrl.switchClientConfig(config.uuid)">
                                             <i class="fa fa-hand-o-right menu-icon-tiny"></i></a>
@@ -104,24 +116,17 @@
             </table>
         </div>
     </div>
-
+    <button id="fullscreengrab" type="button" ng-click="$ctrl.mainmenutoggle();">
+        <span id="fullscreengrabicon" class="fa fa-arrow-up"></span>
+    </button>
     <div id="content" ui-view></div>
 
-    <footer class="hidden footer">
+    <footer class="navbar-fixed-bottom navbar-inverse">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 col-sm-6">
-                    <i class="fa fa-github fa-lg"></i> <a href="https://github.com/hackerfleet">Github</a>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                    <i class="fa fa-twitter fa-lg"></i> <a href="https://twitter.com/__r107__">Twitter</a>
-                </div>
-            </div>
-            <hr/>
-            <div class="row">
-                <div class="col-md-12">
-                    <p class="text-muted">&copy; riot@hackerfleet.org 2011-2016</p>
-                </div>
+                <div id="statusLeft" class="col-xs-1">1</div>
+                <div id="statusCenter" class="col-xs-9">2</div>
+                <div id="statusRight" class="col-xs-2">3</div>
             </div>
         </div>
     </footer>

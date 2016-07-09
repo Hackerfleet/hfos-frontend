@@ -69,10 +69,10 @@ var PARAMS_PER_TARGET = {
             new webpack.SourceMapDevToolPlugin(
                 '[file].map', null,
                 "[absolute-resource-path]", "[absolute-resource-path]"),
-            new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
-            new OpenBrowserWebpackPlugin({
-                url: 'http://localhost:' + PARAMS_DEFAULT.devServer.port
-            })
+            new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
+            //new OpenBrowserWebpackPlugin({
+            //    url: 'http://localhost:' + PARAMS_DEFAULT.devServer.port
+            //})
         ]
     },
     BUILD: {
@@ -112,10 +112,10 @@ module.exports = {
     output: params.output,
     module: {
         /*preLoaders: [
-         {test: /\.js$/, loader: "source-map-loader"}
-         ],*/
+            {test: /\.js$/, loader: "source-map-loader"}
+        ],*/
         loaders: [
-            {test: /\.js$/, loaders: ['ng-annotate', 'babel'], exclude: /(\.test.js$|node_modules)/},
+            {test: /\.js$/, loader: 'babel-loader', exclude: /(\.test.js$|node_modules)/},
             {test: /\.css$/, loader: 'style!css'},
             {test: /\.tpl.html/, loader: 'html'},
             {test: /\.json/, loader: 'json'},

@@ -41,9 +41,7 @@ class ObjectProxy {
         this.lists = {};
         this.searchcallbacks = {};
 
-
         var self = this;
-
 
         function handleResponse(msg) {
             // TODO: Handle renamed objects
@@ -51,6 +49,7 @@ class ObjectProxy {
 
             var result;
             var newobj;
+            var schema;
 
             if (msg.action === 'get') {
                 newobj = msg.data;
@@ -61,15 +60,28 @@ class ObjectProxy {
                     self.namelookup[name] = newobj.uuid;
                 }
 
-                self.rootscope.$broadcast('OP.Get', newobj.uuid, newobj);
+                if ('id' in newobj) {
+                    schema = newobj.id.slice(1);
+                } else {
+                    console.log('[OP] Strange object without ID received.');
+                }
+
+                self.rootscope.$broadcast('OP.Get', newobj.uuid, newobj, schema);
 
             } else if (msg.action === 'update') {
                 newobj = msg.data;
+
                 console.log('[OP] Subscription update from OM: ', newobj);
 
                 self.objects[newobj.uuid] = newobj;
 
-                self.rootscope.$broadcast('OP.Update', newobj.uuid, newobj);
+                if ('id' in newobj) {
+                    schema = newobj.id.slice(1);
+                } else {
+                    console.log('[OP] Strange object without ID received.');
+                }
+
+                self.rootscope.$broadcast('OP.Update', newobj.uuid, newobj, schema);
 
             } else if (msg.action === 'put') {
                 result = msg.data[0];
@@ -168,6 +180,12 @@ class ObjectProxy {
         this.socket.send({'component': 'objectmanager', 'action': 'unsubscribe', 'data': uuid});
     }
 
+    changeObject(schema, obj, change) {
+        console.log('[OP] Changing object ', schema, obj, change);
+        // TODO: Validate it first and bail out. Form might already do this, but we should just make sure.
+        this.socket.send({'component': 'objectmanager', 'action': 'change', 'data': {'uuid': obj, 'schema': schema, 'change': change}});
+    }
+
     putObject(schema, obj) {
         console.log('[OP] Putting object ', schema, obj);
         // TODO: Validate it first and bail out. Form might already do this, but we should just make sure.
@@ -226,16 +244,16 @@ class ObjectProxy {
     }
 
     /* old reverse mapping of service:
-     obj: objects,
-     lists: lists,
-     newgetlist: searchItems,
-     getlist: getList,
-     get: getObject,
-     subscribe: subscribeObject,
-     unsubscribe: unsubscribeObject,
-     put: putObject,
-     del: delObject
-     */
+        obj: objects,
+        lists: lists,
+        newgetlist: searchItems,
+        getlist: getList,
+        get: getObject,
+        subscribe: subscribeObject,
+        unsubscribe: unsubscribeObject,
+        put: putObject,
+        del: delObject
+    */
 }
 
 ObjectProxy.$inject = ['$q', 'socket', 'user', 'schemata', '$rootScope'];

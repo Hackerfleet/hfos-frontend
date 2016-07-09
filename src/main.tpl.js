@@ -1,7 +1,7 @@
 /*
- @DEV: EDIT THE TEMPLATE, NOT THE ACTUAL CONFIGURATION
- Otherwise, your changes will be overwritten by the
- frontend build process.
+@DEV: EDIT THE TEMPLATE, NOT THE ACTUAL CONFIGURATION
+Otherwise, your changes will be overwritten by the
+frontend build process.
  */
 
 // DO NOT EDIT MAIN.JS! IF YOU NEED TO CHANGE ANYTHING
@@ -20,6 +20,9 @@ import './main.scss';
 import angular from 'angular';
 import animate from 'angular-animate';
 import cookies from 'angular-cookies';
+import draggable from 'ng-draggable';
+import fullscreen from '@kariudo/angular-fullscreen';
+import touch from 'angular-touch'
 import md5 from 'angular-md5';
 import schemaForm from 'angular-schema-form';
 import bootstrapdecorator from 'angular-schema-form-bootstrap';
@@ -36,8 +39,8 @@ require('humanize-duration');
 
 // HFOS Plugin Modules
 
-let modules = ['mgcrea.ngStrap', 'gridster', 'schemaForm',
-    animate, app, common, objects, cookies, md5, featuremenu, about, doc
+let modules = ['mgcrea.ngStrap', 'gridster', 'schemaForm', 'ngDraggable', 'FBAngular',
+    animate, app, common, objects, cookies, touch, md5, featuremenu, about, doc
 ];
 
 /* COMPONENT SECTION */
@@ -49,3 +52,4 @@ angular.module('main', modules);
 angular.element(document).ready(() => {
     angular.bootstrap(document, ['main']);
 });
+

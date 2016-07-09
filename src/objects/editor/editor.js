@@ -19,7 +19,7 @@
 
 class objecteditor {
 
-    constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope) {
+    constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope, alert) {
         this.objectproxy = objectproxy;
         this.scope = $scope;
         this.schemaname = $stateParams.schema;
@@ -29,6 +29,7 @@ class objecteditor {
         this.socket = socket;
         this.schemata = schemata;
         this.rootscope = $rootscope;
+        this.alert = alert;
 
         this.schemascreenname = this.schemaname.charAt(0).toUpperCase() + this.schemaname.slice(1);
         this.schemadata = {};
@@ -43,6 +44,15 @@ class objecteditor {
         }
 
         var self = this;
+
+
+        this.markStored = function() {
+            console.log('[OE] Marking object as stored.');
+            $('#objStored').removeClass('hidden');
+            $('#objModified').addClass('hidden');
+            self.action = 'Edit';
+            self.alert.add('success', 'Editor', 'Object successfully stored.', 5);
+        };
 
         this.rootscope.$on('OP.Put', function (ev, uuid) {
             if (uuid === self.uuid) {
@@ -130,14 +140,6 @@ class objecteditor {
         });
     }
 
-    markStored() {
-        console.log('[OE] Marking object as stored.');
-        $('#objStored').removeClass('hidden');
-        $('#objModified').addClass('hidden');
-        this.action = 'Edit';
-    }
-
-
     updateModel(uuid) {
         console.log('[OE] Object has been updated from node, checking..', uuid);
 
@@ -171,7 +173,7 @@ class objecteditor {
      this.$watchCollection('model', editorChange);
      */
 
-    submitForm() {
+    submitObject() {
         let model = this.model;
         if (this.action === 'Create') {
             model.uuid = 'create';
@@ -184,13 +186,13 @@ class objecteditor {
         let model = this.model;
         if (this.action === 'Create') {
             model.uuid = 'create';
-            this.alert.add('Cannot delete object - it is not stored yet.');
+            this.alert.add('warning', 'Editor', 'Cannot delete object - it is not stored yet.');
         }
         console.log('[OE] Object deletion initiated with ', this.uuid);
         this.objectproxy.delObject(this.schemaname, this.uuid);
     }
 }
 
-objecteditor.$inject = ['$scope', '$stateParams', 'objectproxy', 'user', 'socket', 'schemata', '$rootScope'];
+objecteditor.$inject = ['$scope', '$stateParams', 'objectproxy', 'user', 'socket', 'schemata', '$rootScope', 'alert'];
 
 export default objecteditor;

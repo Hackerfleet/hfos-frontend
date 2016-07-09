@@ -173,7 +173,7 @@ class SocketService {
             //console.log('Raw message received: ', packedmsg);
             var msg = JSON.parse(packedmsg.data);
 
-            console.log('Parsed message: ', msg); //, self.handlers);
+            //console.log('Parsed message: ', msg, self.handlers);
 
             if (_.has(msg, 'component')) {
                 if (_.has(msg, 'action')) {
@@ -190,10 +190,10 @@ class SocketService {
                          });*/
                     }
                 } else {
-                    console.log('Incorrect message: no action!');
+                    console.log('Incorrect message: no action!', msg);
                 }
             } else {
-                console.log('Incorrect message: component!');
+                console.log('Incorrect message: component!', msg);
             }
         }
 

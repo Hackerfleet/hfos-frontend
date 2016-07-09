@@ -1,26 +1,21 @@
 var backgrounds = require.context("../../../assets/images/backgrounds", true, /^(.*\.(jpg$))[^.]*$/igm);
-console.log(backgrounds);
-// hmm
-backgrounds.keys().forEach(function (key) {
-    console.log("Detail:", key)
-});
-console.log('These are teh backgrounds i found: ', backgrounds);
 
 class AppComponent {
 
-    constructor(user, socket, rootscope, objectproxy, state, alert) {
+    constructor(user, socket, rootscope, objectproxy, state, alert, fullscreen) {
         this.user = user;
         this.socket = socket;
         this.rootscope = rootscope;
         this.objectproxy = objectproxy;
         this.state = state;
         this.alert = alert;
+        this.fullscreen = fullscreen;
 
         var self = this;
 
         function updateclientconfigurations(ev, schema) {
-            console.log('[APP] ListUpdate: ', ev);
             if (schema === 'client') {
+                console.log('[APP] ListUpdate: ', ev);
                 self.clientconfiglist = self.objectproxy.list(schema);
                 console.log('[APP] New client config list:', self.clientconfiglist);
             }
@@ -100,12 +95,41 @@ class AppComponent {
         console.log('[MAIN] Main profile: ', this.user.profile);
     }
 
+    fullscreentoggle() {
+        if (this.fullscreen.isEnabled()) {
+            this.fullscreen.cancel();
+            $('#mainmenu').collapse('show');
+            $('#spanfullscreen').addClass('fa-expand')
+                .removeClass('fa-compress');
+        }
+        else {
+            this.fullscreen.all();
+            $('#mainmenu').collapse('hide');
+            $('#spanfullscreen').removeClass('fa-expand')
+                .addClass('fa-compress');
+        }
+    }
+
+    mainmenutoggle() {
+        if ($('#fullscreengrab').css('top') === '42px') {
+            $('#fullscreengrab').animate().css({top: '-8px'});
+            $('#mainmenu').fadeOut(50);
+            $('#content').css({'padding-top': '0px'});
+            $('#fullscreengrabicon').removeClass('fa-arrow-up').addClass('fa-arrow-down');
+        } else {
+            $('#fullscreengrab').animate().css({top: '42px'});
+            $('#mainmenu').fadeIn(50);
+            $('#content').css({'padding-top': '50px'});
+            $('#fullscreengrabicon').removeClass('fa-arrow-down').addClass('fa-arrow-up');
+        }
+    }
+
     mobbutton() {
         console.log('[MAIN] MOB Button pressed');
         this.alert.mobTrigger();
     }
 }
 
-AppComponent.$inject = ['user', 'socket', '$rootScope', 'objectproxy', '$state', 'alert'];
+AppComponent.$inject = ['user', 'socket', '$rootScope', 'objectproxy', '$state', 'alert', 'Fullscreen'];
 
 export default AppComponent;

@@ -22,7 +22,9 @@
  *  - Clean up crufts and unused stuff
  *  - Make sure about responsive design
  */
+
 /* Heya, nice sass: */
+
 @import 'colors';
 
 @font-face {
@@ -33,8 +35,8 @@
 @font-face {
     font-family: "Digital";
     src: url('../assets/fonts/letsgodigital-regular.ttf') format("truetype");
-}
 
+}
 @font-face {
     font-family: 'misc-icons';
     src: url('../assets/fonts/misc-icons.eot?-3u7zq');
@@ -105,14 +107,6 @@ p.customfont {
     font-family: "Clear Sans", Verdana, Tahoma;
 }
 
-.digital {
-    font-family: "Digital";
-    font-size: 5em;
-    height: 100%;
-    text-align: center;
-    vertical-align: middle;
-}
-
 body {
     //padding-top: 23px;
     font-family: "Clear Sans";
@@ -164,10 +158,10 @@ a:visited,
 a:active {
     color: #414141;
     text-decoration: none;
-    -webkit-transition: .5s;
-    -moz-transition: .5s;
-    -ms-transition: .5s;
-    -o-transition: .5s;
+    -webkit-transition: .2s;
+    -moz-transition: .2s;
+    -ms-transition: .2s;
+    -o-transition: .2s;
 }
 
 a:hover {
@@ -205,10 +199,9 @@ html, body {
     min-height: 100%;
 }
 
-#content, #map {
+#content {
     height: 100vh;
     padding-top: 50px;
-    //padding-bottom: 5px;
 }
 
 #docs {
@@ -323,17 +316,17 @@ html, body {
     display: inline;
 }
 
-#clientmenu {
+.componentmenu {
     min-width: 300px;
     line-height: 30px;
     overflow: auto;
 }
 
-#clientmenu div {
+.componentmenu div {
     padding: 3px 20px;
 }
 
-#clientname {
+#clientmenu {
     text-align: center;
 }
 
@@ -399,3 +392,46 @@ html, body {
     display: none;
 }
 
+#fullscreengrab {
+    z-index: 99;
+    outline: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 42px;
+    left: 48.5vw;
+    width: 3vw;
+    min-width: 30px;
+    background-color: white;
+    border-radius: 8px;
+    border-top: none;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    height: 30px;
+}
+
+#fullscreengrab span {
+    margin-top: 10px;
+}
+
+#fullscreengrab:hover {
+    opacity: 0.9;
+}
+
+footer {
+    color: gray;
+    opacity: 0.4;
+}
+
+footer:hover {
+    color: lightgray;
+    -webkit-transition: .2s;
+    -moz-transition: .2s;
+    -ms-transition: .2s;
+    -o-transition: .2s;
+    opacity: 0.9;
+}
+
+footer > div > div.row > div:hover {
+    color: white;
+}

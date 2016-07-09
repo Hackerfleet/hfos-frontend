@@ -3,6 +3,7 @@ import angular from 'angular';
 import UserInfoComponent from './component/user-info-component';
 
 import UserService from './services/user.service';
+import MenuService from './services/menu.service';
 import TodoService from './services/todo.service';
 import AlertService from './services/alert.service';
 import SocketService from './services/socket.factory';
@@ -17,6 +18,7 @@ export default angular
     .service('TodoService', TodoService)
     .service('alert', AlertService)
     .service('user', UserService)
+    .service('menu', MenuService)
     .service('socket', SocketService)
     .service('schemata', SchemataService)
     .service('objectproxy', ObjectProxy)

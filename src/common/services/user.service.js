@@ -274,7 +274,7 @@ class UserService {
         console.log('Auto-logging in...');
         var authpacket = {component: 'auth', action: 'autologin', data: uuid};
         var self = this;
-        this.timeout(function () {
+        this.timeout(function()  {
             console.log('Transmitting autologin.')
             self.socket.send(authpacket);
         }, 500);
@@ -322,7 +322,7 @@ class UserService {
             'action': 'put',
             'data': {'schema': 'client', 'obj': this.clientconfig}
         });
-    };
+    }
 
     switchClientconfig(uuid) {
         console.log('[USER] Loading client profile from node');
@@ -332,7 +332,7 @@ class UserService {
             'action': 'get',
             'data': {'schema': 'client', 'uuid': this.clientuuid}
         });
-    };
+    }
 
     updateclientconfig(data) {
         this.clientconfig = data;
@@ -341,7 +341,7 @@ class UserService {
         this.saveClientconfig();
 
         this.rootscope.$broadcast('Clientconfig.Update');
-    };
+    }
 
 }
 
