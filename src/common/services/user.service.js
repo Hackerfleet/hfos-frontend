@@ -218,6 +218,7 @@ class UserService {
         this.signingIn = false;
 
         for (var i = 0; i < this.onAuthCallbacks.length; i++) {
+            console.log('Running auth callback.')
             this.onAuthCallbacks[i].call(this.username);
         }
 

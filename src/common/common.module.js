@@ -1,6 +1,7 @@
 import angular from 'angular';
 
 import UserInfoComponent from './component/user-info-component';
+import StatusbarController from './component/statusbar';
 
 import UserService from './services/user.service';
 import MenuService from './services/menu.service';
@@ -15,6 +16,7 @@ import LoginController from './component/login-component';
 export default angular
     .module('main.app.common', [])
     .component('userInfoComponent', UserInfoComponent)
+    .component('statusbarComponent', UserInfoComponent)
     .service('TodoService', TodoService)
     .service('alert', AlertService)
     .service('user', UserService)
