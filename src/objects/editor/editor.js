@@ -20,12 +20,29 @@
 class objecteditor {
 
     constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope, alert) {
+        console.log('[OE] STATEPARAMS: ', $stateParams);
+        console.log('[OE] SCOPE: ', $scope);
+        console.log('FOOBAR:', this.foobar);
         this.objectproxy = objectproxy;
         this.scope = $scope;
-        this.schemaname = $stateParams.schema;
-        console.log("[OE] Handling object of type: ", this.schemaname);
-        this.uuid = $stateParams.uuid;
-        this.action = $stateParams.action;
+        if (typeof this.schema === 'undefined') {
+            this.schemaname = $stateParams.schema;
+        } else {
+            this.schemaname = this.schema;
+        }
+
+        console.log('[OE] Handling object of type: ', this.schemaname);
+
+        if (typeof this.uuid === 'undefined') {
+            this.uuid = $stateParams.uuid;
+        }
+
+        if (typeof this.action === 'undefined') {
+            this.action = $stateParams.action;
+        }
+
+        console.log('[OE] UUID: ', this.uuid, 'Action:', this.action);
+
         this.socket = socket;
         this.schemata = schemata;
         this.rootscope = $rootscope;
@@ -36,7 +53,7 @@ class objecteditor {
         this.model = {};
 
 
-        if (this.uuid === 'create') {
+        if (this.uuid.toUpperCase() === 'CREATE') {
             this.action = 'Create';
             $('#objModified').removeClass('hidden');
         } else {
@@ -57,7 +74,7 @@ class objecteditor {
         this.rootscope.$on('OP.Put', function (ev, uuid) {
             if (uuid === self.uuid) {
                 self.markStored();
-            } else if (self.uuid === 'create') {
+            } else if (self.uuid.toUpperCase() === 'CREATE') {
                 // TODO: What if another object is being created right now?
                 // We could check if the object body is the same.
                 // (Works bad on objects that are somehow modified before saving them)
@@ -175,7 +192,7 @@ class objecteditor {
 
     submitObject() {
         let model = this.model;
-        if (this.action === 'Create') {
+        if (this.action.toUpperCase() === 'CREATE') {
             model.uuid = 'create';
         }
         console.log('[OE] Object update initiated with ', model);
@@ -184,9 +201,10 @@ class objecteditor {
 
     deleteObject() {
         let model = this.model;
-        if (this.action === 'Create') {
+        if (this.action.toUpperCase() === 'CREATE') {
             model.uuid = 'create';
             this.alert.add('warning', 'Editor', 'Cannot delete object - it is not stored yet.');
+            return;
         }
         console.log('[OE] Object deletion initiated with ', this.uuid);
         this.objectproxy.delObject(this.schemaname, this.uuid);

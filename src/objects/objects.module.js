@@ -31,6 +31,6 @@ import listtemplate from './list/list.tpl.html';
 export default angular
     .module('main.components.objects', [uirouter])
     .config(routing)
-    .component('objecteditor', {controller: editor, template: editortemplate})
+    .component('objecteditor', {controller: editor, template: editortemplate, bindings: {schema:'@', uuid:'@', action:'@'}})
     .component('objectlist', {controller: list, template: listtemplate})
     .name;
