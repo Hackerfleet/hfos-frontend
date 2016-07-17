@@ -20,7 +20,7 @@ for more information about HFOS.
 License
 =======
 
-Copyright (C) 2011-2015 riot <riot@hackerfleet.org> and others.
+Copyright (C) 2011-2016 riot <riot@hackerfleet.org> and others.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ You can also copy a static version of the frontend by instructing grunt to:
 
     $ sudo grunt copy:dev
 
-Using this method is not meant for live editing, but for the final production 
+Using this method is not meant for live editing, but for the final production
 installation.
 
 Assets
