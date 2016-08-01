@@ -1,7 +1,7 @@
 /*
  * Hackerfleet Operating System
  * =====================================================================
- * Copyright (C) 2011-2015 riot <riot@hackerfleet.org> and others.
+ * Copyright (C) 2011-2016 riot <riot@hackerfleet.org> and others.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -420,7 +420,9 @@ html, body {
 
 footer {
     color: gray;
-    opacity: 0.4;
+    opacity: 0.6;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 footer:hover {
@@ -434,4 +436,76 @@ footer:hover {
 
 footer > div > div.row > div:hover {
     color: white;
+}
+
+#ledoutgoing,
+#ledincoming {
+    color: green;
+    cursor: default;
+}
+
+.tangcloud {
+    font-weight: bold;
+    height: 50%;
+    width: 50%;
+}
+
+.tangcloud span {
+    line-height: 100%;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.tangcloud-item-1 {
+    font-size: 1.3em;
+    color: #080808;
+}
+
+.tangcloud-item-2 {
+    font-size: 1.6em;
+    color: #101010;
+}
+
+.tangcloud-item-3 {
+    font-size: 1.9em;
+    color: #181818;
+}
+
+.tangcloud-item-4 {
+    font-size: 2.2em;
+    color: #303030;
+}
+
+.tangcloud-item-5 {
+    font-size: 2.5em;
+    color: #282828;
+}
+
+.tangcloud-item-6 {
+    font-size: 2.8em;
+    color: #202020;
+}
+
+.tangcloud-item-7 {
+    font-size: 3.1em;
+    color: #383838;
+}
+
+.tangcloud-item-8 {
+    font-size: 3.4em;
+    color: #404040;
+}
+
+.tangcloud-item-9 {
+    font-size: 3.7em;
+    color: #484848;
+}
+
+.tangcloud-item-10 {
+    font-size: 4em;
+    color: #000000;
+}
+
+.tangcloud-item-hidden {
+    //visibility: hidden;
 }

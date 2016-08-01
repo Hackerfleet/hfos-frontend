@@ -22,7 +22,6 @@
  */
 
 var humanizeDuration = require('humanize-duration');
-console.log(humanizeDuration(23000), "Also, i was used here.");
 import * as _ from 'lodash';
 
 class SocketService {
@@ -33,7 +32,6 @@ class SocketService {
         this.$timeout = $timeout;
         this.rootscope = $rootscope;
         //this.humanizer = humanizer;
-        console.log(humanizeDuration(55000));
         this.host = $location.host();
         this.port = 80;
 
@@ -63,38 +61,35 @@ class SocketService {
         function doReconnect() {
             if (self.connected !== true && self.trying !== true) {
                 console.log('[SOCKET] Trying to reconnect.');
-                self.sock.close()
+                self.sock.close();
                 self.sock = new WebSocket('ws://' + self.host + ':' + self.port + '/websocket', 'HFOS');
                 self.sock.onopen = self.OpenEvent;
                 self.sock.onclose = self.CloseEvent;
                 self.sock.onmessage = self.receive;
 
-                console.log("A");
                 self.reconnecttries++;
                 self.trying = true;
 
-                var interval = Math.min(30, Math.pow(self.reconnecttries, 2));
-                console.log("B");
+                var interval = Math.min(30, Math.pow(self.reconnecttries, 2))*1000;
+                
                 self.disconnectalert.hide();
 
                 self.disconnectalert = $alert({
                     'title': 'Offline',
-                    'content': 'You have been disconnected from the node. Retry interval is at ' + humanizeDuration(interval * 1000),
+                    'content': 'You have been disconnected from the node. Retry interval is at ' + humanizeDuration(interval),
                     'placement': 'top-left',
                     'type': 'warning',
                     'show': true,
-                    'duration': interval
+                    'duration': interval / 1000
                 });
 
                 var color = function (value) {
-                    return '#FF' + parseInt((1 - value) * 255).toString(16) + '00'; // .toString(16);
+                    return '#FF' + parseInt((1 - value) * 255).toString(16) + '00';
                 };
-                console.log("C");
-                $('#btnhome').css('color', color(interval / 30));
 
-                self.reconnecttimer = self.$timeout(self.doReconnect, interval * 1000);
-                //reconnecttimer = $interval(doReconnect, interval);
-                console.log("D");
+                $('#btnhome').css('color', color(interval / 30000));
+
+                self.reconnecttimer = self.$timeout(self.doReconnect, interval);
             }
         }
 
@@ -158,6 +153,7 @@ class SocketService {
 
             if (self.trying === true) {
                 console.log('[SOCKET] Already trying');
+                self.trying = false;
                 return;
             }
             if (self.stayonline === true) {
@@ -170,11 +166,19 @@ class SocketService {
         this.CloseEvent = CloseEvent;
 
         function receive(packedmsg) {
+            $('#ledincoming').css({'color': 'red'});
+            
+            function reset() {
+                $('#ledincoming').css({'color': 'green'});
+            }
+            self.$timeout(reset, 250);
             //console.log('Raw message received: ', packedmsg);
             var msg = JSON.parse(packedmsg.data);
 
             //console.log('Parsed message: ', msg, self.handlers);
-
+            
+            self.stats.rx++;
+            
             if (_.has(msg, 'component')) {
                 if (_.has(msg, 'action')) {
                     //console.log('Correct message received. Handlers: ', self.handlers, msg.component);
@@ -205,8 +209,7 @@ class SocketService {
 
 
     }
-
-
+    
     hideElements() {
         $('#btnuser').addClass('hidden');
         // TODO: Mob button should rather be gray and recording the MOB alert for later,
@@ -216,9 +219,19 @@ class SocketService {
     }
 
     send(msg) {
-        var json = JSON.stringify(msg)
+        var json = JSON.stringify(msg);
         console.log('Transmitting msg: ', json);
         this.sock.send(json);
+        
+        this.stats.tx++;
+        
+        $('#ledoutgoing').css({'color': 'red'});
+        
+        function reset() {
+            $('#ledoutgoing').css({'color': 'green'});
+        }
+        
+        this.$timeout(reset, 250);
     }
 
     listen(topic, handler) {
