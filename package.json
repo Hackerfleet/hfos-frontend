@@ -24,6 +24,8 @@
     "angular": "1.5",
     "angular-animate": "1.5",
     "angular-aria": "^1.5.0",
+    "angular-bootstrap-calendar": "^0.22.0",
+    "angular-clipboard": "^1.4.2",
     "angular-cookies": "^1.5.0",
     "angular-gridster": "^0.13.3",
     "angular-local-storage": "^0.2.6",
@@ -42,7 +44,9 @@
     "jquery": "2.1.4",
     "json-loader": "^0.5.4",
     "lodash": "3.10.1",
-    "ng-draggable": "^1.0.0"
+    "moment": "^2.14.1",
+    "ng-draggable": "^1.0.0",
+    "textangular": "^1.5.3"
   },
   "devDependencies": {
     "angular-mocks": "1.5",

@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap-theme.min.css';
 import 'bootstrap-additions/dist/bootstrap-additions.css';
 import 'font-awesome/css/font-awesome.min.css';
+import 'angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css';
 import './main.scss';
 
 // 3rd party modules
@@ -22,10 +23,14 @@ import animate from 'angular-animate';
 import cookies from 'angular-cookies';
 import draggable from 'ng-draggable';
 import fullscreen from '@kariudo/angular-fullscreen';
-import touch from 'angular-touch'
+import touch from 'angular-touch';
 import md5 from 'angular-md5';
 import schemaForm from 'angular-schema-form';
 import bootstrapdecorator from 'angular-schema-form-bootstrap';
+import tangcloud from 'tiny-angular-wordcloud/dist/tangCloud';
+import clipboard from 'angular-clipboard';
+import calendar from 'angular-bootstrap-calendar';
+
 
 // HFOS Core Modules
 import app from './app/app.module';
@@ -39,8 +44,8 @@ require('humanize-duration');
 
 // HFOS Plugin Modules
 
-let modules = ['mgcrea.ngStrap', 'gridster', 'schemaForm', 'ngDraggable', 'FBAngular',
-    animate, app, common, objects, cookies, touch, md5, featuremenu, about, doc
+let modules = ['mgcrea.ngStrap', 'gridster', 'schemaForm', 'ngDraggable', 'FBAngular', 'tangcloud',
+    animate, app, common, objects, cookies, touch, md5, featuremenu, about, doc, clipboard.name, calendar
 ];
 
 /* COMPONENT SECTION */

@@ -28,7 +28,9 @@ var PARAMS_DEFAULT = {
 
             'angular-animate',
             'angular-sanitize',
-
+            
+            'angular-clipboard/angular-clipboard.js',
+            
             'angular-strap/dist/angular-strap.min.js',
             'angular-strap/dist/angular-strap.tpl.min.js',
 
