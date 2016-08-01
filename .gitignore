@@ -5,3 +5,4 @@ dist
 .sass-cache
 bower_components
 src/components
+/src/main.js
