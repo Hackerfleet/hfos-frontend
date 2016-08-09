@@ -27,7 +27,6 @@ import touch from 'angular-touch';
 import md5 from 'angular-md5';
 import schemaForm from 'angular-schema-form';
 import bootstrapdecorator from 'angular-schema-form-bootstrap';
-import tangcloud from 'tiny-angular-wordcloud/dist/tangCloud';
 import clipboard from 'angular-clipboard';
 import calendar from 'angular-bootstrap-calendar';
 
@@ -44,7 +43,7 @@ require('humanize-duration');
 
 // HFOS Plugin Modules
 
-let modules = ['mgcrea.ngStrap', 'gridster', 'schemaForm', 'ngDraggable', 'FBAngular', 'tangcloud',
+let modules = ['mgcrea.ngStrap', 'gridster', 'schemaForm', 'ngDraggable', 'FBAngular',
     animate, app, common, objects, cookies, touch, md5, featuremenu, about, doc, clipboard.name, calendar
 ];
 
