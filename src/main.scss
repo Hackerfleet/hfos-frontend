@@ -16,15 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 /* TODO:
  *  - Split out module css
  *  - Clean up crufts and unused stuff
  *  - Make sure about responsive design
  */
-
 /* Heya, nice sass: */
-
 @import 'colors';
 
 @font-face {
@@ -37,6 +34,7 @@
     src: url('../assets/fonts/letsgodigital-regular.ttf') format("truetype");
 
 }
+
 @font-face {
     font-family: 'misc-icons';
     src: url('../assets/fonts/misc-icons.eot?-3u7zq');
@@ -191,7 +189,6 @@ a:focus {
     padding: 1em 1em;
 }
 
-
 /* Space out content a bit */
 
 html, body {
@@ -281,6 +278,10 @@ html, body {
     }
 }
 
+.menuitem {
+    white-space: nowrap;
+}
+
 .menu-box {
     /*background-color: #fff;*/
     text-align: center;
@@ -303,12 +304,14 @@ html, body {
 .module-icon-tiny {
     width: 32px;
     height: 32px;
-    margin-right: 10px;
+    margin: 0px 5px 0px 10px;
 }
 
 .menu-icon-tiny {
     font-size: 20px;
-    margin-left: 5px;
+    margin: 5px;
+    width: 24px;
+    text-align: center;
 }
 
 .menu-icon-list {
