@@ -35,7 +35,7 @@ class SocketService {
         this.host = $location.host();
         this.port = 80;
 
-        this.sock = new WebSocket('ws://' + this.host + ':' + this.port + '/websocket', 'HFOS');
+        this.sock = new WebSocket('ws://' + this.host + ':' + this.port + '/websocket');
 
         this.connected = true;
         this.stayonline = true;
@@ -71,7 +71,7 @@ class SocketService {
                 self.trying = true;
 
                 var interval = Math.min(30, Math.pow(self.reconnecttries, 2))*1000;
-                
+
                 self.disconnectalert.hide();
 
                 self.disconnectalert = $alert({
@@ -167,7 +167,7 @@ class SocketService {
 
         function receive(packedmsg) {
             $('#ledincoming').css({'color': 'red'});
-            
+
             function reset() {
                 $('#ledincoming').css({'color': 'green'});
             }
@@ -175,10 +175,10 @@ class SocketService {
             //console.log('Raw message received: ', packedmsg);
             var msg = JSON.parse(packedmsg.data);
 
-            //console.log('Parsed message: ', msg, self.handlers);
-            
+            console.log('Parsed message: ', msg);
+
             self.stats.rx++;
-            
+
             if (_.has(msg, 'component')) {
                 if (_.has(msg, 'action')) {
                     //console.log('Correct message received. Handlers: ', self.handlers, msg.component);
@@ -209,7 +209,7 @@ class SocketService {
 
 
     }
-    
+
     hideElements() {
         $('#btnuser').addClass('hidden');
         // TODO: Mob button should rather be gray and recording the MOB alert for later,
@@ -222,15 +222,15 @@ class SocketService {
         var json = JSON.stringify(msg);
         console.log('Transmitting msg: ', json);
         this.sock.send(json);
-        
+
         this.stats.tx++;
-        
+
         $('#ledoutgoing').css({'color': 'red'});
-        
+
         function reset() {
             $('#ledoutgoing').css({'color': 'green'});
         }
-        
+
         this.$timeout(reset, 250);
     }
 
