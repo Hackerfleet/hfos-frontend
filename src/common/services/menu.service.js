@@ -102,13 +102,13 @@ class MenuService {
                     html = html + '<li role="separator" class="divider"></li>';
                     break;
                 case 'label':
-                    html = html + '<li><div>' + item.text + '</div>';
+                    html = html + '<li><div class="menuitem">' + item.text + '</div>';
                     break;
                 case 'func':
-                    html = html + '<li><div><a id="menuitem' + item.name + '">' + item.text + '</a></div></li>';
+                    html = html + '<li><div><a class="menuitem" id="menuitem' + item.name + '">' + item.text + '</a></div></li>';
                     break;
                 case 'check':
-                    html = html + '<li><div><input type="checkbox" id="menuitem' + item.name + '">' + item.text + '</input></div></li>';
+                    html = html + '<li><div class="menuitem"><input type="checkbox" id="menuitem' + item.name + '">' + item.text + '</input></div></li>';
             }
         }
 
