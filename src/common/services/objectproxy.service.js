@@ -153,12 +153,12 @@ class ObjectProxy {
         return this.requestId++;
     }
 
-    getObject(schema, uuid, subscribe) {
+    getObject(schema, uuid, subscribe, filter) {
         console.log('[OP] Fetching object ', schema, uuid);
         this.socket.send({
             'component': 'objectmanager',
             'action': 'get',
-            'data': {'schema': schema, 'uuid': uuid, 'subscribe': subscribe}
+            'data': {'schema': schema, 'uuid': uuid, 'subscribe': subscribe, 'filter': filter}
         });
     }
 
