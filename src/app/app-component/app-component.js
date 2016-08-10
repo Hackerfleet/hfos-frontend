@@ -51,7 +51,7 @@ class AppComponent {
             for (var state of self.state.get()) {
                 if ('icon' in state) {
 
-                    var menuentry = '<li><a href="#' + state.url + '"><img class="module-icon-tiny" src="' + state.icon + '" type="image/svg+xml">' + state.label + '</a></li>';
+                    var menuentry = '<li><div><a href="#' + state.url + '"><img class="module-icon-tiny" src="' + state.icon + '" type="image/svg+xml">' + state.label + '</a></div></li>';
                     menu.append(menuentry);
                 }
             }
