@@ -50,7 +50,8 @@
 class SystemconfigService {
 
     constructor(rootscope, user, objectproxy, alert, modal) {
-        console.log('SystemconfigService constructing');
+        console.log('[SYS] SystemconfigService constructing');
+        this.rootscope = rootscope;
         this.user = user;
         this.op = objectproxy;
         this.alert = alert;
@@ -58,11 +59,12 @@ class SystemconfigService {
 
         this.config = null;
 
-        console.log('SystemconfigService constructed');
+        console.log('[SYS] SystemconfigService constructed');
 
         var self = this;
 
         function updateConfig() {
+            console.log('[SYS] Getting system config.');
             self.op.getObject('systemconfig', '', true, {active: true})
         }
 
@@ -74,10 +76,12 @@ class SystemconfigService {
             updateConfig();
         }
 
-        rootscope.$on('Op.Get', function(event, objuuid, obj, schema) {
+        rootscope.$on('OP.Get', function(event, objuuid, obj, schema) {
+            console.log('[SYS] Listened to: ', schema, obj);
             if (schema == 'systemconfig' && obj.active == true) {
-                console.log('Systemconfiguration received!');
+                console.log('[SYS] Systemconfiguration received!');
                 self.config = obj;
+                self.rootscope.$broadcast('System.Config', obj);
             }
         });
 
