@@ -213,6 +213,9 @@ class ObjectProxy {
         console.log('[OP] Async-getting list for schema ', schema, search);
 
         var reqid = this.getRequestId();
+        if (typeof search === 'undefined') {
+            search = '';
+        }
 
         this.socket.send({
             'component': 'objectmanager',
