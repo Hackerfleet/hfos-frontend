@@ -53,10 +53,19 @@
 
             <div class="well">
                 <h3>Object Lists</h3>
-                <ul>
-                    <li ng-repeat="schema in $ctrl.schemata"><a ng-click="$ctrl.viewlist(schema)">View {{schema}}
-                        list</a></li>
-                </ul>
+                <table>
+                    <tr>
+                        <th>Schemaname</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr ng-repeat="schema in $ctrl.schemata">
+                        <td>{{schema}}</td>
+                        <td>
+                            <a ng-click="$ctrl.viewlist(schema)">View list</a>
+                            <a href="#/editor/{{schema}}//create">Create new</a>
+                        </td>
+                    </tr>
+                </table>
             </div>
 
             <div class="well table-responsive">
