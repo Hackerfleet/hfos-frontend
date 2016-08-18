@@ -25,6 +25,8 @@ class objecteditor {
 
         this.objectproxy = objectproxy;
         this.scope = $scope;
+        this.uuid = "";
+        
         if (typeof this.schema === 'undefined') {
             this.schemaname = $stateParams.schema;
         } else {
@@ -38,7 +40,7 @@ class objecteditor {
         }
 
         if (typeof this.action === 'undefined') {
-            this.action = $stateParams.action;
+            this.action = $stateParams.action.charAt(0).toUpperCase() + $stateParams.action.slice(1);
         }
 
         console.log('[OE] UUID: ', this.uuid, 'Action:', this.action);
@@ -60,7 +62,7 @@ class objecteditor {
         // TODO: Clean up the editor api, this is a bit messy from the directive movement
         // Same goes for the list, probably.
 
-        if (this.uuid.toUpperCase() === 'CREATE') {
+        if (this.uuid === "") {
             this.action = 'Create';
             $('#objModified').removeClass('hidden');
         } else {
@@ -81,7 +83,7 @@ class objecteditor {
         this.rootscope.$on('OP.Put', function (ev, uuid) {
             if (uuid === self.uuid) {
                 self.markStored();
-            } else if (self.uuid.toUpperCase() === 'CREATE') {
+            } else if (self.uuid === "") {
                 // TODO: What if another object is being created right now?
                 // We could check if the object body is the same.
                 // (Works bad on objects that are somehow modified before saving them)
@@ -102,7 +104,7 @@ class objecteditor {
         function getData() {
             console.log('[OE] Requesting schemata for ', self.schemaname);
             self.schemadata = self.schemata.get(self.schemaname);
-            if (self.action !== 'Create') {
+            if (self.action !== 'Create' && self.uuid !== '') {
                 console.log('[OE] Requesting object.');
                 self.objectproxy.getObject(self.schemaname, self.uuid, true);
             }
@@ -119,7 +121,7 @@ class objecteditor {
             var newschema = self.schemata.schema(self.schemaname);
             console.log('[OE] Got a schema update:', newschema);
             self.schemadata = self.schemata.get(self.schemaname);
-            // TODO: getData?
+            
             getData();
         });
 
