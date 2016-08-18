@@ -29,6 +29,7 @@ import touch from 'angular-touch';
 import md5 from 'angular-md5';
 import translate from 'angular-translate';
 import clipboard from 'angular-clipboard';
+import ui from 'angular-ui-bootstrap';
 import calendar from 'angular-bootstrap-calendar';
 
 // HFOS Core Modules
@@ -44,7 +45,7 @@ require('humanize-duration');
 // HFOS Plugin Modules
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'schemaForm', 'ui.select', 'ngDraggable', 'FBAngular',
-    animate, app, common, objects, cookies, touch, translate, md5, featuremenu, about, doc, clipboard.name, calendar
+    animate, app, common, objects, cookies, touch, translate, md5, ui, featuremenu, about, doc, clipboard.name, calendar
 ];
 
 /* COMPONENT SECTION */
