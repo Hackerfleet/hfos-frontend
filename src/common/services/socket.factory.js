@@ -62,7 +62,7 @@ class SocketService {
             if (self.connected !== true && self.trying !== true) {
                 console.log('[SOCKET] Trying to reconnect.');
                 self.sock.close();
-                self.sock = new WebSocket('ws://' + self.host + ':' + self.port + '/websocket', 'HFOS');
+                self.sock = new WebSocket('ws://' + self.host + ':' + self.port + '/websocket');
                 self.sock.onopen = self.OpenEvent;
                 self.sock.onclose = self.CloseEvent;
                 self.sock.onmessage = self.receive;
@@ -175,7 +175,7 @@ class SocketService {
             //console.log('Raw message received: ', packedmsg);
             var msg = JSON.parse(packedmsg.data);
 
-            console.log('Parsed message: ', msg);
+            //console.log('Parsed message: ', msg, self.handlers);
 
             self.stats.rx++;
 
