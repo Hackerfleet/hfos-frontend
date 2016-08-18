@@ -22,7 +22,7 @@ class objecteditor {
     constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope, alert) {
         console.log('[OE] STATEPARAMS: ', $stateParams);
         console.log('[OE] SCOPE: ', $scope);
-        console.log('FOOBAR:', this.foobar);
+
         this.objectproxy = objectproxy;
         this.scope = $scope;
         if (typeof this.schema === 'undefined') {
@@ -52,6 +52,13 @@ class objecteditor {
         this.schemadata = {};
         this.model = {};
 
+        this.editorOptions = {
+            language: 'en',
+            uiColor: '#000000'
+        };
+
+        // TODO: Clean up the editor api, this is a bit messy from the directive movement
+        // Same goes for the list, probably.
 
         if (this.uuid.toUpperCase() === 'CREATE') {
             this.action = 'Create';
@@ -119,6 +126,17 @@ class objecteditor {
         if (user.signedin) {
             getData();
         }
+
+        this.getFormData = function(options, search) {
+            console.log('[OE] Trying to obtain proxy list.', options, search);
+            if (search === '') {
+                console.log("INSIDEMODEL:", options.scope.insidemodel);
+            }
+            var result = self.objectproxy.searchItems(options.type, search);
+            console.log(result);
+            return result;
+        };
+
     }
 
     fieldChange(model, form) {
@@ -134,15 +152,6 @@ class objecteditor {
 
     }
 
-    getFormData(options, search, foo) {
-        console.log('[OE] Trying to obtain proxy list.', options, search, foo);
-        if (search === '') {
-            console.log(options.scope.insidemodel);
-        }
-        var result = this.objectproxy.newgetlist(options.type, search);
-        console.log(result);
-        return result;
-    }
 
 //console.log("[OE] CB Results: ", this.Callback('mapview'));
 

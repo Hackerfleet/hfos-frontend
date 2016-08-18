@@ -22,6 +22,13 @@ import uirouter from 'angular-ui-router';
 
 import { routing } from './objects.config.js';
 
+import schemaForm from 'angular-schema-form';
+import bootstrapdecorator from 'angular-schema-form-bootstrap';
+import schemaFormDynamicSelect from 'angular-schema-form-dynamic-select';
+import 'angular-ui-select/select';
+import 'angular-schema-form-colorpicker/bootstrap-colorpicker';
+import 'angular-schema-form-ckeditor/bootstrap-ckeditor';
+
 import editor from './editor/editor.js';
 import list from './list/list.js';
 
