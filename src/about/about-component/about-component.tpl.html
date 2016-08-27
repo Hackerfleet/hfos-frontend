@@ -58,7 +58,7 @@
                         <th>Schemaname</th>
                         <th>Actions</th>
                     </tr>
-                    <tr ng-repeat="schema in $ctrl.schemata">
+                    <tr ng-repeat="schema in $ctrl.schemata | orderBy:schema">
                         <td>{{schema}}</td>
                         <td>
                             <a ng-click="$ctrl.viewlist(schema)">View list</a>
