@@ -38,4 +38,42 @@
             <span>Form: {{$ctrl.schemadata.form}}</span>
         </div>
     </div>
+    <div class="well hidden">
+        <h1>Test section</h1>
+        <h2>Datetimepicker</h2>
+        <!-- <dateTimePicker ng-model="$ctrl.bazqux"></dateTimePicker>-->
+        <h3>Datetimepicker native</h3>
+        <!-- Datetime example -->
+        <div class="form-group">
+            <label class="control-label"><i class="fa fa-calendar"></i> Datetime picker</label><br>
+            <div class="form-group">
+                <input size="10" class="form-control" ng-model="sharedDate" data-autoclose="1" placeholder="Date"
+                       bs-datepicker type="text">
+            </div>
+            <div class="form-group">
+                <input size="8" class="form-control" ng-model="sharedDate" data-time-format="h:mm:ss a"
+                       data-autoclose="1" placeholder="Time" bs-timepicker type="text">
+            </div>
+        </div>
+        <!--
+        <h2>NG-Spectrum colorpicker </h2>
+        <spectrum-colorpicker ng-model="$ctrl.foobar" format="'hex'"></spectrum-colorpicker>
+        <h2>Spectrum solotest:</h2>
+        <div id="custom"> Ahoi!</div>
+        <h2>Editor solotest:</h2>
+        <div class="form-group" ng-class="{'has-error': hasError()}">
+            <label class="control-label" ng-show="showTitle()">{{form.title}}</label>
+
+            <textarea ng-show="form.key"
+                      style="background-color: white"
+                      type="text"
+                      class="form-control"
+                      schema-validate="form"
+                      ng-model="$$value$$"
+                      ckeditor="form.ckeditor"></textarea>
+
+            <span class="help-block">{{ (hasError() && errorMessage(schemaError())) || form.description}}</span>
+        </div>
+        -->
+    </div>
 </div>
