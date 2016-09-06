@@ -12,7 +12,8 @@ var PARAMS_DEFAULT = {
         extensions: ['', '.js', '.tpl.html', '.css', '.json', '.scss', '.svg', '.ttf', '.woff'],
         fallback: '/node_modules',
         alias: {
-            //'angular-schema-form':           '../node_modules/angular-schema-form/dist/schema-form.js',
+            //'angular-schema-form':           '../node_modules/angular-schema-form',
+            'schema-form': '../node_modules/angular-schema-form'
             //'angular-schema-form-bootstrap': '../node_modules/angular-schema-form-bootstrap/bootstrap-decorator.js'
         }
     },
@@ -22,18 +23,21 @@ var PARAMS_DEFAULT = {
             'lodash',
             'jquery',
             'bootstrap',
-
+            
             'angular',
             'angular-aria',
-
+            
             'angular-animate',
             'angular-sanitize',
+            
+            'objectpath',
             
             'angular-clipboard/angular-clipboard.js',
             
             'angular-strap/dist/angular-strap.min.js',
             'angular-strap/dist/angular-strap.tpl.min.js',
-
+            'angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
+            
             'humanize-duration'
         ]
     },
@@ -114,8 +118,8 @@ module.exports = {
     output: params.output,
     module: {
         /*preLoaders: [
-            {test: /\.js$/, loader: "source-map-loader"}
-        ],*/
+         {test: /\.js$/, loader: "source-map-loader"}
+         ],*/
         loaders: [
             {test: /\.js$/, loader: 'babel-loader', exclude: /(\.test.js$|node_modules)/},
             {test: /\.css$/, loader: 'style!css'},
@@ -123,7 +127,21 @@ module.exports = {
             {test: /\.json/, loader: 'json'},
             //{test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff(2)?)(\?[a-z0-9]+)?$/, loader: 'file-loader'}, //  url?limit=50000'}
             {test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff(2)).*$/, loader: 'file-loader'},
-            {test: /\.scss/, loaders: ['style', 'css', 'sass']}
+            {test: /\.scss/, loaders: ['style', 'css', 'sass']},
+            {
+                test: require.resolve('tinymce/tinymce'),
+                loaders: [
+                    'exports?window.tinymce',
+                    'imports?this=>window'
+                ]
+            },
+            {
+                test: /tinymce\/(themes|plugins)\//,
+                loaders: [
+                    'exports?window.tinymce',
+                    'imports?this=>window'
+                ]
+            }
         ]
     },
     plugins: params.plugins,
