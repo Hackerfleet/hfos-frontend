@@ -21,16 +21,18 @@ import './main.scss';
 // 3rd party modules
 //import bootstrap from 'bootstrap';
 import angular from 'angular';
+import sanitize from 'angular-sanitize';
 import animate from 'angular-animate';
 import cookies from 'angular-cookies';
-import draggable from 'ng-draggable';
-import fullscreen from '@kariudo/angular-fullscreen';
+import 'ng-draggable';
+import '@kariudo/angular-fullscreen';
 import touch from 'angular-touch';
 import md5 from 'angular-md5';
 import translate from 'angular-translate';
 import clipboard from 'angular-clipboard';
 import ui from 'angular-ui-bootstrap';
 import calendar from 'angular-bootstrap-calendar';
+
 
 // HFOS Core Modules
 import app from './app/app.module';
@@ -44,8 +46,8 @@ require('humanize-duration');
 
 // HFOS Plugin Modules
 
-let modules = ['mgcrea.ngStrap', 'gridster', 'schemaForm', 'ui.select', 'ngDraggable', 'FBAngular',
-    animate, app, common, objects, cookies, touch, translate, md5, ui, featuremenu, about, doc, clipboard.name, calendar
+let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular',
+    animate, app, common, objects, cookies, sanitize, touch, translate, md5, ui, featuremenu, about, doc, clipboard.name, calendar
 ];
 
 /* COMPONENT SECTION */
