@@ -20,14 +20,47 @@
 import angular from 'angular';
 import uirouter from 'angular-ui-router';
 
-import { routing } from './objects.config.js';
+import {routing} from './objects.config.js';
 
-import schemaForm from 'angular-schema-form';
-import bootstrapdecorator from 'angular-schema-form-bootstrap';
-import schemaFormDynamicSelect from 'angular-schema-form-dynamic-select';
+import 'tv4';
+import 'objectpath';
+
+import 'spectrum-colorpicker/spectrum';
+import 'angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker';
+
+// TinyMCE - Core
+import tinymce from 'tinymce/tinymce';
+import 'tinymce/plugins/textcolor/plugin';
+import 'tinymce/plugins/link/plugin';
+import 'tinymce/plugins/image/plugin';
+import 'tinymce/themes/modern/theme';
+
+// TinyMCE - Plugins
+import 'tinymce/plugins/paste/plugin';
+import 'tinymce/plugins/link/plugin';
+import 'tinymce/plugins/autoresize/plugin';
+
+import 'tinymce/skins/lightgray/skin.min.css';
+
+import 'tx-tinymce/tx-tinymce';
+
+import 'angular-schema-form/dist/schema-form';
+import 'angular-schema-form/dist/bootstrap-decorator';
+
 import 'angular-ui-select/select';
-import 'angular-schema-form-colorpicker/bootstrap-colorpicker';
-import 'angular-schema-form-ckeditor/bootstrap-ckeditor';
+import 'angular-schema-form-dynamic-select/angular-schema-form-dynamic-select';
+
+import 'schema-form-datetimepicker/schema-form-date-time-picker';
+
+import 'angular-schema-form-tinymce/bootstrap-tinymce';
+
+//import 'angular-schema-form-colorpicker/bootstrap-colorpicker';
+//import 'spectrum-colorpicker/spectrum.css';
+
+// This one is powerful, but the integration is completely outdated (sadly)..
+//import 'ckeditor/ckeditor';
+//import 'ng-ckeditor/ng-ckeditor';
+//import 'angular-schema-form-ckeditor/bootstrap-ckeditor';
 
 import editor from './editor/editor.js';
 import list from './list/list.js';
@@ -36,8 +69,19 @@ import editortemplate from './editor/editor.tpl.html';
 import listtemplate from './list/list.tpl.html';
 
 export default angular
-    .module('main.components.objects', [uirouter])
+    .module('main.components.objects', [
+        uirouter,
+        'ui.select',
+        'angularSpectrumColorpicker',
+        'schemaForm',
+        'schemaForm-datetimepicker',
+        'schemaForm-tinymce'
+    ])
     .config(routing)
-    .component('objecteditor', {controller: editor, template: editortemplate, bindings: {schema:'@', uuid:'@', action:'@'}})
+    .component('objecteditor', {
+        controller: editor,
+        template: editortemplate,
+        bindings: {schema: '@', uuid: '@', action: '@'}
+    })
     .component('objectlist', {controller: list, template: listtemplate})
     .name;
