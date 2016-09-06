@@ -25,7 +25,6 @@ class objecteditor {
 
         this.objectproxy = objectproxy;
         this.scope = $scope;
-        this.uuid = "";
         
         if (typeof this.schema === 'undefined') {
             this.schemaname = $stateParams.schema;
@@ -42,7 +41,7 @@ class objecteditor {
         if (typeof this.action === 'undefined') {
             this.action = $stateParams.action.charAt(0).toUpperCase() + $stateParams.action.slice(1);
         }
-
+    
         console.log('[OE] UUID: ', this.uuid, 'Action:', this.action);
 
         this.socket = socket;
