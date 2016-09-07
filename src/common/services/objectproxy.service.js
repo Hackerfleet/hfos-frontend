@@ -65,7 +65,8 @@ class ObjectProxy {
             var result;
             var newobj;
             var schema = null;
-
+            
+            
             if (msg.action === 'get' || msg.action === 'update') {
                 newobj = msg.data;
                 schema = newobj.id.slice(1);
@@ -75,7 +76,12 @@ class ObjectProxy {
                     return;
                 }
             }
-
+    
+            if (msg.action === 'nonexistant') {
+                console.log('Non existant document requested!');
+                console.log('Message:', msg);
+            }
+            
             if (msg.action === 'get') {
                 console.log('[OP] Received object from OM: ', newobj);
 
