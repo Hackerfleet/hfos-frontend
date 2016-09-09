@@ -33,7 +33,7 @@ class SocketService {
         this.rootscope = $rootscope;
         //this.humanizer = humanizer;
         this.host = $location.host();
-        this.port = 80;
+        this.port = $location.port();
 
         this.sock = new WebSocket('ws://' + this.host + ':' + this.port + '/websocket');
 
