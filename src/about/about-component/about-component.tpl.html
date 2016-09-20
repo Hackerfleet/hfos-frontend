@@ -6,7 +6,7 @@
             <li><a role="tab" ng-click="$ctrl.opentab('network')" data-toggle="tab">Network</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('console')" data-toggle="tab">Console</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('commands')" data-toggle="tab">Commands</a></li>
-            <li><a role="tab" ng-click="$ctrl.opentab('client')" data-toggle="tab">Client</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('server')" data-toggle="tab">Server</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -69,9 +69,9 @@
                 </div>
             </div>
 
-            <div class="tab-pane" id="client">
+            <div class="tab-pane" id="server">
                 <div class="well">
-                    <h3>Client</h3>
+                    <h3>Server</h3>
                     <input type="number" ng-model="$ctrl.serverport">
                     <a ng-click="$ctrl.setserverport()" type="button" class="btn btn-danger">Override server port</a>
                     <a ng-click="$ctrl.unsetserverport()" type="button" class="btn btn-success">Remove override</a>
