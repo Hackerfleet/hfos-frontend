@@ -12,6 +12,8 @@ class AboutComponent {
         this.schemata = [];
         this.updater = false;
         this.stats = {};
+        
+        this.serverport = socket.port;
 
         this.consoleinput = '';
 
@@ -59,22 +61,40 @@ class AboutComponent {
     }
 
     enableDebug() {
-        console.log('Toggling Debug tools');
+        console.log('[ABOUT] Toggling Debug tools');
         if (this.updater === false) {
-            $('#debug').show();
+            $('#debugnavigation').show();
             this.updateStats();
             this.updater = this.$interval(() => this.updateStats(), 1000);
         } else {
-            $('#debug').hide();
+            $('#debugnavigation').hide();
             this.$interval.cancel(this.updater);
             this.updater = false;
         }
+    }
+       
+    opentab(tabname) {
+        console.log('[ABOUT] Switching tab to ', tabname);
+
+        // TODO: De-jquery this
+        $('.nav-pills .active, .tab-content .active').removeClass('active');
+        $('#' + tabname).addClass('active');
     }
 
     viewlist(schema) {
         this.state.go('app.list', {schema: schema});
     }
-
+    
+    setserverport() {
+        console.log('[ABOUT] Updating server port to ', this.serverport);
+        this.socket.setPort(this.serverport);
+    }
+    
+    unsetserverport() {
+        console.log('[ABOUT] Removing server port override');
+        this.socket.unsetPort();
+    }
+    
     sendcommand() {
         this.command(this.consoleinput);
     }
