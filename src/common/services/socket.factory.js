@@ -26,14 +26,17 @@ import * as _ from 'lodash';
 
 class SocketService {
 
-    constructor($location, $alert, $timeout, $rootscope) {
+    constructor($location, $alert, $timeout, $cookies, $rootscope) {
         console.log('SocketService constructing');
         this.$alert = $alert;
         this.$timeout = $timeout;
+        this.cookies = $cookies;
         this.rootscope = $rootscope;
         //this.humanizer = humanizer;
         this.host = $location.host();
         this.port = $location.port();
+        
+        if (this.cookies)
 
         this.sock = new WebSocket('ws://' + this.host + ':' + this.port + '/websocket');
 
@@ -57,6 +60,36 @@ class SocketService {
         });
 
         var self = this;
+        
+        var cookie = this.cookies.get('hfosclient-dev');
+        if (typeof cookie !== 'undefined') {
+            var json = JSON.parse(cookie);
+            if (typeof json.port !== 'undefined') {
+                console.log('[SOCKET] Setting development port from cookie');
+                self.port = +json.port;
+                $('#hfos-icon').addClass('icon-glow-red');
+            }
+        }
+        
+        function setPort(port) {
+            console.log('[SOCKET] Storing development port cookie');
+            self.cookies.put('hfosclient-dev', JSON.stringify({port: port}));
+            self.port = port;
+            self.reconnect();
+            $('#hfos-icon').addClass('icon-glow-red');
+        }
+        
+        function unsetPort() {
+            console.log('[SOCKET] Unsetting development port cookie');
+            // TODO: If we decide to store more in that, we should only delete the port keyword
+            self.cookies.remove('hfosclient-dev');
+            $('#hfos-icon').removeClass('icon-glow-red');
+            self.port = $location.port();
+            self.reconnect();
+        }
+        
+        this.setPort = setPort;
+        this.unsetPort = unsetPort;
 
         function doReconnect() {
             if (self.connected !== true && self.trying !== true) {
@@ -209,6 +242,11 @@ class SocketService {
 
 
     }
+    
+    reconnect() {
+        this.doDisconnect();
+        this.doReconnect();
+    }
 
     hideElements() {
         $('#btnuser').addClass('hidden');
@@ -266,6 +304,6 @@ class SocketService {
     }
 }
 
-SocketService.$inject = ['$location', '$alert', '$timeout', '$rootScope'];
+SocketService.$inject = ['$location', '$alert', '$timeout', '$cookies', '$rootScope'];
 
 export default SocketService;
