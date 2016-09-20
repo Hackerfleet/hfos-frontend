@@ -1,97 +1,127 @@
 <div class="container">
     <div class="well">
-        <div id="about" class="center-block" style="width:95%">
-            <div class="center-block">
-                <span class="center-block glyphicon icon-hf-logo hflogodark"></span>
-            </div>
+        <ul id="debugnavigation" class="nav nav-pills" role="tablist">
+            <li class="active"><a role="tab" ng-click="$ctrl.opentab('about')" data-toggle="tab">About</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('objects')" data-toggle="tab">Objects</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('network')" data-toggle="tab">Network</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('console')" data-toggle="tab">Console</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('commands')" data-toggle="tab">Commands</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('client')" data-toggle="tab">Client</a></li>
+        </ul>
 
-            <H2>HFOS - Hackerfleet Operating System (Beta)</H2>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="about">
+                <div class="center-block" style="width:95%">
+                    <div class="center-block">
+                        <span class="center-block glyphicon icon-hf-logo hflogodark"></span>
+                    </div>
 
-            <ul>
-                <li><a href="mailto:info@hackerfleet.org">Contact</a></li>
-                <li><a href="https://hackerfleet.org">Homepage</a></li>
-            </ul>
+                    <H2>HFOS - Hackerfleet Operating System (Beta)</H2>
 
-            <div class="btn-group btn-block">
-                <button type="button" class="btn btn-block btn-success dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    Report Bugs<span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="mailto:bugs@hackerfleet.org">Report via mail</a></li>
-                    <li><a href="https://github.com/hackerfleet/hfos/issues" target="_blank">Browse on
-                        Github</a></li>
-                    <li><a href="https://github.com/hackerfleet/hfos/issues/new" target="_blank">Report
-                        on
-                        Github</a></li>
-                </ul>
-            </div>
-            <a ng-click="$ctrl.enableDebug()" type="button" class="btn btn-block btn-warning"
-               style="align: center"><span
-                class="glyphicon glyphicon-alert"></span></a>
-        </div>
+                    <ul>
+                        <li><a href="mailto:info@hackerfleet.org">Contact</a></li>
+                        <li><a href="https://hackerfleet.org">Homepage</a></li>
+                    </ul>
 
-        <div id="debug" class="debug well">
-            <div class="well">
-                <h3>Console</h3>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="commandinput" ng-model="$ctrl.consoleinput">
-                <span class="input-group-btn">
-                    <button ng-click="$ctrl.sendcommand()" class="btn btn-success">Transmit</button>
-                </span>
+                    <div class="btn-group btn-block">
+                        <button type="button" class="btn btn-block btn-success dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Report Bugs<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="mailto:bugs@hackerfleet.org">Report via mail</a></li>
+                            <li><a href="https://github.com/hackerfleet/hfos/issues" target="_blank">Browse on
+                                Github</a></li>
+                            <li><a href="https://github.com/hackerfleet/hfos/issues/new" target="_blank">Report
+                                on
+                                Github</a></li>
+                        </ul>
+                    </div>
+                    <a ng-click="$ctrl.enableDebug()" type="button" class="btn btn-block btn-warning"
+                       style="align: center"><span
+                        class="glyphicon glyphicon-alert"></span></a>
                 </div>
             </div>
 
-            <div class="well">
-                <h3>Buttons</h3>
-                <a ng-click="$ctrl.memdebug()" type="button" class="btn btn-danger">Memory Top</a>
-                <a ng-click="$ctrl.graph()" type="button" class="btn btn-danger">Generate Graph</a>
-                <a ng-click="$ctrl.command('buildfrontend')" type="button" class="btn btn-danger">Build frontend</a>
-                <a ng-click="$ctrl.command('exception')" type="button" class="btn btn-danger">Throw a tantrum</a>
-                <a ng-click="$ctrl.command('logtail')" type="button" class="btn btn-danger">Follow logfile</a>
+            <div class="tab-pane" id="console">
+                <div class="well">
+                    <h3>Console</h3>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="commandinput" ng-model="$ctrl.consoleinput">
+                        <span class="input-group-btn">
+                    <button ng-click="$ctrl.sendcommand()" class="btn btn-success">Transmit</button>
+                </span>
+                    </div>
+                </div>
             </div>
 
-            <div class="well">
-                <h3>Object Lists</h3>
-                <table>
-                    <tr>
-                        <th>Schemaname</th>
-                        <th>Actions</th>
-                    </tr>
-                    <tr ng-repeat="schema in $ctrl.schemata | orderBy:schema">
-                        <td>{{schema}}</td>
-                        <td>
-                            <a ng-click="$ctrl.viewlist(schema)">View list</a>
-                            <a href="#/editor/{{schema}}//create">Create new</a>
-                        </td>
-                    </tr>
-                </table>
+            <div class="tab-pane" id="commands">
+                <div class="well">
+                    <h3>Buttons</h3>
+                    <a ng-click="$ctrl.memdebug()" type="button" class="btn btn-danger">Memory Top</a>
+                    <a ng-click="$ctrl.graph()" type="button" class="btn btn-danger">Generate Graph</a>
+                    <a ng-click="$ctrl.command('buildfrontend')" type="button" class="btn btn-danger">Build
+                        frontend</a>
+                    <a ng-click="$ctrl.command('exception')" type="button" class="btn btn-danger">Throw a
+                        tantrum</a>
+                    <a ng-click="$ctrl.command('logtail')" type="button" class="btn btn-danger">Follow logfile</a>
+                </div>
             </div>
 
-            <div class="well table-responsive">
-                <h3>Stats</h3>
-                <table class="table" id="stats">
-                    <tr>
-                        <th>Description</th>
-                        <th>Value</th>
-                    </tr>
-                    <tr>
-                        <td>Packages Received</td>
-                        <td>{{$ctrl.stats.rx}}</td>
-                    </tr>
-                    <tr>
-                        <td>Packages Transmitted</td>
-                        <td>{{$ctrl.stats.tx}}</td>
-                    </tr>
-                    <tr>
-                        <td>Lag</td>
-                        <td>{{$ctrl.stats.lag}}</td>
-                    </tr>
-                    <tr>
-                        <td>Last Connection start</td>
-                        <td>{{$ctrl.stats.start}}</td>
-                    </tr>
-                </table>
+            <div class="tab-pane" id="client">
+                <div class="well">
+                    <h3>Client</h3>
+                    <input type="number" ng-model="$ctrl.serverport">
+                    <a ng-click="$ctrl.setserverport()" type="button" class="btn btn-danger">Override server port</a>
+                    <a ng-click="$ctrl.unsetserverport()" type="button" class="btn btn-success">Remove override</a>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="objects">
+                <div class="well">
+                    <h3>Object Lists</h3>
+                    <table>
+                        <tr>
+                            <th>Schemaname</th>
+                            <th>Actions</th>
+                        </tr>
+                        <tr ng-repeat="schema in $ctrl.schemata | orderBy:schema">
+                            <td>{{schema}}</td>
+                            <td>
+                                <a ng-click="$ctrl.viewlist(schema)">View list</a>
+                                <a href="#/editor/{{schema}}//create">Create new</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="network">
+                <div class="well table-responsive">
+                    <h3>Stats</h3>
+                    <table class="table" id="stats">
+                        <tr>
+                            <th>Description</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr>
+                            <td>Packages Received</td>
+                            <td>{{$ctrl.stats.rx}}</td>
+                        </tr>
+                        <tr>
+                            <td>Packages Transmitted</td>
+                            <td>{{$ctrl.stats.tx}}</td>
+                        </tr>
+                        <tr>
+                            <td>Lag</td>
+                            <td>{{$ctrl.stats.lag}}</td>
+                        </tr>
+                        <tr>
+                            <td>Last Connection start</td>
+                            <td>{{$ctrl.stats.start}}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
