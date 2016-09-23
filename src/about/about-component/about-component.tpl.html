@@ -1,6 +1,6 @@
 <div class="container">
     <div class="well">
-        <ul id="debugnavigation" class="nav nav-pills" role="tablist">
+        <ul id="debug" ng-show="$ctrl.debug" class="nav nav-pills" role="tablist">
             <li class="active"><a role="tab" ng-click="$ctrl.opentab('about')" data-toggle="tab">About</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('objects')" data-toggle="tab">Objects</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('network')" data-toggle="tab">Network</a></li>
@@ -38,7 +38,7 @@
                                 Github</a></li>
                         </ul>
                     </div>
-                    <a ng-click="$ctrl.enableDebug()" type="button" class="btn btn-block btn-warning"
+                    <a ng-click="$ctrl.toggleDebug()" type="button" class="btn btn-block btn-warning"
                        style="align: center"><span
                         class="glyphicon glyphicon-alert"></span></a>
                 </div>

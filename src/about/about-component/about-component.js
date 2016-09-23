@@ -10,6 +10,7 @@ class AboutComponent {
         this.schemaservice = schemaservice;
 
         this.schemata = [];
+        this.debug = false;
         this.updater = false;
         this.stats = {};
         
@@ -18,8 +19,7 @@ class AboutComponent {
         this.consoleinput = '';
 
         $('#path').css({fill: '#afafff'});
-        $('#debug').hide();
-
+        
         var self = this;
 
         function updateSchemata() {
@@ -60,14 +60,14 @@ class AboutComponent {
         this.alert.add('info', 'Debugger', msg, 5);
     }
 
-    enableDebug() {
+    toggleDebug() {
         console.log('[ABOUT] Toggling Debug tools');
-        if (this.updater === false) {
-            $('#debugnavigation').show();
+        if (this.debug !== true) {
+            this.debug = true;
             this.updateStats();
             this.updater = this.$interval(() => this.updateStats(), 1000);
         } else {
-            $('#debugnavigation').hide();
+            this.debug = false;
             this.$interval.cancel(this.updater);
             this.updater = false;
         }
@@ -76,7 +76,7 @@ class AboutComponent {
     opentab(tabname) {
         console.log('[ABOUT] Switching tab to ', tabname);
 
-        // TODO: De-jquery this
+        // TODO: De-jquery this (also somewhere else, e.g. dashboard)
         $('.nav-pills .active, .tab-content .active').removeClass('active');
         $('#' + tabname).addClass('active');
     }
