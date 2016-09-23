@@ -76,7 +76,7 @@
                     <td>
                         <a type="button" href="#/editor/{{$ctrl.schemaname}}/{{item.uuid}}/edit"
                            class="btn btn-xs btn-success">Edit</a>
-                        <a type="button" ng-click="delete(item.uuid)" class="btn btn-xs btn-danger">Delete</a>
+                        <a type="button" ng-click="$ctrl.del(item.uuid)" class="btn btn-xs btn-danger">Delete</a>
                     </td>
                 </tr>
                 <!--

@@ -71,7 +71,7 @@ class objectlist {
 
     del(uuid) {
         console.log('[OE] Deleting object: ', uuid);
-        this.objectproxy.del(this.schemaname, uuid);
+        this.objectproxy.delObject(this.schemaname, uuid);
     }
 
     getData() {

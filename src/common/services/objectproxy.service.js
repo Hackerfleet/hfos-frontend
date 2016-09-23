@@ -112,11 +112,19 @@ class ObjectProxy {
 
             } else if (msg.action === 'delete' || msg.action === 'deletion') {
                 result = msg.data[0];
-                var deluuid = msg.data[1];
-
+                schema = msg.data[1];
+                var deluuid = msg.data[2];
+                
                 if (result === true) {
                     console.log('[OP] Object was deleted.');
                     self.rootscope.$broadcast('OP.Deleted', deluuid);
+                    
+                    if (schema in self.lists) {
+                        if (deluuid in self.lists[schema]) {
+                            console.log('[OP] Deleted object from local list.');
+                            delete(self.lists[schema][deluuid]);
+                        }
+                    }
 
                 } else {
                     console.log('[OP] Page was not deleted correctly: ', deluuid);
