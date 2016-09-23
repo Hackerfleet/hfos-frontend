@@ -53,10 +53,12 @@
     "lodash": "3.10.1",
     "moment": "^2.14.1",
     "ng-draggable": "^1.0.0",
+    "objectpath": "^1.2.1",
     "schema-form-datetimepicker": "hackerfleet/schema-form-datetimepicker",
     "spectrum-colorpicker": "^1.8.0",
     "textangular": "^1.5.3",
     "tinymce": "^4.4.2",
+    "tv4": "^1.2.7",
     "tx-tinymce": "textalk/tx-tinymce",
     "underscore": "^1.8.3"
   },
