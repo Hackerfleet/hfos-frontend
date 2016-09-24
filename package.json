@@ -17,7 +17,7 @@
     "test": "npm run lint && npm run mocha && karma start --single-run",
     "ci": "npm run lint && npm run mocha && npm run dist"
   },
-  "author": "riot@hackerfleet.org",
+  "author": "riot@c-base.org",
   "license": "GPL-3.0",
   "dependencies": {
     "@kariudo/angular-fullscreen": "^1.0.1",
