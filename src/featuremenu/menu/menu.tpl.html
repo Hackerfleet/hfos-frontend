@@ -1,5 +1,5 @@
 <div class="jumbotron">
-    <div gridster="gridsterOptions">
+    <div gridster="$ctrl.gridsterOptions">
         <ul>
             <li data-gridster-item
                 data-row="item.row"
@@ -11,7 +11,7 @@
                 <a href="#{{item.url}}" class="center-block">
                     <img src="{{item.svg}}" type="image/svg+xml" class="module-icon-big"/>
 
-                    <div class="menu-label center-block">{{item.title}}</div>
+                    <div class="menu-label center-block" ng-style="{'font-size': 10 + 2 * item.size +'px'}">{{item.title}}</div>
                 </a>
             </li>
         </ul>

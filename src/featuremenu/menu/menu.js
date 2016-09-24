@@ -1,35 +1,55 @@
 class featureMenu {
 
-    constructor(userservice, $state, $log, $scope, alert) {
+    constructor(userservice, $state, $log, $scope, $timeout, alert) {
         this.signedin = false;
         this.state = $state;
         this.user = userservice;
         this.scope = $scope;
         this.alert = alert;
-        $log.log('Featuremenu initializing with Profile: ', userservice.profile);
+        this.changetimeout = null;
+    
+        $log.log('[MENU] Featuremenu initializing with Profile: ', userservice.profile);
         console.log(userservice.profile);
-
-
-        function storeMenuConfig(event, el, widget) {
-            console.log('Pushing profile.', event, el, widget);
-        }
+    
+        var self = this;
+        
+        this.storeMenuConfig = function () {
+            if ('settings' in self.user.profile) {
+                console.log('[MENU] Updating menu list for profile:', self.items);
+    
+                var menu = [];
+                
+                for (var item of self.items) {
+                    menu.push({
+                        title: item.title,
+                        row: item.row,
+                        col: item.col,
+                        size: item.size
+                    })
+                }
+                console.log('[MENU] Pushing menu to profile:', menu);
+                self.user.profile.settings.menu = menu;
+                self.user.saveProfile();
+            }
+            
+            self.changetimeout = null;
+        };
+        
+        $scope.$watch('$ctrl.items', function(items){
+            if (self.changetimeout !== null) {
+                $timeout.cancel(self.changetimeout);
+            }
+            self.changetimeout = $timeout(self.storeMenuConfig, 2000);
+        }, true);
 
         this.gridsterOptions = {
             // any options that you can set for angular-gridster (see:  http://manifestwebdesign.github.io/angular-gridster/)
-            columns: screen.width / 50,
-            rowHeight: 50,
-            colWidth: 50,
-            draggable: {
-                start: function (event, el, w) {
-                    console.log('FOOBAR');
-                },
-                stop: storeMenuConfig
-            },
-
+            columns: screen.width / 100,
+            rowHeight: 100,
+            colWidth: 100,
             margins: [5, 5]
         };
 
-        var self = this;
 
         $('#bootscreen').hide();
 
@@ -103,7 +123,7 @@ class featureMenu {
 
 
         this.updateMenu = function() {
-            console.log('Updating featuremenus');
+            console.log('[MENU] Updating featuremenus');
             var row = 0, col = 0;
 
             self.items = [];
@@ -121,6 +141,8 @@ class featureMenu {
             if (typeof self.user.profile.settings.menu === 'undefined') {
                 self.user.profile.settings.menu = [];
             }
+            
+            console.log('[MENU] Settings:', self.user.profile.settings.menu);
 
             for (var state of self.state.get()) {
                 var enabled = [];
@@ -141,23 +163,28 @@ class featureMenu {
                     };
 
                     try {
-                        console.log(profile.settings.menu, state.label);
+                        console.log("[MENU] Attempt:", profile.settings.menu, state.label);
+                        console.log(profile.settings.menu[0].title, state.label);
                         var configentry = profile.settings.menu.find(x => x.title === state.label);
+                        console.log("Trying to parse ", configentry);
                         item.row = configentry.row;
                         item.col = configentry.col;
                         item.size = configentry.size;
                     } catch (e) {
-                        console.log("Oh, no menu config: ", state.label);
+                        console.log("[MENU] No menu config: ", e, state.label);
                         item.row = row;
                         item.col = col;
                         item.size = 1;
 
                         if (typeof profile.components !== 'undefined') {
-                            profile.settings.menu.push({
+                            var entry = {
                                 title: item.title,
                                 col: item.col,
-                                row: item.row
-                            });
+                                row: item.row,
+                                size: item.size
+                            };
+                            console.log('[MENU] Pushing to menu config: ', entry);
+                            profile.settings.menu.push(entry);
 
                             //self.user.storeprofile();
                         }
@@ -174,7 +201,7 @@ class featureMenu {
 
                     self.items.push(item);
                 } else {
-                    console.log('Item has either no icon or is disabled:', state);
+                    console.log('[MENU] Item has either no icon or is disabled:', state);
                 }
             }
 
@@ -182,14 +209,20 @@ class featureMenu {
                 // TODO: Add link to docs, that explains how to do that.
                 this.alert.add('warning', 'No modules', 'The menu is empty. A probable reason could be that you have no modules installed.');
             }
+            
+            console.log('[MENU] Menudata:', self.items, self.user.profile.settings.menu);
         };
 
-        this.updateMenu();
+        if (typeof this.user.profile.settings !== 'undefined') {
+            if (typeof this.user.profile.settings.menu !== 'undefined') {
+                this.updateMenu();
+            }
+        }
         this.scope.$on('Profile.Update', self.updateMenu);
     }
 }
 
 
-featureMenu.$inject = ['user', '$state', '$log', '$scope', 'alert'];
+featureMenu.$inject = ['user', '$state', '$log', '$scope', '$timeout', 'alert'];
 
 export default featureMenu;
