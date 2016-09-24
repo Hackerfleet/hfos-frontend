@@ -1,7 +1,7 @@
 /*
  * Hackerfleet Operating System
  * =====================================================================
- * Copyright (C) 2011-2016 riot <riot@hackerfleet.org> and others.
+ * Copyright (C) 2011-2016 riot <riot@c-base.org> and others.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,6 +54,8 @@ class ObjectProxy {
         this.requestId = 0;
 
         this.objects = [];
+        
+        this.cache = {};
 
         this.namelookup = {};
         this.lists = {};
@@ -161,6 +163,56 @@ class ObjectProxy {
 
 
         self.socket.listen('objectmanager', handleResponse);
+        
+        this.searchItems = function(schema, search) {
+            console.log('[OP] Async-getting list for schema ', schema, search);
+            
+            if (typeof search === 'undefined') {
+                search = '';
+            }
+        
+            if (schema in self.cache) {
+                console.log('[OP] Schema has a cache.');
+                console.log('[OP] Looking for ', schema, search, 'in ', self.cache);
+                if (search in self.cache[schema]) {
+                    var data = self.cache[schema][search];
+                    console.log('[OP] Got this cached: ', data);
+                    return data
+                }
+            } else {
+                self.cache[schema] = {};
+            }
+        
+            var reqid = self.getRequestId();
+        
+            if (typeof search === 'undefined') {
+                search = '';
+            }
+        
+            self.socket.send({
+                'component': 'objectmanager',
+                'action': 'search',
+                'data': {
+                    'req': reqid,
+                    'schema': schema,
+                    'search': search
+                }
+            });
+        
+            var deferred = self.q.defer();
+            self.searchcallbacks[reqid] = deferred;
+                
+            var query = deferred.promise.then(function (response) {
+                console.log('OP ASYNC Delivering:', response);
+                return {data: response};
+            });
+            
+            self.cache[schema][search] = query;
+            
+            console.log('[OP] CACHE: ', self.cache);
+    
+            return query;
+        };
     }
 
     getRequestId() {
@@ -223,32 +275,6 @@ class ObjectProxy {
         this.socket.send({'component': 'objectmanager', 'action': 'delete', 'data': {'schema': schema, 'uuid': uuid}});
     }
 
-    searchItems(schema, search) {
-        console.log('[OP] Async-getting list for schema ', schema, search);
-
-        var reqid = this.getRequestId();
-        if (typeof search === 'undefined') {
-            search = '';
-        }
-
-        this.socket.send({
-            'component': 'objectmanager',
-            'action': 'search',
-            'data': {
-                'req': reqid,
-                'schema': schema,
-                'search': search
-            }
-        });
-
-        var deferred = this.q.defer();
-        this.searchcallbacks[reqid] = deferred;
-
-        return deferred.promise.then(function (response) {
-            console.log('OP ASYNC Delivering:', response);
-            return {'data': response};
-        });
-    }
 
     getList(schema, filter, fields) {
         console.log('[OP] Getting object list ', schema, filter, fields);
