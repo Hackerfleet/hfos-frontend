@@ -1,7 +1,7 @@
 /*
  * Hackerfleet Operating System
  * =====================================================================
- * Copyright (C) 2011-2016 riot <riot@hackerfleet.org> and others.
+ * Copyright (C) 2011-2016 riot <riot@c-base.org> and others.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,7 +99,7 @@ class UserService {
         self.storeprofile = storeprofile;
 
         function greetnewuser(msg) {
-            console.log('[USER] Aaah, a fresh one. Displaying welcome.');
+            console.log('[USER] New user registered. Displaying welcome.');
             self.$alert({
                 'title': 'Registration successful',
                 'type': 'success',
@@ -316,8 +316,17 @@ class UserService {
         this.signingIn = false;
     }
 
+    saveProfile() {
+        console.log('[USER] Storing user profile on node');
+        this.socket.send({
+            'component': 'objectmanager',
+            'action': 'put',
+            'data': {'schema': 'profile', 'obj': this.profile}
+        });
+    }
+    
     saveClientconfig() {
-        console.log('[USER] Storing client profile on node');
+        console.log('[USER] Storing client config on node');
         this.socket.send({
             'component': 'objectmanager',
             'action': 'put',
@@ -326,7 +335,7 @@ class UserService {
     }
 
     switchClientconfig(uuid) {
-        console.log('[USER] Loading client profile from node');
+        console.log('[USER] Loading client config from node');
         this.clientuuid = uuid;
         this.socket.send({
             'component': 'objectmanager',
