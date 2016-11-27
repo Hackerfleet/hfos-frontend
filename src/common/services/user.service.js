@@ -27,13 +27,13 @@ import loginmodal from '../modals/login.tpl.html';
 import useractionmodal from '../modals/user.tpl.html';
 import logincontroller from '../component/login-component';
 
+
 class UserService {
 
     /*@ngInject*/
-    constructor($cookies, $md5, $socket, alert, $modal, $rootScope, $location, $state, $timeout) {
+    constructor($cookies, $socket, alert, $modal, $rootScope, $location, $state, $timeout) {
         console.log('UserService constructing');
         this.cookies = $cookies;
-        this.md5 = $md5;
         this.socket = $socket;
         this.alert = alert;
         this.modal = $modal;
@@ -44,7 +44,7 @@ class UserService {
 
         this.signedin = false;
         this.signingIn = false;
-
+        
         this.onAuthCallbacks = [];
 
         this.username = '';
@@ -60,47 +60,9 @@ class UserService {
 
         var self = this;
 
-        function loginaction(msg) {
-            console.log('Login Action triggered: ', msg);
-            self.username = msg.data.name;
-            self.useruuid = msg.data.uuid;
-            self.signIn();
-        }
-
-        function storeclientconfigcookie(msg) {
-            console.log('Got a clientconfig: ', msg.data);
-            self.clientconfig = msg.data;
-
-            console.log('[USER] Client config: ', self.clientconfig);
-            self.storeCookie(self.clientconfig.uuid, self.clientconfig.autologin);
-
-            $('#clientname').html('<a href="#/editor/client/' + self.clientconfig.uuid + '/edit">' + self.clientconfig.name + '</a>');
-
-            self.rootscope.$broadcast('Clientconfig.Update');
-
-        }
-
-        self.storerclientconfigcookie = storeclientconfigcookie;
-
-        function storeprofile(msg) {
-            console.log('Got profile data: ', msg.data);
-            self.profile = msg.data;
-
-            $('#btnuser').css('color', '#0f0');
-            //$('#btnchat').removeClass('hidden');
-            console.log('[USER] Profile: ', self.profile, self);
-
-            self.changeCurrentTheme();
-            console.log('[USER] Emitting update');
-
-            self.rootscope.$broadcast('Profile.Update');
-        }
-
-        self.storeprofile = storeprofile;
-
-        function greetnewuser(msg) {
+        self.greet_new_user = function() {
             console.log('[USER] New user registered. Displaying welcome.');
-            self.$alert({
+            self.alert({
                 'title': 'Registration successful',
                 'type': 'success',
                 'content': '<br />Welcome to HFOS! Your account has been successfully created.<br />' +
@@ -109,8 +71,23 @@ class UserService {
                 'placement': 'top-left',
                 'duration': 30
             });
-        }
-
+        };
+    
+    
+        self.login_failed = function() {
+            console.log('[USER] Login failed, displaying warning and resetting.');
+            self.alert({
+                'title': 'Login failed',
+                'type': 'danger',
+                'content': '<br />Either the username or the supplied password is invalid.',
+                'show': true,
+                'placement': 'top-left',
+                'duration': 10
+            });
+            
+            self.logout(true);
+        };
+        
         function checkautologin() {
             var cookie = self.getCookie();
             if (cookie.autologin) {
@@ -120,20 +97,67 @@ class UserService {
 
         function updateclientconfig(ev, uuid, newobj) {
             console.log('[USER] New object!', ev, uuid, newobj, self.clientuuid);
-            if (String(uuid) == String(self.clientuuid)) {
+            var msg;
+            
+            // TODO: Ugly, hacky, the whole lot should be reimplemented cleanly
+            
+            if (String(uuid) === String(self.clientuuid)) {
                 console.log('[USER] Got selected config from OP:', newobj);
-                var msg = {data: newobj};
-                self.storerclientconfigcookie(msg); // TODO: Ugly, hacky.
-            } else if (String(uuid) == String(self.profile.uuid)) {
+                msg = {data: newobj};
+                self.storerclientconfigcookie(msg);
+            } else if (String(uuid) === String(self.profile.uuid)) {
                 console.log('[USER] Got a profile update from OP:', newobj);
-                var msg = {data: newobj};
+                msg = {data: newobj};
                 self.storeprofile(msg);
             }
         }
-
+    
+        function loginaction(msg) {
+            console.log('Login Action triggered: ', msg);
+            if (msg.action === 'login') {
+                self.username = msg.data.name;
+                self.useruuid = msg.data.uuid;
+            
+                self.signIn();
+            } else if (msg.action === 'new') {
+                self.greet_new_user();
+            } else if (msg.action === 'fail') {
+                self.login_failed();
+            }
+        }
+    
+        function storeclientconfigcookie(msg) {
+            console.log('Got a clientconfig: ', msg.data);
+            self.clientconfig = msg.data;
+        
+            console.log('[USER] Client config: ', self.clientconfig);
+            self.storeCookie(self.clientconfig.uuid, self.clientconfig.autologin);
+        
+            $('#clientname').html('<a href="#/editor/client/' + self.clientconfig.uuid + '/edit">' + self.clientconfig.name + '</a>');
+        
+            self.rootscope.$broadcast('Clientconfig.Update');
+        
+        }
+    
+        function storeprofile(msg) {
+            console.log('Got profile data: ', msg.data);
+            self.profile = msg.data;
+        
+            $('#btnuser').css('color', '#0f0');
+            //$('#btnchat').removeClass('hidden');
+            console.log('[USER] Profile: ', self.profile, self);
+        
+            self.changeCurrentTheme();
+            console.log('[USER] Emitting update');
+        
+            self.rootscope.$broadcast('Profile.Update');
+        }
+        
+        self.storeprofile = storeprofile;
+        self.storeclientconfigcookie = storeclientconfigcookie;
+        
         this.socket.listen('auth', loginaction);
         this.socket.listen('profile', storeprofile);
-        this.socket.listen('new', greetnewuser);
         this.socket.listen('clientconfig', storeclientconfigcookie);
 
         this.rootscope.$on('Client.Connect', checkautologin);
@@ -143,7 +167,7 @@ class UserService {
         console.log('UserService constructed');
 
     }
-
+    
     logout(force) {
         if (this.socket.connected === true || force === true) {
             console.log('[USER] Trying to logout.');
@@ -154,6 +178,7 @@ class UserService {
             this.clientconfig = {};
             this.user = {};
             this.signedin = false;
+            this.signingIn = false;
             $('#btnuser').css('color', '');
             $('#btnchat').addClass('hidden');
             $('#btnmob').addClass('hidden');
@@ -163,7 +188,6 @@ class UserService {
             console.log('[USER] Cannot logout - not connected.');
         }
     }
-
 
     onAuth(callback) {
         if (typeof callback !== 'function') {
@@ -201,7 +225,7 @@ class UserService {
                 'component': 'auth', 'action': 'login',
                 'data': {
                     'username': username,
-                    'password': this.md5.createHash(password || ''),
+                    'password': password,
                     'clientuuid': uuid
                 }
             };
@@ -218,7 +242,7 @@ class UserService {
         this.signingIn = false;
 
         for (var i = 0; i < this.onAuthCallbacks.length; i++) {
-            console.log('Running auth callback.')
+            console.log('Running auth callback.');
             this.onAuthCallbacks[i].call(this.username);
         }
 
@@ -276,7 +300,7 @@ class UserService {
         var authpacket = {component: 'auth', action: 'autologin', data: uuid};
         var self = this;
         this.timeout(function()  {
-            console.log('Transmitting autologin.')
+            console.log('Transmitting autologin.');
             self.socket.send(authpacket);
         }, 500);
     }
@@ -284,7 +308,7 @@ class UserService {
     storeCookie(newuuid, autologin) {
         console.log('[USER] Storing configuration UUID cookie:', newuuid, autologin);
         this.clientuuid = newuuid;
-        this.cookies.put('hfosclient', JSON.stringify({uuid: newuuid, autologin: autologin}));
+        this.cookies.putObject('hfosclient', {uuid: newuuid, autologin: autologin});
     }
 
     getCookie() {
@@ -356,6 +380,6 @@ class UserService {
 }
 
 //($cookies, $md5, socket, alert, modal, $rootScope, $location, $route, $interval) {
-UserService.$inject = ['$cookies', 'md5', 'socket', '$alert', '$modal', '$rootScope', '$location', '$state', '$timeout'];
+UserService.$inject = ['$cookies', 'socket', '$alert', '$modal', '$rootScope', '$location', '$state', '$timeout'];
 
 export default UserService;
