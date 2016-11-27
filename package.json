@@ -29,7 +29,6 @@
     "angular-cookies": "^1.5.0",
     "angular-gridster": "^0.13.3",
     "angular-local-storage": "^0.2.6",
-    "angular-md5": "^0.1.10",
     "angular-sanitize": "^1.5.8",
     "angular-schema-form": "0.8.3",
     "angular-schema-form-bootstrap": "json-schema-form/angular-schema-form-bootstrap",

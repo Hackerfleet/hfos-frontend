@@ -27,7 +27,8 @@ import cookies from 'angular-cookies';
 import 'ng-draggable';
 import '@kariudo/angular-fullscreen';
 import touch from 'angular-touch';
-import md5 from 'angular-md5';
+//import md5 from 'angular-md5';
+require('js-sha512');
 import translate from 'angular-translate';
 import clipboard from 'angular-clipboard';
 import ui from 'angular-ui-bootstrap';
@@ -47,7 +48,7 @@ require('humanize-duration');
 // HFOS Plugin Modules
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular',
-    animate, app, common, objects, cookies, sanitize, touch, translate, md5, ui, featuremenu, about, doc, clipboard.name, calendar
+    animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, doc, clipboard.name, calendar
 ];
 
 /* COMPONENT SECTION */
