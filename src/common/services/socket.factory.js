@@ -35,10 +35,17 @@ class SocketService {
         //this.humanizer = humanizer;
         this.host = $location.host();
         this.port = $location.port();
+        this.protocol = 'wss';
         
-        if (this.cookies)
-
-        this.sock = new WebSocket('ws://' + this.host + ':' + this.port + '/websocket');
+        if ($location.protocol() !== 'https') {
+            this.protocol = 'ws';
+            console.log('Running on insecure protocol!');
+            $('#hfos-icon').addClass('icon-glow-red');
+        }
+    
+        this.websocketurl = this.protocol + '://' + this.host + ':' + this.port + '/websocket'
+        
+        this.sock = new WebSocket(this.websocketurl);
 
         this.connected = true;
         this.stayonline = true;
@@ -67,7 +74,7 @@ class SocketService {
             if (typeof json.port !== 'undefined') {
                 console.log('[SOCKET] Setting development port from cookie');
                 self.port = +json.port;
-                $('#hfos-icon').addClass('icon-glow-red');
+                $('#hfos-icon').addClass('icon-glow-blue');
             }
         }
         
@@ -76,14 +83,14 @@ class SocketService {
             self.cookies.put('hfosclient-dev', JSON.stringify({port: port}));
             self.port = port;
             self.reconnect();
-            $('#hfos-icon').addClass('icon-glow-red');
+            $('#hfos-icon').addClass('icon-glow-blue');
         }
         
         function unsetPort() {
             console.log('[SOCKET] Unsetting development port cookie');
             // TODO: If we decide to store more in that, we should only delete the port keyword
             self.cookies.remove('hfosclient-dev');
-            $('#hfos-icon').removeClass('icon-glow-red');
+            $('#hfos-icon').removeClass('icon-glow-blue');
             self.port = $location.port();
             self.reconnect();
         }
@@ -95,7 +102,7 @@ class SocketService {
             if (self.connected !== true && self.trying !== true) {
                 console.log('[SOCKET] Trying to reconnect.');
                 self.sock.close();
-                self.sock = new WebSocket('ws://' + self.host + ':' + self.port + '/websocket');
+                self.sock = new WebSocket(self.websocketurl);
                 self.sock.onopen = self.OpenEvent;
                 self.sock.onclose = self.CloseEvent;
                 self.sock.onmessage = self.receive;
