@@ -50,30 +50,19 @@ forum <https://github.com/hackerfleet/discussion/issues>`__
 Installation
 ------------
 
-To install the frontend, update and pull this submodule, then change into
-it and either install or develop.
+To install the frontend, update and pull this submodule, then instruct the
+manage tool to build and install the frontend:
 
 .. code-block:: bash
 
-    $ git submodule init
-    $ git submodule update
     $ cd frontend
-    $ npm install
-    $ sudo npm install -g bower grunt grunt-cli
-    $ bower install
-    $ grunt serve
+    $ git pull
+    $ cd ..
+    $ python hfos_manage -install-frontend
 
-Point your browser to localhost:9000 to observe the magic. Don't forget
-to start the backend!
-
-You can also copy a static version of the frontend by instructing grunt to:
-
-.. code-block:: bash
-
-    $ sudo grunt copy:dev
-
-Using this method is not meant for live editing, but for the final production
-installation.
+Be aware, that all HFOS modules you intend to use and develop on should
+be installed before building the frontend.
+You can reinstall the frontend after changing what modules you're using.
 
 Assets
 ------
