@@ -27,8 +27,6 @@ import cookies from 'angular-cookies';
 import 'ng-draggable';
 import '@kariudo/angular-fullscreen';
 import touch from 'angular-touch';
-//import md5 from 'angular-md5';
-require('js-sha512');
 import translate from 'angular-translate';
 import clipboard from 'angular-clipboard';
 import ui from 'angular-ui-bootstrap';
