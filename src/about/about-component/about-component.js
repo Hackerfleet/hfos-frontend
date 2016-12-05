@@ -15,6 +15,7 @@ class AboutComponent {
         this.stats = {};
         
         this.serverport = socket.port;
+        this.ssloverride = socket.protocol === 'wss';
 
         this.consoleinput = '';
 
@@ -86,8 +87,8 @@ class AboutComponent {
     }
     
     setserverport() {
-        console.log('[ABOUT] Updating server port to ', this.serverport);
-        this.socket.setPort(this.serverport);
+        console.log('[ABOUT] Updating server port to ', this.serverport, this.ssloverride);
+        this.socket.setPort(this.serverport, this.ssloverride);
     }
     
     unsetserverport() {

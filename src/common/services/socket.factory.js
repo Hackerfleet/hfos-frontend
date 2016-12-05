@@ -74,14 +74,19 @@ class SocketService {
             if (typeof json.port !== 'undefined') {
                 console.log('[SOCKET] Setting development port from cookie');
                 self.port = +json.port;
+                self.protocol = json.secure ? 'wss' : 'ws';
+                if (json.secure) {
+                    $('#hfos-icon').removeClass('icon-glow-red');
+                }
                 $('#hfos-icon').addClass('icon-glow-blue');
             }
         }
         
-        function setPort(port) {
+        function setPort(port, secure) {
             console.log('[SOCKET] Storing development port cookie');
-            self.cookies.put('hfosclient-dev', JSON.stringify({port: port}));
+            self.cookies.put('hfosclient-dev', JSON.stringify({port: port, secure: secure}));
             self.port = port;
+            self.protocol = secure ? 'wss' : 'ws';
             self.reconnect();
             $('#hfos-icon').addClass('icon-glow-blue');
         }
@@ -102,6 +107,8 @@ class SocketService {
             if (self.connected !== true && self.trying !== true) {
                 console.log('[SOCKET] Trying to reconnect.');
                 self.sock.close();
+                self.websocketurl = self.protocol + '://' + self.host + ':' + self.port + '/websocket';
+                
                 self.sock = new WebSocket(self.websocketurl);
                 self.sock.onopen = self.OpenEvent;
                 self.sock.onclose = self.CloseEvent;

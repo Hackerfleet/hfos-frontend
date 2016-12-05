@@ -48,8 +48,8 @@
                     <div class="input-group">
                         <input type="text" class="form-control" id="commandinput" ng-model="$ctrl.consoleinput">
                         <span class="input-group-btn">
-                    <button ng-click="$ctrl.sendcommand()" class="btn btn-success">Transmit</button>
-                </span>
+                            <button ng-click="$ctrl.sendcommand()" class="btn btn-success">Transmit</button>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -70,9 +70,21 @@
             <div class="tab-pane" id="server">
                 <div class="well">
                     <h3>Server</h3>
-                    <input type="number" ng-model="$ctrl.serverport">
-                    <a ng-click="$ctrl.setserverport()" type="button" class="btn btn-danger">Override server port</a>
-                    <a ng-click="$ctrl.unsetserverport()" type="button" class="btn btn-success">Remove override</a>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label>Port</label>
+                            <input class="form-control" type="number" ng-model="$ctrl.serverport">
+                        </div>
+                        <div class="form-group">
+                            <label>SSL</label>
+                            <input class="form-control" type="checkbox" ng-model="$ctrl.ssloverride">
+                        </div>
+
+                        <a ng-click="$ctrl.setserverport()" type="button"
+                           class="btn btn-danger">Override server port</a>
+                        <a ng-click="$ctrl.unsetserverport()" type="button"
+                           class="btn btn-success">Remove override</a>
+                    </div>
                 </div>
             </div>
 
