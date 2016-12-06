@@ -17,29 +17,48 @@
 <ui-view></ui-view>
 
 <noscript>
-    <div class="well vertical-center" style="height: 100vh;">
-        <style type="text/css">
-            #bootscreen {
-                display: none;
-            }
+    <style type="text/css">
+        #bootscreen {
+            display: none;
+        }
 
-            #content {
-                display: none;
-            }
+        #content {
+            display: none;
+        }
 
-            #mainmenu {
-                display: none;
-            }
-        </style>
+        #mainmenu {
+            display: none;
+        }
 
-        <span>
-            <h1><span><i class="fa fa-exclamation-circle"></i></span> Javascript deactivated!</h1>
+        body {
+            background: #4384BF;
+        }
+
+        .well {
+            background: #266DAD;
+            padding: 10px;
+            margin: 10vh 10vw;
+            height: 78vh;
+        }
+
+        #warning {
+            color: #95C0E6;
+            font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+    <div class="well">
+        <div id="warning">
+            <h1>**** Javascript deactivated! ****</h1>
             <br/>
             <p>
                 Please check your browser and plugin settings and make sure, Javascript is allowed for this site, then
                 reload the page.
             </p>
-        </span>
+        </div>
     </div>
 </noscript>
 
