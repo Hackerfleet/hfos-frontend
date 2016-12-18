@@ -17,6 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var tv4 = require('tv4');
+
 class objecteditor {
 
     constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope, alert) {
@@ -52,6 +54,8 @@ class objecteditor {
         this.schemascreenname = this.schemaname.charAt(0).toUpperCase() + this.schemaname.slice(1);
         this.schemadata = {};
         this.model = {};
+        this.live = false;
+        this.livewatcher = null;
 
         this.editorOptions = {
             language: 'en',
@@ -70,7 +74,35 @@ class objecteditor {
 
         var self = this;
 
-
+        this.toggleLive = function() {
+            console.log('Toggling live watcher', this.live, this.livewatcher);
+            if (this.live === true) {
+                console.log('Now off');
+                this.live = false;
+                this.livewatcher();
+            } else {
+                console.log('Now on');
+                this.live = true;
+                this.livewatcher = $scope.$watch(
+                    function() { return self.model },
+                    function(oldvar, newvar) {
+                        console.log('MODEL HAS BEEN CHANGED:', oldvar, newvar);
+                        console.log(self.schemadata.form);
+                        var result = tv4.validateResult(self.model, self.schemadata.schema);
+                        console.log('RESULT:', result);
+                        if (result.valid === true) {
+                            console.log('Form is valid, transmitting.');
+                            self.submitObject();
+                        } else {
+                            $('#statusCenter').html(result.message + ': ' + result.datapath);
+                            console.log('Invalid form, cannot submit.');
+                        }
+                    },
+                    true
+                );
+            }
+        };
+        
         this.markStored = function() {
             console.log('[OE] Marking object as stored.');
             $('#objStored').removeClass('hidden');

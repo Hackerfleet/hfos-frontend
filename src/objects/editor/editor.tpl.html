@@ -21,6 +21,10 @@
     <div class="well">
         <H1>{{$ctrl.action}}: <a href="#/list/{{$ctrl.schemadata.schema.name}}">{{$ctrl.schemascreenname}}</a>/<a
             href="#/editor/{{$ctrl.schemadata.schema.name}}/{{$ctrl.model.uuid}}/edit">{{$ctrl.model.name}}</a></H1>
+        <span id="editLive">
+            <input type="checkbox" ng-click="$ctrl.toggleLive()" checked="{{$ctrl.live === true}}" />
+            <span>Edit Live</span>
+        </span>
         <span id="objStored" class="label label-success hidden">Stored</span>
         <span id="objModified" class="label label-danger hidden">Modified</span>
 
