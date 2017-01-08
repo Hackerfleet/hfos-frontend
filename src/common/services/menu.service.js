@@ -83,6 +83,10 @@ class MenuService {
         */
     }
 
+    removeMenu(title) {
+        $('#menu' + title).remove();
+    }
+    
     addMenu(title, menu) {
         if (title in this.menus) {
             console.log('Replacing menu:', title);
@@ -98,6 +102,9 @@ class MenuService {
 
         for (var item of menu) {
             switch (item.type) {
+                case 'html':
+                    html = html + item.html;
+                    break;
                 case 'divider':
                     html = html + '<li role="separator" class="divider"></li>';
                     break;
@@ -105,7 +112,7 @@ class MenuService {
                     html = html + '<li><div class="menuitem">' + item.text + '</div>';
                     break;
                 case 'func':
-                    html = html + '<li><div><a class="menuitem" id="menuitem' + item.name + '">' + item.text + '</a></div></li>';
+                    html = html + '<li><a class="menuitem" id="menuitem' + item.name + '">' + item.text + '</a></li>';
                     break;
                 case 'check':
                     html = html + '<li><div class="menuitem"><input type="checkbox" id="menuitem' + item.name + '">' + item.text + '</input></div></li>';
