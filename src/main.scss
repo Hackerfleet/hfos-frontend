@@ -142,6 +142,10 @@ body {
     width: 33%;
 }
 
+.navbar-nav .open .dropdown-menu {
+    background-color: $color-white;
+}
+
 .aside {
     margin-top: 51px;
 }
@@ -299,8 +303,13 @@ html, body {
     text-align: center;
 }
 
-.menu-box:hover {
+.menu-block {
+    padding: 5px;
+}
+
+.menu-block:hover {
     background: $color-primary-2;
+    color: $color-black;
 }
 
 .menu-label {
@@ -345,12 +354,18 @@ html, body {
     text-align: center;
 }
 
+/* TODO: Move out project management module css */
+
 .taskList {
     background-color: RGBA(58, 117, 168, 0.5);
-    margin: 5px;
     padding: 5px;
     z-index: 11;
     border-radius: 5px;
+}
+
+.taskList-spacer {
+    margin: 0;
+    padding: 5px;
 }
 
 .taskBoxHeader {
