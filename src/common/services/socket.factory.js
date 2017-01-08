@@ -27,7 +27,7 @@ import * as _ from 'lodash';
 class SocketService {
     
     constructor($location, $alert, $timeout, $cookies, $rootscope) {
-        console.log('SocketService constructing');
+        console.log('[SOCK] SocketService constructing');
         this.$alert = $alert;
         this.$timeout = $timeout;
         this.cookies = $cookies;
@@ -39,7 +39,7 @@ class SocketService {
         
         if ($location.protocol() !== 'https') {
             this.protocol = 'ws';
-            console.log('Running on insecure protocol!');
+            console.log('[SOCK] Running on insecure protocol!');
             $('#hfos-icon').addClass('icon-glow-red');
         }
         
@@ -233,7 +233,7 @@ class SocketService {
                     if (msg.component in self.handlers) {
                         //console.log('Found a matching handler.');
                         for (var handler in self.handlers[msg.component]) {
-                            //console.log('Calling handler:');
+                            //console.log('Calling handler:', self.handlers[msg.component], handler);
                             self.handlers[msg.component][handler](msg);
                         }
                         /*_.forIn(handlers[msg.compoennt], function (value, key) {
@@ -273,7 +273,7 @@ class SocketService {
                         }
                     }
                 );
-                console.log('MSG:', msg);
+                console.log('[SOCK] MSG:', msg);
                 self.sock.send(msg);
                 console.log("the File has been transferred.");
             };
@@ -306,28 +306,35 @@ class SocketService {
     
     send(msg) {
         var json = JSON.stringify(msg);
-        console.log('Transmitting msg: ', json);
-        this.sock.send(json);
-        
-        this.stats.tx++;
-        
-        $('#ledoutgoing').css({'color': 'red'});
-        
+        console.log('[SOCK] Transmitting msg: ', json);
+
         function reset() {
             $('#ledoutgoing').css({'color': 'green'});
         }
-        
-        this.$timeout(reset, 250);
+    
+        try {
+            this.sock.send(json);
+    
+            this.stats.tx++;
+    
+    
+            $('#ledoutgoing').css({'color': 'red'});
+    
+         
+            this.$timeout(reset, 250);
+        } catch (e) {
+            console.log('[SOCK] Exception upon transmit: ', e);
+        }
     }
     
     listen(topic, handler) {
         
         if (_.has(this.handlers, topic)) {
             this.handlers[topic].push(handler);
-            console.log('New handler registered for topic ', topic);
+            console.log('[SOCK] New handler registered for topic ', topic);
         } else {
             this.handlers[topic] = [handler];
-            console.log('First handler registered for topic ', topic);
+            console.log('[SOCK] First handler registered for topic ', topic);
         }
         
         console.log(this.handlers);
