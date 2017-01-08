@@ -1,7 +1,8 @@
 class AboutComponent {
 
-    constructor(rootscope, socket, $interval, alert, modal, schemaservice, op, state) {
+    constructor(rootscope, user, socket, $interval, alert, modal, schemaservice, op, state) {
         this.rootscope = rootscope;
+        this.user = user;
         this.socket = socket;
         this.alert = alert;
         this.modal = modal;
@@ -21,6 +22,15 @@ class AboutComponent {
 
         $('#path').css({fill: '#afafff'});
         
+        this.testOptions = {
+            max: 10,
+            min: 1,
+            step: 1,
+            value: 5
+        };
+        this.sliderValue = 5;
+        this.colorValue = "";
+        
         var self = this;
 
         function updateSchemata() {
@@ -36,6 +46,10 @@ class AboutComponent {
 
         this.rootscope.$on('Schemata.Update', updateSchemata);
 
+        if (this.user.debug) {
+            this.toggleDebug();
+        }
+        
         updateSchemata();
     }
 
@@ -72,6 +86,8 @@ class AboutComponent {
             this.$interval.cancel(this.updater);
             this.updater = false;
         }
+        
+        this.user.debug = this.debug;
     }
        
     opentab(tabname) {
@@ -110,6 +126,6 @@ class AboutComponent {
 
 }
 
-AboutComponent.$inject = ['$rootScope', 'socket', '$interval', 'alert', '$modal', 'schemata', 'objectproxy', '$state'];
+AboutComponent.$inject = ['$rootScope', 'user', 'socket', '$interval', 'alert', '$modal', 'schemata', 'objectproxy', '$state'];
 
 export default AboutComponent;

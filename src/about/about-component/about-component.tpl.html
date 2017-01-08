@@ -1,5 +1,7 @@
 <div class="container">
     <div class="well">
+        <div style="height:48px;" ng-class="{hidden: $ctrl.debug}">
+        </div>
         <ul id="debug" ng-show="$ctrl.debug" class="nav nav-pills" role="tablist">
             <li class="active"><a role="tab" ng-click="$ctrl.opentab('about')" data-toggle="tab">About</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('objects')" data-toggle="tab">Objects</a></li>
@@ -7,6 +9,7 @@
             <li><a role="tab" ng-click="$ctrl.opentab('console')" data-toggle="tab">Console</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('commands')" data-toggle="tab">Commands</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('server')" data-toggle="tab">Server</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('components')" data-toggle="tab">Components</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -37,7 +40,7 @@
                         </ul>
                     </div>
                     <a ng-click="$ctrl.toggleDebug()" type="button" class="btn btn-block btn-warning"
-                       style="align: center"><span
+                       style="align: center" ng-class="{active: $ctrl.debug}"><span
                         class="glyphicon glyphicon-alert"></span></a>
                 </div>
             </div>
@@ -91,7 +94,7 @@
             <div class="tab-pane" id="objects">
                 <div class="well">
                     <h3>Object Lists</h3>
-                    <table>
+                    <table class="table table-striped table-condensedä">
                         <tr>
                             <th>Schemaname</th>
                             <th>Actions</th>
@@ -129,6 +132,31 @@
                         <tr>
                             <td>Last Connection start</td>
                             <td>{{$ctrl.stats.start}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="components">
+                <div class="well">
+                    <h3>Angular components</h3>
+                    <table>
+                        <tr>
+                            <th>Type</th>
+                            <th>Component</th>
+                        </tr>
+                        <tr>
+                            <td>Slider</td>
+                            <td>
+                                <slider ng-model="$ctrl.sliderValue" min="$ctrl.testOptions.min" step="$ctrl.testOptions.step" max="$ctrl.testOptions.max" value="$ctrl.testOptions.value"></slider>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Colorpicker</td>
+                            <td>
+                                <input type="color" name="color2" value="#3355cc" />
+                                <spectrum-colorpicker ng-model="$ctrl.colorValue"></spectrum-colorpicker>
+                            </td>
                         </tr>
                     </table>
                 </div>
