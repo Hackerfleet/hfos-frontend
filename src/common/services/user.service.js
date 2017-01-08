@@ -45,6 +45,8 @@ class UserService {
         this.signedin = false;
         this.signingIn = false;
         
+        this.debug = false;
+        
         this.onAuthCallbacks = [];
 
         this.username = '';
@@ -104,7 +106,7 @@ class UserService {
             if (String(uuid) === String(self.clientuuid)) {
                 console.log('[USER] Got selected config from OP:', newobj);
                 msg = {data: newobj};
-                self.storerclientconfigcookie(msg);
+                self.storeclientconfigcookie(msg);
             } else if (String(uuid) === String(self.profile.uuid)) {
                 console.log('[USER] Got a profile update from OP:', newobj);
                 msg = {data: newobj};
@@ -113,7 +115,7 @@ class UserService {
         }
     
         function loginaction(msg) {
-            console.log('Login Action triggered: ', msg);
+            console.log('[USER] Login Action triggered: ', msg);
             if (msg.action === 'login') {
                 self.username = msg.data.name;
                 self.useruuid = msg.data.uuid;
@@ -127,7 +129,7 @@ class UserService {
         }
     
         function storeclientconfigcookie(msg) {
-            console.log('Got a clientconfig: ', msg.data);
+            console.log('[USER] Got a clientconfig: ', msg.data);
             self.clientconfig = msg.data;
         
             console.log('[USER] Client config: ', self.clientconfig);
@@ -140,7 +142,7 @@ class UserService {
         }
     
         function storeprofile(msg) {
-            console.log('Got profile data: ', msg.data);
+            console.log('[USER] Got profile data: ', msg.data);
             self.profile = msg.data;
         
             $('#btnuser').css('color', '#0f0');
@@ -242,7 +244,7 @@ class UserService {
         this.signingIn = false;
 
         for (var i = 0; i < this.onAuthCallbacks.length; i++) {
-            console.log('Running auth callback.');
+            console.log('[USER] Running auth callback.');
             this.onAuthCallbacks[i].call(this.username);
         }
 
@@ -296,11 +298,11 @@ class UserService {
     }
 
     cookielogin(uuid) {
-        console.log('Auto-logging in...');
+        console.log('[USER] Auto-logging in...');
         var authpacket = {component: 'auth', action: 'autologin', data: uuid};
         var self = this;
         this.timeout(function()  {
-            console.log('Transmitting autologin.');
+            console.log('[USER] Transmitting autologin.');
             self.socket.send(authpacket);
         }, 500);
     }
@@ -336,7 +338,7 @@ class UserService {
     }
 
     logincancel() {
-        console.log('Login cancelled');
+        console.log('[USER] Login cancelled');
         this.signingIn = false;
     }
 
