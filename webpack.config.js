@@ -36,7 +36,6 @@ var PARAMS_DEFAULT = {
             
             'angular-strap/dist/angular-strap.min.js',
             'angular-strap/dist/angular-strap.tpl.min.js',
-            'angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
             
             'humanize-duration'
         ]
