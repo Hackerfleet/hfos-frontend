@@ -25,9 +25,6 @@ import {routing} from './objects.config.js';
 import 'tv4';
 import 'objectpath';
 
-import 'spectrum-colorpicker/spectrum';
-import 'angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker';
-
 // TinyMCE - Core
 import tinymce from 'tinymce/tinymce';
 import 'tinymce/plugins/textcolor/plugin';
@@ -55,7 +52,6 @@ import 'schema-form-datetimepicker/schema-form-date-time-picker';
 import 'angular-schema-form-tinymce/bootstrap-tinymce';
 
 //import 'angular-schema-form-colorpicker/bootstrap-colorpicker';
-//import 'spectrum-colorpicker/spectrum.css';
 
 // This one is powerful, but the integration is completely outdated (sadly)..
 //import 'ckeditor/ckeditor';
@@ -72,7 +68,6 @@ export default angular
     .module('main.components.objects', [
         uirouter,
         'ui.select',
-        'angularSpectrumColorpicker',
         'schemaForm',
         'schemaForm-datetimepicker',
         'schemaForm-tinymce'
