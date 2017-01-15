@@ -44,8 +44,11 @@ import 'tx-tinymce/tx-tinymce';
 import 'angular-schema-form/dist/schema-form';
 import 'angular-schema-form/dist/bootstrap-decorator';
 
-import 'angular-ui-select/select';
+
+import 'angular-ui-select/select.css';
+import 'angular-ui-select/select.js';
 import 'angular-schema-form-dynamic-select/angular-schema-form-dynamic-select';
+import 'angular-schema-form-dynamic-select/ui-sortable';
 
 import 'schema-form-datetimepicker/schema-form-date-time-picker';
 
