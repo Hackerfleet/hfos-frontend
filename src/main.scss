@@ -539,3 +539,8 @@ footer > div > div.row > div:hover {
 .tangcloud-item-hidden {
     //visibility: hidden;
 }
+
+.select.dropdown-menu {
+    max-height: 90vh;
+    overflow-y: auto;
+}
