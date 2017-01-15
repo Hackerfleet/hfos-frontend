@@ -50,19 +50,19 @@ class ObjectProxy {
         this.user = $user;
         this.schemata = $schemata;
         this.rootscope = $rootScope;
-
+        
         this.requestId = 0;
-
+        
         this.objects = [];
         
         this.cache = {};
-
+        
         this.namelookup = {};
         this.lists = {};
         this.searchcallbacks = {};
-
+        
         var self = this;
-
+        
         function handleResponse(msg) {
             var result;
             var newobj;
@@ -72,13 +72,13 @@ class ObjectProxy {
             if (msg.action === 'get' || msg.action === 'update') {
                 newobj = msg.data;
                 schema = newobj.id.slice(1);
-
+                
                 if (schema === null) {
                     console.log('[OP] Strange object without ID received.');
                     return;
                 }
             }
-    
+            
             if (msg.action === 'nonexistant') {
                 console.log('Non existant document requested!');
                 console.log('Message:', msg);
@@ -86,67 +86,70 @@ class ObjectProxy {
             
             if (msg.action === 'get') {
                 console.log('[OP] Received object from OM: ', newobj);
-
+                
                 self.objects[newobj.uuid] = newobj;
                 if ('name' in newobj) {
                     self.namelookup[name] = newobj.uuid;
                 }
-
+                
                 self.rootscope.$broadcast('OP.Get', newobj.uuid, newobj, schema);
-
+                
             } else if (msg.action === 'update') {
                 console.log('[OP] Subscription update from OM: ', newobj);
-
+                
                 self.objects[newobj.uuid] = newobj;
-
+                
                 self.rootscope.$broadcast('OP.Update', newobj.uuid, newobj, schema);
-
+                
             } else if (msg.action === 'put') {
                 result = msg.data[0];
                 var putuuid = msg.data[1];
-
+                
                 if (result === true) {
                     console.log('[OP] Object successfully stored.');
                     self.rootscope.$broadcast('OP.Put', putuuid);
                 } else {
                     console.log('[OP] Page was not stored correctly: ', putuuid);
                 }
-
+                
             } else if (msg.action === 'delete' || msg.action === 'deletion') {
                 result = msg.data[0];
                 schema = msg.data[1];
                 var deluuid = msg.data[2];
                 
                 if (result === true) {
-                    console.log('[OP] Object was deleted.');
-                    self.rootscope.$broadcast('OP.Deleted', deluuid);
-                    
                     if (schema in self.lists) {
                         if (deluuid in self.lists[schema]) {
-                            console.log('[OP] Deleted object from local list.');
+                            console.log('[OP] Deleting object from local list:', self.lists[schema], self.lists[schema[deluuid]]);
                             delete(self.lists[schema][deluuid]);
+                            
+                            console.log('[OP] Object was deleted.');
+                            self.rootscope.$broadcast('OP.Deleted', schema, deluuid);
+                        } else {
+                            console.log('[OP] Object not stored in List!', self);
                         }
+                    } else {
+                        console.log('[OP] Unknown schema: ', schema, msg);
                     }
-
                 } else {
                     console.log('[OP] Page was not deleted correctly: ', deluuid);
                 }
-
+                
             } else if (msg.action === 'list') {
                 var list = msg.data.list;
                 schema = msg.data.schema;
-
+                
                 self.lists[schema] = list;
-
+                
                 console.log('[OP] Received object list from OM: ', schema, list);
-
+                
                 self.rootscope.$broadcast('OP.ListUpdate', schema);
-
+                
             } else if (msg.action === 'search') {
                 var requestId = msg.data.req;
                 var searchdata = msg.data.list;
                 console.log('[OP] Search result came back: ', searchdata);
-
+                
                 // This cannot work, but did so in the previous revision:
                 if (angular.isDefined(self.searchcallbacks[requestId])) {
                     var searchcallback = self.searchcallbacks[requestId];
@@ -155,22 +158,22 @@ class ObjectProxy {
                 } else {
                     console.log('Unhandled search: ', msg);
                 }
-
+                
             }
             console.log('Proxied objects: ', self.objects);
             console.log('Proxied lists: ', self.lists);
         }
-
-
+        
+        
         self.socket.listen('objectmanager', handleResponse);
         
-        this.searchItems = function(schema, search) {
+        this.searchItems = function (schema, search) {
             console.log('[OP] Async-getting list for schema ', schema, search);
             
             if (typeof search === 'undefined') {
                 search = '';
             }
-        
+            
             if (schema in self.cache) {
                 console.log('[OP] Schema has a cache.');
                 console.log('[OP] Looking for ', schema, search, 'in ', self.cache);
@@ -182,13 +185,13 @@ class ObjectProxy {
             } else {
                 self.cache[schema] = {};
             }
-        
+            
             var reqid = self.getRequestId();
-        
+            
             if (typeof search === 'undefined') {
                 search = '';
             }
-        
+            
             self.socket.send({
                 'component': 'objectmanager',
                 'action': 'search',
@@ -198,27 +201,38 @@ class ObjectProxy {
                     'search': search
                 }
             });
-        
+            
             var deferred = self.q.defer();
             self.searchcallbacks[reqid] = deferred;
-                
+            
             var query = deferred.promise.then(function (response) {
                 console.log('OP ASYNC Delivering:', response);
+                function compare(a, b) {
+                    if (a.name < b.name)
+                        return -1;
+                    if (a.name > b.name)
+                        return 1;
+                    return 0;
+                }
+                
+                if (response.length > 0 && typeof response[0].name !== 'undefined') {
+                    response.sort(compare);
+                }
                 return {data: response};
             });
             
             self.cache[schema][search] = query;
             
             console.log('[OP] CACHE: ', self.cache);
-    
+            
             return query;
         };
     }
-
+    
     getRequestId() {
         return this.requestId++;
     }
-
+    
     getObject(schema, uuid, subscribe, filter) {
         console.log('[OP] Fetching object ', schema, uuid);
         this.socket.send({
@@ -227,7 +241,7 @@ class ObjectProxy {
             'data': {'schema': schema, 'uuid': uuid, 'subscribe': subscribe, 'filter': filter}
         });
     }
-
+    
     getObjectUuid(schema, name) {
         console.log('[OP] Getting object uuid', schema, name);
         if (name in this.namelookup) {
@@ -236,7 +250,7 @@ class ObjectProxy {
             }
         }
     }
-
+    
     getObjectName(uuid) {
         console.log('[OP] Getting object name', uuid);
         if (uuid in this.objects) {
@@ -245,17 +259,17 @@ class ObjectProxy {
             return 'Unknown object';
         }
     }
-
+    
     subscribeObject(uuid) {
         console.log('[OP] Subscribing to object ', uuid);
         this.socket.send({'component': 'objectmanager', 'action': 'subscribe', 'data': uuid});
     }
-
+    
     unsubscribeObject(uuid) {
         console.log('[OP] Unsubscribing to object ', uuid);
         this.socket.send({'component': 'objectmanager', 'action': 'unsubscribe', 'data': uuid});
     }
-
+    
     changeObject(schema, obj, change) {
         console.log('[OP] Changing object ', schema, obj, change);
         this.socket.send({
@@ -264,18 +278,18 @@ class ObjectProxy {
             'data': {'uuid': obj, 'schema': schema, 'change': change}
         });
     }
-
+    
     putObject(schema, obj) {
         console.log('[OP] Putting object ', schema, obj);
         this.socket.send({'component': 'objectmanager', 'action': 'put', 'data': {'schema': schema, 'obj': obj}});
     }
-
+    
     delObject(schema, uuid) {
         console.log('[OP] Deleting object ', schema, uuid);
         this.socket.send({'component': 'objectmanager', 'action': 'delete', 'data': {'schema': schema, 'uuid': uuid}});
     }
-
-
+    
+    
     getList(schema, filter, fields) {
         console.log('[OP] Getting object list ', schema, filter, fields);
         this.socket.send({
@@ -288,11 +302,11 @@ class ObjectProxy {
             }
         });
     }
-
+    
     list(name) {
         return this.lists[name];
     }
-
+    
     lists() {
         return this.lists;
     }
