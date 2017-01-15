@@ -66,7 +66,7 @@ class AlertService {
         this.alert({
             'title': title,
             'content': msg,
-            'placement': 'top',
+            'placement': 'top-left',
             'type': type,
             'show': true,
             'duration': duration
