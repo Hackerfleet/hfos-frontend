@@ -2,7 +2,8 @@ var backgrounds = require.context("../../../assets/images/backgrounds", true, /^
 
 class AppComponent {
 
-    constructor(user, socket, rootscope, objectproxy, state, alert, fullscreen) {
+    constructor(scope, user, socket, rootscope, objectproxy, state, alert, fullscreen) {
+        this.scope = scope;
         this.user = user;
         this.socket = socket;
         this.rootscope = rootscope;
@@ -10,18 +11,23 @@ class AppComponent {
         this.state = state;
         this.alert = alert;
         this.fullscreen = fullscreen;
-
+        
+        this.clientconfiglist = [];
+        
         var self = this;
 
-        function updateclientconfigurations(ev, schema) {
+        function updateclientconfigurations(ev, schema, uuid) {
+            console.log('LIST UPDATED:', ev, uuid, schema);
             if (schema === 'client') {
                 console.log('[APP] ListUpdate: ', ev);
                 self.clientconfiglist = self.objectproxy.list(schema);
                 console.log('[APP] New client config list:', self.clientconfiglist);
+                self.scope.$apply();
             }
         }
 
         this.rootscope.$on('OP.ListUpdate', updateclientconfigurations);
+        this.rootscope.$on('OP.Deleted', updateclientconfigurations);
 
         this.rootscope.$on('Profile.Update', function () {
             // Set a nice background, if one is configured
@@ -130,6 +136,6 @@ class AppComponent {
     }
 }
 
-AppComponent.$inject = ['user', 'socket', '$rootScope', 'objectproxy', '$state', 'alert', 'Fullscreen'];
+AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'alert', 'Fullscreen'];
 
 export default AppComponent;
