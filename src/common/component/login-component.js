@@ -38,8 +38,14 @@ class LoginComponent {
     }
 
     login() {
-        console.log('Trying to login: ', this.username, this.password, this);
+        console.log('[LOGIN] Trying to login: ', this.username, this.password, this);
         this.user.login(this.username, this.password);
+    }
+    
+    opentab(tabname) {
+        console.log('[LOGIN] Switching tab to ', tabname);
+        $('.nav-pills .active, .tab-content .active').removeClass('active');
+        $('#' + tabname).addClass('active');
     }
 }
 
