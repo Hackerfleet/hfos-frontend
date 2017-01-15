@@ -25,6 +25,9 @@ import 'jquery';
 //import bootstrap from 'bootstrap';
 import angular from 'angular';
 import sanitize from 'angular-sanitize';
+import 'underscore/underscore';
+import 'angular-underscore';
+import 'angular-ui-utils/modules/utils';
 import animate from 'angular-animate';
 import cookies from 'angular-cookies';
 import 'ng-draggable';
@@ -55,7 +58,8 @@ require('humanize-duration');
 // HFOS Plugin Modules
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
-    animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, doc, clipboard.name, calendar
+    animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, doc,
+    clipboard.name, calendar
 ];
 
 /* COMPONENT SECTION */
