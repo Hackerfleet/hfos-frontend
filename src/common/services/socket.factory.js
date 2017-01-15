@@ -340,6 +340,17 @@ class SocketService {
         console.log(this.handlers);
     }
     
+    unlisten(topic, handler) {
+        console.log('[SOCK] Trying to dismiss listener: ', topic, handler, this.handlers);
+        if (typeof this.handlers[topic] !== 'undefined') {
+            console.log('[SOCK] Topic found!');
+            if (this.handlers[topic].indexOf(handler) > -1) {
+                console.log('[SOCK] Unlisting handler for topic: ', topic);
+                this.handlers[topic].splice(this.handlers[topic].indexOf(handler), 1);
+            }
+        }
+        console.log('[SOCK] Handlers after unlisten: ', this.handlers);
+    }
     
     doDisconnect() {
         this.stayonline = false;
