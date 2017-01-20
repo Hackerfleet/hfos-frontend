@@ -1,3 +1,7 @@
+
+var showAngularStats = require('ng-stats');
+//showAngularStats();
+
 class AboutComponent {
 
     constructor(rootscope, user, socket, $interval, alert, modal, schemaservice, op, state) {
@@ -9,7 +13,8 @@ class AboutComponent {
         this.$interval = $interval;
         this.state = state;
         this.schemaservice = schemaservice;
-
+       
+        
         this.schemata = [];
         this.debug = false;
         this.updater = false;
@@ -79,6 +84,12 @@ class AboutComponent {
         console.log('[ABOUT] Toggling Debug tools');
         if (this.debug !== true) {
             this.debug = true;
+    
+            showAngularStats({
+                position: 'bottom',
+                
+            });
+    
             this.updateStats();
             this.updater = this.$interval(() => this.updateStats(), 1000);
         } else {
