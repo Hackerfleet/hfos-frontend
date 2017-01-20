@@ -21,7 +21,7 @@ var tv4 = require('tv4');
 
 class objecteditor {
 
-    constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope, alert) {
+    constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope, alert, state) {
         console.log('[OE] STATEPARAMS: ', $stateParams);
         console.log('[OE] SCOPE: ', $scope);
 
@@ -50,6 +50,7 @@ class objecteditor {
         this.schemata = schemata;
         this.rootscope = $rootscope;
         this.alert = alert;
+        this.state = state;
 
         this.schemascreenname = this.schemaname.charAt(0).toUpperCase() + this.schemaname.slice(1);
         this.schemadata = {};
@@ -103,6 +104,11 @@ class objecteditor {
             }
         };
         
+        this.scope.$on('$destroy', function() {
+            console.log('[OE] Destroying live edit watcher');
+            this.livewatcher();
+        });
+        
         this.markStored = function() {
             console.log('[OE] Marking object as stored.');
             $('#objStored').removeClass('hidden');
@@ -133,7 +139,7 @@ class objecteditor {
         });
 
         function getData() {
-            console.log('[OE] Requesting schemata for ', self.schemaname);
+            console.log('[OE] Getting schema for ', self.schemaname);
             self.schemadata = self.schemata.get(self.schemaname);
             if (self.action !== 'Create' && self.uuid !== '') {
                 console.log('[OE] Requesting object.');
@@ -170,6 +176,10 @@ class objecteditor {
             return result;
         };
 
+    }
+    
+    switchState(state, args) {
+        this.state.go(state, args);
     }
 
     fieldChange(model, form) {
@@ -253,6 +263,6 @@ class objecteditor {
     }
 }
 
-objecteditor.$inject = ['$scope', '$stateParams', 'objectproxy', 'user', 'socket', 'schemata', '$rootScope', 'alert'];
+objecteditor.$inject = ['$scope', '$stateParams', 'objectproxy', 'user', 'socket', 'schemata', '$rootScope', 'alert', '$state'];
 
 export default objecteditor;
