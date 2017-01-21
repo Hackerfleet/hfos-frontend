@@ -114,12 +114,12 @@
 }
 
 p.customfont {
-    font-family: "Clear Sans", Verdana, Tahoma;
+    font-family: "Clear Sans", sans-serif;
 }
 
 body {
     //padding-top: 23px;
-    font-family: "Clear Sans";
+    font-family: "Clear Sans", sans-serif;
     margin: 0px;
     padding: 0px;
 
@@ -543,4 +543,22 @@ footer > div > div.row > div:hover {
 .select.dropdown-menu {
     max-height: 90vh;
     overflow-y: auto;
+}
+
+#ngstats {
+    background: none !important;
+    opacity: 0.7;
+    left: 50px;
+    font-family: "Clear Sans", sans-serif;
+}
+
+#ngstats > canvas {
+    right: 0px;
+    position: absolute;
+    height: 40px;
+    bottom: 20px;
+}
+
+#ngstats > div {
+    color: inherit;
 }

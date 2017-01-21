@@ -87,6 +87,7 @@ class AboutComponent {
     
             showAngularStats({
                 position: 'bottom',
+                htmlId: 'ngstats'
                 
             });
     
