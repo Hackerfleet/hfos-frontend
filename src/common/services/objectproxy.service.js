@@ -167,14 +167,14 @@ class ObjectProxy {
         
         self.socket.listen('objectmanager', handleResponse);
         
-        this.searchItems = function (schema, search) {
+        this.searchItems = function (schema, search, fields, fulltext) {
             console.log('[OP] Async-getting list for schema ', schema, search);
             
             if (typeof search === 'undefined') {
                 search = '';
             }
             
-            if (schema in self.cache) {
+            /*if (schema in self.cache) {
                 console.log('[OP] Schema has a cache.');
                 console.log('[OP] Looking for ', schema, search, 'in ', self.cache);
                 if (search in self.cache[schema]) {
@@ -182,9 +182,9 @@ class ObjectProxy {
                     console.log('[OP] Got this cached: ', data);
                     return data
                 }
-            } else {
+            } else {*/
                 self.cache[schema] = {};
-            }
+            //}
             
             var reqid = self.getRequestId();
             
@@ -198,7 +198,9 @@ class ObjectProxy {
                 'data': {
                     'req': reqid,
                     'schema': schema,
-                    'search': search
+                    'search': search,
+                    'fields': fields,
+                    'fulltext': fulltext
                 }
             });
             
