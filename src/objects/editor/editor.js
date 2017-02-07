@@ -27,6 +27,7 @@ class objecteditor {
 
         this.objectproxy = objectproxy;
         this.scope = $scope;
+
         
         if (typeof this.schema === 'undefined') {
             this.schemaname = $stateParams.schema;
@@ -106,7 +107,12 @@ class objecteditor {
         
         this.scope.$on('$destroy', function() {
             console.log('[OE] Destroying live edit watcher');
-            this.livewatcher();
+            self.livewatcher();
+            self.schemaupdate();
+            self.loginupdate();
+            self.objupdate();
+            self.getupdate();
+            self.putupdate();
         });
         
         this.markStored = function() {
@@ -117,7 +123,7 @@ class objecteditor {
             self.alert.add('success', 'Editor', 'Object successfully stored.', 5);
         };
 
-        this.rootscope.$on('OP.Put', function (ev, uuid) {
+        this.putupdate = this.rootscope.$on('OP.Put', function (ev, uuid) {
             if (uuid === self.uuid) {
                 self.markStored();
             } else if (self.uuid === "") {
@@ -130,11 +136,11 @@ class objecteditor {
         });
 
 
-        this.rootscope.$on('OP.Get', function (ev, uuid) {
+        this.getupdate = this.rootscope.$on('OP.Get', function (ev, uuid) {
             self.updateModel(uuid);
         });
 
-        this.rootscope.$on('OP.Update', function (ev, uuid) {
+        this.objupdate = this.rootscope.$on('OP.Update', function (ev, uuid) {
             self.updateModel(uuid);
         });
 
@@ -147,13 +153,13 @@ class objecteditor {
             }
         }
 
-        this.rootscope.$on('User.Login', function () {
+        this.loginupdate = this.rootscope.$on('User.Login', function () {
             console.log('[OE] User logged in, getting current page.');
             // TODO: Check if user modified object - offer merging
             getData();
         });
 
-        this.rootscope.$on('Schemata.Update', function () {
+        this.schemaupdate = this.rootscope.$on('Schemata.Update', function () {
             console.log('[OE] Schema update.');
             var newschema = self.schemata.schema(self.schemaname);
             console.log('[OE] Got a schema update:', newschema);
