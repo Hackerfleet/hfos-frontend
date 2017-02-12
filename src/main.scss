@@ -407,9 +407,30 @@ html, body {
     margin-top: 10px;
 }
 
-#fullscreengrab:hover {
+#sidebargrab {
+    z-index: 99;
+    outline: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 50vh;
+    right: -10px;
+    width: 30px;
+    min-height: 40px;
+    background-color: white;
+    border-radius: 8px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: none;
+    padding-left: 0;
+    height: 40px;
+}
+
+#fullscreengrab:hover,
+#sidebargrab:hover {
     opacity: 0.9;
 }
+
 
 footer {
     color: gray;
