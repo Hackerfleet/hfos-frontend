@@ -46,10 +46,13 @@ class featureMenu {
         
         this.gridsterOptions = {
             // any options that you can set for angular-gridster (see:  http://manifestwebdesign.github.io/angular-gridster/)
-            columns: screen.width / 100,
-            rowHeight: 100,
-            colWidth: 100,
-            margins: [5, 5]
+            columns: screen.width / 50,
+            rowHeight: 50,
+            colWidth: 50,
+            defaultSizeX: 5,
+            defaultSizeY: 5,
+            margins: [5, 5],
+            mobileBreakPoint: 600
         };
         
         
