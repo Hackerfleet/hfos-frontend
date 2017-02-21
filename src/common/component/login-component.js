@@ -21,6 +21,7 @@ class LoginComponent {
 
     constructor(userservice) {
         this.user = userservice;
+        this.greetingname = this.user.username;
         this.username = '';
         this.password = '';
     }
