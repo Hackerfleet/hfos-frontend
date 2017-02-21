@@ -76,12 +76,15 @@ class UserService {
         };
     
     
-        self.login_failed = function() {
+        self.login_failed = function(reason) {
             console.log('[USER] Login failed, displaying warning and resetting.');
+            if (reason === null) {
+                reason = 'Either the username or the supplied password is invalid.';
+            }
             self.alert({
                 'title': 'Login failed',
                 'type': 'danger',
-                'content': '<br />Either the username or the supplied password is invalid.',
+                'content': '<br />' + reason,
                 'show': true,
                 'placement': 'top-left',
                 'duration': 10
@@ -124,7 +127,7 @@ class UserService {
             } else if (msg.action === 'new') {
                 self.greet_new_user();
             } else if (msg.action === 'fail') {
-                self.login_failed();
+                self.login_failed(msg.data);
             }
         }
     
@@ -279,7 +282,15 @@ class UserService {
                 keyboard: false,
                 id: 'loginDialog'
             });
-
+            
+            let self = this;
+            
+            this.timeout(function() {
+                if (self.signingIn === true) {
+                    self.signinIn = false;
+                    self.login_failed('No response from HFOS node within 30 seconds!');
+                }
+            }, 30000);
             this.signingIn = true;
         }
     }
