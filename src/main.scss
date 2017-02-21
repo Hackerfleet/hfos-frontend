@@ -167,10 +167,13 @@ body {
     z-index: 100;
 }
 
+a {
+    color: $color-link;
+}
+
 a:link,
 a:visited,
 a:active {
-    color: #414141;
     text-decoration: none;
     -webkit-transition: .2s;
     -moz-transition: .2s;
@@ -294,6 +297,11 @@ html, body {
     }
 }
 
+.menu-nav {
+    min-height: 0;
+    margin-bottom: 0;
+}
+
 .menuitem {
     white-space: nowrap;
 }
@@ -305,11 +313,25 @@ html, body {
 
 .menu-block {
     padding: 5px;
+    height: 100%;
 }
 
 .menu-block:hover {
     background: $color-primary-2;
     color: $color-black;
+}
+.gridster .gridster-item:hover .menu-mover {
+    display: block;
+}
+
+.menu-mover {
+    z-index: 80;
+    position: absolute;
+    display: none;
+    font-size: 18px;
+    bottom: 0px;
+    left: 0px;
+    color: $color-gray-light;
 }
 
 .menu-label {
