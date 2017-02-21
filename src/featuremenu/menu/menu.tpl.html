@@ -1,4 +1,14 @@
-<div class="jumbotron">
+<div class="well">
+    <div class="menu-nav navbar">
+        <ul class="nav nav-pills" role="tablist">
+            <li class="pull-right">
+                <span class="taskGridLock fa"
+                      ng-click="$ctrl.toggleLock()"
+                      ng-class="{'fa-lock':!$ctrl.lockState,'fa-unlock':$ctrl.lockState}"
+                      ng-model="$ctrl.lockState"></span>
+            </li>
+        </ul>
+    </div>
     <div gridster="$ctrl.gridsterOptions">
         <ul>
             <li data-gridster-item
@@ -8,6 +18,7 @@
                 data-sizey="item.size"
                 ng-repeat="item in $ctrl.items"
                 class="menu-box">
+                <span class="menu-mover fa fa-arrows" ng-show="$ctrl.lockState"></span>
                 <a href="#{{item.url}}" class="center-block menu-block">
                     <img src="{{item.svg}}" type="image/svg+xml" class="module-icon-big"/>
 

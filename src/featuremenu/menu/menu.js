@@ -5,8 +5,13 @@ class featureMenu {
         this.state = $state;
         this.user = userservice;
         this.scope = $scope;
+        this.timeout = $timeout;
         this.alert = alert;
+        
         this.changetimeout = null;
+        this.gridChangeWatcher = null;
+        
+        this.lockState = false;
         
         $log.log('[MENU] Featuremenu initializing with Profile: ', userservice.profile);
         console.log(userservice.profile);
@@ -16,9 +21,9 @@ class featureMenu {
         this.storeMenuConfig = function () {
             if ('settings' in self.user.profile) {
                 console.log('[MENU] Updating menu list for profile:', self.items);
-                
+        
                 var menu = [];
-                
+        
                 for (var item of self.items) {
                     menu.push({
                         title: item.title,
@@ -31,100 +36,40 @@ class featureMenu {
                 self.user.profile.settings.menu = menu;
                 self.user.saveProfile();
             }
-            
+    
             self.changetimeout = null;
-        };
-        
-        $scope.$watch('$ctrl.items', function (newVal, oldVal) {
-            if (newVal !== oldVal) {
-                if (self.changetimeout !== null) {
-                    $timeout.cancel(self.changetimeout);
-                }
-                self.changetimeout = $timeout(self.storeMenuConfig, 2000);
-            }
-        }, true);
-        
+        }
+              
         this.gridsterOptions = {
             // any options that you can set for angular-gridster (see:  http://manifestwebdesign.github.io/angular-gridster/)
-            columns: screen.width / 50,
-            rowHeight: 50,
-            colWidth: 50,
+            columns: screen.width / 70,
+            rowHeight: 70,
+            colWidth: 70,
             defaultSizeX: 5,
             defaultSizeY: 5,
             margins: [5, 5],
-            mobileBreakPoint: 600
+            mobileBreakPoint: 400,
+            draggable: {
+                enabled: false
+            },
+            resizable: {
+                enabled: false
+            }
         };
         
         
         $('#bootscreen').hide();
-        
-        
-        // TODO: Kept for reference until all icons are moved to their respecting packages:
-        /*this.items = [
-         {
-         title: 'Switchboard',
-         url: 'switchboard',
-         svg: 'iconmonstr-control-panel-icon.svg',
-         row: 0,
-         col: 1
-         },
-         {
-         title: 'Communication',
-         url: 'communication',
-         svg: 'iconmonstr-radio-tower-icon.svg',
-         row: 0,
-         col: 2
-         },
-         {
-         title: 'Wiki',
-         url: 'wiki/Index',
-         svg: 'iconmonstr-note-21-icon.svg',
-         row: 0,
-         col: 3
-         },
-         {
-         title: 'Weather',
-         url: 'weather',
-         svg: 'iconmonstrandhackerfleet-weather-icon.svg',
-         row: 1,
-         col: 0
-         },
-         {
-         title: 'Logbook',
-         url: 'logbook',
-         svg: 'iconmonstr-printer-icon.svg',
-         row: 1,
-         col: 1
-         },
-         {
-         title: 'Dashboard',
-         url: 'dashboard',
-         svg: 'iconmonstr-compass-6-icon.svg',
-         row: 1,
-         col: 2
-         },
-         {
-         title: 'Settings',
-         url: 'settings',
-         svg: 'iconmonstr-wrench-4-icon.svg',
-         row: 1,
-         col: 3
-         }, {
-         title: 'Remote Control',
-         url: 'gamepadremote',
-         svg: 'iconmonstr-gamepad-2-icon.svg',
-         row: 2,
-         col: 0
-         }, {
-         title: 'Tasks',
-         url: 'tasks',
-         svg: 'iconmonstr-clipboard-4-icon.svg',
-         row: 2,
-         col: 2
-         
-         }
-         ];*/
-        
+    
+        this.handleGridChange = function (newVal, oldVal) {
+            if (newVal === oldVal) {
+                console.log('No actual change');
+                return;
+            }
+            if (self.changetimeout !== null) {
+                self.timeout.cancel(self.changetimeout);
+            }
+            self.changetimeout = self.timeout(self.storeMenuConfig, 2000);
+        };
         
         this.updateMenu = function () {
             console.log('[MENU] Updating featuremenus');
@@ -223,6 +168,18 @@ class featureMenu {
             }
         }
         this.scope.$on('Profile.Update', self.updateMenu);
+    }
+    
+    toggleLock() {
+        this.lockState = !this.lockState;
+        this.gridsterOptions.draggable.enabled = this.lockState;
+        this.gridsterOptions.resizable.enabled = this.lockState;
+        if (this.lockState) {
+            console.log('Enabling gridwatcher');
+            this.gridChangeWatcher = this.scope.$watch('$ctrl.items', this.handleGridChange, true);
+        } else {
+            this.gridChangeWatcher();
+        }
     }
 }
 
