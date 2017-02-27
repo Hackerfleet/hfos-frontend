@@ -79,11 +79,16 @@ class ObjectProxy {
                 }
             }
             
-            if (msg.action === 'nonexistant') {
+            if (msg.action === 'noobject') {
                 console.log('Non existant document requested!');
                 console.log('Message:', msg);
             }
             
+            if (msg.action === 'noschema') {
+                console.log('Non existant schema requested!');
+                console.log('Message:', msg);
+            }
+    
             if (msg.action === 'get') {
                 console.log('[OP] Received object from OM: ', newobj);
                 
