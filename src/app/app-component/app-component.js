@@ -2,7 +2,7 @@ var backgrounds = require.context("../../../assets/images/backgrounds", true, /^
 
 class AppComponent {
 
-    constructor(scope, user, socket, rootscope, objectproxy, state, alert, fullscreen) {
+    constructor(scope, user, socket, rootscope, objectproxy, state, alert, fullscreen, infoscreen) {
         this.scope = scope;
         this.user = user;
         this.socket = socket;
@@ -11,6 +11,10 @@ class AppComponent {
         this.state = state;
         this.alert = alert;
         this.fullscreen = fullscreen;
+        this.infoscreen = infoscreen;
+        
+        this.rotationenabled = infoscreen.enabled;
+        this.rotationpaused = false;
         
         this.clientconfiglist = [];
         
@@ -22,10 +26,21 @@ class AppComponent {
                 console.log('[APP] ListUpdate: ', ev);
                 self.clientconfiglist = self.objectproxy.list(schema);
                 console.log('[APP] New client config list:', self.clientconfiglist);
+                 
                 self.scope.$apply();
             }
         }
-
+        
+        this.rotationpause = function() {
+            this.rotationpaused = !this.rotationpaused;
+            this.infoscreen.toggleRotations(!this.rotationpaused);
+        };
+        
+        this.rootscope.$on('Clientconfig.Update', function() {
+           self.rotationenabled = self.infoscreen.enabled;
+           console.log('Updating rotation to: ', self.rotationenabled);
+        });
+        
         this.rootscope.$on('OP.ListUpdate', updateclientconfigurations);
         this.rootscope.$on('OP.Deleted', updateclientconfigurations);
 
@@ -136,6 +151,6 @@ class AppComponent {
     }
 }
 
-AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'alert', 'Fullscreen'];
+AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'alert', 'Fullscreen', 'infoscreen'];
 
 export default AppComponent;

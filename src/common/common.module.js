@@ -11,6 +11,7 @@ import SocketService from './services/socket.factory';
 import SchemataService from './services/schemata.service';
 import SystemconfigService from './services/system.service';
 import ObjectProxy from './services/objectproxy.service';
+import InfoscreenService from './services/infoscreen.service';
 
 import LoginController from './component/login-component';
 
@@ -20,6 +21,7 @@ export default angular
     .component('statusbarComponent', UserInfoComponent)
     .service('TodoService', TodoService)
     .service('alert', AlertService)
+    .service('infoscreen', InfoscreenService)
     .service('user', UserService)
     .service('menu', MenuService)
     .service('socket', SocketService)

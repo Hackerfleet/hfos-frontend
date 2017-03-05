@@ -36,6 +36,21 @@
                         style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
                     <span id="spanfullscreen" class="fa fa-expand"></span>
                 </button>
+                <button id="btnpause" type="button" ng-click="$ctrl.rotationpause();"
+                        class="pagination-centered navbar-brand navbar-inverse btn"
+                        ng-show="$ctrl.rotationenabled"
+                        style="text-align: center; border-color: transparent; margin-left:5px; color: red"
+                        aria-label="Center Align">
+                    <span class="glyphicon" ng-class="{'glyphicon-pause': $ctrl.rotationpaused,'glyphicon-play': !$ctrl.rotationpaused}"></span>
+                </button>
+                <button id="btnaddscreen" type="button" ng-click="$ctrl.user.addinfoscreen();"
+                        class="pagination-centered navbar-brand navbar-inverse btn"
+                        ng-show="$ctrl.rotationenabled"
+                        style="text-align: center; border-color: transparent; margin-left:5px; color: red"
+                        aria-label="Center Align">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+
                 <!-- TODO: See #161
                 <button id="btnmob" type="button" ng-click="$ctrl.mobbutton();"
                         class="pagination-centered navbar-brand navbar-inverse btn"

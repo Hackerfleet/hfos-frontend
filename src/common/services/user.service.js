@@ -29,9 +29,9 @@ import logincontroller from '../component/login-component';
 
 
 class UserService {
-
+    
     /*@ngInject*/
-    constructor($cookies, $socket, alert, $modal, $rootScope, $location, $state, $timeout) {
+    constructor($cookies, $socket, alert, $modal, $rootScope, $location, $state, $timeout, infoscreen) {
         console.log('UserService constructing');
         this.cookies = $cookies;
         this.socket = $socket;
@@ -41,28 +41,29 @@ class UserService {
         this.location = $location;
         this.state = $state;
         this.timeout = $timeout;
-
+        this.infoscreen = infoscreen;
+        
         this.signedin = false;
         this.signingIn = false;
         
         this.debug = false;
         
         this.onAuthCallbacks = [];
-
+        
         this.username = '';
         this.useruuid = '';
-
+        
         this.desiredcontext = '';
-
+        
         this.user = {};
         this.profile = {};
         this.clientconfig = {};
         this.clientuuid = '';
         this.clientconfiglist = {};
-
+        
         var self = this;
-
-        self.greet_new_user = function() {
+        
+        self.greet_new_user = function () {
             console.log('[USER] New user registered. Displaying welcome.');
             self.alert({
                 'title': 'Registration successful',
@@ -74,9 +75,9 @@ class UserService {
                 'duration': 30
             });
         };
-    
-    
-        self.login_failed = function(reason) {
+        
+        
+        self.login_failed = function (reason) {
             console.log('[USER] Login failed, displaying warning and resetting.');
             if (reason === null) {
                 reason = 'Either the username or the supplied password is invalid.';
@@ -99,7 +100,7 @@ class UserService {
                 self.cookielogin(cookie.uuid);
             }
         }
-
+        
         function updateclientconfig(ev, uuid, newobj) {
             console.log('[USER] New object!', ev, uuid, newobj, self.clientuuid);
             var msg;
@@ -110,19 +111,26 @@ class UserService {
                 console.log('[USER] Got selected config from OP:', newobj);
                 msg = {data: newobj};
                 self.storeclientconfigcookie(msg);
+                if (newobj.infoscreen) {
+                    self.infoscreen.setRotations(newobj.infoscreenrotations);
+                    self.infoscreen.toggleRotations(true);
+                } else {
+                    self.infoscreen.toggleRotations(false);
+                }
+                self.rootscope.$broadcast('Clientconfig.Update');
             } else if (String(uuid) === String(self.profile.uuid)) {
                 console.log('[USER] Got a profile update from OP:', newobj);
                 msg = {data: newobj};
                 self.storeprofile(msg);
             }
         }
-    
+        
         function loginaction(msg) {
             console.log('[USER] Login Action triggered: ', msg);
             if (msg.action === 'login') {
                 self.username = msg.data.name;
                 self.useruuid = msg.data.uuid;
-            
+                
                 self.signIn();
             } else if (msg.action === 'new') {
                 self.greet_new_user();
@@ -130,31 +138,31 @@ class UserService {
                 self.login_failed(msg.data);
             }
         }
-    
+        
         function storeclientconfigcookie(msg) {
             console.log('[USER] Got a clientconfig: ', msg.data);
             self.clientconfig = msg.data;
-        
+            
             console.log('[USER] Client config: ', self.clientconfig);
             self.storeCookie(self.clientconfig.uuid, self.clientconfig.autologin);
-        
+            
             $('#clientname').html('<a href="#/editor/client/' + self.clientconfig.uuid + '/edit">' + self.clientconfig.name + '</a>');
-        
+            
             self.rootscope.$broadcast('Clientconfig.Update');
-        
+            
         }
-    
+        
         function storeprofile(msg) {
             console.log('[USER] Got profile data: ', msg.data);
             self.profile = msg.data;
-        
+            
             $('#btnuser').css('color', '#0f0');
             //$('#btnchat').removeClass('hidden');
             console.log('[USER] Profile: ', self.profile, self);
-        
+            
             self.changeCurrentTheme();
             console.log('[USER] Emitting update');
-        
+            
             self.rootscope.$broadcast('Profile.Update');
         }
         
@@ -164,13 +172,35 @@ class UserService {
         this.socket.listen('auth', loginaction);
         this.socket.listen('profile', storeprofile);
         this.socket.listen('clientconfig', storeclientconfigcookie);
-
+        
         this.rootscope.$on('Client.Connect', checkautologin);
         this.rootscope.$on('OP.Get', updateclientconfig);
         this.rootscope.$on('OP.Update', updateclientconfig);
-
+        
         console.log('UserService constructed');
-
+        
+    }
+    
+    addinfoscreen() {
+        console.log('Would now append new state:', this.state);
+        let args = [];
+        
+        for (let prop in this.state.params) {
+            if (this.state.params.hasOwnProperty(prop)) {
+                args.push({name: prop, value: this.state.params[prop]});
+            }
+        }
+        console.log('got args');
+        let statename = this.state.current.name;
+        statename = statename.replace('app.', '');
+        console.log('replaced args');
+        let rotation = {
+            'state': statename,
+            'duration': 10,
+            'args': args
+        };
+        this.clientconfig.infoscreenrotations.push(rotation);
+        console.log('ROTATIONS:', this.clientconfig.infoscreenrotations);
     }
     
     logout(force) {
@@ -178,7 +208,7 @@ class UserService {
             console.log('[USER] Trying to logout.');
             var authpacket = {component: 'auth', action: 'logout'};
             this.socket.send(authpacket);
-
+            
             this.profile = {};
             this.clientconfig = {};
             this.user = {};
@@ -193,15 +223,15 @@ class UserService {
             console.log('[USER] Cannot logout - not connected.');
         }
     }
-
+    
     onAuth(callback) {
         if (typeof callback !== 'function') {
             throw new Error('[USER] Callback must be a function');
         }
-
+        
         this.onAuthCallbacks.push(callback);
     }
-
+    
     login(username, password) {
         console.log('[USER] Service Login triggered');
         if (this.signedin === true) {
@@ -210,14 +240,14 @@ class UserService {
         } else {
             if (typeof(username) === 'undefined') {
                 console.log('[USER] No username given, showing login dialog.');
-
+                
                 this.showlogin();
             } else {
                 this.dologin(username, password);
             }
         }
     }
-
+    
     dologin(username, password) {
         console.log(this.socket);
         if (this.socket.connected === true) {
@@ -225,7 +255,7 @@ class UserService {
             var cookie = this.getCookie();
             var uuid = cookie.uuid;
             console.log('[USER] Client cookie: ', cookie);
-
+            
             var authpacket = {
                 'component': 'auth', 'action': 'login',
                 'data': {
@@ -234,29 +264,29 @@ class UserService {
                     'clientuuid': uuid
                 }
             };
-
+            
             this.socket.send(authpacket);
         } else {
             console.log('[USER] Not connected, cannot login.');
         }
     }
-
-
+    
+    
     signIn() {
         this.signedin = true;
         this.signingIn = false;
-
+        
         for (var i = 0; i < this.onAuthCallbacks.length; i++) {
             console.log('[USER] Running auth callback.');
             this.onAuthCallbacks[i].call(this.username);
         }
-
+        
         $('#btnuser').css('color', '#ff0');
         //$('#nav-dashboard, #nav-logbook, #nav-settings').removeClass('hidden');
         //$('#nav-crew', '#nav-switchboard').removeClass('hidden');
-
+        
         this.rootscope.$broadcast('User.Login');
-
+        
         if (this.desiredcontext !== false) {
             console.log('[USER] Reloading to page ', this.desiredcontext);
             // TODO: Make this work again, with states etc
@@ -264,16 +294,16 @@ class UserService {
             //rootscope.apply();
         }
         //this.$route.reload();
-
+        
     }
-
+    
     showprofile() {
         this.state.go('app.editor', {schema: 'profile', action: 'edit', 'uuid': this.useruuid});
     }
-
+    
     showlogin() {
         if (this.signingIn !== true) {
-
+            
             this.modal({
                 template: loginmodal,
                 controller: logincontroller,
@@ -285,7 +315,7 @@ class UserService {
             
             let self = this;
             
-            this.timeout(function() {
+            this.timeout(function () {
                 if (self.signingIn === true) {
                     self.signinIn = false;
                     self.login_failed('No response from HFOS node within 30 seconds!');
@@ -294,10 +324,10 @@ class UserService {
             this.signingIn = true;
         }
     }
-
+    
     showuseractions() {
         if (this.signingIn !== true) {
-
+            
             this.modal({
                 template: useractionmodal,
                 controller: logincontroller,
@@ -307,35 +337,35 @@ class UserService {
             });
         }
     }
-
+    
     cookielogin(uuid) {
         console.log('[USER] Auto-logging in...');
         var authpacket = {component: 'auth', action: 'autologin', data: uuid};
         var self = this;
-        this.timeout(function()  {
+        this.timeout(function () {
             console.log('[USER] Transmitting autologin.');
             self.socket.send(authpacket);
         }, 500);
     }
-
+    
     storeCookie(newuuid, autologin) {
         console.log('[USER] Storing configuration UUID cookie:', newuuid, autologin);
         this.clientuuid = newuuid;
         this.cookies.putObject('hfosclient', {uuid: newuuid, autologin: autologin});
     }
-
+    
     getCookie() {
         var cookie = this.cookies.get('hfosclient');
-
+        
         if (typeof cookie === 'undefined') {
             cookie = "";
         } else {
             cookie = JSON.parse(cookie);
         }
-
+        
         return cookie;
     }
-
+    
     changeCurrentTheme(newTheme) {
         // TODO: Better check for unset theme or better unsetting
         console.log('[USER] Setting new theme');
@@ -347,12 +377,12 @@ class UserService {
             console.log('[USER] Not switching to undefined theme.');
         }
     }
-
+    
     logincancel() {
         console.log('[USER] Login cancelled');
         this.signingIn = false;
     }
-
+    
     saveProfile() {
         console.log('[USER] Storing user profile on node');
         this.socket.send({
@@ -370,7 +400,7 @@ class UserService {
             'data': {'schema': 'client', 'obj': this.clientconfig}
         });
     }
-
+    
     switchClientconfig(uuid) {
         console.log('[USER] Loading client config from node');
         this.clientuuid = uuid;
@@ -380,19 +410,20 @@ class UserService {
             'data': {'schema': 'client', 'uuid': this.clientuuid}
         });
     }
-
+    
     updateclientconfig(data) {
         this.clientconfig = data;
         // TODO: Validate with schema from newly built schemaservice
         console.log('[USER] Updating client configuration with ', this.clientconfig);
         this.saveClientconfig();
-
+        
         this.rootscope.$broadcast('Clientconfig.Update');
     }
-
+    
 }
 
 //($cookies, $md5, socket, alert, modal, $rootScope, $location, $route, $interval) {
-UserService.$inject = ['$cookies', 'socket', '$alert', '$modal', '$rootScope', '$location', '$state', '$timeout'];
+UserService.$inject = ['$cookies', 'socket', '$alert', '$modal', '$rootScope', '$location', '$state', '$timeout',
+    'infoscreen'];
 
 export default UserService;
