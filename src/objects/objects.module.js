@@ -41,20 +41,20 @@ import 'tinymce/skins/lightgray/skin.min.css';
 
 import 'tx-tinymce/tx-tinymce';
 
-import 'angular-schema-form/dist/schema-form';
-import 'angular-schema-form/dist/bootstrap-decorator';
+import 'angular-schema-form';
+import 'angular-schema-form-bootstrap/bootstrap-decorator';
 
 
 import 'angular-ui-select/select.css';
 import 'angular-ui-select/select.js';
-import 'angular-schema-form-dynamic-select/angular-schema-form-dynamic-select';
+import 'angular-schema-form-dynamic-select/angular-schema-form-dynamic-select.js';
 import 'angular-schema-form-dynamic-select/ui-sortable';
 
 import 'schema-form-datetimepicker/schema-form-date-time-picker';
 
 import 'angular-schema-form-tinymce/bootstrap-tinymce';
 
-//import 'angular-schema-form-colorpicker/bootstrap-colorpicker';
+import 'angular-schema-form-colorpicker/bootstrap-colorpicker';
 
 // This one is powerful, but the integration is completely outdated (sadly)..
 //import 'ckeditor/ckeditor';
@@ -63,9 +63,11 @@ import 'angular-schema-form-tinymce/bootstrap-tinymce';
 
 import editor from './editor/editor.js';
 import list from './list/list.js';
+import configurator from './configurator/configurator.js';
 
 import editortemplate from './editor/editor.tpl.html';
 import listtemplate from './list/list.tpl.html';
+import configuratortemplate from './configurator/configurator.tpl.html';
 
 export default angular
     .module('main.components.objects', [
@@ -82,4 +84,5 @@ export default angular
         bindings: {schema: '@', uuid: '@', action: '@'}
     })
     .component('objectlist', {controller: list, template: listtemplate})
+    .component('configurator', {controller: configurator, template: configuratortemplate})
     .name;

@@ -17,6 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import configurationicon from '../../assets/images/icons/iconmonstr-wrench-4-icon.svg'
+
 export function routing($stateProvider) {
 
     $stateProvider
@@ -27,5 +29,11 @@ export function routing($stateProvider) {
         .state('app.list', {
             url: '/list/:schema',
             template: '<objectlist></objectlist>'
+        })
+        .state('app.config', {
+            url: '/configuration',
+            icon: configurationicon,
+            label: 'Configuration',
+            template: '<configurator></configurator>'
         });
 }
