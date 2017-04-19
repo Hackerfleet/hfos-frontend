@@ -19,8 +19,8 @@
 
 <div class="container">
     <div class="well">
-        <H1>List: <a href="#/list/{{$ctrl.schemaname}}">{{$ctrl.schemascreenname}}</a></H1>
-
+        <H1>List: <a href="#!/list/{{$ctrl.schemaname}}">{{$ctrl.schemascreenname}}</a></H1>
+        <a href="#!/editor/{{$ctrl.schemaname}}//create">Create new</a>
         <div class="panel-group hidden" id="objectlistdetails" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="filterHeading">
@@ -72,9 +72,9 @@
                 <tr ng-repeat="item in $ctrl.objectlistdata">
                     <td>{{$index+1}}</td>
                     <td><input type="checkbox" value=""/></td>
-                    <td><a href="#/editor/{{$ctrl.schemaname}}/{{item.uuid}}/edit">{{item.name}}</a></td>
+                    <td><a href="#!/editor/{{$ctrl.schemaname}}/{{item.uuid}}/edit">{{item.name}}</a></td>
                     <td>
-                        <a type="button" href="#/editor/{{$ctrl.schemaname}}/{{item.uuid}}/edit"
+                        <a type="button" href="#!/editor/{{$ctrl.schemaname}}/{{item.uuid}}/edit"
                            class="btn btn-xs btn-success">Edit</a>
                         <a type="button" ng-click="$ctrl.del(item.uuid)" class="btn btn-xs btn-danger">Delete</a>
                     </td>
@@ -83,9 +83,9 @@
                     <tr ng-repeat="(key, item) in $ctrl.objectlistdata | orderBy:'-key':true">
                         <td>{{key+1}}</td>
                         <td><input type="checkbox" value=""/></td>
-                        <td><a href="#/obj/{{$ctrl.schemaname}}/{{item.uuid}}/edit">{{item.name}}</a></td>
+                        <td><a href="#!/obj/{{$ctrl.schemaname}}/{{item.uuid}}/edit">{{item.name}}</a></td>
                         <td>
-                            <a type="button" href="#/obj/{{$ctrl.schemaname}}/{{item.uuid}}/edit"
+                            <a type="button" href="#!/obj/{{$ctrl.schemaname}}/{{item.uuid}}/edit"
                                class="btn btn-xs btn-success">Edit</a>
                             <a type="button" ng-click="delete(item.uuid)" class="btn btn-xs btn-danger">Delete</a>
                         </td>

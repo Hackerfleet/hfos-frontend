@@ -19,7 +19,7 @@
                 ng-repeat="item in $ctrl.items"
                 class="menu-box">
                 <span class="menu-mover fa fa-arrows" ng-show="$ctrl.lockState"></span>
-                <a href="#{{item.url}}" class="center-block menu-block">
+                <a href="#!{{item.url}}" class="center-block menu-block">
                     <img src="{{item.svg}}" type="image/svg+xml" class="module-icon-big"/>
 
                     <div class="menu-label center-block" ng-style="{'font-size': 10 + 2 * item.size +'px'}">{{item.title}}</div>
