@@ -19,12 +19,17 @@
 
 <div class="container">
     <div class="well">
-        <H1>{{$ctrl.action}}: <a href="#/list/{{$ctrl.schemadata.schema.name}}">{{$ctrl.schemascreenname}}</a>/<a
-            href="#/editor/{{$ctrl.schemadata.schema.name}}/{{$ctrl.model.uuid}}/edit">{{$ctrl.model.name}}</a></H1>
+        <H1>{{$ctrl.config.action}}: <a href="#!/list/{{$ctrl.schemadata.schema.name}}">{{$ctrl.schemascreenname}}</a>/<a
+            href="#!/editor/{{$ctrl.schemadata.schema.name}}/{{$ctrl.model.uuid}}/edit">{{$ctrl.model.name}}</a></H1>
         <span id="editLive">
             <input type="checkbox" ng-click="$ctrl.toggleLive()" checked="{{$ctrl.live === true}}" />
             <span>Edit Live</span>
         </span>
+        <span id="debug">
+            <input type="checkbox" ng-model="$ctrl.debug" /> <!-- checked="{{$ctrl.debug === true}}" /> -->
+            <span>Debug</span>
+        </span>
+
         <span id="objStored" class="label label-success hidden">Stored</span>
         <span id="objModified" class="label label-danger hidden">Modified</span>
 
@@ -33,51 +38,20 @@
         <!-- <button class="btn btn-danger" ng-click="$ctrl.deleteObject()"><i class="fa fa-trash"></i>Delete</button> -->
         <!-- <button class="btn btn-default" ng-click="$ctrl.submitForm()"><i class="fa fa-check"></i>Submit</button> -->
 
-        <div class="debug">
+        <div ng-show="$ctrl.debug">
             <hr>
-            <span>Model: {{$ctrl.model}}</span>
+            <span>Model:
+                <pre>{{$ctrl.model | json}}</pre>
+            </span>
+            <hr>
+            <span>Schema:
+                <pre>{{$ctrl.schemadata.schema | json}}</pre>
+            </span>
+            <hr>
+            <span>Form:
+                <pre>{{$ctrl.schemadata.form | json}}</pre>
+            </span>
             <br>
-            <span>Schema: {{$ctrl.schemadata.schema}}</span>
-            <br>
-            <span>Form: {{$ctrl.schemadata.form}}</span>
         </div>
-    </div>
-    <div class="well hidden">
-        <h1>Test section</h1>
-        <h2>Datetimepicker</h2>
-        <!-- <dateTimePicker ng-model="$ctrl.bazqux"></dateTimePicker>-->
-        <h3>Datetimepicker native</h3>
-        <!-- Datetime example -->
-        <div class="form-group">
-            <label class="control-label"><i class="fa fa-calendar"></i> Datetime picker</label><br>
-            <div class="form-group">
-                <input size="10" class="form-control" ng-model="sharedDate" data-autoclose="1" placeholder="Date"
-                       bs-datepicker type="text">
-            </div>
-            <div class="form-group">
-                <input size="8" class="form-control" ng-model="sharedDate" data-time-format="h:mm:ss a"
-                       data-autoclose="1" placeholder="Time" bs-timepicker type="text">
-            </div>
-        </div>
-        <!--
-        <h2>NG-Spectrum colorpicker </h2>
-        <spectrum-colorpicker ng-model="$ctrl.foobar" format="'hex'"></spectrum-colorpicker>
-        <h2>Spectrum solotest:</h2>
-        <div id="custom"> Ahoi!</div>
-        <h2>Editor solotest:</h2>
-        <div class="form-group" ng-class="{'has-error': hasError()}">
-            <label class="control-label" ng-show="showTitle()">{{form.title}}</label>
-
-            <textarea ng-show="form.key"
-                      style="background-color: white"
-                      type="text"
-                      class="form-control"
-                      schema-validate="form"
-                      ng-model="$$value$$"
-                      ckeditor="form.ckeditor"></textarea>
-
-            <span class="help-block">{{ (hasError() && errorMessage(schemaError())) || form.description}}</span>
-        </div>
-        -->
     </div>
 </div>
