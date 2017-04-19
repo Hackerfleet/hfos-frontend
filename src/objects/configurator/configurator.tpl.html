@@ -1,0 +1,99 @@
+<!--
+  ~ Hackerfleet Operating System
+  ~ =====================================================================
+  ~ Copyright (C) 2011-2016 riot <riot@c-base.org> and others.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<div id="configurator" class="well">
+    <div class="header-row row">
+        <H1>System configuration</H1>
+        <div class="editor-buttons-top" ng-show="$ctrl.model != null">
+            <input type="checkbox" ng-model="$ctrl.debug"/>
+            <label>Debug</label>
+            <button class="btn btn-default"
+                    ng-disabled="!$ctrl.modified"
+                    ng-click="$ctrl.showConfig($ctrl.model.uuid)"><i class="fa fa-undo"></i>Undo
+            </button>
+            <button class="btn btn-success"
+                    ng-disabled="!$ctrl.modified"
+                    ng-click="$ctrl.submitForm()"><i class="fa fa-check"></i>Store
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="configurator-column col-sm-2">
+            <span ng-show="$ctrl.components == null" us-spinner="{color: '#0C5392'}"></span>
+            <div ui-tree>
+                <ol ui-tree-nodes="" ng-model="$ctrl.components">
+                    <li ng-repeat="item in $ctrl.components" ui-tree-node
+                        ng-class="{'angular-ui-tree-node-active': $ctrl.model.uuid == item.uuid}">
+                        <div ng-click="$ctrl.showConfig(item.uuid)">
+                            {{item.name}}
+                        </div>
+                        <ol ui-tree-nodes="" ng-model="item.items">
+                            <li ng-repeat="subItem in item.items" ui-tree-node>
+                                <div ng-click="$ctrl.showConfig(subItem.uuid)">
+                                    {{subItem.name}}
+                                </div>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="configurator-column col-md-10">
+            <small ng-show="$ctrl.model != null">Configuring: {{$ctrl.model.componentclass}}:{{$ctrl.model.name}}
+            </small>
+            <div class="center" ng-show="$ctrl.model == null">Select a component to configure in the pane to the
+                left.
+            </div>
+
+            <span ng-show="$ctrl.stored" class="label label-success">Stored</span>
+            <span ng-show="$ctrl.modified" class="label label-danger">Modified</span>
+
+            <form sf-schema="$ctrl.schema" sf-form="$ctrl.form" sf-model="$ctrl.model">
+            </form>
+            <div class="pull-right editor-buttons" ng-show="$ctrl.model != null">
+                <button class="btn btn-default"
+                        ng-disabled="!$ctrl.modified"
+                        ng-click="$ctrl.showConfig($ctrl.model.uuid)"><i class="fa fa-undo"></i>Undo
+                </button>
+                <button class="btn btn-success"
+                        ng-disabled="!$ctrl.modified"
+                        ng-click="$ctrl.submitForm()"><i class="fa fa-check"></i>Store
+                </button>
+            </div>
+        </div>
+    </div>
+    <div ng-show="$ctrl.debug">
+        <hr>
+        <span>Model:
+                <pre>{{$ctrl.model | json}}</pre>
+            </span>
+        <hr>
+        <span>Schema:
+                <pre>{{$ctrl.schema | json}}</pre>
+            </span>
+        <hr>
+        <span>Form:
+                <pre>{{$ctrl.form | json}}</pre>
+            </span>
+        <br>
+        <span>All Schemata:
+                <pre>{{$ctrl.configschemadata | json}}</pre>
+            </span>
+    </div>
+</div>
