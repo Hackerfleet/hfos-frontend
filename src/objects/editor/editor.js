@@ -22,40 +22,27 @@ var tv4 = require('tv4');
 class objecteditor {
 
     constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope, alert, state) {
-        console.log('[OE] STATEPARAMS: ', $stateParams);
-        console.log('[OE] SCOPE: ', $scope);
-
-        this.objectproxy = objectproxy;
-        this.scope = $scope;
-
-        
-        if (typeof this.schema === 'undefined') {
-            this.schemaname = $stateParams.schema;
-        } else {
-            this.schemaname = this.schema;
-        }
-
-        console.log('[OE] Handling object of type: ', this.schemaname);
-
-        if (typeof this.uuid === 'undefined') {
-            this.uuid = $stateParams.uuid;
-        }
-
-        if (typeof this.action === 'undefined') {
-            this.action = $stateParams.action.charAt(0).toUpperCase() + $stateParams.action.slice(1);
-        }
-    
-        console.log('[OE] UUID: ', this.uuid, 'Action:', this.action);
-
         this.socket = socket;
         this.schemata = schemata;
         this.rootscope = $rootscope;
         this.alert = alert;
         this.state = state;
+        this.user = user;
+        this.objectproxy = objectproxy;
+        this.scope = $scope;
+        this.stateParams = $stateParams;
 
-        this.schemascreenname = this.schemaname.charAt(0).toUpperCase() + this.schemaname.slice(1);
+        console.log('[OE] STATEPARAMS: ', $stateParams);
+        console.log('[OE] SCOPE: ', $scope);
+      
+        
+    
+    
         this.schemadata = {};
         this.model = {};
+    
+        this.debug = false;
+        
         this.live = false;
         this.livewatcher = null;
 
@@ -66,14 +53,7 @@ class objecteditor {
 
         // TODO: Clean up the editor api, this is a bit messy from the directive movement
         // Same goes for the list, probably.
-
-        if (this.uuid === "") {
-            this.action = 'Create';
-            $('#objModified').removeClass('hidden');
-        } else {
-            this.action = 'Edit';
-        }
-
+    
         var self = this;
 
         this.toggleLive = function() {
@@ -96,7 +76,7 @@ class objecteditor {
                             console.log('Form is valid, transmitting.');
                             self.submitObject();
                         } else {
-                            $('#statusCenter').html(result.message + ': ' + result.datapath);
+                            $('#statusCenter').html(result.message + ': ' + result.configpath);
                             console.log('Invalid form, cannot submit.');
                         }
                     },
@@ -107,7 +87,7 @@ class objecteditor {
         
         this.scope.$on('$destroy', function() {
             console.log('[OE] Destroying live edit watcher');
-            self.livewatcher();
+            if (self.livewatcher !== null) self.livewatcher();
             self.schemaupdate();
             self.loginupdate();
             self.objupdate();
@@ -119,18 +99,18 @@ class objecteditor {
             console.log('[OE] Marking object as stored.');
             $('#objStored').removeClass('hidden');
             $('#objModified').addClass('hidden');
-            self.action = 'Edit';
+            self.config.action = 'Edit';
             self.alert.add('success', 'Editor', 'Object successfully stored.', 5);
         };
 
         this.putupdate = this.rootscope.$on('OP.Put', function (ev, uuid) {
-            if (uuid === self.uuid) {
+            if (uuid === self.config.uuid) {
                 self.markStored();
-            } else if (self.uuid === "") {
+            } else if (self.config.uuid === "") {
                 // TODO: What if another object is being created right now?
                 // We could check if the object body is the same.
                 // (Works bad on objects that are somehow modified before saving them)
-                self.uuid = uuid;
+                self.config.uuid = uuid;
                 self.markStored();
             }
         });
@@ -144,33 +124,29 @@ class objecteditor {
             self.updateModel(uuid);
         });
 
-        function getData() {
-            console.log('[OE] Getting schema for ', self.schemaname);
-            self.schemadata = self.schemata.get(self.schemaname);
-            if (self.action !== 'Create' && self.uuid !== '') {
-                console.log('[OE] Requesting object.');
-                self.objectproxy.getObject(self.schemaname, self.uuid, true);
-            }
-        }
-
         this.loginupdate = this.rootscope.$on('User.Login', function () {
             console.log('[OE] User logged in, getting current page.');
             // TODO: Check if user modified object - offer merging
-            getData();
+            self.getData();
         });
 
         this.schemaupdate = this.rootscope.$on('Schemata.Update', function () {
             console.log('[OE] Schema update.');
-            var newschema = self.schemata.schema(self.schemaname);
+            var newschema = self.schemata.schema(self.config.schema);
             console.log('[OE] Got a schema update:', newschema);
-            self.schemadata = self.schemata.get(self.schemaname);
+            self.schemadata = self.schemata.get(self.config.schema);
             
-            getData();
+            self.getData();
         });
-
-        if (user.signedin) {
-            getData();
-        }
+    
+        this.getData = function(){
+            console.log('[OE] Getting schema for ', self.config.schema);
+            self.schemadata = self.schemata.get(self.config.schema);
+            if (self.config.action !== 'Create' && self.config.uuid !== '') {
+                console.log('[OE] Requesting object.');
+                self.objectproxy.getObject(self.config.schema, self.config.uuid, true);
+            }
+        };
 
         this.getFormData = function(options, search) {
             console.log('[OE] Trying to obtain proxy list.', options, search);
@@ -181,7 +157,19 @@ class objecteditor {
             console.log(result);
             return result;
         };
-
+    
+        this.updateModel = function(uuid) {
+            console.log('[OE] Object has been updated from node, checking..', uuid, self);
+            console.log('[OE] Self Scope UUID: ', self.config.uuid);
+            console.log('[OE] Object changed, updating content.');
+            self.model = self.objectproxy.objects[uuid];
+            console.log('[OE] Object model: ', self.model);
+            $('#objectModified').addClass('hidden');
+            $('#objectEditButton').removeClass('hidden');
+            self.scope.$apply();
+        };
+    
+        //console.log('End of constructor:', self.config.uuid);
     }
     
     switchState(state, args) {
@@ -205,6 +193,35 @@ class objecteditor {
 //console.log("[OE] CB Results: ", this.Callback('mapview'));
 
 
+    $onInit() {
+        if (typeof this.stateParams.uuid !== 'undefined') {
+            this.config = {
+                uuid: this.stateParams.uuid,
+                schema: this.stateParams.schema,
+                action: this.stateParams.action
+            };
+        } else {
+            this.config = {
+                uuid: this.uuid,
+                schema: this.schema,
+                action: this.action
+            };
+        }
+        console.log('[OE] Handling object of type: ' + this.config.schema + 'UUID:' + this.config.uuid + ' Action:' + this.config.action);
+    
+        this.schemascreenname = this.config.schema.charAt(0).toUpperCase() + this.config.schema.slice(1);
+        if (this.config.uuid === "") {
+            this.config.action = 'Create';
+            $('#objModified').removeClass('hidden');
+        } else {
+            this.config.action = 'Edit';
+        }
+    
+        if (this.user.signedin) {
+            this.getData();
+        }
+    }
+    
     formAction(target, action, uuid) {
         console.log('[OE] FormAction initiated: ', target, action, uuid);
 
@@ -215,33 +232,16 @@ class objecteditor {
         });
     }
 
-    updateModel(uuid) {
-        console.log('[OE] Object has been updated from node, checking..', uuid);
-
-        // TODO: This could fail and possibly catch the wrong object
-        if (this.uuid === 'create') {
-            this.uuid = uuid;
-        }
-
-        if (uuid === this.uuid) {
-            console.log('[OE] Object changed, updating content.');
-            this.model = this.objectproxy.objects[uuid];
-            console.log('[OE] Object model: ', this.model);
-            $('#objectModified').addClass('hidden');
-            $('#objectEditButton').removeClass('hidden');
-            this.scope.$apply();
-        }
-    }
 
 
     /*var editorChange = function () {
-     if (this.model !== objectproxy.obj[this.uuid]) {
+     if (this.model !== objectproxy.obj[$scope.uuid]) {
      console.log('[OE] Content has been modified locally.');
 
      $('#objectModified').removeClass('hidden');
      } else {
      console.log('[OE] Content changed from somewhere else.');
-     console.log(this.model, objectproxy.obj[this.uuid]);
+     console.log(this.model, objectproxy.obj[$scope.uuid]);
      }
      };
 
@@ -250,22 +250,22 @@ class objecteditor {
 
     submitObject() {
         let model = this.model;
-        if (this.action.toUpperCase() === 'CREATE') {
+        if (this.config.action.toUpperCase() === 'CREATE') {
             model.uuid = 'create';
         }
         console.log('[OE] Object update initiated with ', model);
-        this.objectproxy.putObject(this.schemaname, model);
+        this.objectproxy.putObject(this.config.schema, model);
     }
 
     deleteObject() {
         let model = this.model;
-        if (this.action.toUpperCase() === 'CREATE') {
+        if (this.config.action.toUpperCase() === 'CREATE') {
             model.uuid = 'create';
             this.alert.add('warning', 'Editor', 'Cannot delete object - it is not stored yet.');
             return;
         }
-        console.log('[OE] Object deletion initiated with ', this.uuid);
-        this.objectproxy.delObject(this.schemaname, this.uuid);
+        console.log('[OE] Object deletion initiated with ', this.config.uuid);
+        this.objectproxy.delObject(this.config.schema, this.config.uuid);
     }
 }
 
