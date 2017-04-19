@@ -15,13 +15,13 @@ import 'bootstrap/dist/css/bootstrap-theme.min.css';
 import 'bootstrap-additions/dist/bootstrap-additions.css';
 import 'angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css';
 import 'angular-ui-select/select.css';
-import 'bootstrap-slider/dist/css/bootstrap-slider.min.css'
-import 'spectrum-colorpicker/spectrum.css';
+import 'bootstrap-slider/dist/css/bootstrap-slider.min.css';
+import 'angular-ui-tree/dist/angular-ui-tree.min.css';
 
 import './main.scss';
 
 // 3rd party modules
-import 'jquery';
+import 'jquery/dist/jquery';
 //import bootstrap from 'bootstrap';
 import angular from 'angular';
 import sanitize from 'angular-sanitize';
@@ -37,10 +37,13 @@ import translate from 'angular-translate';
 import clipboard from 'angular-clipboard';
 import ui from 'angular-ui-bootstrap';
 import calendar from 'angular-bootstrap-calendar';
+import tree from 'angular-ui-tree';
 
-require('spectrum-colorpicker/spectrum');
+require('spectrum-colorpicker');
 require('angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker');
+import 'spectrum-colorpicker/spectrum.css';
 
+require('angular-spinner');
 require('bootstrap-slider');
 require('angular-bootstrap-slider');
 
@@ -58,8 +61,9 @@ require('humanize-duration');
 // HFOS Plugin Modules
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
+    'angularSpinner',
     animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, doc,
-    clipboard.name, calendar
+    clipboard.name, calendar, tree
 ];
 
 /* COMPONENT SECTION */
