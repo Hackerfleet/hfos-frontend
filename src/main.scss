@@ -161,6 +161,10 @@ body {
 .well {
     background-color: rgba(255, 255, 255, 0.75);
     background-image: none;
+    padding-top: 5px;
+    h1 {
+        margin-top: 5px;
+    }
 }
 
 #mainmenu {
@@ -320,6 +324,7 @@ html, body {
     background: $color-primary-2;
     color: $color-black;
 }
+
 .gridster .gridster-item:hover .menu-mover {
     display: block;
 }
@@ -374,6 +379,10 @@ html, body {
 
 #clientmenu {
     text-align: center;
+}
+
+.dropdown-menu > li > div > a {
+    display: block;
 }
 
 .col {
@@ -480,72 +489,6 @@ footer > div > div.row > div:hover {
     cursor: default;
 }
 
-.tangcloud {
-    font-weight: bold;
-    height: 50%;
-    width: 50%;
-}
-
-.tangcloud span {
-    line-height: 100%;
-    margin: 5px;
-    cursor: pointer;
-}
-
-.tangcloud-item-1 {
-    font-size: 1.3em;
-    color: #080808;
-}
-
-.tangcloud-item-2 {
-    font-size: 1.6em;
-    color: #101010;
-}
-
-.tangcloud-item-3 {
-    font-size: 1.9em;
-    color: #181818;
-}
-
-.tangcloud-item-4 {
-    font-size: 2.2em;
-    color: #303030;
-}
-
-.tangcloud-item-5 {
-    font-size: 2.5em;
-    color: #282828;
-}
-
-.tangcloud-item-6 {
-    font-size: 2.8em;
-    color: #202020;
-}
-
-.tangcloud-item-7 {
-    font-size: 3.1em;
-    color: #383838;
-}
-
-.tangcloud-item-8 {
-    font-size: 3.4em;
-    color: #404040;
-}
-
-.tangcloud-item-9 {
-    font-size: 3.7em;
-    color: #484848;
-}
-
-.tangcloud-item-10 {
-    font-size: 4em;
-    color: #000000;
-}
-
-.tangcloud-item-hidden {
-    //visibility: hidden;
-}
-
 .select.dropdown-menu {
     max-height: 90vh;
     overflow-y: auto;
@@ -585,4 +528,58 @@ footer > div > div.row > div:hover {
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
+}
+
+.angular-ui-tree-node {
+    cursor: pointer;
+    padding: 2px 10px;
+    border-radius: 4px;
+}
+
+.angular-ui-tree-node:hover {
+    background: $color-primary-2;
+}
+
+
+.angular-ui-tree-node-active {
+    background: $color-primary-1;
+    color: $color-gray-dark;
+    font-weight: bold;
+}
+
+.configurator-column {
+    max-height: inherit;
+    min-height: 50vh;
+    overflow: auto;
+}
+
+.header-row {
+    position: relative
+}
+
+.header-row > H1 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+@media screen and (max-width: 767px) {
+    .editor-buttons-top {
+        float: right !important;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #configurator .row {
+        max-height: 72vh;
+    }
+
+    .configurator-column {
+        height: 90vh;
+    }
+
+    .editor-buttons-top {
+        position: absolute;
+        right: 25px;
+        top: 10px;
+    }
 }
