@@ -1,9 +1,8 @@
-
 var showAngularStats = require('ng-stats');
 //showAngularStats();
 
 class AboutComponent {
-
+    
     constructor(rootscope, user, socket, $interval, alert, modal, schemaservice, op, state) {
         this.rootscope = rootscope;
         this.user = user;
@@ -13,7 +12,6 @@ class AboutComponent {
         this.$interval = $interval;
         this.state = state;
         this.schemaservice = schemaservice;
-       
         
         this.schemata = [];
         this.debug = false;
@@ -22,9 +20,9 @@ class AboutComponent {
         
         this.serverport = socket.port;
         this.ssloverride = socket.protocol === 'wss';
-
+        
         this.consoleinput = '';
-
+        
         $('#path').css({fill: '#afafff'});
         
         this.testOptions = {
@@ -37,10 +35,10 @@ class AboutComponent {
         this.colorValue = "";
         
         var self = this;
-
+        
         function updateSchemata() {
             self.schemata = [];
-
+            
             for (var schema in self.schemaservice.schemata) {
                 if (self.schemaservice.schemata.hasOwnProperty(schema)) {
                     self.schemata.push(schema);
@@ -48,16 +46,16 @@ class AboutComponent {
             }
             console.log(self.schemata);
         }
-
+        
         this.rootscope.$on('Schemata.Update', updateSchemata);
-
+        
         if (this.user.debug) {
             this.toggleDebug();
         }
         
         updateSchemata();
     }
-
+    
     updateStats() {
         //console.log("Update: ", this.socket);
         var stats = this.socket.stats;
@@ -68,7 +66,7 @@ class AboutComponent {
             lag: 'N/A'
         };
     }
-
+    
     command(cmd) {
         this.socket.send({
             'component': 'debugger',
@@ -76,21 +74,21 @@ class AboutComponent {
             'data': ''
         });
         var msg = 'Sent: ' + cmd;
-
+        
         this.alert.add('info', 'Debugger', msg, 5);
     }
-
+    
     toggleDebug() {
         console.log('[ABOUT] Toggling Debug tools');
         if (this.debug !== true) {
             this.debug = true;
-    
+            
             showAngularStats({
                 position: 'bottom',
                 htmlId: 'ngstats'
                 
             });
-    
+            
             this.updateStats();
             this.updater = this.$interval(() => this.updateStats(), 1000);
         } else {
@@ -101,15 +99,15 @@ class AboutComponent {
         
         this.user.debug = this.debug;
     }
-       
+    
     opentab(tabname) {
         console.log('[ABOUT] Switching tab to ', tabname);
-
+        
         // TODO: De-jquery this (also somewhere else, e.g. dashboard)
         $('.nav-pills .active, .tab-content .active').removeClass('active');
         $('#' + tabname).addClass('active');
     }
-
+    
     viewlist(schema) {
         this.state.go('app.list', {schema: schema});
     }
@@ -117,6 +115,13 @@ class AboutComponent {
     setserverport() {
         console.log('[ABOUT] Updating server port to ', this.serverport, this.ssloverride);
         this.socket.setPort(this.serverport, this.ssloverride);
+    }
+    
+    changeport(ev) {
+        console.log('CHANGE HANDLER CALLED', ev);
+        if (this.serverport === 443) {
+            this.ssloverride = true;
+        }
     }
     
     unsetserverport() {
@@ -127,15 +132,15 @@ class AboutComponent {
     sendcommand() {
         this.command(this.consoleinput);
     }
-
+    
     memdebug() {
         this.command('memdebug');
     }
-
+    
     graph() {
         this.command('graph');
     }
-
+    
 }
 
 AboutComponent.$inject = ['$rootScope', 'user', 'socket', '$interval', 'alert', '$modal', 'schemata', 'objectproxy', '$state'];
