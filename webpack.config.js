@@ -9,14 +9,16 @@ var OpenBrowserWebpackPlugin = require('open-browser-webpack-plugin');
 
 var PARAMS_DEFAULT = {
     resolve: {
-        extensions: ['', '.js', '.tpl.html', '.css', '.json', '.scss', '.svg', '.ttf', '.woff'],
-        fallback: '/node_modules',
+        extensions: ['.js', '.tpl.html', '.css', '.json', '.scss', '.svg', '.ttf', '.woff'],
         alias: {
+            'angular': __dirname + '/node_modules/angular',
             //'angular-schema-form':           '../node_modules/angular-schema-form',
-            'schema-form': '../node_modules/angular-schema-form'
+            'angular-schema-form': __dirname + '/node_modules/angular-schema-form/dist/schema-form.js'
+            //'spectrum': '../node_modules/spectrum-colorpicker'
             //'angular-schema-form-bootstrap': '../node_modules/angular-schema-form-bootstrap/bootstrap-decorator.js'
         }
     },
+    target: 'web',
     entry: {
         main: './src/main.js',
         vendor: [
@@ -53,60 +55,60 @@ var PARAMS_DEFAULT = {
             $: 'jquery',
             jQuery: 'jquery'
         }),
-        new webpack.optimize.DedupePlugin()
+    
     ],
     devServer: {
         port: 8081,
         host: '0.0.0.0'
     },
-    progress: true,
-    colors: true
 };
 var PARAMS_PER_TARGET = {
     DEV: {
-        debug: true,
         devtool: 'eval',
         output: {
             filename: '[name].js'
         },
         plugins: [
             new webpack.HotModuleReplacementPlugin(),
-            new webpack.SourceMapDevToolPlugin(
-                '[file].map', null,
-                "[absolute-resource-path]", "[absolute-resource-path]"),
-            new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
+            new webpack.SourceMapDevToolPlugin({filename: '[file].map'}),
+            new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.js'}),
             //new OpenBrowserWebpackPlugin({
             //    url: 'http://localhost:' + PARAMS_DEFAULT.devServer.port
             //})
+            new webpack.LoaderOptionsPlugin({
+                debug: true
+            })
         ]
     },
     BUILD: {
-        debug: true,
         output: {
-            path: './build'
+            path: __dirname + '/build'
         },
-        devtool: 'source-map',
+        devtool: 'eval',
         plugins: [
             new CleanWebpackPlugin(['build']),
-            new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.[chunkhash].js', Infinity)
+            new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[chunkhash].js'}),
+            new webpack.LoaderOptionsPlugin({
+                debug: true
+            })
         ]
     },
     DIST: {
-        debug: false,
         output: {
-            path: './dist',
+            path: __dirname + '/dist',
             publicPath: '/hfos-frontend/'
         },
         plugins: [
             new CleanWebpackPlugin(['dist']),
-            new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.[chunkhash].js', Infinity),
+            new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[chunkhash].js'}),
             new webpack.optimize.UglifyJsPlugin({
                 mangle: false
             })
         ]
     }
 };
-var TARGET = minimist(process.argv.slice(2)).TARGET || 'BUILD';
+var TARGET = 'DEV'; // minimist(process.argv.slice(2)).TARGET || 'BUILD';
+var target = 'web';
 var params = _.merge(PARAMS_DEFAULT, PARAMS_PER_TARGET[TARGET], _mergeArraysCustomizer);
 
 _printBuildInfo(params);
@@ -116,39 +118,34 @@ module.exports = {
     entry: params.entry,
     output: params.output,
     module: {
-        /*preLoaders: [
-         {test: /\.js$/, loader: "source-map-loader"}
-         ],*/
         loaders: [
             {test: /\.js$/, loader: 'babel-loader', exclude: /(\.test.js$|node_modules)/},
-            {test: /\.css$/, loader: 'style!css'},
-            {test: /\.tpl.html/, loader: 'html'},
-            {test: /\.json/, loader: 'json'},
+            {test: /\.css$/, loader: 'style-loader!css-loader'},
+            {test: /\.tpl.html/, loader: 'html-loader', exclude: /(index.html)/},
+            {test: /\.json/, loader: 'json-loader'},
             //{test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff(2)?)(\?[a-z0-9]+)?$/, loader: 'file-loader'}, //  url?limit=50000'}
             {test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff(2)).*$/, loader: 'file-loader'},
-            {test: /\.scss/, loaders: ['style', 'css', 'sass']},
+            {test: /[\/]angular\.js$/, loader: "exports-loader?angular"},
+            {test: /\.scss/, loaders: ['style-loader', 'css-loader', 'sass-loader']},
             {
                 test: require.resolve('tinymce/tinymce'),
                 loaders: [
-                    'exports?window.tinymce',
-                    'imports?this=>window'
+                    'exports-loader?window.tinymce',
+                    'imports-loader?this=>window'
                 ]
             },
             {
                 test: /tinymce\/(themes|plugins)\//,
                 loaders: [
-                    'exports?window.tinymce',
-                    'imports?this=>window'
+                    'exports-loader?window.tinymce',
+                    'imports-loader?this=>window'
                 ]
             }
         ]
     },
     plugins: params.plugins,
     devServer: params.devServer,
-    debug: params.debug,
     devtool: params.devtool,
-    progress: params.progress,
-    colors: params.colors
 };
 
 function _printBuildInfo(params) {
