@@ -146,7 +146,7 @@ class UserService {
             console.log('[USER] Client config: ', self.clientconfig);
             self.storeCookie(self.clientconfig.uuid, self.clientconfig.autologin);
             
-            $('#clientname').html('<a href="#/editor/client/' + self.clientconfig.uuid + '/edit">' + self.clientconfig.name + '</a>');
+            $('#clientname').html('<a href="#!/editor/client/' + self.clientconfig.uuid + '/edit">' + self.clientconfig.name + '</a>');
             
             self.rootscope.$broadcast('Clientconfig.Update');
             
@@ -298,7 +298,7 @@ class UserService {
     }
     
     showprofile() {
-        this.state.go('app.editor', {schema: 'profile', action: 'edit', 'uuid': this.useruuid});
+        this.state.go('app.editor', {schema: 'profile', action: 'edit', 'uuid': this.profile.uuid});
     }
     
     showlogin() {
