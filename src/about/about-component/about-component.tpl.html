@@ -9,7 +9,7 @@
             <li><a role="tab" ng-click="$ctrl.opentab('console')" data-toggle="tab">Console</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('commands')" data-toggle="tab">Commands</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('server')" data-toggle="tab">Server</a></li>
-            <li><a role="tab" ng-click="$ctrl.opentab('components')" data-toggle="tab">Components</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('widgettests')" data-toggle="tab">Widgettests</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -76,7 +76,7 @@
                     <div class="form-inline">
                         <div class="form-group">
                             <label>Port</label>
-                            <input class="form-control" type="number" ng-model="$ctrl.serverport">
+                            <input class="form-control" type="number" ng-change="$ctrl.ssloverride = $ctrl.serverport === 443" ng-model="$ctrl.serverport">
                         </div>
                         <div class="form-group">
                             <label>SSL</label>
@@ -103,7 +103,7 @@
                             <td>{{schema}}</td>
                             <td>
                                 <a ng-click="$ctrl.viewlist(schema)">View list</a>
-                                <a href="#/editor/{{schema}}//create">Create new</a>
+                                <a href="#!/editor/{{schema}}//create">Create new</a>
                             </td>
                         </tr>
                     </table>
@@ -137,24 +137,26 @@
                 </div>
             </div>
 
-            <div class="tab-pane" id="components">
+            <div class="tab-pane" id="widgettests">
                 <div class="well">
-                    <h3>Angular components</h3>
+                    <h3>Angular widgettests</h3>
                     <table>
                         <tr>
                             <th>Type</th>
-                            <th>Component</th>
+                            <th>Widget</th>
                         </tr>
                         <tr>
                             <td>Slider</td>
                             <td>
-                                <slider ng-model="$ctrl.sliderValue" min="$ctrl.testOptions.min" step="$ctrl.testOptions.step" max="$ctrl.testOptions.max" value="$ctrl.testOptions.value"></slider>
+                                <slider ng-model="$ctrl.sliderValue" min="$ctrl.testOptions.min"
+                                        step="$ctrl.testOptions.step" max="$ctrl.testOptions.max"
+                                        value="$ctrl.testOptions.value"></slider>
                             </td>
                         </tr>
                         <tr>
                             <td>Colorpicker</td>
                             <td>
-                                <input type="color" name="color2" value="#3355cc" />
+                                <input type="color" name="color2" value="#3355cc"/>
                                 <spectrum-colorpicker ng-model="$ctrl.colorValue"></spectrum-colorpicker>
                             </td>
                         </tr>
