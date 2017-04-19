@@ -46,14 +46,17 @@ class AppComponent {
 
         this.rootscope.$on('Profile.Update', function () {
             // Set a nice background, if one is configured
-            console.log("BG:", self.user.profile.settings.background, backgrounds);
-            if (self.user.profile.settings.background !== 'default') {
-                console.log('url(/assets/images/backgrounds/' + self.user.profile.settings.background + ')');
+            let background = self.user.profile.settings.background;
+            console.log("BG:", background, backgrounds);
+            if (background === "") {
+                return;
+            } else if (background !== 'default') {
+                console.log('url(/assets/images/backgrounds/' + background + ')');
                 $('body').css({
-                    'background': 'url(/assets/images/backgrounds/' + self.user.profile.settings.background + ') no-repeat center center fixed',
+                    'background': 'url(/assets/images/backgrounds/' + background + ') no-repeat center center fixed',
                     'background-size': 'cover'
                 });
-            } else if (self.user.profile.settings.background === 'none') {
+            } else if (background === 'none') {
                 $('body').css({
                     'background': 'none'
                 });
@@ -63,7 +66,7 @@ class AppComponent {
         this.user.onAuth(function () {
             console.log('[APP] Populating client menu.');
             // Request client list for the client menu
-            self.objectproxy.getList('client', {'useruuid': self.user.useruuid});
+            self.objectproxy.getList('client', {'owner': self.user.useruuid});
 
             var menu = $('#modulemenu');
 
@@ -72,7 +75,7 @@ class AppComponent {
             for (var state of self.state.get()) {
                 if ('icon' in state) {
 
-                    var menuentry = '<li><div><a href="#' + state.url + '"><img class="module-icon-tiny" src="' + state.icon + '" type="image/svg+xml">' + state.label + '</a></div></li>';
+                    var menuentry = '<li><div><a href="#!' + state.url + '"><img class="module-icon-tiny" src="' + state.icon + '" type="image/svg+xml">' + state.label + '</a></div></li>';
                     menu.append(menuentry);
                 }
             }
