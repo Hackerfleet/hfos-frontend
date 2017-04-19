@@ -16,15 +16,15 @@ class featureMenu {
         $log.log('[MENU] Featuremenu initializing with Profile: ', userservice.profile);
         console.log(userservice.profile);
         
-        var self = this;
+        let self = this;
         
         this.storeMenuConfig = function () {
             if ('settings' in self.user.profile) {
                 console.log('[MENU] Updating menu list for profile:', self.items);
         
-                var menu = [];
+                let menu = [];
         
-                for (var item of self.items) {
+                for (let item of self.items) {
                     menu.push({
                         title: item.title,
                         row: item.row,
@@ -38,7 +38,7 @@ class featureMenu {
             }
     
             self.changetimeout = null;
-        }
+        };
               
         this.gridsterOptions = {
             // any options that you can set for angular-gridster (see:  http://manifestwebdesign.github.io/angular-gridster/)
@@ -73,11 +73,11 @@ class featureMenu {
         
         this.updateMenu = function () {
             console.log('[MENU] Updating featuremenus');
-            var row = 0, col = 0;
+            let row = 0, col = 0;
             
             self.items = [];
             
-            var menu = $('#modulemenu');
+            let menu = $('#modulemenu');
             
             menu.empty();
             
@@ -92,17 +92,18 @@ class featureMenu {
             }
             
             console.log('[MENU] Settings:', self.user.profile.settings.menu);
+            let store_state = false;
             
-            for (var state of self.state.get()) {
-                var enabled = [];
-                var profile = self.user.profile;
+            for (let state of self.state.get()) {
+                let enabled = [];
+                let profile = self.user.profile;
                 
                 if (typeof profile.components !== 'undefined') {
                     enabled = profile.components.enabled;
                 }
                 
                 if ('icon' in state && true) { // (state.label === 'Map' || state.label in enabled)) {
-                    var item = {
+                    let item = {
                         title: state.label,
                         url: state.url,
                         svg: state.icon,
@@ -114,7 +115,7 @@ class featureMenu {
                     try {
                         console.log("[MENU] Attempt:", profile.settings.menu, state.label);
                         console.log(profile.settings.menu[0].title, state.label);
-                        var configentry = profile.settings.menu.find(x => x.title === state.label);
+                        let configentry = profile.settings.menu.find(x => x.title === state.label);
                         console.log("Trying to parse ", configentry);
                         item.row = configentry.row;
                         item.col = configentry.col;
@@ -126,7 +127,7 @@ class featureMenu {
                         item.size = 1;
                         
                         if (typeof profile.components !== 'undefined') {
-                            var entry = {
+                            let entry = {
                                 title: item.title,
                                 col: item.col,
                                 row: item.row,
@@ -134,8 +135,7 @@ class featureMenu {
                             };
                             console.log('[MENU] Pushing to menu config: ', entry);
                             profile.settings.menu.push(entry);
-                            
-                            //self.user.storeprofile();
+                            store_state = true;
                         }
                         
                         col++;
@@ -145,12 +145,16 @@ class featureMenu {
                         }
                     }
                     
-                    var menuentry = '<li><a href="#' + item.url + '"><img class="module-icon-tiny" src="' + item.svg + '" type="image/svg+xml">' + item.title + '</a></li>';
+                    let menuentry = '<li><a href="#!' + item.url + '"><img class="module-icon-tiny" src="' + item.svg + '" type="image/svg+xml">' + item.title + '</a></li>';
                     menu.append(menuentry);
                     
                     self.items.push(item);
                 } else {
                     console.log('[MENU] Item has either no icon or is disabled:', state);
+                }
+                
+                if (store_state) {
+                    self.storeMenuConfig();
                 }
             }
             
