@@ -39,7 +39,7 @@ class LoginComponent {
     }
 
     login() {
-        console.log('[LOGIN] Trying to login: ', this.username, this.password, this);
+        console.log('[LOGIN] Trying to login: ', this.username, '******', this);
         this.user.login(this.username, this.password);
     }
     
