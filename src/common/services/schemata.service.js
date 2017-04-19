@@ -36,15 +36,14 @@ class SchemataService {
         this.socket = $socket;
         this.rootscope = $rootScope;
         this.schemata = {};
+        this.configschemata = {};
 
         var self = this;
 
         function updateschemata() {
-            // Get Schemata
             console.log('[SCHEMATA] Getting update of schemata.');
             self.socket.send({'component': 'schema', 'action': 'All'});
         }
-
 
         function registerschemata(msg) {
             // Schemata reception hook
@@ -55,7 +54,11 @@ class SchemataService {
                 self.schemata = msg.data;
                 console.log('[SCHEMATA] New schemata received:', self.schemata);
                 self.rootscope.$broadcast('Schemata.Update');
-            }
+            } else if (msg.action === 'Config') {
+                    self.configschemata = msg.data;
+                    console.log('[SCHEMATA] New configuration schemata received:', self.configschemata);
+                    self.rootscope.$broadcast('Schemata.ConfigUpdate');
+                }
 
         }
 
@@ -66,6 +69,11 @@ class SchemataService {
             updateschemata();
         }
 
+    }
+    
+    updateconfigschemata() {
+        console.log('[SCHEMATA] Getting update of schemata.');
+        this.socket.send({'component': 'schema', 'action': 'Config'});
     }
 
     get(schemaname) {
