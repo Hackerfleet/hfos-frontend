@@ -386,7 +386,7 @@ class UserService {
     saveProfile() {
         console.log('[USER] Storing user profile on node');
         this.socket.send({
-            'component': 'objectmanager',
+            'component': 'hfos.events.objectmanager',
             'action': 'put',
             'data': {'schema': 'profile', 'obj': this.profile}
         });
@@ -395,7 +395,7 @@ class UserService {
     saveClientconfig() {
         console.log('[USER] Storing client config on node');
         this.socket.send({
-            'component': 'objectmanager',
+            'component': 'hfos.events.objectmanager',
             'action': 'put',
             'data': {'schema': 'client', 'obj': this.clientconfig}
         });
@@ -405,7 +405,7 @@ class UserService {
         console.log('[USER] Loading client config from node');
         this.clientuuid = uuid;
         this.socket.send({
-            'component': 'objectmanager',
+            'component': 'hfos.events.objectmanager',
             'action': 'get',
             'data': {'schema': 'client', 'uuid': this.clientuuid}
         });

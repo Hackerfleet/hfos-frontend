@@ -170,7 +170,7 @@ class ObjectProxy {
         }
         
         
-        self.socket.listen('objectmanager', handleResponse);
+        self.socket.listen('hfos.events.objectmanager', handleResponse);
         
         this.searchItems = function (schema, search, fields, fulltext) {
             console.log('[OP] Async-getting list for schema ', schema, search);
@@ -198,7 +198,7 @@ class ObjectProxy {
             }
             
             self.socket.send({
-                'component': 'objectmanager',
+                'component': 'hfos.events.objectmanager',
                 'action': 'search',
                 'data': {
                     'req': reqid,
@@ -243,7 +243,7 @@ class ObjectProxy {
     getObject(schema, uuid, subscribe, filter) {
         console.log('[OP] Fetching object ', schema, uuid);
         this.socket.send({
-            'component': 'objectmanager',
+            'component': 'hfos.events.objectmanager',
             'action': 'get',
             'data': {'schema': schema, 'uuid': uuid, 'subscribe': subscribe, 'filter': filter}
         });
@@ -269,18 +269,18 @@ class ObjectProxy {
     
     subscribeObject(uuid) {
         console.log('[OP] Subscribing to object ', uuid);
-        this.socket.send({'component': 'objectmanager', 'action': 'subscribe', 'data': uuid});
+        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'subscribe', 'data': uuid});
     }
     
     unsubscribeObject(uuid) {
         console.log('[OP] Unsubscribing to object ', uuid);
-        this.socket.send({'component': 'objectmanager', 'action': 'unsubscribe', 'data': uuid});
+        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'unsubscribe', 'data': uuid});
     }
     
     changeObject(schema, obj, change) {
         console.log('[OP] Changing object ', schema, obj, change);
         this.socket.send({
-            'component': 'objectmanager',
+            'component': 'hfos.events.objectmanager',
             'action': 'change',
             'data': {'uuid': obj, 'schema': schema, 'change': change}
         });
@@ -288,19 +288,19 @@ class ObjectProxy {
     
     putObject(schema, obj) {
         console.log('[OP] Putting object ', schema, obj);
-        this.socket.send({'component': 'objectmanager', 'action': 'put', 'data': {'schema': schema, 'obj': obj}});
+        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'put', 'data': {'schema': schema, 'obj': obj}});
     }
     
     delObject(schema, uuid) {
         console.log('[OP] Deleting object ', schema, uuid);
-        this.socket.send({'component': 'objectmanager', 'action': 'delete', 'data': {'schema': schema, 'uuid': uuid}});
+        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'delete', 'data': {'schema': schema, 'uuid': uuid}});
     }
     
     
     getList(schema, filter, fields) {
         console.log('[OP] Getting object list ', schema, filter, fields);
         this.socket.send({
-            'component': 'objectmanager',
+            'component': 'hfos.events.objectmanager',
             'action': 'list',
             'data': {
                 'schema': schema,

@@ -38,11 +38,11 @@ class SchemataService {
         this.schemata = {};
         this.configschemata = {};
 
-        var self = this;
+        let self = this;
 
         function updateschemata() {
             console.log('[SCHEMATA] Getting update of schemata.');
-            self.socket.send({'component': 'schema', 'action': 'All'});
+            self.socket.send({'component': 'hfos.events.schemamanager', 'action': 'all'});
         }
 
         function registerschemata(msg) {
@@ -50,11 +50,11 @@ class SchemataService {
 
             console.log('[SCHEMATA] Schemata interaction:', msg.action);
 
-            if (msg.action === 'All') {
+            if (msg.action === 'all') {
                 self.schemata = msg.data;
                 console.log('[SCHEMATA] New schemata received:', self.schemata);
                 self.rootscope.$broadcast('Schemata.Update');
-            } else if (msg.action === 'Config') {
+            } else if (msg.action === 'config') {
                     self.configschemata = msg.data;
                     console.log('[SCHEMATA] New configuration schemata received:', self.configschemata);
                     self.rootscope.$broadcast('Schemata.ConfigUpdate');
@@ -62,7 +62,7 @@ class SchemataService {
 
         }
 
-        this.socket.listen('schema', registerschemata);
+        this.socket.listen('hfos.events.schemamanager', registerschemata);
         this.user.onAuth(updateschemata);
 
         if (this.user.signedin === true) {
@@ -73,7 +73,7 @@ class SchemataService {
     
     updateconfigschemata() {
         console.log('[SCHEMATA] Getting update of schemata.');
-        this.socket.send({'component': 'schema', 'action': 'Config'});
+        this.socket.send({component: 'hfos.events.schemamanager', action: 'config'});
     }
 
     get(schemaname) {
