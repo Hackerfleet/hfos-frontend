@@ -1,11 +1,15 @@
 {
     "extends": "eslint-config-defaults",
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "env": {
         "es6": true,
         "browser": true,
         "node": true,
         "mocha": true,
-        "jasmine": true
+        "jasmine": true,
+        "jquery": true
     },
     "globals": {
         "angular": false,
