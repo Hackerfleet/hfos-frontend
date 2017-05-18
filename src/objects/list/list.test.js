@@ -19,7 +19,7 @@
 
 import { assert } from 'chai';
 
-import objectlist from '.list.js';
+import objectlist from './list.js';
 
 let component;
 

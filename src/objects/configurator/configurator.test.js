@@ -19,7 +19,7 @@
 
 import { assert } from 'chai';
 
-import configurator from 'configurator.js';
+import configurator from './configurator.js';
 
 let component;
 

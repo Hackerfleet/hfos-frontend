@@ -19,7 +19,7 @@
 
 import { assert } from 'chai';
 
-import DocComponent from '.doc-component/doc-component.js';
+import DocComponent from './doc-component.js';
 
 let component;
 

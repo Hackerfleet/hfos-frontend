@@ -19,7 +19,7 @@
 
 import * as sinon from 'sinon';
 
-import DocComponent from '.doc-componentdoc-component.js';
+import DocComponent from './doc-component.js';
 
 let component;
 

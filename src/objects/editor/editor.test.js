@@ -19,7 +19,7 @@
 
 import { assert } from 'chai';
 
-import objecteditor from '.editor.js';
+import objecteditor from './editor.js';
 
 let component;
 
