@@ -46,6 +46,7 @@ import 'spectrum-colorpicker/spectrum.css';
 require('angular-spinner');
 require('bootstrap-slider');
 require('angular-bootstrap-slider');
+require('angular-uuid');
 
 
 // HFOS Core Modules
@@ -61,7 +62,7 @@ require('humanize-duration');
 // HFOS Plugin Modules
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
-    'angularSpinner',
+    'angularSpinner', 'angular-uuid',
     animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, doc,
     clipboard.name, calendar, tree
 ];
