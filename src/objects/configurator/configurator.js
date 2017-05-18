@@ -48,7 +48,7 @@ class configurator {
             console.log('[C] Destroying live edit watcher');
             self.loginupdate();
             self.schemaupdate();
-            self.socket.unlisten('configurator', self.configuratorupdate);
+            self.socket.unlisten('hfos.ui.configurator', self.configuratorupdate);
             if (self.changewatcher !== null) self.changewatcher();
         });
         
@@ -56,8 +56,8 @@ class configurator {
             console.log('[C] Getting config ');
             self.schemata.updateconfigschemata();
             self.socket.send({
-                component: 'configurator',
-                action: 'List'
+                component: 'hfos.ui.configurator',
+                action: 'list'
             });
         }
         
@@ -69,17 +69,17 @@ class configurator {
         
         this.configuratorupdate = function (msg) {
             console.log('[C] Receiving configurator data:');
-            if (msg.action == 'Error' && msg.data == 'Perm') {
+            if (msg.action === 'error' && msg.data === 'permission error') {
                 self.alert.add('danger', 'No permission', 'You do not have administrative privileges necessary to reconfigure components.', 5);
                 self.components = {}; // Deactivate spinner
                 return
             }
     
-            if (msg.action === 'List') {
+            if (msg.action === 'list') {
                 self.components = msg.data;
                 console.log('Components:', self.components);
-            } else if (msg.action === 'Get') {
-                console.log('[C] Receiving component configuration:', msg.data);
+            } else if (msg.action === 'get') {
+                console.log('[C] Receiving component configuration:', msg.data, self.configschemadata);
                 let editordata = self.configschemadata[msg.data.componentclass];
                 self.model = msg.data;
                 self.form = editordata['form'];
@@ -99,7 +99,7 @@ class configurator {
                 
                 self.modified = false;
                 self.stored = null;
-            } else if (msg.action === 'Put') {
+            } else if (msg.action === 'put') {
                 if (msg.data) {
                     self.alert.add('success', 'Stored', 'Component configuration stored', 3);
                     self.stored = true;
@@ -111,7 +111,7 @@ class configurator {
             }
         };
         
-        this.socket.listen('configurator', this.configuratorupdate);
+        this.socket.listen('hfos.ui.configurator', this.configuratorupdate);
         
             this.schemaupdate = this.rootscope.$on('Schemata.ConfigUpdate', function () {
             console.log('[C] Configuration Schema update.');
@@ -145,9 +145,9 @@ class configurator {
         if (this.changewatcher != null) this.changewatcher();
         
         this.socket.send({
-            component: 'configurator',
+            component: 'hfos.ui.configurator',
             data: {uuid: uuid},
-            action: 'Get'
+            action: 'get'
         })
     }
     
@@ -161,8 +161,8 @@ class configurator {
         
         console.log('[C] Component config update initiated with ', model);
         this.socket.send({
-            component: 'configurator',
-            action: 'Put',
+            component: 'hfos.ui.configurator',
+            action: 'put',
             data: this.model
         });
     }
