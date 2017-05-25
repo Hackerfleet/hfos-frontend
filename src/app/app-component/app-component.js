@@ -26,8 +26,6 @@ class AppComponent {
                 console.log('[APP] ListUpdate: ', ev);
                 self.clientconfiglist = self.objectproxy.list(schema);
                 console.log('[APP] New client config list:', self.clientconfiglist);
-                 
-                self.scope.$apply();
             }
         }
         
