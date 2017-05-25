@@ -54,7 +54,7 @@ class SchemataService {
                 self.schemata = msg.data;
                 console.log('[SCHEMATA] New schemata received:', self.schemata);
                 self.rootscope.$broadcast('Schemata.Update');
-            } else if (msg.action === 'config') {
+            } else if (msg.action === 'configuration') {
                     self.configschemata = msg.data;
                     console.log('[SCHEMATA] New configuration schemata received:', self.configschemata);
                     self.rootscope.$broadcast('Schemata.ConfigUpdate');
@@ -73,7 +73,7 @@ class SchemataService {
     
     updateconfigschemata() {
         console.log('[SCHEMATA] Getting update of schemata.');
-        this.socket.send({component: 'hfos.events.schemamanager', action: 'config'});
+        this.socket.send({component: 'hfos.events.schemamanager', action: 'configuration'});
     }
 
     get(schemaname) {

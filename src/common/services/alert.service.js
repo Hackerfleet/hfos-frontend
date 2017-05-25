@@ -30,13 +30,13 @@ class AlertService {
         this.alert = alert;
         this.modal = modal;
 
-        var self = this;
+        let self = this;
 
         function remoteAlert(msg) {
             console.log('Alert service remote alert: ');
-            var title = 'Remote Alert';
-            var duration = 30;
-            var message;
+            let title = 'Remote Alert';
+            let duration = 30;
+            let message;
 
             console.log(typeof msg.data);
             if (typeof msg.data === 'string') {
@@ -56,7 +56,7 @@ class AlertService {
             self.add(msg.action, title, message, duration);
         }
 
-        this.socket.listen('alert', remoteAlert);
+        this.socket.listen('hfos.alert.manager', remoteAlert);
         console.log('AlertService constructed');
 
     }
