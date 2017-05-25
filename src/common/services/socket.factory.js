@@ -21,7 +21,7 @@
  * Created by riot on 21.02.16.
  */
 
-var humanizeDuration = require('humanize-duration');
+let humanizeDuration = require('humanize-duration');
 import * as _ from 'lodash';
 
 class SocketService {
@@ -43,7 +43,7 @@ class SocketService {
             $('#hfos-icon').addClass('icon-glow-red');
         }
         
-        this.websocketurl = this.protocol + '://' + this.host + ':' + this.port + '/websocket'
+        this.websocketurl = this.protocol + '://' + this.host + ':' + this.port + '/websocket';
         
         this.sock = new WebSocket(this.websocketurl);
         
@@ -66,11 +66,11 @@ class SocketService {
             'show': false
         });
         
-        var self = this;
+        let self = this;
         
-        var cookie = this.cookies.get('hfosclient-dev');
+        let cookie = this.cookies.get('hfosclient-dev');
         if (typeof cookie !== 'undefined') {
-            var json = JSON.parse(cookie);
+            let json = JSON.parse(cookie);
             if (typeof json.port !== 'undefined') {
                 console.log('[SOCKET] Setting development port from cookie');
                 self.port = +json.port;
@@ -83,7 +83,7 @@ class SocketService {
         }
         
         function setPort(port, secure) {
-            console.log('[SOCKET] Storing development port cookie');
+            console.log('[SOCKET] Storing development port cookie:', port, secure);
             self.cookies.put('hfosclient-dev', JSON.stringify({port: port, secure: secure}));
             self.port = port;
             self.protocol = secure ? 'wss' : 'ws';
@@ -97,6 +97,7 @@ class SocketService {
             self.cookies.remove('hfosclient-dev');
             $('#hfos-icon').removeClass('icon-glow-blue');
             self.port = $location.port();
+            self.secure = $location.protocol === 'https';
             self.reconnect();
         }
         
@@ -117,7 +118,7 @@ class SocketService {
                 self.reconnecttries++;
                 self.trying = true;
                 
-                var interval = Math.min(30, Math.pow(self.reconnecttries, 2)) * 1000;
+                let interval = Math.min(30, Math.pow(self.reconnecttries, 2)) * 1000;
                 
                 self.disconnectalert.hide();
                 
@@ -130,7 +131,7 @@ class SocketService {
                     'duration': interval / 1000
                 });
                 
-                var color = function (value) {
+                let color = function (value) {
                     return '#FF' + parseInt((1 - value) * 255).toString(16) + '00';
                 };
                 
@@ -153,7 +154,7 @@ class SocketService {
                 self.disconnectalert.hide();
             }
             
-            var currentdate = new Date();
+            let currentdate = new Date();
             document.getElementById('btnhome').title = 'Connected since ' + currentdate;
             self.stats.start = currentdate;
             
@@ -190,7 +191,7 @@ class SocketService {
             
             self.connected = false;
             
-            var currentdate = new Date();
+            let currentdate = new Date();
             
             document.getElementById('btnhome').title = 'Disconnected since ' + currentdate;
             //$('#btnhome').prop('title', 'Disconnected since ' + currentdate);
@@ -221,9 +222,9 @@ class SocketService {
             
             self.$timeout(reset, 250);
             //console.log('Raw message received: ', packedmsg);
-            var msg = JSON.parse(packedmsg.data);
+            let msg = JSON.parse(packedmsg.data);
             
-            //console.log('Parsed message: ', msg, self.handlers);
+            console.log('Parsed message: ', msg, self.handlers);
             
             self.stats.rx++;
             
@@ -232,7 +233,7 @@ class SocketService {
                     //console.log('Correct message received. Handlers: ', self.handlers, msg.component);
                     if (msg.component in self.handlers) {
                         //console.log('Found a matching handler.');
-                        for (var handler in self.handlers[msg.component]) {
+                        for (let handler in self.handlers[msg.component]) {
                             //console.log('Calling handler:', self.handlers[msg.component], handler);
                             self.handlers[msg.component][handler](msg);
                         }
@@ -253,8 +254,8 @@ class SocketService {
         
         
         function sendFile(file, component, action) {
-            var reader = new FileReader();
-            var raw = new ArrayBuffer();
+            let reader = new FileReader();
+            let raw = new ArrayBuffer();
             
             reader.loadend = function () {
                 console.log('SendFile: Load end');
@@ -263,7 +264,7 @@ class SocketService {
             reader.onload = function (e) {
                 console.log('e:', e);
                 raw = e.target.result;
-                var msg = JSON.stringify(
+                let msg = JSON.stringify(
                     {
                         'component': component,
                         'action': action,
@@ -305,7 +306,7 @@ class SocketService {
     }
     
     send(msg) {
-        var json = JSON.stringify(msg);
+        let json = JSON.stringify(msg);
         console.log('[SOCK] Transmitting msg: ', json);
 
         function reset() {
