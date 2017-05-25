@@ -42,27 +42,27 @@ class UserService {
         this.state = $state;
         this.timeout = $timeout;
         this.infoscreen = infoscreen;
-        
+    
         this.signedin = false;
         this.signingIn = false;
-        
+    
         this.debug = false;
-        
+    
         this.onAuthCallbacks = [];
-        
+    
         this.username = '';
         this.useruuid = '';
-        
+    
         this.desiredcontext = '';
-        
+    
         this.user = {};
         this.profile = {};
         this.clientconfig = {};
         this.clientuuid = '';
         this.clientconfiglist = {};
-        
-        var self = this;
-        
+    
+        let self = this;
+    
         self.greet_new_user = function () {
             console.log('[USER] New user registered. Displaying welcome.');
             self.alert({
@@ -75,8 +75,8 @@ class UserService {
                 'duration': 30
             });
         };
-        
-        
+    
+    
         self.login_failed = function (reason) {
             console.log('[USER] Login failed, displaying warning and resetting.');
             if (reason === null) {
@@ -90,23 +90,28 @@ class UserService {
                 'placement': 'top-left',
                 'duration': 10
             });
-            
+        
             self.logout(true);
         };
-        
+    
         function checkautologin() {
-            var cookie = self.getCookie();
+            let cookie = self.getCookie();
             if (cookie.autologin) {
                 self.cookielogin(cookie.uuid);
             }
         }
         
+        function clearlogin() {
+            console.log('[USER] Socket has disconnected, clearing session');
+            self.logout(true, false);
+        }
+    
         function updateclientconfig(ev, uuid, newobj) {
             console.log('[USER] New object!', ev, uuid, newobj, self.clientuuid);
-            var msg;
-            
+            let msg;
+        
             // TODO: Ugly, hacky, the whole lot should be reimplemented cleanly
-            
+        
             if (String(uuid) === String(self.clientuuid)) {
                 console.log('[USER] Got selected config from OP:', newobj);
                 msg = {data: newobj};
@@ -124,13 +129,13 @@ class UserService {
                 self.storeprofile(msg);
             }
         }
-        
+    
         function loginaction(msg) {
             console.log('[USER] Login Action triggered: ', msg);
             if (msg.action === 'login') {
                 self.username = msg.data.name;
                 self.useruuid = msg.data.uuid;
-                
+            
                 self.signIn();
             } else if (msg.action === 'new') {
                 self.greet_new_user();
@@ -138,47 +143,50 @@ class UserService {
                 self.login_failed(msg.data);
             }
         }
-        
+    
         function storeclientconfigcookie(msg) {
             console.log('[USER] Got a clientconfig: ', msg.data);
             self.clientconfig = msg.data;
-            
+        
             console.log('[USER] Client config: ', self.clientconfig);
             self.storeCookie(self.clientconfig.uuid, self.clientconfig.autologin);
-            
-            $('#clientname').html('<a href="#!/editor/client/' + self.clientconfig.uuid + '/edit">' + self.clientconfig.name + '</a>');
-            
-            self.rootscope.$broadcast('Clientconfig.Update');
-            
-        }
         
+            $('#clientname').html('<a href="#!/editor/client/' + self.clientconfig.uuid + '/edit">' + self.clientconfig.name + '</a>');
+        
+            self.rootscope.$broadcast('Clientconfig.Update');
+        
+        }
+    
         function storeprofile(msg) {
             console.log('[USER] Got profile data: ', msg.data);
             self.profile = msg.data;
-            
+        
             $('#btnuser').css('color', '#0f0');
             //$('#btnchat').removeClass('hidden');
             console.log('[USER] Profile: ', self.profile, self);
-            
+        
             self.changeCurrentTheme();
             console.log('[USER] Emitting update');
-            
+        
             self.rootscope.$broadcast('Profile.Update');
         }
-        
+    
         self.storeprofile = storeprofile;
         self.storeclientconfigcookie = storeclientconfigcookie;
-        
+    
         this.socket.listen('auth', loginaction);
         this.socket.listen('profile', storeprofile);
         this.socket.listen('clientconfig', storeclientconfigcookie);
-        
+    
         this.rootscope.$on('Client.Connect', checkautologin);
+        this.rootscope.$on('Client.Disconnect', clearlogin);
+        this.rootscope.$on('Client.Connectionloss', clearlogin);
+        
         this.rootscope.$on('OP.Get', updateclientconfig);
         this.rootscope.$on('OP.Update', updateclientconfig);
-        
+    
         console.log('UserService constructed');
-        
+    
     }
     
     addinfoscreen() {
@@ -203,11 +211,14 @@ class UserService {
         console.log('ROTATIONS:', this.clientconfig.infoscreenrotations);
     }
     
-    logout(force) {
+    logout(force, notify) {
         if (this.socket.connected === true || force === true) {
-            console.log('[USER] Trying to logout.');
-            var authpacket = {component: 'auth', action: 'logout'};
-            this.socket.send(authpacket);
+            console.log('[USER] Logout triggered.');
+            if (notify === true) {
+                console.log('[USER] Trying to logout.');
+                let authpacket = {component: 'auth', action: 'logout'};
+                this.socket.send(authpacket);
+            }
             
             this.profile = {};
             this.clientconfig = {};
@@ -252,11 +263,11 @@ class UserService {
         console.log(this.socket);
         if (this.socket.connected === true) {
             console.log('[USER] Trying to login.');
-            var cookie = this.getCookie();
-            var uuid = cookie.uuid;
+            let cookie = this.getCookie();
+            let uuid = cookie.uuid;
             console.log('[USER] Client cookie: ', cookie);
             
-            var authpacket = {
+            let authpacket = {
                 'component': 'auth', 'action': 'login',
                 'data': {
                     'username': username,
@@ -276,7 +287,7 @@ class UserService {
         this.signedin = true;
         this.signingIn = false;
         
-        for (var i = 0; i < this.onAuthCallbacks.length; i++) {
+        for (let i = 0; i < this.onAuthCallbacks.length; i++) {
             console.log('[USER] Running auth callback.');
             this.onAuthCallbacks[i].call(this.username);
         }
@@ -340,8 +351,8 @@ class UserService {
     
     cookielogin(uuid) {
         console.log('[USER] Auto-logging in...');
-        var authpacket = {component: 'auth', action: 'autologin', data: uuid};
-        var self = this;
+        let authpacket = {component: 'auth', action: 'autologin', data: uuid};
+        let self = this;
         this.timeout(function () {
             console.log('[USER] Transmitting autologin.');
             self.socket.send(authpacket);
@@ -355,7 +366,7 @@ class UserService {
     }
     
     getCookie() {
-        var cookie = this.cookies.get('hfosclient');
+        let cookie = this.cookies.get('hfosclient');
         
         if (typeof cookie === 'undefined') {
             cookie = "";
