@@ -38,6 +38,7 @@ import clipboard from 'angular-clipboard';
 import ui from 'angular-ui-bootstrap';
 import calendar from 'angular-bootstrap-calendar';
 import tree from 'angular-ui-tree';
+import localstorage from 'angular-local-storage';
 
 require('spectrum-colorpicker');
 require('angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker');
@@ -64,14 +65,19 @@ require('humanize-duration');
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
     'angularSpinner', 'angular-uuid',
     animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, doc,
-    clipboard.name, calendar, tree
+    clipboard.name, calendar, tree, localstorage
 ];
 
 /* COMPONENT SECTION */
 
 /* COMPONENT SECTION */
 
-angular.module('main', modules);
+angular.module('main', modules)
+    .config(function (localStorageServiceProvider) {
+        localStorageServiceProvider.setPrefix('HFOS');
+        // localStorageServiceProvider.setStorageCookieDomain('example.com');
+        // localStorageServiceProvider.setStorageType('sessionStorage');
+    });
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ['main']);

@@ -3,7 +3,7 @@ var showAngularStats = require('ng-stats');
 
 class AboutComponent {
     
-    constructor(rootscope, user, socket, $interval, alert, modal, schemaservice, op, state) {
+    constructor(rootscope, user, socket, $interval, alert, modal, schemaservice, op, state, localStorageService) {
         this.rootscope = rootscope;
         this.user = user;
         this.socket = socket;
@@ -12,6 +12,7 @@ class AboutComponent {
         this.$interval = $interval;
         this.state = state;
         this.schemaservice = schemaservice;
+        this.storage = localStorageService;
         
         this.schemata = [];
         this.debug = false;
@@ -50,7 +51,9 @@ class AboutComponent {
         this.rootscope.$on('Schemata.Update', updateSchemata);
         
         if (this.user.debug) {
+            console.log('[ABOUT] Opening debug tab:', this.user.debug);
             this.toggleDebug();
+            this.opentab(this.storage.get('debugTab'));
         }
         
         updateSchemata();
@@ -88,7 +91,6 @@ class AboutComponent {
                 htmlId: 'ngstats'
                 
             });
-            
             this.updateStats();
             this.updater = this.$interval(() => this.updateStats(), 1000);
         } else {
@@ -102,10 +104,10 @@ class AboutComponent {
     
     opentab(tabname) {
         console.log('[ABOUT] Switching tab to ', tabname);
-        
         // TODO: De-jquery this (also somewhere else, e.g. dashboard)
         $('.nav-pills .active, .tab-content .active').removeClass('active');
         $('#' + tabname).addClass('active');
+        this.storage.set('debugTab', tabname);
     }
     
     viewlist(schema) {
@@ -143,6 +145,6 @@ class AboutComponent {
     
 }
 
-AboutComponent.$inject = ['$rootScope', 'user', 'socket', '$interval', 'alert', '$modal', 'schemata', 'objectproxy', '$state'];
+AboutComponent.$inject = ['$rootScope', 'user', 'socket', '$interval', 'alert', '$modal', 'schemata', 'objectproxy', '$state', 'localStorageService'];
 
 export default AboutComponent;
