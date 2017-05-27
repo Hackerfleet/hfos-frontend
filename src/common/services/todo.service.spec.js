@@ -2,7 +2,7 @@
 
 describe('TodoService', function () {
 
-    var service;
+    let service;
 
     beforeEach(angular.mock.module('main'));
 

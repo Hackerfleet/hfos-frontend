@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var tv4 = require('tv4');
+let tv4 = require('tv4');
 
 class objecteditor {
 
@@ -54,7 +54,7 @@ class objecteditor {
         // TODO: Clean up the editor api, this is a bit messy from the directive movement
         // Same goes for the list, probably.
     
-        var self = this;
+        let self = this;
 
         this.toggleLive = function() {
             console.log('Toggling live watcher', this.live, this.livewatcher);
@@ -70,7 +70,7 @@ class objecteditor {
                     function(oldvar, newvar) {
                         console.log('MODEL HAS BEEN CHANGED:', oldvar, newvar);
                         console.log(self.schemadata.form);
-                        var result = tv4.validateResult(self.model, self.schemadata.schema);
+                        let result = tv4.validateResult(self.model, self.schemadata.schema);
                         console.log('RESULT:', result);
                         if (result.valid === true) {
                             console.log('Form is valid, transmitting.');
@@ -132,7 +132,7 @@ class objecteditor {
 
         this.schemaupdate = this.rootscope.$on('Schemata.Update', function () {
             console.log('[OE] Schema update.');
-            var newschema = self.schemata.schema(self.config.schema);
+            let newschema = self.schemata.schema(self.config.schema);
             console.log('[OE] Got a schema update:', newschema);
             self.schemadata = self.schemata.get(self.config.schema);
             
@@ -153,7 +153,7 @@ class objecteditor {
             if (search === '') {
                 console.log("INSIDEMODEL:", options.scope.insidemodel);
             }
-            var result = self.objectproxy.searchItems(options.type, search);
+            let result = self.objectproxy.searchItems(options.type, search);
             console.log(result);
             return result;
         };
@@ -183,7 +183,7 @@ class objecteditor {
 
     callBackSD(schema) {
         console.log('[OE] Callback getting entries: ', schema);
-        var origlist = this.objectproxy.lists[schema];
+        let origlist = this.objectproxy.lists[schema];
         console.log('[OE] Callback results: ', origlist);
         return origlist;
 
@@ -234,7 +234,7 @@ class objecteditor {
 
 
 
-    /*var editorChange = function () {
+    /*let editorChange = function () {
      if (this.model !== objectproxy.obj[$scope.uuid]) {
      console.log('[OE] Content has been modified locally.');
 

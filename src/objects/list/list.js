@@ -39,7 +39,7 @@ class objectlist {
             this.getData();
         }
 
-        var self = this;
+        let self = this;
 
         this.rootscope.$on('User.Login', function () {
             console.log('[OE] User logged in, getting current page.');
@@ -48,7 +48,7 @@ class objectlist {
         });
 
         this.rootscope.$on('Schemata.Update', function () {
-            var newschema = self.schemata.schema(self.schemaname);
+            let newschema = self.schemata.schema(self.schemaname);
             console.log('[OL] Got a schema update:', newschema);
             self.schemadata = self.schemata.get(self.schemaname);
             // TODO: getData?

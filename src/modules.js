@@ -22,7 +22,7 @@
  */
 
 
-var hfosModules = {
+let hfosModules = {
     'available': [
         'navdata',
         'maps'

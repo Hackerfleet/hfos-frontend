@@ -24,7 +24,7 @@ class DocComponent {
 
     updateStats() {
         //console.log("Update: ", this.socket);
-        var stats = this.socket.stats;
+        let stats = this.socket.stats;
         this.stats = {
             rx: stats.rx,
             tx: stats.tx,
@@ -39,7 +39,7 @@ class DocComponent {
             'action': cmd,
             'data': ''
         });
-        var msg = 'Sent: ' + cmd;
+        let msg = 'Sent: ' + cmd;
 
         this.alert.add('info', 'Debugger', msg, 500);
     }

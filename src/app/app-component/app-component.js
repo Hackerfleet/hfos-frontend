@@ -1,4 +1,4 @@
-var backgrounds = require.context("../../../assets/images/backgrounds", true, /^(.*\.(jpg$))[^.]*$/igm);
+let backgrounds = require.context("../../../assets/images/backgrounds", true, /^(.*\.(jpg$))[^.]*$/igm);
 
 class AppComponent {
 
@@ -18,7 +18,7 @@ class AppComponent {
         
         this.clientconfiglist = [];
         
-        var self = this;
+        let self = this;
 
         function updateclientconfigurations(ev, schema, uuid) {
             console.log('LIST UPDATED:', ev, uuid, schema);
@@ -66,14 +66,14 @@ class AppComponent {
             // Request client list for the client menu
             self.objectproxy.getList('client', {'owner': self.user.useruuid});
 
-            var menu = $('#modulemenu');
+            let menu = $('#modulemenu');
 
             menu.empty();
 
-            for (var state of self.state.get()) {
+            for (let state of self.state.get()) {
                 if ('icon' in state) {
 
-                    var menuentry = '<li><div><a href="#!' + state.url + '"><img class="module-icon-tiny" src="' + state.icon + '" type="image/svg+xml">' + state.label + '</a></div></li>';
+                    let menuentry = '<li><div><a href="#!' + state.url + '"><img class="module-icon-tiny" src="' + state.icon + '" type="image/svg+xml">' + state.label + '</a></div></li>';
                     menu.append(menuentry);
                 }
             }

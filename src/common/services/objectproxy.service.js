@@ -61,12 +61,12 @@ class ObjectProxy {
         this.lists = {};
         this.searchcallbacks = {};
         
-        var self = this;
+        let self = this;
         
         function handleResponse(msg) {
-            var result;
-            var newobj;
-            var schema = null;
+            let result;
+            let newobj;
+            let schema = null;
             
             
             if (msg.action === 'get' || msg.action === 'update') {
@@ -108,7 +108,7 @@ class ObjectProxy {
                 
             } else if (msg.action === 'put') {
                 result = msg.data[0];
-                var putuuid = msg.data[1];
+                let putuuid = msg.data[1];
                 
                 if (result === true) {
                     console.log('[OP] Object successfully stored.');
@@ -120,7 +120,7 @@ class ObjectProxy {
             } else if (msg.action === 'delete' || msg.action === 'deletion') {
                 result = msg.data[0];
                 schema = msg.data[1];
-                var deluuid = msg.data[2];
+                let deluuid = msg.data[2];
                 
                 if (result === true) {
                     if (schema in self.lists) {
@@ -141,7 +141,7 @@ class ObjectProxy {
                 }
                 
             } else if (msg.action === 'list') {
-                var list = msg.data.list;
+                let list = msg.data.list;
                 schema = msg.data.schema;
                 
                 self.lists[schema] = list;
@@ -151,13 +151,13 @@ class ObjectProxy {
                 self.rootscope.$broadcast('OP.ListUpdate', schema);
                 
             } else if (msg.action === 'search') {
-                var requestId = msg.data.req;
-                var searchdata = msg.data.list;
+                let requestId = msg.data.req;
+                let searchdata = msg.data.list;
                 console.log('[OP] Search result came back: ', searchdata);
                 
                 // This cannot work, but did so in the previous revision:
                 if (angular.isDefined(self.searchcallbacks[requestId])) {
-                    var searchcallback = self.searchcallbacks[requestId];
+                    let searchcallback = self.searchcallbacks[requestId];
                     delete self.searchcallbacks[requestId];
                     searchcallback.resolve(searchdata);
                 } else {
@@ -183,7 +183,7 @@ class ObjectProxy {
                 console.log('[OP] Schema has a cache.');
                 console.log('[OP] Looking for ', schema, search, 'in ', self.cache);
                 if (search in self.cache[schema]) {
-                    var data = self.cache[schema][search];
+                    let data = self.cache[schema][search];
                     console.log('[OP] Got this cached: ', data);
                     return data
                 }
@@ -191,7 +191,7 @@ class ObjectProxy {
                 self.cache[schema] = {};
             //}
             
-            var reqid = self.getRequestId();
+            let reqid = self.getRequestId();
             
             if (typeof search === 'undefined') {
                 search = '';
@@ -209,10 +209,10 @@ class ObjectProxy {
                 }
             });
             
-            var deferred = self.q.defer();
+            let deferred = self.q.defer();
             self.searchcallbacks[reqid] = deferred;
             
-            var query = deferred.promise.then(function (response) {
+            let query = deferred.promise.then(function (response) {
                 console.log('OP ASYNC Delivering:', response);
                 function compare(a, b) {
                     if (a.name < b.name)

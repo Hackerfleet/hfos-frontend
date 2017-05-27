@@ -1,4 +1,4 @@
-var showAngularStats = require('ng-stats');
+let showAngularStats = require('ng-stats');
 //showAngularStats();
 
 class AboutComponent {
@@ -35,12 +35,12 @@ class AboutComponent {
         this.sliderValue = 5;
         this.colorValue = "";
         
-        var self = this;
+        let self = this;
         
         function updateSchemata() {
             self.schemata = [];
             
-            for (var schema in self.schemaservice.schemata) {
+            for (let schema in self.schemaservice.schemata) {
                 if (self.schemaservice.schemata.hasOwnProperty(schema)) {
                     self.schemata.push(schema);
                 }
@@ -61,7 +61,7 @@ class AboutComponent {
     
     updateStats() {
         //console.log("Update: ", this.socket);
-        var stats = this.socket.stats;
+        let stats = this.socket.stats;
         this.stats = {
             rx: stats.rx,
             tx: stats.tx,
@@ -76,7 +76,7 @@ class AboutComponent {
             'action': cmd,
             'data': ''
         });
-        var msg = 'Sent: ' + cmd;
+        let msg = 'Sent: ' + cmd;
         
         this.alert.add('info', 'Debugger', msg, 5);
     }

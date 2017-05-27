@@ -55,12 +55,12 @@ class MenuService {
 
         this.menus = [];
 
-        var self = this;
+        let self = this;
 
         $rootScope.$on('$stateChangeSuccess',
             function (event, toState, toParams, fromState, fromParams) {
                 console.log('Deleting menus');
-                for (var item of self.menus) {
+                for (let item of self.menus) {
                     $('#menu' + item).remove();
                 }
                 self.menus = [];
@@ -69,11 +69,11 @@ class MenuService {
         console.log('MenuService constructed');
 
         /*
-        var foofunc = function () {
+        let foofunc = function () {
             console.log('FooFunc has been called!');
         };
 
-        var testmenu = [
+        let testmenu = [
             {type: 'label', text: 'LabelText'},
             {type: 'divider'},
             {type: 'func', name: 'foofunc', text: 'Function', callback: foofunc, args: ""}
@@ -95,12 +95,12 @@ class MenuService {
             this.menus.push(title);
         }
 
-        var html = '<li class="dropdown" id="menu' + title + '">' +
+        let html = '<li class="dropdown" id="menu' + title + '">' +
             '<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"' +
             'aria-expanded="false">' + title + '<span class="caret"></span></a>' +
             '<ul class="dropdown-menu componentmenu" id="' + title + 'menu">';
 
-        for (var item of menu) {
+        for (let item of menu) {
             switch (item.type) {
                 case 'html':
                     html = html + item.html;
@@ -121,11 +121,11 @@ class MenuService {
 
         $('#mainmenunavbar').append(html);
 
-        var funcs = menu.filter(function (d) {
+        let funcs = menu.filter(function (d) {
             return d.type === 'func' || d.type === 'check';
         });
 
-        for (var func of funcs) {
+        for (let func of funcs) {
             if (func.type === 'func') {
                 $('#menuitem' + func.name).attr('args', func.args).click(function () {
                     func.callback($(this).attr('args'));

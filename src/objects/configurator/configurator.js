@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var tv4 = require('tv4');
+let tv4 = require('tv4');
 
 class configurator {
     
@@ -128,7 +128,7 @@ class configurator {
             if (search === '') {
                 console.log("INSIDEMODEL:", options.scope.insidemodel);
             }
-            var result = self.objectproxy.searchItems(options.type, search);
+            let result = self.objectproxy.searchItems(options.type, search);
             console.log(result);
             return result;
         };

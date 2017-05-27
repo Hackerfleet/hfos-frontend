@@ -59,7 +59,7 @@ class SystemconfigService {
 
         console.log('[SYS] SystemconfigService constructed');
 
-        var self = this;
+        let self = this;
 
         function updateConfig() {
             console.log('[SYS] Getting system config.');
