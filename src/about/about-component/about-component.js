@@ -91,9 +91,9 @@ class AboutComponent {
     
     command(cmd) {
         this.socket.send({
-            'component': 'debugger',
-            'action': cmd,
-            'data': ''
+            'component': 'hfos.events.system',
+            'action': 'debugrequest',
+            'data': cmd
         });
         let msg = 'Sent: ' + cmd;
         
