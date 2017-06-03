@@ -20,7 +20,7 @@ for more information about HFOS.
 License
 =======
 
-Copyright (C) 2011-2016 riot <riot@c-base.org> and others.
+Copyright (C) 2011-2017 Heiko 'riot' Weinen <riot@c-base.org> and others.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -70,8 +70,6 @@ Assets
 This is migrating over to hfos-frontend submodule.
 
 -  Fabulous icons by iconmonstr.com and Hackerfleet contributors
--  Tumbeasts from http://theoatmeal.com/pl/state_web_winter/tumblr for
-   the error page (CC-BY)
 
 
 -- :boat: :+1:
