@@ -36,8 +36,8 @@ var PARAMS_DEFAULT = {
             
             'angular-clipboard/angular-clipboard.js',
             
-            'angular-strap/dist/angular-strap.min.js',
-            'angular-strap/dist/angular-strap.tpl.min.js',
+            'angular-strap/dist/angular-strap.js',
+            'angular-strap/dist/angular-strap.tpl.js',
             
             'humanize-duration'
         ]
@@ -107,8 +107,8 @@ var PARAMS_PER_TARGET = {
         ]
     }
 };
-var TARGET = 'DEV'; // minimist(process.argv.slice(2)).TARGET || 'BUILD';
-var target = 'web';
+var TARGET = minimist(process.argv.slice(2)).TARGET || 'BUILD';
+//var target = 'web';
 var params = _.merge(PARAMS_DEFAULT, PARAMS_PER_TARGET[TARGET], _mergeArraysCustomizer);
 
 _printBuildInfo(params);
