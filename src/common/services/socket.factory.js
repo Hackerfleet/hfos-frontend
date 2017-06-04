@@ -47,7 +47,7 @@ class SocketService {
         
         this.sock = new WebSocket(this.websocketurl);
         
-        this.connected = true;
+        this.connected = false;
         this.stayonline = true;
         this.trying = false;
         this.reconnecttries = 0;
@@ -288,8 +288,7 @@ class SocketService {
         this.sock.onopen = OpenEvent;
         this.sock.onclose = CloseEvent;
         this.sock.onmessage = receive;
-        
-        
+        doReconnect();
     }
     
     reconnect() {
