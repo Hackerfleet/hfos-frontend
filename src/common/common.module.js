@@ -31,11 +31,13 @@ import SchemataService from './services/schemata.service';
 import SystemconfigService from './services/system.service';
 import ObjectProxy from './services/objectproxy.service';
 import InfoscreenService from './services/infoscreen.service';
+import Uppercase from './utils/filters';
 
 import LoginController from './component/login-component';
 
 export default angular
     .module('main.app.common', [])
+    .filter('capitalize', Uppercase)
     .component('userInfoComponent', UserInfoComponent)
     .component('statusbarComponent', UserInfoComponent)
     .service('TodoService', TodoService)
