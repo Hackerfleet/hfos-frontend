@@ -58,7 +58,6 @@ import ui from 'angular-ui-bootstrap';
 import calendar from 'angular-bootstrap-calendar';
 import tree from 'angular-ui-tree';
 import localstorage from 'angular-local-storage';
-import qrcode from 'angular-qr';
 
 require('spectrum-colorpicker');
 require('angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker');
