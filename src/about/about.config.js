@@ -17,11 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function routing($stateProvider) {
+import missing from './missing/missing.tpl.html';
 
+export function routing($stateProvider) {
+    
     $stateProvider
         .state('app.about', {
             url: '/about',
             template: '<about-component></about-component>'
-        });
+        })
+        .state('app.missing', {
+            url: '/missing',
+            template: missing
+        })
 }

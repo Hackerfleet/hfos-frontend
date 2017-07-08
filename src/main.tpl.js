@@ -58,6 +58,7 @@ import ui from 'angular-ui-bootstrap';
 import calendar from 'angular-bootstrap-calendar';
 import tree from 'angular-ui-tree';
 import localstorage from 'angular-local-storage';
+import qrcode from 'angular-qr';
 
 require('spectrum-colorpicker');
 require('angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker');
@@ -96,7 +97,10 @@ angular.module('main', modules)
         localStorageServiceProvider.setPrefix('HFOS');
         // localStorageServiceProvider.setStorageCookieDomain('example.com');
         // localStorageServiceProvider.setStorageType('sessionStorage');
-    });
+    })
+    .config(['$urlRouterProvider', function($urlRouterProvider) {
+        $urlRouterProvider.otherwise('/missing');
+    }]);
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ['main']);
