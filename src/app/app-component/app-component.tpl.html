@@ -43,12 +43,6 @@
                     <span class="glyphicon glyphicon-user"></span>
                 </button>
 
-                <button id="btnchat" type="button" ng-click="$ctrl.chattoggle();"
-                        class="hidden navbar-brand navbar-inverse btn"
-                        style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
-                    <span class="glyphicon icon-bubble"></span>
-                </button>
-
                 <button id="btnfullscreen" type="button" ng-click="$ctrl.fullscreentoggle();"
                         class="navbar-brand navbar-inverse btn"
                         title="Toggle Fullscreen"
@@ -69,7 +63,7 @@
                         aria-label="Center Align">
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
-
+                <span id="custom_buttons">
                 <!-- TODO: See #161
                 <button id="btnmob" type="button" ng-click="$ctrl.mobbutton();"
                         class="pagination-centered navbar-brand navbar-inverse btn"
@@ -78,6 +72,8 @@
                     <span class="fa fa-life-ring"></span>
                 </button>
                 -->
+                    <chatbutton></chatbutton>
+                </span>
             </div>
 
             <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
@@ -89,7 +85,7 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Modules<span class="caret"></span></a>
-                        <ul class="dropdown-menu" id="modulemenu">
+                        <ul class="dropdown-menu componentmenu" id="modulemenu">
                             <li><a href="#!/dashboard">Dashboard</a></li>
                             <li><a href="#!/map">Map</a></li>
                         </ul>
@@ -102,7 +98,7 @@
                                 <div id="clientname">N/A</div>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li ng-repeat="config in $ctrl.clientconfiglist">
+                            <li class="client_entry" ng-repeat="config in $ctrl.clientconfiglist">
                                 <div>
                                     <a ng-click="$ctrl.switchClientConfig(config.uuid)">{{config.name}}</a>
 
@@ -121,9 +117,9 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">?<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#!/doc">Documentation</a></li>
-                            <li><a href="#!/about">About</a></li>
+                        <ul class="dropdown-menu componentmenu">
+                            <li><a href="#!/doc"><span class="fa fa-question"></span>Documentation</a></li>
+                            <li><a href="#!/about"><span class="fa fa-info"></span>About</a></li>
                         </ul>
                     </li>
                 </ul>
