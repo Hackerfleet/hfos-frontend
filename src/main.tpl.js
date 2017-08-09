@@ -67,7 +67,14 @@ require('angular-spinner');
 require('bootstrap-slider');
 require('angular-bootstrap-slider');
 require('angular-uuid');
+require('angularjs-scroll-glue/src/scrollglue');
+require('angular-moment');
 
+require('humanize-duration');
+
+import qrcode from 'qrcode-generator';
+//import qrcode_UTF8 from '/node_modules/qrcode-generator/qrcode_UTF8.js';
+import ngQrcode from 'angular-qrcode';
 
 // HFOS Core Modules
 import app from './app/app.module';
@@ -77,14 +84,12 @@ import objects from './objects/objects.module';
 import about from './about/about.module';
 import doc from './doc/doc.module';
 
-require('humanize-duration');
-
 // HFOS Plugin Modules
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
-    'angularSpinner', 'angular-uuid',
+    'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment',
     animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, doc,
-    clipboard.name, calendar, tree, localstorage
+    clipboard.name, calendar, tree, localstorage, ngQrcode
 ];
 
 /* COMPONENT SECTION */
@@ -99,9 +104,17 @@ angular.module('main', modules)
     })
     .config(['$urlRouterProvider', function($urlRouterProvider) {
         $urlRouterProvider.otherwise('/missing');
-    }]);
+    }])
+    .constant('moment', require('moment-timezone'));
 
 angular.element(document).ready(() => {
     angular.bootstrap(document, ['main']);
 });
 
+function boot() {
+    angular.bootstrap(document, ['app'], {
+        strictDi: true
+    });
+}
+
+document.addEventListener('DOMContentLoaded', boot);
