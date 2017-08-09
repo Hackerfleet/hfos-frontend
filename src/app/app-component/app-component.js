@@ -20,7 +20,7 @@
 let backgrounds = require.context("../../../assets/images/backgrounds", true, /^(.*\.(jpg$))[^.]*$/igm);
 
 class AppComponent {
-
+    
     constructor(scope, user, socket, rootscope, objectproxy, state, alert, fullscreen, infoscreen) {
         this.scope = scope;
         this.user = user;
@@ -38,29 +38,17 @@ class AppComponent {
         this.clientconfiglist = [];
         
         let self = this;
-
-        function updateclientconfigurations(ev, schema, uuid) {
-            console.log('LIST UPDATED:', ev, uuid, schema);
-            if (schema === 'client') {
-                console.log('[APP] ListUpdate: ', ev);
-                self.clientconfiglist = self.objectproxy.list(schema);
-                console.log('[APP] New client config list:', self.clientconfiglist);
-            }
-        }
         
-        this.rotationpause = function() {
+        this.rotationpause = function () {
             this.rotationpaused = !this.rotationpaused;
             this.infoscreen.toggleRotations(!this.rotationpaused);
         };
         
-        this.rootscope.$on('Clientconfig.Update', function() {
-           self.rotationenabled = self.infoscreen.enabled;
-           console.log('Updating rotation to: ', self.rotationenabled);
+        this.rootscope.$on('Clientconfig.Update', function () {
+            self.rotationenabled = self.infoscreen.enabled;
+            console.log('Updating rotation to: ', self.rotationenabled);
         });
         
-        this.rootscope.$on('OP.ListUpdate', updateclientconfigurations);
-        this.rootscope.$on('OP.Deleted', updateclientconfigurations);
-
         this.rootscope.$on('Profile.Update', function () {
             // Set a nice background, if one is configured
             let background = self.user.profile.settings.background;
@@ -79,53 +67,59 @@ class AppComponent {
                 });
             }
         });
-
-        this.user.onAuth(function () {
+        
+        this.update_client_configurations = function() {
             console.log('[APP] Populating client menu.');
             // Request client list for the client menu
-            self.objectproxy.getList('client', {'owner': self.user.useruuid});
-
+            self.objectproxy.searchItems('client', {'owner': self.user.useruuid}).then(function (msg) {
+                console.log('[APP] Clientconfiglist: ', msg);
+                self.clientconfiglist = msg.data;
+            });
+        };
+        
+        this.user.onAuth(function () {
+            self.update_client_configurations();
             let menu = $('#modulemenu');
-
+            
             menu.empty();
-
+            
             for (let state of self.state.get()) {
                 if ('icon' in state) {
-
+                    
                     let menuentry = '<li><div><a href="#!' + state.url + '"><img class="module-icon-tiny" src="' + state.icon + '" type="image/svg+xml">' + state.label + '</a></div></li>';
                     menu.append(menuentry);
                 }
             }
         });
-
+        
         $('#bootscreen').hide();
-        $(document).on('click','.navbar-collapse.in',function(e) {
-            if( $(e.target).is('a') ) {
+        $(document).on('click', '.navbar-collapse.in', function (e) {
+            if ($(e.target).is('a')) {
                 $(this).collapse('hide');
             }
         });
     }
-
+    
     userbutton() {
         this.user.login();
     }
-
+    
     switchClientConfig(uuid) {
         this.user.switchClientconfig(uuid);
     }
-
+    
     editClientConfig(uuid) {
         this.state.go('app.editor', {schema: 'client', action: 'edit', 'uuid': uuid});
     }
-
+    
     deleteClientConfig(uuid) {
-        this.objectproxy.delObject('client', uuid);
+        this.objectproxy.deleteObject('client', uuid);
     }
-
+    
     chattoggle() {
-
+    
     }
-
+    
     home(event) {
         if (event.shiftKey === true) {
             console.log('[MAIN] Reloading route.');
@@ -140,7 +134,7 @@ class AppComponent {
          schemata.check();*/
         console.log('[MAIN] Main profile: ', this.user.profile);
     }
-
+    
     fullscreentoggle() {
         if (this.fullscreen.isEnabled()) {
             this.fullscreen.cancel();
@@ -155,7 +149,7 @@ class AppComponent {
                 .addClass('fa-compress');
         }
     }
-
+    
     mainmenutoggle() {
         if ($('#fullscreengrab').css('top') === '42px') {
             $('#fullscreengrab').animate().css({top: '-8px'});
@@ -169,7 +163,7 @@ class AppComponent {
             $('#fullscreengrabicon').removeClass('fa-arrow-down').addClass('fa-arrow-up');
         }
     }
-
+    
     mobbutton() {
         console.log('[MAIN] MOB Button pressed');
         this.alert.mobTrigger();
