@@ -32,12 +32,16 @@ import SystemconfigService from './services/system.service';
 import ObjectProxy from './services/objectproxy.service';
 import InfoscreenService from './services/infoscreen.service';
 import Uppercase from './utils/filters';
+import OrderedObject from './utils/orderedObject';
+import ObjectLength from './utils/objectLength';
 
 import LoginController from './component/login-component';
 
 export default angular
     .module('main.app.common', [])
     .filter('capitalize', Uppercase)
+    .filter('orderedObject', OrderedObject)
+    .filter('objectLength', ObjectLength)
     .component('userInfoComponent', UserInfoComponent)
     .component('statusbarComponent', UserInfoComponent)
     .service('TodoService', TodoService)
