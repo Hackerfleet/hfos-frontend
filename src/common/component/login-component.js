@@ -31,7 +31,7 @@ class LoginComponent {
     }
 
     logout() {
-        this.user.logout();
+        this.user.logout(true, true);
     }
 
     showprofile() {
@@ -39,7 +39,7 @@ class LoginComponent {
     }
 
     login() {
-        console.log('[LOGIN] Trying to login: ', this.username, '******', this);
+        console.log('[LOGIN] Trying to login: ', this.username, '******');
         this.user.login(this.username, this.password);
     }
     
