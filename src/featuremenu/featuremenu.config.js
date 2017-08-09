@@ -18,10 +18,14 @@
  */
 
 export function routing($stateProvider) {
-
+    
     $stateProvider
         .state('app.menu', {
             url: '/',
+            template: '<featuremenu></featuremenu>'
+        })
+        .state('app.menu_alt', {
+            url: '',
             template: '<featuremenu></featuremenu>'
         });
 }
