@@ -39,7 +39,10 @@ var PARAMS_DEFAULT = {
             'angular-strap/dist/angular-strap.js',
             'angular-strap/dist/angular-strap.tpl.js',
             
-            'humanize-duration'
+            'humanize-duration',
+            'c3',
+            'qrcode-generator/qrcode_UTF8.js'
+            //'angular-qr'
         ]
     },
     output: {
@@ -53,7 +56,9 @@ var PARAMS_DEFAULT = {
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
-            jQuery: 'jquery'
+            jQuery: 'jquery',
+            c3: 'c3',
+            qrcode: 'qrcode-generator',
         }),
     
     ],
