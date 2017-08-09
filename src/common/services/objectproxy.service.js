@@ -23,6 +23,8 @@
 
 'use strict';
 
+let jsondiffpatch = require('jsondiffpatch').create();
+
 /* TODO:
  * Handle renamed objects
  * Delete objects locally, too
@@ -39,107 +41,57 @@
  subscribe: subscribeObject,
  unsubscribe: unsubscribeObject,
  put: putObject,
- del: delObject
+ del: deleteObject
  */
 
 class ObjectProxy {
-    constructor($q, $socket, $user, $schemata, $rootScope) {
+    constructor($q, $socket, $schemata, $rootScope) {
         console.log('[OP] Object proxy service started');
         this.q = $q;
         this.socket = $socket;
-        this.user = $user;
         this.schemata = $schemata;
         this.rootscope = $rootScope;
         
         this.requestId = 0;
         
-        this.objects = [];
-        
-        this.cache = {};
+        this.objects = {};
         
         this.namelookup = {};
         this.lists = {};
-        this.searchcallbacks = {};
+        this.callbacks = {};
         
         let self = this;
         
         function handleResponse(msg) {
             let result;
-            let newobj;
+            let data;
+            let uuid;
             let schema = null;
-            
+    
+            let requestId = msg.data.req;
             
             if (msg.action === 'get' || msg.action === 'update') {
-                newobj = msg.data;
-                schema = newobj.id.slice(1);
+                schema = msg.data.schema;
+                uuid = msg.data.uuid;
+                data = msg.data.object;
                 
+                self.objects[uuid] = data;
                 if (schema === null) {
                     console.log('[OP] Strange object without ID received.');
                     return;
                 }
-            }
-            
-            if (msg.action === 'noobject') {
-                console.log('Non existant document requested!');
-                console.log('Message:', msg);
-            }
-            
-            if (msg.action === 'noschema') {
-                console.log('Non existant schema requested!');
-                console.log('Message:', msg);
-            }
-    
-            if (msg.action === 'get') {
-                console.log('[OP] Received object from OM: ', newobj);
-                
-                self.objects[newobj.uuid] = newobj;
-                if ('name' in newobj) {
-                    self.namelookup[name] = newobj.uuid;
-                }
-                
-                self.rootscope.$broadcast('OP.Get', newobj.uuid, newobj, schema);
-                
-            } else if (msg.action === 'update') {
-                console.log('[OP] Subscription update from OM: ', newobj);
-                
-                self.objects[newobj.uuid] = newobj;
-                
-                self.rootscope.$broadcast('OP.Update', newobj.uuid, newobj, schema);
-                
+                self.rootscope.$broadcast('OP.Get', uuid, data, schema)
+            } else if (msg.action === 'fail') {
+                console.log('Object manager reported failure:', msg.data);
+                delete self.callbacks[msg.data.req];
             } else if (msg.action === 'put') {
-                result = msg.data[0];
-                let putuuid = msg.data[1];
-                
-                if (result === true) {
-                    console.log('[OP] Object successfully stored.');
-                    self.rootscope.$broadcast('OP.Put', putuuid);
-                } else {
-                    console.log('[OP] Page was not stored correctly: ', putuuid);
-                }
-                
+                data = msg.data;
+                self.objects[data.uuid] = data.obj;
+                self.rootscope.$broadcast('OP.Put', data.schema, data.uuid, data.obj)
             } else if (msg.action === 'delete' || msg.action === 'deletion') {
-                result = msg.data[0];
-                schema = msg.data[1];
-                let deluuid = msg.data[2];
-                
-                if (result === true) {
-                    if (schema in self.lists) {
-                        if (deluuid in self.lists[schema]) {
-                            console.log('[OP] Deleting object from local list:', self.lists[schema], self.lists[schema[deluuid]]);
-                            delete(self.lists[schema][deluuid]);
-                            
-                            console.log('[OP] Object was deleted.');
-                            self.rootscope.$broadcast('OP.Deleted', schema, deluuid);
-                        } else {
-                            console.log('[OP] Object not stored in List!', self);
-                        }
-                    } else {
-                        console.log('[OP] Unknown schema: ', schema, msg);
-                    }
-                } else {
-                    console.log('[OP] Page was not deleted correctly: ', deluuid);
-                }
-                
+                data = msg.data;
+                delete self.objects[data.uuid];
+                self.rootscope.$broadcast('OP.Deleted', data.schema, data.uuid);
             } else if (msg.action === 'list') {
                 let list = msg.data.list;
                 schema = msg.data.schema;
@@ -149,21 +101,17 @@ class ObjectProxy {
                 console.log('[OP] Received object list from OM: ', schema, list);
                 
                 self.rootscope.$broadcast('OP.ListUpdate', schema);
-                
             } else if (msg.action === 'search') {
-                let requestId = msg.data.req;
-                let searchdata = msg.data.list;
-                console.log('[OP] Search result came back: ', searchdata);
-                
-                // This cannot work, but did so in the previous revision:
-                if (angular.isDefined(self.searchcallbacks[requestId])) {
-                    let searchcallback = self.searchcallbacks[requestId];
-                    delete self.searchcallbacks[requestId];
-                    searchcallback.resolve(searchdata);
-                } else {
-                    console.log('Unhandled search: ', msg);
-                }
-                
+                data = msg.data.list;
+                console.log('[OP] Search result came back: ', data);
+            }
+    
+            if (angular.isDefined(self.callbacks[requestId])) {
+                let callback = self.callbacks[requestId];
+                delete self.callbacks[requestId];
+                callback.resolve(data);
+            } else {
+                console.log('Request without callback: ', msg.action, msg.data);
             }
             console.log('Proxied objects: ', self.objects);
             console.log('Proxied lists: ', self.lists);
@@ -178,18 +126,6 @@ class ObjectProxy {
             if (typeof search === 'undefined') {
                 search = '';
             }
-            
-            /*if (schema in self.cache) {
-                console.log('[OP] Schema has a cache.');
-                console.log('[OP] Looking for ', schema, search, 'in ', self.cache);
-                if (search in self.cache[schema]) {
-                    let data = self.cache[schema][search];
-                    console.log('[OP] Got this cached: ', data);
-                    return data
-                }
-            } else {*/
-                self.cache[schema] = {};
-            //}
             
             let reqid = self.getRequestId();
             
@@ -210,7 +146,7 @@ class ObjectProxy {
             });
             
             let deferred = self.q.defer();
-            self.searchcallbacks[reqid] = deferred;
+            self.callbacks[reqid] = deferred;
             
             let query = deferred.promise.then(function (response) {
                 console.log('OP ASYNC Delivering:', response);
@@ -228,10 +164,58 @@ class ObjectProxy {
                 return {data: response};
             });
             
-            self.cache[schema][search] = query;
+            return query;
+        };
+        
+        this.get = function(schema, uuid) {
+            console.log('[OP] Async-getting object ', schema, uuid);
             
-            console.log('[OP] CACHE: ', self.cache);
+            let reqid = self.getRequestId();
             
+            self.socket.send({
+                'component': 'hfos.events.objectmanager',
+                'action': 'get',
+                'data': {
+                    'req': reqid,
+                    'schema': schema,
+                    'uuid': uuid
+                }
+            });
+    
+            let deferred = self.q.defer();
+            self.callbacks[reqid] = deferred;
+    
+            let query = deferred.promise.then(function (response) {
+                console.log('[OP] Get response:', response);
+                return response;
+            });
+    
+            return query;
+        };
+    
+        this.put = function(schema, obj) {
+            console.log('[OP] Async-putting object ', schema, obj);
+        
+            let reqid = self.getRequestId();
+        
+            self.socket.send({
+                'component': 'hfos.events.objectmanager',
+                'action': 'put',
+                'data': {
+                    'req': reqid,
+                    'schema': schema,
+                    'obj': obj
+                }
+            });
+        
+            let deferred = self.q.defer();
+            self.callbacks[reqid] = deferred;
+        
+            let query = deferred.promise.then(function (response) {
+                console.log('[OP] Get response:', response);
+                return response;
+            });
+        
             return query;
         };
     }
@@ -291,7 +275,32 @@ class ObjectProxy {
         this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'put', 'data': {'schema': schema, 'obj': obj}});
     }
     
-    delObject(schema, uuid) {
+    putObjectChange(schema, obj) {
+        console.log('[OP] Putting object change', schema, obj);
+    
+        console.log('OLD:', obj, 'NEW:', this.objects[obj.uuid]);
+        
+        let uuid = obj.uuid;
+        
+        let change = {
+            time: new Date().toISOString(),
+            diff: jsondiffpatch.diff(obj, this.objects[uuid])
+        };
+        
+        let data = {
+            schema: schema,
+            uuid: uuid,
+            change: change
+        };
+        
+        this.socket.send({
+            component: 'hfos.events.objectmanager',
+            action: 'putchangeset',
+            data: data
+        });
+    }
+    
+    deleteObject(schema, uuid) {
         console.log('[OP] Deleting object ', schema, uuid);
         this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'delete', 'data': {'schema': schema, 'uuid': uuid}});
     }
@@ -299,6 +308,7 @@ class ObjectProxy {
     
     getList(schema, filter, fields) {
         console.log('[OP] Getting object list ', schema, filter, fields);
+        console.log('LEGACY LIST OPERATION');
         this.socket.send({
             'component': 'hfos.events.objectmanager',
             'action': 'list',
@@ -311,14 +321,16 @@ class ObjectProxy {
     }
     
     list(name) {
+        console.log('LEGACY LIST ACCESS');
         return this.lists[name];
     }
     
     lists() {
+        console.log('LEGACY GLOBAL LIST ACCESS');
         return this.lists;
     }
 }
 
-ObjectProxy.$inject = ['$q', 'socket', 'user', 'schemata', '$rootScope'];
+ObjectProxy.$inject = ['$q', 'socket', 'schemata', '$rootScope'];
 
 export default ObjectProxy;
