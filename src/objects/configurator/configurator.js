@@ -34,6 +34,7 @@ class configurator {
         this.success = null;
         this.components = null;
         this.changewatcher = null;
+        this.configschemata = [];
         
         this.debug = false;
         
@@ -116,6 +117,7 @@ class configurator {
             this.schemaupdate = this.rootscope.$on('Schemata.ConfigUpdate', function () {
             console.log('[C] Configuration Schema update.');
             self.configschemadata = self.schemata.configschemata;
+            self.configschemata = Object.keys(self.configschemadata);
             console.log(self.configschemadata);
         });
         
