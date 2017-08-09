@@ -371,18 +371,29 @@ html, body {
     min-width: 300px;
     line-height: 30px;
     overflow: auto;
+    max-height: 70vh;
 }
 
 .componentmenu div {
-    padding: 3px 20px;
+    padding: 0 20px;
+}
+
+.componentmenu .fa {
+    padding-right: 3px;
+    font-size: 16px;
+    width: 24px;
 }
 
 #clientmenu {
     text-align: center;
 }
 
+.client_entry {
+    text-align: right;
+}
+
 .dropdown-menu > li > div > a {
-    display: block;
+    display: inline-block;
 }
 
 .col {
