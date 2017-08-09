@@ -106,13 +106,10 @@ class UserService {
             self.logout(true, false);
         }
     
-        function updateclientconfig(ev, uuid, newobj) {
-            console.log('[USER] New object!', ev, uuid, newobj, self.clientuuid);
-            let msg;
-        
-            // TODO: Ugly, hacky, the whole lot should be reimplemented cleanly
-        
-            if (String(uuid) === String(self.clientuuid)) {
+        function updateclientconfig(ev, uuid, newobj, schema) {
+            if (schema === 'clientconfig' && String(uuid) === String(self.clientuuid)) {
+                let msg;
+
                 console.log('[USER] Got selected config from OP:', newobj);
                 msg = {data: newobj};
                 self.storeclientconfigcookie(msg);
@@ -123,7 +120,7 @@ class UserService {
                     self.infoscreen.toggleRotations(false);
                 }
                 self.rootscope.$broadcast('Clientconfig.Update');
-            } else if (String(uuid) === String(self.profile.uuid)) {
+            } else if (schema === 'profile' && String(uuid) === String(self.profile.uuid)) {
                 console.log('[USER] Got a profile update from OP:', newobj);
                 msg = {data: newobj};
                 self.storeprofile(msg);
@@ -162,7 +159,6 @@ class UserService {
             self.profile = msg.data;
         
             $('#btnuser').css('color', '#0f0');
-            //$('#btnchat').removeClass('hidden');
             console.log('[USER] Profile: ', self.profile, self);
         
             self.changeCurrentTheme();
@@ -186,7 +182,6 @@ class UserService {
         this.rootscope.$on('OP.Update', updateclientconfig);
     
         console.log('UserService constructed');
-    
     }
     
     addinfoscreen() {
@@ -225,9 +220,6 @@ class UserService {
             this.user = {};
             this.signedin = false;
             this.signingIn = false;
-            $('#btnuser').css('color', '');
-            $('#btnchat').addClass('hidden');
-            $('#btnmob').addClass('hidden');
             //$location.url('');
             //$route.reload();
         } else {

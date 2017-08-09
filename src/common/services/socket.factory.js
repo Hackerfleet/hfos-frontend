@@ -43,7 +43,14 @@ class SocketService {
             $('#hfos-icon').addClass('icon-glow-red');
         }
         
-        this.websocketurl = this.protocol + '://' + this.host + ':' + this.port + '/websocket';
+        this.websocketurl = this.protocol + '://' + this.host;
+        if ((this.protocol === 'wss' && this.port !== 443) || (this.protocol === 'ws' && this.port !== 80)) {
+            this.hostname += ':' + this.port;
+        }
+    
+        this.websocketurl += '/websocket';
+        
+        console.log('[SOCKET] Websocket url', this.websocketurl);
         
         this.sock = new WebSocket(this.websocketurl);
         
@@ -288,6 +295,11 @@ class SocketService {
         this.sock.onopen = OpenEvent;
         this.sock.onclose = CloseEvent;
         this.sock.onmessage = receive;
+        this.listen('hfos.ui.clientmanager', function(msg) {
+            if (msg.action === 'Flooding') {
+                console.log('[SOCKET] Clientmanager wants us to stop flooding.');
+            }
+        });
         doReconnect();
     }
     
@@ -300,8 +312,6 @@ class SocketService {
         $('#btnuser').addClass('hidden');
         // TODO: Mob button should rather be gray and recording the MOB alert for later,
         // if possible with phone-local GPS coords
-        $('#btnmob').addClass('hidden');
-        $('#btnchat').addClass('hidden');
     }
     
     send(msg) {
