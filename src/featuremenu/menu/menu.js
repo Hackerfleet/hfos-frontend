@@ -58,7 +58,7 @@ class featureMenu {
     
             self.changetimeout = null;
         };
-              
+        
         this.gridsterOptions = {
             // any options that you can set for angular-gridster (see:  http://manifestwebdesign.github.io/angular-gridster/)
             columns: screen.width / 70,
@@ -132,15 +132,11 @@ class featureMenu {
                     };
                     
                     try {
-                        console.log("[MENU] Attempt:", profile.settings.menu, state.label);
-                        console.log(profile.settings.menu[0].title, state.label);
                         let configentry = profile.settings.menu.find(x => x.title === state.label);
-                        console.log("Trying to parse ", configentry);
                         item.row = configentry.row;
                         item.col = configentry.col;
                         item.size = configentry.size;
                     } catch (e) {
-                        console.log("[MENU] No menu config: ", e, state.label);
                         item.row = row;
                         item.col = col;
                         item.size = 1;
@@ -152,7 +148,6 @@ class featureMenu {
                                 row: item.row,
                                 size: item.size
                             };
-                            console.log('[MENU] Pushing to menu config: ', entry);
                             profile.settings.menu.push(entry);
                             store_state = true;
                         }
