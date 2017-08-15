@@ -96,6 +96,8 @@ class featureMenu {
             
             self.items = [];
             
+            let menu_dict = {};
+            
             let menu = $('#modulemenu');
             
             menu.empty();
@@ -160,7 +162,7 @@ class featureMenu {
                     }
                     
                     let menuentry = '<li><a href="#!' + item.url + '"><img class="module-icon-tiny" src="' + item.svg + '" type="image/svg+xml">' + item.title + '</a></li>';
-                    menu.append(menuentry);
+                    menu_dict[state.label] = menuentry;
                     
                     self.items.push(item);
                 } else {
@@ -170,6 +172,13 @@ class featureMenu {
                 if (store_state) {
                     self.storeMenuConfig();
                 }
+            }
+            let labels = Object.keys(menu_dict);
+            labels.sort();
+            
+            for (let label of labels) {
+                console.log('Label:', label);
+                menu.append(menu_dict[label]);
             }
             
             if (self.items.length === 0) {

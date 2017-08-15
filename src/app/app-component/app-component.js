@@ -79,16 +79,24 @@ class AppComponent {
         
         this.user.onAuth(function () {
             self.update_client_configurations();
+            // TODO: Move this (and the corresponding code in FeatureMenu) to a central service
             let menu = $('#modulemenu');
+            let menu_dict = {};
             
             menu.empty();
             
             for (let state of self.state.get()) {
                 if ('icon' in state) {
-                    
                     let menuentry = '<li><div><a href="#!' + state.url + '"><img class="module-icon-tiny" src="' + state.icon + '" type="image/svg+xml">' + state.label + '</a></div></li>';
-                    menu.append(menuentry);
+                    menu_dict[state.label] = menuentry;
                 }
+            }
+    
+            let labels = Object.keys(menu_dict);
+            labels.sort();
+    
+            for (let label of labels) {
+                menu.append(menu_dict[label]);
             }
         });
         
