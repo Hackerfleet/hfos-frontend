@@ -107,9 +107,9 @@ class UserService {
         }
     
         function updateclientconfig(ev, uuid, newobj, schema) {
+            let msg;
+    
             if (schema === 'clientconfig' && String(uuid) === String(self.clientuuid)) {
-                let msg;
-
                 console.log('[USER] Got selected config from OP:', newobj);
                 msg = {data: newobj};
                 self.storeclientconfigcookie(msg);
@@ -132,6 +132,7 @@ class UserService {
             if (msg.action === 'login') {
                 self.username = msg.data.name;
                 self.useruuid = msg.data.uuid;
+                self.account = msg.data;
             
                 self.signIn();
             } else if (msg.action === 'new') {
