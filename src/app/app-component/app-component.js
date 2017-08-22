@@ -86,6 +86,19 @@ class AppComponent {
             menu.empty();
             
             for (let state of self.state.get()) {
+                if (typeof state.roles !== 'undefined') {
+                    let found = false;
+                    for (let role of state.roles) {
+                        for (let check_role of self.user.account.roles) {
+                            if (check_role === role) {
+                                found = true;
+                            }
+                        }
+                    }
+                    if (found === false) {
+                        continue;
+                    }
+                }
                 if ('icon' in state) {
                     let menuentry = '<li><div><a href="#!' + state.url + '"><img class="module-icon-tiny" src="' + state.icon + '" type="image/svg+xml">' + state.label + '</a></div></li>';
                     menu_dict[state.label] = menuentry;

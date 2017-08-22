@@ -118,6 +118,20 @@ class featureMenu {
             for (let state of self.state.get()) {
                 let enabled = [];
                 let profile = self.user.profile;
+    
+                if (typeof state.roles !== 'undefined') {
+                    let found = false;
+                    for (let role of state.roles) {
+                        for (let check_role of self.user.account.roles) {
+                            if (check_role === role) {
+                                found = true;
+                            }
+                        }
+                    }
+                    if (found === false) {
+                        continue;
+                    }
+                }
                 
                 if (typeof profile.components !== 'undefined') {
                     enabled = profile.components.enabled;
