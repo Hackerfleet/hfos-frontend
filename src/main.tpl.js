@@ -36,6 +36,7 @@ import 'angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css';
 import 'angular-ui-select/select.css';
 import 'bootstrap-slider/dist/css/bootstrap-slider.min.css';
 import 'angular-ui-tree/dist/angular-ui-tree.min.css';
+import 'ng-table/bundles/ng-table.css';
 
 import './main.scss';
 
@@ -69,6 +70,7 @@ require('angular-bootstrap-slider');
 require('angular-uuid');
 require('angularjs-scroll-glue/src/scrollglue');
 require('angular-moment');
+import ngTableModule from 'ng-table/bundles/ng-table';
 
 require('humanize-duration');
 
@@ -82,13 +84,14 @@ import common from './common/common.module';
 import featuremenu from './featuremenu/featuremenu.module';
 import objects from './objects/objects.module';
 import about from './about/about.module';
+import systemlog from './systemlog/systemlog.module';
 import doc from './doc/doc.module';
 
 // HFOS Plugin Modules
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
-    'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment',
-    animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, doc,
+    'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable',
+    animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, systemlog, doc,
     clipboard.name, calendar, tree, localstorage, ngQrcode
 ];
 
@@ -117,4 +120,4 @@ function boot() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', boot);
+//document.addEventListener('DOMContentLoaded', boot);
