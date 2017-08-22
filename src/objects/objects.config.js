@@ -34,6 +34,7 @@ export function routing($stateProvider) {
             url: '/configuration',
             icon: configurationicon,
             label: 'Configuration',
+            roles: ['admin'],
             template: '<configurator></configurator>'
         });
 }
