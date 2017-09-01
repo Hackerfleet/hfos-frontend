@@ -46,6 +46,7 @@
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-router": "0.4.2",
     "angular-ui-select": "^0.12.100",
+    "angular-ui-tour": "^0.8.2",
     "angular-ui-tree": "^2.22.5",
     "angular-ui-utils": "^0.1.1",
     "angular-underscore": "0.0.3",
