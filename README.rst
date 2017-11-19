@@ -1,3 +1,16 @@
+.. image:: https://travis-ci.org/Hackerfleet/hfos-frontend.svg?branch=master
+    :target: https://travis-ci.org/Hackerfleet/hfos-frontend
+.. image:: https://codeclimate.com/github/Hackerfleet/hfos-frontend/badges/gpa.svg
+   :target: https://codeclimate.com/github/Hackerfleet/hfos-frontend
+   :alt: Code Climate
+.. image:: https://codeclimate.com/github/Hackerfleet/hfos-frontend/badges/coverage.svg
+   :target: https://codeclimate.com/github/Hackerfleet/hfos-frontend/coverage
+   :alt: Test Coverage
+.. image:: https://codeclimate.com/github/Hackerfleet/hfos-frontend/badges/issue_count.svg
+   :target: https://codeclimate.com/github/Hackerfleet/hfos-frontend
+   :alt: Issue Count
+
+
 HFOS - The Hackerfleet Operating System
 =======================================
 
