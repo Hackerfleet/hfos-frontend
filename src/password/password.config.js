@@ -17,27 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class StatusbarComponent {
+export function routing($stateProvider) {
 
-    constructor() {
-        this.left = '';
-        this.center = 'Hello!';
-        this.right = '';
-    }
-
-    setLeft(text) {
-        this.center = text
-    }
-
-    setCenter(text) {
-        this.left = text
-    }
-
-    setRight(text) {
-        this.right = text
-    }
+    $stateProvider
+        .state('app.password', {
+            url: '/password',
+            template: '<password></password>'
+        });
 }
-
-StatusbarComponent.$inject = ['user'];
-
-export default StatusbarComponent;
