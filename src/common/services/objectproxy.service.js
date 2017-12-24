@@ -104,7 +104,7 @@ class ObjectProxy {
                 data = msg.data;
                 delete self.objects[data.uuid];
                 self.rootscope.$broadcast('OP.Deleted', data.schema, data.uuid);
-            } else if (msg.action === 'list') {
+            } else if (msg.action === 'getlist') {
                 let list = msg.data.list;
                 schema = msg.data.schema;
 
