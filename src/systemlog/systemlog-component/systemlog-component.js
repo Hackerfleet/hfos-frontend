@@ -19,22 +19,22 @@
 
 
 class SystemlogComponent {
-    
-    constructor(rootscope, user, objectproxy, socket, $interval, alert, NgTableParams) {
+
+    constructor(rootscope, user, objectproxy, socket, $interval, notification, NgTableParams) {
         this.rootscope = rootscope;
         this.user = user;
         this.op = objectproxy;
         this.socket = socket;
-        this.alert = alert;
+        this.notification = notification;
         this.$interval = $interval;
-        
+
         this.messages = [];
         this.emitters = [];
-        
+
         this.show_filter = true;
-        
+
         let self = this;
-        
+
         this.rootscope.$on('User.Login', function (event) {
             console.log('[SYSLOG] Checking logs', self.user.account);
             if (self.user.account.roles.indexOf('admin') > 0) {
@@ -42,13 +42,13 @@ class SystemlogComponent {
                 self.subscribe();
             }
         });
-        
+
         if (this.user.signedin === true) {
             this.get_log_messages();
             this.subscribe();
         }
-        
-        
+
+
         socket.listen('hfos.ui.syslog', function (msg) {
             if (msg.action === 'history') {
                 console.log('[SYSLOG] Got a history update', msg.data);
@@ -57,7 +57,7 @@ class SystemlogComponent {
                 self.emitters.push({title: "All"});
                 for (let message of msg.data.history) {
                     self.messages.push(message);
-                    
+
                     if (known_emitters.indexOf(message.emitter) === -1) {
                         known_emitters.push(message.emitter);
                         self.emitters.push({
@@ -71,7 +71,7 @@ class SystemlogComponent {
                 console.log('[SYSLOG] Got a new log message');
                 self.messages.push(msg.data);
             }
-            
+
             self.tableParams = new NgTableParams(
                 {},
                 {
@@ -79,7 +79,7 @@ class SystemlogComponent {
                 }
             );
         });
-        
+
         this.subscribe = function() {
             let packet = {
                 component: 'hfos.ui.syslog',
@@ -87,7 +87,7 @@ class SystemlogComponent {
             };
             self.socket.send(packet);
         };
-        
+
         this.get_log_messages = function () {
             console.log('[SYSLOG] Requesting history');
             let timestamp = new Date() / 1000;
@@ -96,24 +96,24 @@ class SystemlogComponent {
              console.log('[SYSLOG] There are old messages in the list:', this.messages);
              timestamp = Math.min.apply(Math, Object.keys(this.messages));
              }*/
-            
+
             console.log('[SYSLOG] Earliest timestamp is:', timestamp);
             let packet = {
                 component: 'hfos.ui.syslog',
                 action: 'history',
                 data: {
                     end: timestamp,
-                    limit: 50,
+                    limit: 50
                 }
             };
             this.socket.send(packet);
         };
-        
-        
+
+
         console.log('[SYSLOG] RUNNING');
     }
 }
 
-SystemlogComponent.$inject = ['$rootScope', 'user', 'objectproxy', 'socket', '$interval', 'alert', 'NgTableParams'];
+SystemlogComponent.$inject = ['$rootScope', 'user', 'objectproxy', 'socket', '$interval', 'notification', 'NgTableParams'];
 
 export default SystemlogComponent;
