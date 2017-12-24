@@ -17,7 +17,37 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div class="well">
+<div ng-hide="$ctrl.user.signedin" id="bootscreen" class="well vertical-center gradient"
+    ng-class="{fadeout: $ctrl.user.signedin}">
+    <div class="center-block">
+        <table>
+            <tr>
+                <div id="fleetlogo" class="center"></div>
+            </tr>
+            <tr id="login-notice">
+                <div class="dark" ng-show="$ctrl.socket.connected">
+                    <div ng-hide="$ctrl.user.signedin">
+                    <h2>Login required</h2>
+                    <span>Please <a ng-click="$ctrl.user.login()">login or register your account</a> to use this node.</span>
+                    </div>
+                    <div ng-show="$ctrl.user.signedin">
+                    <h2 ng-if="$ctrl.user.signedin">Logging in...</h2>
+                    </div>
+                </div>
+            </tr>
+            <tr id="disconnected-notice">
+                <div class="dark" ng-show="!$ctrl.socket.connected">
+                        <h2>No connection</h2>
+                        <span>Your client is not connected to the node.</span>
+                    </div>
+                </div>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+<div ng-show="$ctrl.user.signedin" class="well animate-show">
     <div class="menu-nav navbar">
         <ul class="nav nav-pills" role="tablist">
             <li class="pull-right">
@@ -28,6 +58,8 @@
             </li>
         </ul>
     </div>
+
+
     <div gridster="$ctrl.gridsterOptions">
         <ul>
             <li data-gridster-item
