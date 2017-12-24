@@ -54,7 +54,8 @@
                         ng-show="$ctrl.rotationenabled"
                         style="text-align: center; border-color: transparent; margin-left:5px; color: red"
                         aria-label="Center Align">
-                    <span class="glyphicon" ng-class="{'glyphicon-pause': $ctrl.rotationpaused,'glyphicon-play': !$ctrl.rotationpaused}"></span>
+                    <span class="glyphicon"
+                          ng-class="{'glyphicon-pause': $ctrl.rotationpaused,'glyphicon-play': !$ctrl.rotationpaused}"></span>
                 </button>
                 <button id="btnaddscreen" type="button" ng-click="$ctrl.user.addinfoscreen();"
                         class="pagination-centered navbar-brand navbar-inverse btn"
@@ -64,20 +65,30 @@
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
                 <span id="custom_buttons">
-                <!-- TODO: See #161
-                <button id="btnmob" type="button" ng-click="$ctrl.mobbutton();"
-                        class="pagination-centered navbar-brand navbar-inverse btn"
-                        style="text-align: center; border-color: transparent; margin-left:5px; color: red"
-                        aria-label="Center Align">
-                    <span class="fa fa-life-ring"></span>
-                </button>
-                -->
                     <chatbutton></chatbutton>
+                    <alertbutton></alertbutton>
                 </span>
             </div>
 
             <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right" id="mainmenunavbar">
+                    <li>
+                        <form class="navbar-form">
+                            <div class="form-group clearable" style="display:inline;">
+                                <input ng-show="searchCollapsed" type="search" class="form-control"
+                                       ng-model="$ctrl.search_string">
+                                <span ng-show="$ctrl.search_string !== ''"
+                                      class="clearable__clear"
+                                      ng-click="$ctrl.search_string = ''">&times;</span>
+                            </div>
+                        </form>
+                    </li>
+                    <li>
+                        <a ng-click="searchCollapsed = !searchCollapsed"
+                           ng-style="{'color': searchCollapsed && '#fff'}"
+                           class="glyphicon glyphicon-search"></span>
+                        </a>
+                    </li>
                     <li id="nav-home"><a href="/#!/"><span class="glyphicon glyphicon-home"></span></a></li>
                     <li id="nav-fullscreen">
 
@@ -151,16 +162,47 @@
     </button>
     <div id="content" ui-view></div>
 
-    <footer class="navbar-fixed-bottom navbar-inverse">
+    <footer class="navbar-fixed-bottom" ng-class="{'navbar-inverse': !hideStatusbar}">
         <div class="row">
             <div id="statusLeft" class="col-xs-2">
+                <span>
+                    <a class="fa" title="Show/Hide status bar" ng-click="hideStatusbar = !hideStatusbar"
+                       ng-class="{'fa-circle-o': hideStatusbar,
+                                  'fa-dot-circle-o': !hideStatusbar}">
+                    </a>
+                </span>
                 <span>
                     <span id="ledincoming" class="fa fa-arrow-circle-down" title="Incoming data"></span>
                     <span id="ledoutgoing" class="fa fa-arrow-circle-up" title="Outgoing data"></span>
                 </span>
             </div>
-            <div id="statusCenter" class="col-xs-8">Ready.</div>
-            <div id="statusRight" class="col-xs-2">-</div>
+            <div id="statusCenter" ng-show="!hideStatusbar" class="col-xs-8">
+                <a class="fa"
+                   ng-class="{'fa-chevron-up': !showStatusHistory,
+                              'fa-chevron-down': showStatusHistory}"
+                   ng-click="showStatusHistory = !showStatusHistory"></a>
+                <a class="fa" title="Show/Hide timestamps" ng-click="showStatusTimestamps = !showStatusTimestamps"
+                   ng-class="{'fa-circle-o': !showStatusTimestamps,
+                                  'fa-clock-o': showStatusTimestamps}">
+                </a>
+                <ul ng-show="showStatusHistory" scroll-glue>
+                    <li ng-repeat="msg in $ctrl.statusbar.messages">
+                        <span class="text-{{msg.type}}">
+                            <span ng-show="showStatusTimestamps">{{msg.time}}</span>
+                            <b>{{msg.title}}:</b>
+                            {{msg.text}}
+                        </span>
+                    </li>
+                </ul>
+                <span ng-show="!showStatusHistory">
+                    <span class="text-{{$ctrl.statusbar.last_message.type}}">
+                        <span ng-show="showStatusTimestamps">{{$ctrl.statusbar.last_message.time}}</span>
+                        <b>{{$ctrl.statusbar.last_message.title}}:</b>
+                        {{$ctrl.statusbar.last_message.text}}
+                    </span>
+                </span>
+            </div>
+            <div id="statusRight" ng-show="!hideStatusbar" class="col-xs-2">{{$ctrl.statusbar.status}}</div>
         </div>
     </footer>
 </div>

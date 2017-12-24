@@ -16,39 +16,55 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+function requireAll(r) {
+    console.log("Booya:", r);
+    r.keys().forEach(r);
+    return r;
+}
 
-let backgrounds = require.context("../../../assets/images/backgrounds", true, /^(.*\.(jpg$))[^.]*$/igm);
+let backgrounds = requireAll(require.context("../../../assets/images/backgrounds", true, /^(.*\.(jpg$))[^.]*$/igm));
+let themes = requireAll(require.context("../../themes", true, /\.scss$/));
 
 class AppComponent {
-    
-    constructor(scope, user, socket, rootscope, objectproxy, state, alert, fullscreen, infoscreen) {
+
+    constructor(scope, user, socket, rootscope, objectproxy, state, notification, fullscreen, infoscreen, statusbar) {
         this.scope = scope;
         this.user = user;
         this.socket = socket;
         this.rootscope = rootscope;
         this.objectproxy = objectproxy;
         this.state = state;
-        this.alert = alert;
+        this.notification = notification;
         this.fullscreen = fullscreen;
         this.infoscreen = infoscreen;
-        
+        this.statusbar = statusbar;
+
         this.rotationenabled = infoscreen.enabled;
         this.rotationpaused = false;
-        
+
+        this.search_string = '';
+
         this.clientconfiglist = [];
-        
+
+        console.log('[APP] Backgrounds:', backgrounds);
+        console.log('[APP] Themes:', themes);
+
+        for (let theme in themes) {
+            console.log('[APP] Theme:', theme, theme.id, theme.resolve, theme.keys);
+        }
+
         let self = this;
-        
+
         this.rotationpause = function () {
             this.rotationpaused = !this.rotationpaused;
             this.infoscreen.toggleRotations(!this.rotationpaused);
         };
-        
+
         this.rootscope.$on('Clientconfig.Update', function () {
             self.rotationenabled = self.infoscreen.enabled;
             console.log('Updating rotation to: ', self.rotationenabled);
         });
-        
+
         this.rootscope.$on('Profile.Update', function () {
             // Set a nice background, if one is configured
             let background = self.user.profile.settings.background;
@@ -67,8 +83,8 @@ class AppComponent {
                 });
             }
         });
-        
-        this.update_client_configurations = function() {
+
+        this.update_client_configurations = function () {
             console.log('[APP] Populating client menu.');
             // Request client list for the client menu
             self.objectproxy.searchItems('client', {'owner': self.user.useruuid}).then(function (msg) {
@@ -76,15 +92,15 @@ class AppComponent {
                 self.clientconfiglist = msg.data;
             });
         };
-        
+
         this.user.onAuth(function () {
             self.update_client_configurations();
             // TODO: Move this (and the corresponding code in FeatureMenu) to a central service
             let menu = $('#modulemenu');
             let menu_dict = {};
-            
+
             menu.empty();
-            
+
             for (let state of self.state.get()) {
                 if (typeof state.roles !== 'undefined') {
                     let found = false;
@@ -104,15 +120,15 @@ class AppComponent {
                     menu_dict[state.label] = menuentry;
                 }
             }
-    
+
             let labels = Object.keys(menu_dict);
             labels.sort();
-    
+
             for (let label of labels) {
                 menu.append(menu_dict[label]);
             }
         });
-        
+
         $('#bootscreen').hide();
         $(document).on('click', '.navbar-collapse.in', function (e) {
             if ($(e.target).is('a')) {
@@ -120,27 +136,23 @@ class AppComponent {
             }
         });
     }
-    
+
     userbutton() {
         this.user.login();
     }
-    
+
     switchClientConfig(uuid) {
         this.user.switchClientconfig(uuid);
     }
-    
+
     editClientConfig(uuid) {
         this.state.go('app.editor', {schema: 'client', action: 'edit', 'uuid': uuid});
     }
-    
+
     deleteClientConfig(uuid) {
         this.objectproxy.deleteObject('client', uuid);
     }
-    
-    chattoggle() {
-    
-    }
-    
+
     home(event) {
         if (event.shiftKey === true) {
             console.log('[MAIN] Reloading route.');
@@ -155,7 +167,7 @@ class AppComponent {
          schemata.check();*/
         console.log('[MAIN] Main profile: ', this.user.profile);
     }
-    
+
     fullscreentoggle() {
         if (this.fullscreen.isEnabled()) {
             this.fullscreen.cancel();
@@ -170,7 +182,7 @@ class AppComponent {
                 .addClass('fa-compress');
         }
     }
-    
+
     mainmenutoggle() {
         if ($('#fullscreengrab').css('top') === '42px') {
             $('#fullscreengrab').animate().css({top: '-8px'});
@@ -184,13 +196,8 @@ class AppComponent {
             $('#fullscreengrabicon').removeClass('fa-arrow-down').addClass('fa-arrow-up');
         }
     }
-    
-    mobbutton() {
-        console.log('[MAIN] MOB Button pressed');
-        this.alert.mobTrigger();
-    }
 }
 
-AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'alert', 'Fullscreen', 'infoscreen'];
+AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'notification', 'Fullscreen', 'infoscreen', 'statusbar'];
 
 export default AppComponent;
