@@ -44,12 +44,12 @@
 
 class SystemconfigService {
 
-    constructor(rootscope, user, objectproxy, alert, modal) {
+    constructor(rootscope, user, objectproxy, notification, modal) {
         console.log('[SYS] SystemconfigService constructing');
         this.rootscope = rootscope;
         this.user = user;
         this.op = objectproxy;
-        this.alert = alert;
+        this.notification = notification;
         this.modal = modal;
 
         this.config = null;
@@ -84,6 +84,6 @@ class SystemconfigService {
 
 }
 
-SystemconfigService.$inject = ['$rootScope', 'user', 'objectproxy', '$alert', '$modal'];
+SystemconfigService.$inject = ['$rootScope', 'user', 'objectproxy', 'notification', '$modal'];
 
 export default SystemconfigService;

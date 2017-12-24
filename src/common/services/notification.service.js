@@ -22,26 +22,30 @@
  */
 
 
-class AlertService {
+class NotificationService {
 
-    constructor(socket, alert, modal) { //$rootScope, $interval, socket, createDialog, $alert) {
-        console.log('AlertService constructing');
+    constructor(socket, alert, modal, statusbar) { //$rootScope, $interval, socket, createDialog, $alert) {
+        console.log('NotificationService constructing');
         this.socket = socket;
         this.alert = alert;
         this.modal = modal;
+        this.statusbar = statusbar;
 
         let self = this;
 
         function remoteAlert(msg) {
-            console.log('Alert service remote alert: ');
-            let title = 'Remote Alert';
-            let duration = 30;
-            let message;
+            if (msg.action === 'notify') {
+                console.log('[NOTIFY] Service remote alert: ');
+                let title = 'Remote Alert';
+                let duration = 10;
+                let message;
+                let types = ['danger', 'info', 'success', 'warning'];
 
-            console.log(typeof msg.data);
-            if (typeof msg.data === 'string') {
-                message = msg.data;
-            } else if (typeof msg.data === 'object') {
+                let type = msg.data.type;
+                if (types.indexOf(type) < 0) {
+                    type = 'info';
+                }
+
                 if ('title' in msg.data) {
                     title = msg.data.title;
                 }
@@ -51,18 +55,19 @@ class AlertService {
                 }
 
                 message = msg.data.message;
-            }
 
-            self.add(msg.action, title, message, duration);
+                self.add(type, title, message, duration);
+            }
         }
 
         this.socket.listen('hfos.alert.manager', remoteAlert);
-        console.log('AlertService constructed');
+        console.log('[NOTIFY] NotificationService constructed');
 
     }
 
     add(type, title, msg, duration) {
-        console.log('[ALERT] Emitting new alert');
+        console.log('[NOTIFY] Emitting new alert');
+
         this.alert({
             'title': title,
             'content': msg,
@@ -72,14 +77,10 @@ class AlertService {
             'duration': duration
         });
 
-        //this.modal({'title': 'Foobar'});
-
-        //$rootScope.$broadcast("Alert.Add", type, msg);
+        this.statusbar.add(type, title, msg);
     }
-
-
 }
 
-AlertService.$inject = ['socket', '$alert', '$modal'];
+NotificationService.$inject = ['socket', '$alert', '$modal', 'statusbar'];
 
-export default AlertService;
+export default NotificationService;

@@ -20,32 +20,37 @@
 import angular from 'angular';
 
 import UserInfoComponent from './component/user-info-component';
-import StatusbarController from './component/statusbar';
+import FileUploadComponent from './component/file-upload-component';
 
 import UserService from './services/user.service';
 import MenuService from './services/menu.service';
 import TodoService from './services/todo.service';
-import AlertService from './services/alert.service';
+import NotificationService from './services/notification.service';
 import SocketService from './services/socket.factory';
 import SchemataService from './services/schemata.service';
 import SystemconfigService from './services/system.service';
 import ObjectProxy from './services/objectproxy.service';
 import InfoscreenService from './services/infoscreen.service';
-import Uppercase from './utils/filters';
+import StatusbarService from './services/statusbar.service';
+import {capitalize, toLength} from './utils/filters';
 import OrderedObject from './utils/orderedObject';
 import ObjectLength from './utils/objectLength';
 
 import LoginController from './component/login-component';
 
+import resizer from './component/resizer';
+
 export default angular
     .module('main.app.common', [])
-    .filter('capitalize', Uppercase)
+    .directive('resizer', resizer)
+    .filter('capitalize', capitalize)
+    .filter('tolength', toLength)
     .filter('orderedObject', OrderedObject)
     .filter('objectLength', ObjectLength)
     .component('userInfoComponent', UserInfoComponent)
-    .component('statusbarComponent', UserInfoComponent)
+    .component('fileUploadComponent', FileUploadComponent)
     .service('TodoService', TodoService)
-    .service('alert', AlertService)
+    .service('notification', NotificationService)
     .service('infoscreen', InfoscreenService)
     .service('user', UserService)
     .service('menu', MenuService)
@@ -53,5 +58,6 @@ export default angular
     .service('schemata', SchemataService)
     .service('systemconfig', SystemconfigService)
     .service('objectproxy', ObjectProxy)
+    .service('statusbar', StatusbarService)
     .controller('LoginCtrl', LoginController)
     .name;
