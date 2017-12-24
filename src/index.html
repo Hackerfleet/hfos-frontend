@@ -33,7 +33,16 @@
 
 </head>
 <body>
-<ui-view></ui-view>
+
+<div ui-view class="slide">
+    <div id="app-loading" style="display: none;" class="app-loading vertical-center">
+        <img class="spinner"
+             src="/assets/images/logo_75_white.png" />
+    </div>
+    <script type="application/javascript">
+        document.getElementById('app-loading').style.display = 'block';
+    </script>
+</div>
 
 <noscript>
     <style type="text/css">
