@@ -86,6 +86,7 @@
                     <a ng-click="$ctrl.command('exception')" type="button" class="btn btn-danger">Throw a
                         tantrum</a>
                     <a ng-click="$ctrl.command('logtail')" type="button" class="btn btn-danger">Follow logfile</a>
+                    <a ng-click="$ctrl.command('trigger_anchorwatch')" type="button" class="btn btn-danger">Trigger Anchorwatcher</a>
                 </div>
             </div>
 
@@ -138,19 +139,19 @@
                         </tr>
                         <tr>
                             <td>Packages Received</td>
-                            <td>{{$ctrl.stats.rx}}</td>
+                            <td>{{$ctrl.socket.stats.rx}}</td>
                         </tr>
                         <tr>
                             <td>Packages Transmitted</td>
-                            <td>{{$ctrl.stats.tx}}</td>
+                            <td>{{$ctrl.socket.stats.tx}}</td>
                         </tr>
                         <tr>
-                            <td>Lag</td>
-                            <td>{{$ctrl.stats.lag}}</td>
+                            <td>Latency to node</td>
+                            <td>{{$ctrl.socket.stats.latency}} ms</td>
                         </tr>
                         <tr>
                             <td>Last Connection start</td>
-                            <td>{{$ctrl.stats.start}}</td>
+                            <td>{{$ctrl.socket.stats.start}}</td>
                         </tr>
                     </table>
                 </div>
