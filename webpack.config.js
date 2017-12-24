@@ -13,7 +13,7 @@ var PARAMS_DEFAULT = {
         alias: {
             'angular': __dirname + '/node_modules/angular',
             //'angular-schema-form':           '../node_modules/angular-schema-form',
-            'angular-schema-form': __dirname + '/node_modules/angular-schema-form/dist/schema-form.js'
+            'angular-schema-form': __dirname + '/node_modules/angular-schema-form/dist/schema-form.js',
             //'spectrum': '../node_modules/spectrum-colorpicker'
             //'angular-schema-form-bootstrap': '../node_modules/angular-schema-form-bootstrap/bootstrap-decorator.js'
         }
@@ -25,23 +25,25 @@ var PARAMS_DEFAULT = {
             'lodash',
             'jquery',
             'bootstrap',
-            
+            'moment',
+            'fullcalendar',
+
             'angular',
             'angular-aria',
-            
+
             'angular-animate',
             'angular-sanitize',
-            
+
             'objectpath',
-            
+
             'angular-clipboard/angular-clipboard.js',
-            
+
             'angular-strap/dist/angular-strap.js',
             'angular-strap/dist/angular-strap.tpl.js',
-            
+
             'humanize-duration',
             'c3',
-            'qrcode-generator/qrcode_UTF8.js'
+            'qrcode-generator/qrcode_UTF8.js',
             //'angular-qr'
         ]
     },
@@ -60,7 +62,7 @@ var PARAMS_DEFAULT = {
             c3: 'c3',
             qrcode: 'qrcode-generator',
         }),
-    
+
     ],
     devServer: {
         port: 8081,
@@ -125,6 +127,8 @@ module.exports = {
     module: {
         loaders: [
             {test: /\.js$/, loader: 'babel-loader', exclude: /(\.test.js$|node_modules)/},
+            {test: require.resolve('jquery'), loader: 'expose-loader?$!expose-loader?jQuery'},
+            {test: require.resolve('moment'), loader: 'expose-loader?moment'},
             {test: /\.css$/, loader: 'style-loader!css-loader'},
             {test: /\.tpl.html/, loader: 'html-loader', exclude: /(index.html)/},
             {test: /\.json/, loader: 'json-loader'},
