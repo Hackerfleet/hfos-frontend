@@ -20,42 +20,54 @@
 let tv4 = require('tv4');
 
 class objecteditor {
-    
-    constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope, alert, state) {
+
+    constructor($scope, $stateParams, objectproxy, user, socket, schemata, $rootscope, notification, state) {
         this.socket = socket;
         this.schemata = schemata;
         this.rootscope = $rootscope;
-        this.alert = alert;
+        this.notification = notification;
         this.state = state;
         this.user = user;
         this.objectproxy = objectproxy;
         this.scope = $scope;
-        this.stateParams = $stateParams;
-        
+        $scope.stateParams = $stateParams;
+
         console.log('[OE] STATEPARAMS: ', $stateParams);
         console.log('[OE] SCOPE: ', $scope);
-        
-        
+
         this.schemadata = {};
         this.model = {};
-        
+        this.initial = {};
+
         this.debug = false;
-        
+
         this.live = false;
         this.livewatcher = null;
-        
+
         this.history = false;
-        
+
         this.editorOptions = {
             language: 'en',
             uiColor: '#000000'
         };
-        
+
         // TODO: Clean up the editor api, this is a bit messy from the directive movement
         // Same goes for the list, probably.
-        
+
         let self = this;
-        
+
+        this.scope.$on('Changed.UUID', function(event, val) {
+            console.log('[OE] UUID changed:', self.uuid);
+            self.config.uuid = val;
+            self.getData();
+        });
+
+        this.scope.$on('Changed.Initial', function(event, val) {
+            console.log('[OE] Initial model changed:', val);
+            self.model = val;
+        });
+
+
         this.toggleLive = function () {
             console.log('Toggling live watcher', this.live, this.livewatcher);
             if (this.live === false) {
@@ -86,12 +98,12 @@ class objecteditor {
                 );
             }
         };
-        
+
         this.toggleHistory = function () {
             console.log('Toggling history', this.history);
             if (this.history === false) {
                 if (this.live === true) {
-                    this.alert.add('danger', 'Editor', 'Cannot deactivate History when live editing.', 3);
+                    this.notification.add('danger', 'Editor', 'Cannot deactivate History when live editing.', 3);
                     this.history = true;
                     return
                 }
@@ -100,7 +112,7 @@ class objecteditor {
                 console.log('History now on');
             }
         };
-        
+
         this.scope.$on('$destroy', function () {
             console.log('[OE] Destroying live edit watcher');
             if (self.livewatcher !== null) self.livewatcher();
@@ -110,15 +122,15 @@ class objecteditor {
             self.getupdate();
             self.putupdate();
         });
-        
+
         this.markStored = function () {
             console.log('[OE] Marking object as stored.');
             $('#objStored').removeClass('hidden');
             $('#objModified').addClass('hidden');
             self.config.action = 'Edit';
-            self.alert.add('success', 'Editor', 'Object successfully stored.', 5);
+            self.notification.add('success', 'Editor', 'Object successfully stored.', 5);
         };
-        
+
         this.putupdate = this.rootscope.$on('OP.Put', function (ev, uuid) {
             if (uuid === self.config.uuid) {
                 self.markStored();
@@ -130,31 +142,31 @@ class objecteditor {
                 self.markStored();
             }
         });
-        
-        
+
+
         this.getupdate = this.rootscope.$on('OP.Get', function (ev, uuid) {
             self.updateModel(uuid);
         });
-        
+
         this.objupdate = this.rootscope.$on('OP.Update', function (ev, uuid) {
             self.updateModel(uuid);
         });
-        
+
         this.loginupdate = this.rootscope.$on('User.Login', function () {
             console.log('[OE] User logged in, getting current page.');
             // TODO: Check if user modified object - offer merging
             self.getData();
         });
-        
+
         this.schemaupdate = this.rootscope.$on('Schemata.Update', function () {
             console.log('[OE] Schema update.');
             let newschema = self.schemata.schema(self.config.schema);
             console.log('[OE] Got a schema update:', newschema);
             self.schemadata = self.schemata.get(self.config.schema);
-            
+
             self.getData();
         });
-        
+
         this.getData = function () {
             console.log('[OE] Getting schema for ', self.config.schema);
             self.schemadata = self.schemata.get(self.config.schema);
@@ -163,7 +175,7 @@ class objecteditor {
                 self.objectproxy.getObject(self.config.schema, self.config.uuid, true);
             }
         };
-        
+
         this.getFormData = function (options, search) {
             console.log('[OE] Trying to obtain proxy list.', options, search);
             if (search === '') {
@@ -173,7 +185,7 @@ class objecteditor {
             console.log(result);
             return result;
         };
-        
+
         this.updateModel = function (uuid) {
             console.log('[OE] Object has been updated from node, checking..', uuid, self);
             console.log('[OE] Self Scope UUID: ', self.config.uuid);
@@ -184,47 +196,56 @@ class objecteditor {
             $('#objectEditButton').removeClass('hidden');
             self.scope.$apply();
         };
-        
+
         //console.log('End of constructor:', self.config.uuid);
     }
-    
+
     switchState(state, args) {
         this.state.go(state, args);
     }
-    
+
     fieldChange(model, form) {
         console.log('Fieldchange called! ', model, form);
     }
-    
-    
+
+
     callBackSD(schema) {
         console.log('[OE] Callback getting entries: ', schema);
         let origlist = this.objectproxy.lists[schema];
         console.log('[OE] Callback results: ', origlist);
         return origlist;
-        
+
     }
 
 
 //console.log("[OE] CB Results: ", this.Callback('mapview'));
-    
-    
+
+
     $onInit() {
-        if (typeof this.stateParams.uuid !== 'undefined') {
+        if (typeof this.scope.stateParams.uuid !== 'undefined') {
             this.config = {
-                uuid: this.stateParams.uuid,
-                schema: this.stateParams.schema,
-                action: this.stateParams.action
+                uuid: this.scope.stateParams.uuid,
+                schema: this.scope.stateParams.schema,
+                action: this.scope.stateParams.action
             };
         } else {
+            console.log("INITIAL:", this.scope.initial, this.initial);
+            let self = this;
+            /*this.scope.$watch('$scope.uuid', function (newVal, oldVal, scope) {
+                console.log('UUID has changed', newVal, oldVal);
+            }, true);*/
+
             this.config = {
                 uuid: this.uuid,
                 schema: this.schema,
-                action: this.action
+                action: this.action,
+                model: this.initial,
+                initial: this.initial
             };
+            this.model = this.initial;
         }
         console.log('[OE] Handling object of type: ' + this.config.schema + 'UUID:' + this.config.uuid + ' Action:' + this.config.action);
-        
+
         this.schemascreenname = this.config.schema.charAt(0).toUpperCase() + this.config.schema.slice(1);
         if (this.config.uuid === "" || typeof this.config.uuid === 'undefined') {
             this.config.action = 'Create';
@@ -232,37 +253,37 @@ class objecteditor {
         } else {
             this.config.action = 'Edit';
         }
-        
+
         if (this.user.signedin) {
             this.getData();
         }
     }
-    
+
     formAction(target, action, uuid) {
         console.log('[OE] FormAction initiated: ', target, action, uuid);
-        
+
         this.socket.send({
             'component': target,
             'action': action,
             'data': uuid
         });
     }
-    
-    
+
+
     /*let editorChange = function () {
      if (this.model !== objectproxy.obj[$scope.uuid]) {
      console.log('[OE] Content has been modified locally.');
-     
+
      $('#objectModified').removeClass('hidden');
      } else {
      console.log('[OE] Content changed from somewhere else.');
      console.log(this.model, objectproxy.obj[$scope.uuid]);
      }
      };
-     
+
      this.$watchCollection('model', editorChange);
      */
-    
+
     submitObject() {
         let model = this.model;
         if (this.config.action.toUpperCase() === 'CREATE') {
@@ -271,21 +292,25 @@ class objecteditor {
         console.log('[OE] Object update initiated with ', model);
         this.objectproxy.putObject(this.config.schema, model);
     }
-    
-    
+
+    test_onchange(a, b) {
+        console.log('HELLO!', a, b);
+    }
+
+
     submitObjectChange() {
         let model = this.model;
-        
+
         console.log('[OE] Object update initiated with ', model);
         this.objectproxy.putObjectChange(this.config.schema, model);
     }
-    
-    
+
+
     deleteObject() {
         let model = this.model;
         if (this.config.action.toUpperCase() === 'CREATE') {
             model.uuid = 'create';
-            this.alert.add('warning', 'Editor', 'Cannot delete object - it is not stored yet.');
+            this.notification.add('warning', 'Editor', 'Cannot delete object - it is not stored yet.');
             return;
         }
         console.log('[OE] Object deletion initiated with ', this.config.uuid);
@@ -293,6 +318,6 @@ class objecteditor {
     }
 }
 
-objecteditor.$inject = ['$scope', '$stateParams', 'objectproxy', 'user', 'socket', 'schemata', '$rootScope', 'alert', '$state'];
+objecteditor.$inject = ['$scope', '$stateParams', 'objectproxy', 'user', 'socket', 'schemata', '$rootScope', 'notification', '$state'];
 
 export default objecteditor;

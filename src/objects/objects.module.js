@@ -44,9 +44,6 @@ import 'tx-tinymce/tx-tinymce';
 import 'angular-schema-form';
 import 'angular-schema-form-bootstrap/bootstrap-decorator';
 
-
-import 'angular-ui-select/select.css';
-import 'angular-ui-select/select.js';
 import 'angular-schema-form-dynamic-select/angular-schema-form-dynamic-select.js';
 import 'angular-schema-form-dynamic-select/ui-sortable';
 
@@ -81,7 +78,16 @@ export default angular
     .component('objecteditor', {
         controller: editor,
         template: editortemplate,
-        bindings: {schema: '@', uuid: '@', action: '@'}
+        bindings: {schema: '@', uuid: '@', action: '@', initial:'='},
+        link: function(scope, elem, attrs) {
+            attrs.$observe(function() {
+                console.log('OBSERVING');
+                return attrs.uuid;
+            }, function(val) {
+                console.log('HELLO, I changed');
+                scope.$emit('UUIDChange');
+            })
+        }
     })
     .component('objectlist', {controller: list, template: listtemplate})
     .component('configurator', {controller: configurator, template: configuratortemplate})

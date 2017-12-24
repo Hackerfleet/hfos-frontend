@@ -17,46 +17,61 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div class="container">
-    <div class="well">
-        <H1>{{$ctrl.config.action}}: <a href="#!/list/{{$ctrl.schemadata.schema.name}}">{{$ctrl.schemascreenname}}</a>/<a
-            href="#!/editor/{{$ctrl.schemadata.schema.name}}/{{$ctrl.model.uuid}}/edit">{{$ctrl.model.name}}</a></H1>
-        <span id="editLive">
-            <input type="checkbox" ng-click="$ctrl.toggleLive()" ng-model="$ctrl.live" />
+<div class="well">
+    <H1>{{$ctrl.config.action}}: <a href="#!/list/{{$ctrl.schemadata.schema.name}}">{{$ctrl.schemascreenname}}</a>/<a
+        href="#!/editor/{{$ctrl.schemadata.schema.name}}/{{$ctrl.model.uuid}}/edit">{{$ctrl.model.name}}</a></H1>
+    <span id="editLive">
+            <input type="checkbox" ng-click="$ctrl.toggleLive()" ng-model="$ctrl.live"/>
             <span>Edit Live</span>
         </span>
-        <span id="keepHistory">
-            <input type="checkbox" ng-click="$ctrl.toggleHistory()" ng-model="$ctrl.history" />
+    <span id="keepHistory">
+            <input type="checkbox" ng-click="$ctrl.toggleHistory()" ng-model="$ctrl.history"/>
             <span>Keep History</span>
         </span>
 
-        <span id="debug">
-            <input type="checkbox" ng-model="$ctrl.debug" /> <!-- checked="{{$ctrl.debug === true}}" /> -->
+    <span id="debug">
+            <input type="checkbox" ng-model="$ctrl.debug"/> <!-- checked="{{$ctrl.debug === true}}" /> -->
             <span>Debug</span>
         </span>
 
-        <span id="objStored" class="label label-success hidden">Stored</span>
-        <span id="objModified" class="label label-danger hidden">Modified</span>
+    <span id="objStored" class="label label-success hidden">Stored</span>
+    <span id="objModified" class="label label-danger hidden">Modified</span>
 
-        <form sf-schema="$ctrl.schemadata.schema" sf-form="$ctrl.schemadata.form" sf-model="$ctrl.model">
-        </form>
-        <!-- <button class="btn btn-danger" ng-click="$ctrl.deleteObject()"><i class="fa fa-trash"></i>Delete</button> -->
-        <!-- <button class="btn btn-default" ng-click="$ctrl.submitForm()"><i class="fa fa-check"></i>Submit</button> -->
+    <form sf-schema="$ctrl.schemadata.schema" sf-form="$ctrl.schemadata.form" sf-model="$ctrl.model">
+    </form>
+    <!-- <button class="btn btn-danger" ng-click="$ctrl.deleteObject()"><i class="fa fa-trash"></i>Delete</button> -->
+    <!-- <button class="btn btn-default" ng-click="$ctrl.submitForm()"><i class="fa fa-check"></i>Submit</button> -->
 
-        <div ng-show="$ctrl.debug">
-            <hr>
-            <span>Model:
-                <pre>{{$ctrl.model | json}}</pre>
-            </span>
-            <hr>
-            <span>Schema:
-                <pre>{{$ctrl.schemadata.schema | json}}</pre>
-            </span>
-            <hr>
-            <span>Form:
-                <pre>{{$ctrl.schemadata.form | json}}</pre>
-            </span>
-            <br>
-        </div>
+    <div ng-show="$ctrl.debug">
+            <span class="fa" ng-click="argsCollapsed = !argsCollapsed" ng-class="{'fa-chevron-up': argsCollapsed,
+            'fa-chevron-right': !argsCollapsed}"></span>
+        <pre uib-collapse="argsCollapsed">{{$ctrl.action}} - {{$ctrl.schema}}:{{$ctrl.uuid}}</pre>
+
+        <hr>
+
+        <span class="fa" ng-click="configCollapsed = !configCollapsed" ng-class="{'fa-chevron-up': configCollapsed,
+            'fa-chevron-right': !configCollapsed}"></span>Configuration:
+        <pre uib-collapse="configCollapsed">{{$ctrl.config | json}}</pre>
+
+        <hr>
+
+        <span class="fa" ng-click="modelCollapsed = !modelCollapsed" ng-class="{'fa-chevron-up': argsCollapsed,
+            'fa-chevron-right': !argsCollapsed}"></span>Model:
+        <pre uib-collapse="argsCollapsed">{{$ctrl.model | json}}</pre>
+
+        <hr>
+
+        <span class="fa" ng-click="schemaCollapsed = !schemaCollapsed" ng-class="{'fa-chevron-up': schemaCollapsed,
+            'fa-chevron-right': !schemaCollapsed}"></span>Schema:
+        <pre uib-collapse="schemaCollapsed">{{$ctrl.schemadata.schema | json}}</pre>
+        </span>
+
+        <hr>
+
+        <span class="fa" ng-click="formCollapsed = !formCollapsed" ng-class="{'fa-chevron-up': formCollapsed,
+            'fa-chevron-right': !formCollapsed}"></span>Form:
+        <pre uib-collapse="formCollapsed">{{$ctrl.schemadata.form | json}}</pre>
+        </span>
+        <br>
     </div>
 </div>
