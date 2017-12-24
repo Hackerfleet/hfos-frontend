@@ -25,10 +25,8 @@ import { routing } from './doc.config.js';
 import DocComponent from './doc-component/doc-component';
 import template from './doc-component/doc-component.tpl.html';
 
-//console.log(socket);
-
 export default angular
     .module('main.app.doc', [uirouter])
     .config(routing)
-    .component('docComponent', {controller: DocComponent, template: template})
+    .component('docComponent', {template: template})
     .name;
