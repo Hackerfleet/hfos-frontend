@@ -17,13 +17,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import * as sinon from 'sinon';
+class FileUploadComponent {
 
-import DocComponent from './doc-component.js';
+    constructor(socket) {
+    
+    }
 
-let component;
+    close() {
+        console.log('Closed fileupload');
+    }
 
-describe('DocComponent test', function () {
+    FileUpload() {
+        console.log('[FileUpload] Trying to FileUpload: ', file);
+        //this.FileUpload(this.username, this.password);
+    }
+    
+    opentab(tabname) {
+        console.log('[FileUpload] Switching tab to ', tabname);
+        $('.nav-pills .active, .tab-content .active').removeClass('active');
+        $('#' + tabname).addClass('active');
+    }
+}
 
+FileUploadComponent.$inject = ['socket'];
 
-});
+export default FileUploadComponent;
