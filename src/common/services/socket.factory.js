@@ -25,35 +25,37 @@ let humanizeDuration = require('humanize-duration');
 import * as _ from 'lodash';
 
 class SocketService {
-    
-    constructor($location, $alert, $timeout, $cookies, $rootscope) {
-        console.log('[SOCK] SocketService constructing');
+
+    constructor($location, $alert, $timeout, $interval, $cookies, $rootscope, statusbar) {
+        console.log('[SOCKET] SocketService constructing');
         this.$alert = $alert;
         this.$timeout = $timeout;
+        this.$interval = $interval;
         this.cookies = $cookies;
         this.rootscope = $rootscope;
+        this.statusbar = statusbar;
         //this.humanizer = humanizer;
         this.host = $location.host();
         this.port = $location.port();
         this.protocol = 'wss';
-        
+
         if ($location.protocol() !== 'https') {
             this.protocol = 'ws';
-            console.log('[SOCK] Running on insecure protocol!');
+            console.log('[SOCKET] Running on insecure protocol!');
             $('#hfos-icon').addClass('icon-glow-red');
         }
-        
+
         this.websocketurl = this.protocol + '://' + this.host;
         if ((this.protocol === 'wss' && this.port !== 443) || (this.protocol === 'ws' && this.port !== 80)) {
             this.hostname += ':' + this.port;
         }
-    
+
         this.websocketurl += '/websocket';
-        
+
         console.log('[SOCKET] Websocket url', this.websocketurl);
-        
+
         this.sock = new WebSocket(this.websocketurl);
-        
+
         this.connected = false;
         this.stayonline = true;
         this.trying = false;
@@ -64,7 +66,7 @@ class SocketService {
             rx: 0,
             tx: 0,
             start: 0,
-            lag: 0
+            latency: 0
         };
         this.disconnectalert = $alert({
             'title': 'Offline',
@@ -72,9 +74,10 @@ class SocketService {
             'type': 'warning',
             'show': false
         });
-        
+        this.pingTimer = null;
+
         let self = this;
-        
+
         let cookie = this.cookies.get('hfosclient-dev');
         if (typeof cookie !== 'undefined') {
             let json = JSON.parse(cookie);
@@ -88,7 +91,7 @@ class SocketService {
                 $('#hfos-icon').addClass('icon-glow-blue');
             }
         }
-        
+
         function setPort(port, secure) {
             console.log('[SOCKET] Storing development port cookie:', port, secure);
             self.cookies.put('hfosclient-dev', JSON.stringify({port: port, secure: secure}));
@@ -97,7 +100,7 @@ class SocketService {
             self.reconnect();
             $('#hfos-icon').addClass('icon-glow-blue');
         }
-        
+
         function unsetPort() {
             console.log('[SOCKET] Unsetting development port cookie');
             // TODO: If we decide to store more in that, we should only delete the port keyword
@@ -107,28 +110,28 @@ class SocketService {
             self.secure = $location.protocol === 'https';
             self.reconnect();
         }
-        
+
         this.setPort = setPort;
         this.unsetPort = unsetPort;
-        
+
         function doReconnect() {
             if (self.connected !== true && self.trying !== true) {
                 console.log('[SOCKET] Trying to reconnect.');
                 self.sock.close();
                 self.websocketurl = self.protocol + '://' + self.host + ':' + self.port + '/websocket';
-                
+
                 self.sock = new WebSocket(self.websocketurl);
                 self.sock.onopen = self.OpenEvent;
                 self.sock.onclose = self.CloseEvent;
                 self.sock.onmessage = self.receive;
-                
+
                 self.reconnecttries++;
                 self.trying = true;
-                
+
                 let interval = Math.min(30, Math.pow(self.reconnecttries, 2)) * 1000;
-                
+
                 self.disconnectalert.hide();
-                
+
                 self.disconnectalert = $alert({
                     'title': 'Offline',
                     'content': 'You have been disconnected from the node. Retry interval is at ' + humanizeDuration(interval),
@@ -137,34 +140,38 @@ class SocketService {
                     'show': true,
                     'duration': interval / 1000
                 });
-                
+
                 let color = function (value) {
                     return '#FF' + parseInt((1 - value) * 255).toString(16) + '00';
                 };
-                
+
                 $('#btnhome').css('color', color(interval / 30000));
-                
+
                 self.reconnecttimer = self.$timeout(self.doReconnect, interval);
             }
         }
-        
+
         this.doReconnect = doReconnect;
-        
+
         function OpenEvent() {
             console.log('[SOCKET] Websocket successfully opened!');
             self.connected = true;
             self.stayonline = true;
             self.trying = false;
             self.reconnecttries = 0;
-            
+
             if (self.disconnectalert !== '') {
                 self.disconnectalert.hide();
             }
-            
+
             let currentdate = new Date();
-            document.getElementById('btnhome').title = 'Connected since ' + currentdate;
+            $('#btnhome')
+                .css('color', '#3a75a8')
+                .prop('title', 'Connected since ' + currentdate);
+            $('#btnuser').removeClass('hidden').css('color', '');
+
             self.stats.start = currentdate;
-            
+
             self.disconnectalert = self.$alert({
                 'title': 'Online',
                 'content': 'The connection to the node has been established. You\'re online!',
@@ -173,39 +180,41 @@ class SocketService {
                 'show': true,
                 'duration': 5
             });
-            
-            $('#btnhome').css('color', '#3a75a8');
-            $('#btnuser').removeClass('hidden').css('color', '');
-            
+
+            if (self.pingTimer === null) self.pingTimer = self.$interval(self.ping, 30000);
+
+
             self.rootscope.$broadcast('Client.Connect');
         }
-        
+
         this.OpenEvent = OpenEvent;
-        
+
         function finallyClosed() {
             console.log('[SOCKET] Something closed the websocket!');
             self.connected = false;
             $('#btnhome').css('color', 'red');
-            
+
             self.hideElements();
             self.rootscope.$broadcast('Client.Disconnect');
         }
-        
+
         this.finallyClosed = finallyClosed;
-        
+
         function CloseEvent() {
             console.log('[SOCKET] Close event called.');
-            
+
             self.connected = false;
-            
+
+            self.$interval.cancel(self.pingTimer);
+            self.pingTimer = null;
+
             let currentdate = new Date();
-            
-            document.getElementById('btnhome').title = 'Disconnected since ' + currentdate;
-            //$('#btnhome').prop('title', 'Disconnected since ' + currentdate);
-            
+
+            $('#btnhome').prop('title', 'Disconnected since ' + currentdate);
+
             self.hideElements();
             self.rootscope.$broadcast('Client.Connectionloss');
-            
+
             if (self.trying === true) {
                 console.log('[SOCKET] Already trying');
                 self.trying = false;
@@ -217,24 +226,24 @@ class SocketService {
                 self.finallyClosed();
             }
         }
-        
+
         this.CloseEvent = CloseEvent;
-        
+
         function receive(packedmsg) {
             $('#ledincoming').css({'color': 'red'});
-            
+
             function reset() {
                 $('#ledincoming').css({'color': 'green'});
             }
-            
+
             self.$timeout(reset, 250);
-            //console.log('Raw message received: ', packedmsg);
+            console.log('Raw message received: ', packedmsg);
             let msg = JSON.parse(packedmsg.data);
-            
-            console.log('Parsed message: ', msg, self.handlers);
-            
+
+            console.log('[SOCKET] Parsed message: ', msg, self.handlers);
+
             self.stats.rx++;
-            
+
             if (_.has(msg, 'component')) {
                 if (_.has(msg, 'action')) {
                     //console.log('Correct message received. Handlers: ', self.handlers, msg.component);
@@ -256,20 +265,20 @@ class SocketService {
                 console.log('Incorrect message: component!', msg);
             }
         }
-        
+
         this.receive = receive;
-        
-        
+
+
         function sendFile(file, component, action) {
             let reader = new FileReader();
             let raw = new ArrayBuffer();
-            
+
             reader.loadend = function () {
-                console.log('SendFile: Load end');
+                console.log('[SOCKET] SendFile: Load end');
             };
-            
+
             reader.onload = function (e) {
-                console.log('e:', e);
+                console.log('[SOCKET] SendFile event:', e);
                 raw = e.target.result;
                 let msg = JSON.stringify(
                     {
@@ -281,96 +290,117 @@ class SocketService {
                         }
                     }
                 );
-                console.log('[SOCK] MSG:', msg);
+                console.log('[SOCKET] MSG:', msg);
                 self.sock.send(msg);
-                console.log("the File has been transferred.");
+                console.log("[SOCKET] File has been transferred.");
             };
-            
+
             reader.readAsBinaryString(file);
-            
+
         }
-        
+
         this.sendFile = sendFile;
-        
+
+
+        function ping() {
+            if (self.connected) {
+                console.log('[SOCKET] Transmitting ping');
+                let packet = {
+                    component: 'hfos.ui.clientmanager',
+                    action: 'ping',
+                    data: new Date().getTime()
+                };
+                self.send(packet);
+            }
+        }
+        this.ping = ping;
+
         this.sock.onopen = OpenEvent;
         this.sock.onclose = CloseEvent;
         this.sock.onmessage = receive;
-        this.listen('hfos.ui.clientmanager', function(msg) {
+        this.listen('hfos.ui.clientmanager', function (msg) {
             if (msg.action === 'Flooding') {
                 console.log('[SOCKET] Clientmanager wants us to stop flooding.');
+            } else if (msg.action === 'pong') {
+                self.stats.latency = new Date().getTime() - msg.data[0];
+                console.log('[SOCKET] Latency: ', self.stats.latency);
+                if (self.stats.latency > 20) {
+                    self.statusbar.add('danger', 'High latency', 'Roundtrip took ' + self.stats.latency + ' ms');
+                }
+                console.log('[SOCKET] Stats:', self.stats);
             }
         });
         doReconnect();
     }
-    
+
     reconnect() {
         this.doDisconnect();
         this.doReconnect();
     }
-    
+
     hideElements() {
         $('#btnuser').addClass('hidden');
         // TODO: Mob button should rather be gray and recording the MOB alert for later,
         // if possible with phone-local GPS coords
     }
-    
+
     send(msg) {
         let json = JSON.stringify(msg);
-        console.log('[SOCK] Transmitting msg: ', json);
+        console.log('[SOCKET] Transmitting msg: ', json);
 
         function reset() {
             $('#ledoutgoing').css({'color': 'green'});
         }
-    
+
         try {
             this.sock.send(json);
-    
+
             this.stats.tx++;
-    
-    
+
+
             $('#ledoutgoing').css({'color': 'red'});
-    
-         
+
+
             this.$timeout(reset, 250);
         } catch (e) {
-            console.log('[SOCK] Exception upon transmit: ', e);
+            console.log('[SOCKET] Exception upon transmit: ', e);
         }
     }
-    
+
     listen(topic, handler) {
-        
+
         if (_.has(this.handlers, topic)) {
             this.handlers[topic].push(handler);
-            console.log('[SOCK] New handler registered for topic ', topic);
+            console.log('[SOCKET] New handler registered for topic ', topic);
         } else {
             this.handlers[topic] = [handler];
-            console.log('[SOCK] First handler registered for topic ', topic);
+            console.log('[SOCKET] First handler registered for topic ', topic);
         }
-        
+
         console.log(this.handlers);
     }
-    
+
     unlisten(topic, handler) {
-        console.log('[SOCK] Trying to dismiss listener: ', topic, handler, this.handlers);
+        console.log('[SOCKET] Trying to dismiss listener: ', topic, handler, this.handlers);
         if (typeof this.handlers[topic] !== 'undefined') {
-            console.log('[SOCK] Topic found!');
+            console.log('[SOCKET] Topic found!');
             if (this.handlers[topic].indexOf(handler) > -1) {
-                console.log('[SOCK] Unlisting handler for topic: ', topic);
+                console.log('[SOCKET] Unlisting handler for topic: ', topic);
                 this.handlers[topic].splice(this.handlers[topic].indexOf(handler), 1);
             }
         }
-        console.log('[SOCK] Handlers after unlisten: ', this.handlers);
+        console.log('[SOCKET] Handlers after unlisten: ', this.handlers);
     }
-    
+
     doDisconnect() {
         this.stayonline = false;
         this.sock.close();
         //hideElements();
     }
-    
+
     check() {
         console.log('[SOCKET] Connection state: ', this.connected);
-        
+
         if (this.connected) {
             console.log('[SOCKET] All nice, we are still connected');
         } else {
@@ -380,6 +410,6 @@ class SocketService {
     }
 }
 
-SocketService.$inject = ['$location', '$alert', '$timeout', '$cookies', '$rootScope'];
+SocketService.$inject = ['$location', '$alert', '$timeout', '$interval', '$cookies', '$rootScope', 'statusbar'];
 
 export default SocketService;

@@ -45,49 +45,61 @@ let jsondiffpatch = require('jsondiffpatch').create();
  */
 
 class ObjectProxy {
-    constructor($q, $socket, $schemata, $rootScope) {
+    constructor($q, $socket, $schemata, $rootScope, statusbar) {
         console.log('[OP] Object proxy service started');
         this.q = $q;
         this.socket = $socket;
         this.schemata = $schemata;
         this.rootscope = $rootScope;
-        
+        this.statusbar = statusbar;
+
         this.requestId = 0;
-        
+        this.requests = 0;
+
         this.objects = {};
-        
+
         this.namelookup = {};
         this.lists = {};
         this.callbacks = {};
-        
+
         let self = this;
-        
+
+        this.update_status = function() {
+            if (self.requests === 0) {
+                self.statusbar.set_status('Ready.')
+            } else {
+                self.statusbar.set_status(self.requests + ' requests');
+            }
+        };
+
         function handleResponse(msg) {
             let result;
             let data;
             let uuid;
             let schema = null;
-    
+
             let requestId = msg.data.req;
-            
+
             if (msg.action === 'get' || msg.action === 'update') {
                 schema = msg.data.schema;
                 uuid = msg.data.uuid;
                 data = msg.data.object;
-                
+
                 self.objects[uuid] = data;
                 if (schema === null) {
                     console.log('[OP] Strange object without ID received.');
                     return;
                 }
-                self.rootscope.$broadcast('OP.Get', uuid, data, schema)
+                let signal = '';
+                if (msg.action === 'get') { signal = 'OP.Get' } else { signal = 'OP.Update'}
+                self.rootscope.$broadcast(signal, uuid, data, schema);
             } else if (msg.action === 'fail') {
-                console.log('Object manager reported failure:', msg.data);
+                console.log('[OP] Object manager reported failure:', msg.data);
                 delete self.callbacks[msg.data.req];
             } else if (msg.action === 'put') {
                 data = msg.data;
-                self.objects[data.uuid] = data.obj;
-                self.rootscope.$broadcast('OP.Put', data.schema, data.uuid, data.obj)
+                self.objects[data.uuid] = data.object;
+                self.rootscope.$broadcast('OP.Put', data.schema, data.uuid, data.object)
             } else if (msg.action === 'delete' || msg.action === 'deletion') {
                 data = msg.data;
                 delete self.objects[data.uuid];
@@ -95,44 +107,48 @@ class ObjectProxy {
             } else if (msg.action === 'list') {
                 let list = msg.data.list;
                 schema = msg.data.schema;
-                
+
                 self.lists[schema] = list;
-                
+
                 console.log('[OP] Received object list from OM: ', schema, list);
-                
+
                 self.rootscope.$broadcast('OP.ListUpdate', schema);
             } else if (msg.action === 'search') {
                 data = msg.data.list;
                 console.log('[OP] Search result came back: ', data);
             }
-    
+
+            if (typeof requestId !== 'undefined' && self.requests > 0) {
+                self.requests -= 1;
+                self.update_status();
+            }
+
             if (angular.isDefined(self.callbacks[requestId])) {
                 let callback = self.callbacks[requestId];
                 delete self.callbacks[requestId];
                 callback.resolve(data);
             } else {
-                console.log('Request without callback: ', msg.action, msg.data);
+                console.log('[OP] Request without callback: ', msg.action, msg.data);
             }
-            console.log('Proxied objects: ', self.objects);
-            console.log('Proxied lists: ', self.lists);
+            // console.log('[OP] Proxied objects: ', self.objects);
+            // console.log('[OP] Proxied lists: ', self.lists);
         }
-        
-        
+
         self.socket.listen('hfos.events.objectmanager', handleResponse);
-        
-        this.searchItems = function (schema, search, fields, fulltext) {
+
+        this.searchItems = function (schema, search, fields, fulltext, subscribe) {
             console.log('[OP] Async-getting list for schema ', schema, search);
-            
+
             if (typeof search === 'undefined') {
                 search = '';
             }
-            
+
             let reqid = self.getRequestId();
-            
+
             if (typeof search === 'undefined') {
                 search = '';
             }
-            
+
             self.socket.send({
                 'component': 'hfos.events.objectmanager',
                 'action': 'search',
@@ -141,15 +157,16 @@ class ObjectProxy {
                     'schema': schema,
                     'search': search,
                     'fields': fields,
-                    'fulltext': fulltext
+                    'fulltext': fulltext,
+                    'subscribe': subscribe
                 }
             });
-            
+
             let deferred = self.q.defer();
             self.callbacks[reqid] = deferred;
-            
+
             let query = deferred.promise.then(function (response) {
-                console.log('OP ASYNC Delivering:', response);
+                console.log('[OP] OP ASYNC Delivering:', response);
                 function compare(a, b) {
                     if (a.name < b.name)
                         return -1;
@@ -157,21 +174,24 @@ class ObjectProxy {
                         return 1;
                     return 0;
                 }
-                
+
                 if (response.length > 0 && typeof response[0].name !== 'undefined') {
                     response.sort(compare);
                 }
+
                 return {data: response};
             });
-            
+
             return query;
         };
-        
+
+        this.search = this.searchItems;
+
         this.get = function(schema, uuid) {
             console.log('[OP] Async-getting object ', schema, uuid);
-            
+
             let reqid = self.getRequestId();
-            
+
             self.socket.send({
                 'component': 'hfos.events.objectmanager',
                 'action': 'get',
@@ -181,23 +201,23 @@ class ObjectProxy {
                     'uuid': uuid
                 }
             });
-    
+
             let deferred = self.q.defer();
             self.callbacks[reqid] = deferred;
-    
+
             let query = deferred.promise.then(function (response) {
                 console.log('[OP] Get response:', response);
                 return response;
             });
-    
+
             return query;
         };
-    
+
         this.put = function(schema, obj) {
             console.log('[OP] Async-putting object ', schema, obj);
-        
+
             let reqid = self.getRequestId();
-        
+
             self.socket.send({
                 'component': 'hfos.events.objectmanager',
                 'action': 'put',
@@ -207,23 +227,26 @@ class ObjectProxy {
                     'obj': obj
                 }
             });
-        
+
             let deferred = self.q.defer();
             self.callbacks[reqid] = deferred;
-        
+
             let query = deferred.promise.then(function (response) {
                 console.log('[OP] Get response:', response);
                 return response;
             });
-        
+
             return query;
         };
     }
-    
+
     getRequestId() {
+        this.requests += 1;
+        this.update_status();
+
         return this.requestId++;
     }
-    
+
     getObject(schema, uuid, subscribe, filter) {
         console.log('[OP] Fetching object ', schema, uuid);
         this.socket.send({
@@ -232,7 +255,7 @@ class ObjectProxy {
             'data': {'schema': schema, 'uuid': uuid, 'subscribe': subscribe, 'filter': filter}
         });
     }
-    
+
     getObjectUuid(schema, name) {
         console.log('[OP] Getting object uuid', schema, name);
         if (name in this.namelookup) {
@@ -241,7 +264,7 @@ class ObjectProxy {
             }
         }
     }
-    
+
     getObjectName(uuid) {
         console.log('[OP] Getting object name', uuid);
         if (uuid in this.objects) {
@@ -250,17 +273,29 @@ class ObjectProxy {
             return 'Unknown object';
         }
     }
-    
-    subscribeObject(uuid) {
-        console.log('[OP] Subscribing to object ', uuid);
-        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'subscribe', 'data': uuid});
+
+    subscribe(things) {
+        console.log('[OP] Subscribing to object ', things);
+        let data;
+        if (typeof things === 'string') {
+            data = [things];
+        } else {
+            data = things;
+        }
+        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'subscribe', 'data': data});
     }
-    
-    unsubscribeObject(uuid) {
-        console.log('[OP] Unsubscribing to object ', uuid);
-        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'unsubscribe', 'data': uuid});
+
+    unsubscribe(things) {
+        console.log('[OP] Unsubscribing to object ', things);
+        let data;
+        if (typeof things === 'string') {
+            data = [things];
+        } else {
+            data = things;
+        }
+        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'unsubscribe', 'data': data});
     }
-    
+
     changeObject(schema, obj, change) {
         console.log('[OP] Changing object ', schema, obj, change);
         this.socket.send({
@@ -269,49 +304,49 @@ class ObjectProxy {
             'data': {'uuid': obj, 'schema': schema, 'change': change}
         });
     }
-    
+
     putObject(schema, obj) {
         console.log('[OP] Putting object ', schema, obj);
         this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'put', 'data': {'schema': schema, 'obj': obj}});
     }
-    
+
     putObjectChange(schema, obj) {
         console.log('[OP] Putting object change', schema, obj);
-    
-        console.log('OLD:', obj, 'NEW:', this.objects[obj.uuid]);
-        
+
+        console.log('[OP] OLD:', obj, 'NEW:', this.objects[obj.uuid]);
+
         let uuid = obj.uuid;
-        
+
         let change = {
             time: new Date().toISOString(),
             diff: jsondiffpatch.diff(obj, this.objects[uuid])
         };
-        
+
         let data = {
             schema: schema,
             uuid: uuid,
             change: change
         };
-        
+
         this.socket.send({
             component: 'hfos.events.objectmanager',
             action: 'putchangeset',
             data: data
         });
     }
-    
+
     deleteObject(schema, uuid) {
         console.log('[OP] Deleting object ', schema, uuid);
         this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'delete', 'data': {'schema': schema, 'uuid': uuid}});
     }
-    
-    
+
+
     getList(schema, filter, fields) {
         console.log('[OP] Getting object list ', schema, filter, fields);
-        console.log('LEGACY LIST OPERATION');
+
         this.socket.send({
             'component': 'hfos.events.objectmanager',
-            'action': 'list',
+            'action': 'getlist',
             'data': {
                 'schema': schema,
                 'filter': filter,
@@ -319,18 +354,18 @@ class ObjectProxy {
             }
         });
     }
-    
+
     list(name) {
-        console.log('LEGACY LIST ACCESS');
+        console.log('[OP] LIST ACCESS');
         return this.lists[name];
     }
-    
+
     lists() {
-        console.log('LEGACY GLOBAL LIST ACCESS');
+        console.log('[OP] GLOBAL LIST ACCESS');
         return this.lists;
     }
 }
 
-ObjectProxy.$inject = ['$q', 'socket', 'schemata', '$rootScope'];
+ObjectProxy.$inject = ['$q', 'socket', 'schemata', '$rootScope', 'statusbar'];
 
 export default ObjectProxy;
