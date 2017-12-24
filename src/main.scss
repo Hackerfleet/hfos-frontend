@@ -145,7 +145,28 @@ body {
 .navbar-nav .open .dropdown-menu {
     background-color: $color-white;
 }
-
+/* Clearable text inputs */
+.clearable{
+  position: relative;
+  display: inline-block;
+}
+.clearable input[type=text]{
+  padding-right: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.clearable__clear{
+  position: absolute;
+  right:0; top:0;
+  padding: 0 8px;
+  font-style: normal;
+  font-size: 1.2em;
+  user-select: none;
+  cursor: pointer;
+}
+.clearable input::-ms-clear {  /* Remove IE default X */
+  display: none;
+}
 .aside {
     margin-top: 51px;
 }
@@ -153,7 +174,7 @@ body {
 .jumbotron {
     margin-right: 5px;
     margin-left: 5px;
-    background-color: rgba(255, 255, 255, 1);
+    //background-color: rgba(255, 255, 255, 1);
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -168,7 +189,7 @@ body {
 }
 
 #mainmenu {
-    z-index: 100;
+    z-index: 1000;
 }
 
 a {
@@ -195,8 +216,8 @@ a:focus {
 }
 
 .panel-hover:hover {
-    background: $color-primary-3;
-    color: $color-primary-1;
+    //background: $color-primary-3;
+    //color: $color-primary-1;
 }
 
 .panel-heading, .panel-title {
@@ -233,13 +254,6 @@ html, body {
     height: 83vh;
 }
 
-#bootscreen {
-    height: 95%;
-    text-align: center;
-    vertical-align: middle;
-    color: white;
-}
-
 .hflogo {
     font-size: 350px;
     color: white;
@@ -259,7 +273,46 @@ html, body {
     display: flex;
     align-items: center;
 }
+.app-loading {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
 
+.app-loading .spinner {
+    animation: rotate 2s linear infinite;
+    transform-origin: center center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+    }
+}
 .gradient {
     z-index: 0;
     background: linear-gradient(82deg, rgba(58, 117, 168, 0), rgba(58, 117, 168, 0.41), rgba(200, 200, 220, 1));
@@ -318,10 +371,11 @@ html, body {
 .menu-block {
     padding: 5px;
     height: 100%;
+    border-radius: 5px;
 }
 
 .menu-block:hover {
-    background: $color-primary-2;
+    //background: $color-primary-2;
     color: $color-black;
 }
 
@@ -394,6 +448,10 @@ html, body {
 
 .dropdown-menu > li > div > a {
     display: inline-block;
+    padding: 0px 20px 0px 20px;
+    &:hover {
+//        background: #e8e8e8;
+    }
 }
 
 .col {
@@ -450,7 +508,7 @@ html, body {
 }
 
 #sidebargrab {
-    z-index: 99;
+    z-index: 101;
     outline: 0;
     opacity: 0.5;
     position: fixed;
@@ -473,12 +531,12 @@ html, body {
     opacity: 0.9;
 }
 
-
 footer {
-    color: gray;
+    //color: $color-black;
     opacity: 0.6;
     padding-left: 10px;
     padding-right: 10px;
+    max-height: 30vh;
 }
 
 footer:hover {
@@ -490,8 +548,22 @@ footer:hover {
     opacity: 0.9;
 }
 
+footer a {
+    color: $color-primary-3
+}
+
 footer > div > div.row > div:hover {
     color: white;
+}
+
+footer ul {
+    list-style-type: none;
+    overflow: auto;
+    max-height: 30vh;
+    margin-top: -20px;
+    margin-left: 30px;
+    margin-bottom: 0;
+    padding-left: 0;
 }
 
 #ledoutgoing,
@@ -551,7 +623,6 @@ footer > div > div.row > div:hover {
     background: $color-primary-2;
 }
 
-
 .angular-ui-tree-node-active {
     background: $color-primary-1;
     color: $color-gray-dark;
@@ -595,6 +666,16 @@ footer > div > div.row > div:hover {
     }
 }
 
+// Fontawesome Buttons
+
+span.off {
+    color: $color-gray-light;
+}
+
+span.fa.btn {
+    font-size: 28px;
+}
+
 .textlabel {
     font-size: 16px;
     -webkit-box-shadow: none !important;
@@ -619,5 +700,208 @@ footer > div > div.row > div:hover {
         &.ng-leave-active {
             opacity: 0;
         }
+    }
+}
+/* Have to set height explicity on ui-view
+to prevent collapsing during animation */
+/*
+main [ui-view]{
+ height: 65px;
+}
+
+main [ui-view].ng-enter, [ui-view].ng-leave {
+      position: absolute;
+      left: 0;
+      right: 0;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+
+main [ui-view].ng-enter {
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transform:scale3d(0.5, 0.5, 0.5);
+    -moz-transform:scale3d(0.5, 0.5, 0.5);
+    transform:scale3d(0.5, 0.5, 0.5);
+}
+
+main [ui-view].ng-enter-active {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transform:scale3d(1, 1, 1);
+    -moz-transform:scale3d(1, 1, 1);
+    transform:scale3d(1, 1, 1);
+}
+
+main [ui-view].ng-leave {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+main [ui-view].ng-leave-active {
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transform: translate3d(100px, 0, 0);
+    -moz-transform: translate3d(100px, 0, 0);
+    transform: translate3d(100px, 0, 0);
+}*/
+
+.slide-left.ng-enter,
+.slide-left.ng-leave,
+.slide-right.ng-enter,
+.slide-right.ng-leave {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: inherit;
+  -ms-transition: .7s ease-in-out;
+  -webkit-transition: .7s ease-in-out;
+  transition:  .7s ease-in-out;
+}
+
+.slide-left.ng-enter {}
+.slide-left.ng-enter.ng-enter-active {
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.slide-left.ng-leave {
+  z-index: 100;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+.slide-left.ng-leave.ng-leave-active {
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+
+
+.slide-right.ng-enter {
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+
+.slide-right.ng-enter.ng-enter-active,
+.slide-right.ng-leave {
+  position: absolute;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.slide-right.ng-leave.ng-leave-active {
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+}
+#bootscreen {
+    position: absolute;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+
+#fleetlogo {
+    position: relative;
+    width: 330px;
+    height: 330px;
+    background-image: url('/assets/images/hackerfleet.svg');
+    background-size: 100% auto;
+}
+
+.vertical-center {
+    align-items: center;
+}
+
+#login-notice {
+    height: 70px;
+}
+
+.hide {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.fadein {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: visibility 0s 2s, opacity 2s linear;
+}
+
+.fadeout {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+}
+
+.animate-show.ng-hide-add,
+.animate-show.ng-hide-remove {
+    -webkit-transition: all linear 1s;
+    -moz-transition: all linear 1s;
+    -o-transition: all linear 1s;
+    transition: all linear 1s;
+    display: block !important;
+}
+
+.animate-show.ng-hide-add.ng-hide-add-active,
+.animate-show.ng-hide-remove {
+    line-height: 0;
+    opacity: 0;
+    padding: 0 10px;
+}
+
+.animate-show.ng-hide-add,
+.animate-show.ng-hide-remove.ng-hide-remove-active {
+    line-height: 20px;
+    opacity: 1;
+    padding: 10px;
+    border: 1px solid black;
+    background: white;
+}
+
+.gradient {
+    background: linear-gradient(82deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(200, 200, 220, 1));
+    background-size: 80% 400%;
+    background-position: -400% 0%;
+    background-repeat: no-repeat;
+    -webkit-animation: bootgradient 2s linear 3;
+    -moz-animation: bootgradient 2s linear 3;
+    animation: bootgradient 5s linear 3;
+    animation-iteration-count: 3;
+    animation-duration: 2s;
+    animation-delay: 1s;
+}
+
+@-moz-keyframes bootgradient {
+    0% {
+        background-position: -400% 0%
+    }
+    100% {
+        background-position: 1000% 0%
+    }
+}
+
+@-webkit-keyframes bootgradient {
+    0% {
+        background-position: -400% 0%
+    }
+    100% {
+        background-position: 1000% 0%
+    }
+}
+
+@keyframes bootgradient {
+    0% {
+        background-position: -400% 10%
+    }
+    100% {
+        background-position: 1000% 10%
     }
 }
