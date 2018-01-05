@@ -9,7 +9,9 @@
 .. image:: https://codeclimate.com/github/Hackerfleet/hfos-frontend/badges/issue_count.svg
    :target: https://codeclimate.com/github/Hackerfleet/hfos-frontend
    :alt: Issue Count
-
+.. image:: https://badges.greenkeeper.io/Hackerfleet/hfos-frontend.svg
+   :alt: Greenkeeper badge
+   :target: https://greenkeeper.io/
 
 HFOS - The Hackerfleet Operating System
 =======================================
