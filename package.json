@@ -18,7 +18,7 @@
     "ci": "npm run lint && npm run mocha && npm run dist"
   },
   "author": "riot@c-base.org",
-  "license": "GPL-3.0",
+  "license": "AGPL-3.0",
   "dependencies": {
     "angular": "1.6.8",
     "angular-animate": "1.6.8",
