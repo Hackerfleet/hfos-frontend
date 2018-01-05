@@ -70,6 +70,15 @@
                                     <input id="passwordverifyregister" type="password" ng-model="$ctrl.passwordregverify"><br/>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label ng-show="$ctrl.tos">Accept <a href="$ctrl.tos">terms of service</a></label>
+                                    <label ng-hide="$ctrl.tos">Accept terms of service</label>
+                                </div>
+                                <div>
+                                    <input id="accepttos" type="checkbox" ng-model="$ctrl.accepttos">
+                                </div>
+                            </div>
 
                         </div>
                         <div class="modal-footer">
