@@ -103,6 +103,8 @@
                             <input class="form-control" type="checkbox" ng-model="$ctrl.ssloverride">
                         </div>
 
+                        <a ng-click="$ctrl.serverport = 8055; $ctrl.setserverport()" type="button"
+                           class="btn btn-info">Development</a>
                         <a ng-click="$ctrl.setserverport()" type="button"
                            class="btn btn-danger">Override server port</a>
                         <a ng-click="$ctrl.unsetserverport()" type="button"
