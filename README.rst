@@ -86,3 +86,8 @@ This is migrating over to hfos-frontend submodule.
 
 
 -- :boat: :+1:
+
+
+.. image:: https://badges.greenkeeper.io/Hackerfleet/hfos-frontend.svg
+   :alt: Greenkeeper badge
+   :target: https://greenkeeper.io/
