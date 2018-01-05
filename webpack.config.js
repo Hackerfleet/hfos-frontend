@@ -1,13 +1,13 @@
-var _ = require('lodash');
-var minimist = require('minimist');
-var chalk = require('chalk');
-var webpack = require('webpack');
+let _ = require('lodash');
+let minimist = require('minimist');
+let chalk = require('chalk');
+let webpack = require('webpack');
 
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var OpenBrowserWebpackPlugin = require('open-browser-webpack-plugin');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
+let CleanWebpackPlugin = require('clean-webpack-plugin');
+let OpenBrowserWebpackPlugin = require('open-browser-webpack-plugin');
 
-var PARAMS_DEFAULT = {
+let PARAMS_DEFAULT = {
     resolve: {
         extensions: ['.js', '.tpl.html', '.css', '.json', '.scss', '.svg', '.ttf', '.woff'],
         alias: {
@@ -69,7 +69,7 @@ var PARAMS_DEFAULT = {
         host: '0.0.0.0'
     },
 };
-var PARAMS_PER_TARGET = {
+let PARAMS_PER_TARGET = {
     DEV: {
         devtool: 'eval',
         output: {
@@ -114,9 +114,10 @@ var PARAMS_PER_TARGET = {
         ]
     }
 };
-var TARGET = minimist(process.argv.slice(2)).TARGET || 'BUILD';
-//var target = 'web';
-var params = _.merge(PARAMS_DEFAULT, PARAMS_PER_TARGET[TARGET], _mergeArraysCustomizer);
+let TARGET = minimist(process.argv.slice(2)).TARGET || 'BUILD';
+
+let params = _.mergeWith(PARAMS_DEFAULT, PARAMS_PER_TARGET[TARGET], _mergeArraysCustomizer);
+console.log(params);
 
 _printBuildInfo(params);
 
