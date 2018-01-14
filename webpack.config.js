@@ -44,7 +44,6 @@ let PARAMS_DEFAULT = {
             'angular-strap/dist/angular-strap.tpl.js',
 
             'humanize-duration',
-            'c3',
             'qrcode-generator/qrcode_UTF8.js',
             //'angular-qr'
         ]
