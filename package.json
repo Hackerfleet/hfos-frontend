@@ -14,7 +14,7 @@
     "mocha": "mocha --compilers js:babel-register ./src/**/*.test.js",
     "watch": "mocha --compilers js:babel-register -w ./src/**/*.test.js",
     "karma": "karma start",
-    "test": "npm run lint && npm run mocha", // && karma start --single-run",
+    "test": "npm run lint && npm run mocha",
     "ci": "npm run lint && npm run mocha && npm run dist"
   },
   "author": "riot@c-base.org",
