@@ -15,7 +15,7 @@
     "watch": "mocha --compilers js:babel-register -w ./src/**/*.test.js",
     "karma": "karma start",
     "test": "npm run lint && npm run mocha",
-    "ci": "npm run lint && npm run mocha && npm run dist"
+    "ci": "npm run lint && npm run mocha && cp src/main.tpl.js src/main.js && npm run dist"
   },
   "author": "riot@c-base.org",
   "license": "AGPL-3.0",
