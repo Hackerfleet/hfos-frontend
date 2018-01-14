@@ -181,9 +181,9 @@ class objecteditor {
             if (search === '') {
                 console.log("INSIDEMODEL:", options.scope.insidemodel);
             }
-            let result = self.objectproxy.searchItems(options.type, search);
-            console.log(result);
-            return result;
+            let result = self.objectproxy.search(options.type, search);
+            console.log('[OE] Result: ', result);
+            return result.data.list;
         };
 
         this.updateModel = function (uuid) {

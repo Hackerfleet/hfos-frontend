@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 function requireAll(r) {
-    console.log("Booya:", r);
     r.keys().forEach(r);
     return r;
 }
@@ -68,7 +67,7 @@ class AppComponent {
         this.rootscope.$on('Profile.Update', function () {
             // Set a nice background, if one is configured
             let background = self.user.profile.settings.background;
-            console.log("BG:", background, backgrounds);
+            //console.log("BG:", background, backgrounds);
             if (background === "") {
                 return;
             } else if (background !== 'default') {
@@ -87,9 +86,9 @@ class AppComponent {
         this.update_client_configurations = function () {
             console.log('[APP] Populating client menu.');
             // Request client list for the client menu
-            self.objectproxy.searchItems('client', {'owner': self.user.useruuid}).then(function (msg) {
+            self.objectproxy.search('client', {'owner': self.user.useruuid}).then(function (msg) {
                 console.log('[APP] Clientconfiglist: ', msg);
-                self.clientconfiglist = msg.data;
+                self.clientconfiglist = msg.data.list;
             });
         };
 

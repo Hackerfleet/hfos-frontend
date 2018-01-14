@@ -130,9 +130,9 @@ class configurator {
             if (search === '') {
                 console.log("INSIDEMODEL:", options.scope.insidemodel);
             }
-            let result = self.objectproxy.searchItems(options.type, search);
+            let result = self.objectproxy.search(options.type, search);
             console.log(result);
-            return result;
+            return result.data.list;
         };
 
     }

@@ -114,7 +114,7 @@ class ObjectProxy {
 
                 self.rootscope.$broadcast('OP.ListUpdate', schema);
             } else if (msg.action === 'search') {
-                data = msg.data.list;
+                data = msg;
                 console.log('[OP] Search result came back: ', data);
             }
 
@@ -136,7 +136,7 @@ class ObjectProxy {
 
         self.socket.listen('hfos.events.objectmanager', handleResponse);
 
-        this.searchItems = function (schema, search, fields, fulltext, subscribe) {
+        this.search = function (schema, search, fields, fulltext, subscribe, limit, skip) {
             console.log('[OP] Async-getting list for schema ', schema, search);
 
             if (typeof search === 'undefined') {
@@ -150,23 +150,25 @@ class ObjectProxy {
             }
 
             self.socket.send({
-                'component': 'hfos.events.objectmanager',
-                'action': 'search',
-                'data': {
-                    'req': reqid,
-                    'schema': schema,
-                    'search': search,
-                    'fields': fields,
-                    'fulltext': fulltext,
-                    'subscribe': subscribe
+                component: 'hfos.events.objectmanager',
+                action: 'search',
+                data: {
+                    req: reqid,
+                    schema: schema,
+                    search: search,
+                    fields: fields,
+                    fulltext: fulltext,
+                    subscribe: subscribe,
+                    limit: limit,
+                    skip: skip
                 }
             });
 
             let deferred = self.q.defer();
             self.callbacks[reqid] = deferred;
 
-            let query = deferred.promise.then(function (response) {
-                console.log('[OP] OP ASYNC Delivering:', response);
+            return deferred.promise.then(function (msg) {
+                console.log('[OP] OP ASYNC Delivering:', msg);
                 function compare(a, b) {
                     if (a.name < b.name)
                         return -1;
@@ -175,17 +177,13 @@ class ObjectProxy {
                     return 0;
                 }
 
-                if (response.length > 0 && typeof response[0].name !== 'undefined') {
-                    response.sort(compare);
+                if (msg.data.list.length > 0 && typeof msg.data.list[0].name !== 'undefined') {
+                    msg.data.list.sort(compare);
                 }
 
-                return {data: response};
+                return msg;
             });
-
-            return query;
         };
-
-        this.search = this.searchItems;
 
         this.get = function(schema, uuid) {
             console.log('[OP] Async-getting object ', schema, uuid);
