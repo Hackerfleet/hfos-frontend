@@ -17,16 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+
 import { assert } from 'chai';
 
 import FeatureMenu from './menu.js';
-import UserService from '../../common/services/user.service.js';
 
 let component;
 
 describe('FeatureMenu', function () {
     beforeEach(function() {
-        let userService = new UserService();
+        let userService = {profile: {screen: null}};
         component = new FeatureMenu(userService);
         console.log('component:', component)
     });
