@@ -1,3 +1,5 @@
+"use strict";
+
 let _ = require('lodash');
 let minimist = require('minimist');
 let chalk = require('chalk');
