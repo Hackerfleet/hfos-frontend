@@ -22,7 +22,6 @@ import uirouter from 'angular-ui-router';
 
 import { routing } from './doc.config.js';
 
-import DocComponent from './doc-component/doc-component';
 import template from './doc-component/doc-component.tpl.html';
 
 export default angular
