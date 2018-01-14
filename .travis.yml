@@ -15,7 +15,7 @@ install:
 - npm install -g eslint
 - npm install
 script:
-- npm run test
+- npm run ci
 notifications:
   email:
   - riot@c-base.org
