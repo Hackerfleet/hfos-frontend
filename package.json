@@ -95,7 +95,7 @@
     "chalk": "2.3.0",
     "clean-webpack-plugin": "0.1.17",
     "connect": "3.6.5",
-    "css-loader": "0.28.8",
+    "css-loader": "0.28.9",
     "eslint": "4.15.0",
     "eslint-config-defaults": "9.0.0",
     "exports-loader": "^0.6.3",
