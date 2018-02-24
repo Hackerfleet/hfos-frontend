@@ -28,6 +28,7 @@
             <li><a role="tab" ng-click="$ctrl.opentab('console')" data-toggle="tab">Console</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('commands')" data-toggle="tab">Commands</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('server')" data-toggle="tab">Server</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('schemata')" data-toggle="tab">Schemata</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('widgettests')" data-toggle="tab">Widgettests</a></li>
         </ul>
 
@@ -86,7 +87,8 @@
                     <a ng-click="$ctrl.command('exception')" type="button" class="btn btn-danger">Throw a
                         tantrum</a>
                     <a ng-click="$ctrl.command('logtail')" type="button" class="btn btn-danger">Follow logfile</a>
-                    <a ng-click="$ctrl.command('trigger_anchorwatch')" type="button" class="btn btn-danger">Trigger Anchorwatcher</a>
+                    <a ng-click="$ctrl.command('trigger_anchorwatch')" type="button" class="btn btn-danger">Trigger
+                        Anchorwatcher</a>
                 </div>
             </div>
 
@@ -96,7 +98,8 @@
                     <div class="form-inline">
                         <div class="form-group">
                             <label>Port</label>
-                            <input class="form-control" type="number" ng-change="$ctrl.ssloverride = $ctrl.serverport === 443" ng-model="$ctrl.serverport">
+                            <input class="form-control" type="number"
+                                   ng-change="$ctrl.ssloverride = $ctrl.serverport === 443" ng-model="$ctrl.serverport">
                         </div>
                         <div class="form-group">
                             <label>SSL</label>
@@ -121,7 +124,7 @@
                             <th>Schemaname</th>
                             <th>Actions</th>
                         </tr>
-                        <tr ng-repeat="schema in $ctrl.schemata | orderBy:schema">
+                        <tr ng-repeat="(schema, data) in $ctrl.schemaservice.schemata">
                             <td>{{schema}}</td>
                             <td>
                                 <a ng-click="$ctrl.viewlist(schema)">View list</a>
@@ -156,6 +159,33 @@
                             <td>{{$ctrl.socket.stats.start}}</td>
                         </tr>
                     </table>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="schemata">
+                <div class="well">
+                    <h3>Registered Schemata</h3>
+
+                    <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true"
+                         bs-collapse>
+                        <div ng-repeat="(schema, data) in $ctrl.schemaservice.schemata | orderedObject"
+                             class="panel panel-default">
+                            <div class="panel-heading panel-hover" role="tab">
+                                <h4 class="panel-title">
+                                    <a bs-collapse-toggle>
+                                        {{schema}}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse" role="tabpanel" bs-collapse-target uib-collapse="false">
+                                <div class="panel-body">
+                                    <pre>
+                                        {{data|json}}
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

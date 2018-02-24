@@ -54,26 +54,11 @@ class AboutComponent {
 
         let self = this;
 
-        function updateSchemata() {
-            self.schemata = [];
-
-            for (let schema in self.schemaservice.schemata) {
-                if (self.schemaservice.schemata.hasOwnProperty(schema)) {
-                    self.schemata.push(schema);
-                }
-            }
-            console.log(self.schemata);
-        }
-
-        this.rootscope.$on('Schemata.Update', updateSchemata);
-
         if (this.user.debug) {
             console.log('[ABOUT] Opening debug tab:', this.user.debug);
             this.toggleDebug();
             this.opentab(this.storage.get('debugTab'));
         }
-
-        updateSchemata();
     }
 
     command(cmd) {
