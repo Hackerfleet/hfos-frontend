@@ -387,27 +387,6 @@ class UserService {
         }
     }
 
-    changePassword(old, new_password, confirm_password) {
-        if (this.has_password && (typeof old === 'undefined' || old === '')) {
-            console.log('Has old password but it was not supplied!');
-            return
-        }
-        if (new_password !== confirm_password) {
-            console.log("Unexpected: New passwords don't match!");
-            return
-        }
-        console.log('Transmitting password change request');
-        let packet = {
-            component: 'hfos.ui.auth',
-            action: 'changepassword',
-            data: {
-                'old': old,
-                'new': new_password
-            }
-        };
-        this.socket.send(packet);
-    }
-
     logincancel() {
         console.log('[USER] Login cancelled');
         this.signingIn = false;

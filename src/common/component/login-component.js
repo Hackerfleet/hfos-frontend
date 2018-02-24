@@ -19,8 +19,9 @@
 
 class LoginComponent {
 
-    constructor(userservice) {
+    constructor(userservice, $state) {
         this.user = userservice;
+        this.state = $state;
         this.greetingname = this.user.username;
         this.username = '';
         this.password = '';
@@ -50,6 +51,6 @@ class LoginComponent {
     }
 }
 
-LoginComponent.$inject = ['user'];
+LoginComponent.$inject = ['user', '$state'];
 
 export default LoginComponent;

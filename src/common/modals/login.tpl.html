@@ -6,89 +6,40 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
-            <ul class="nav nav-pills" role="tablist">
-                <li class="active"><a role="tab" ng-click="$ctrl.opentab('login')" data-toggle="tab">Log in</a></li>
-                <li><a role="tab" ng-click="$ctrl.opentab('register')" data-toggle="tab">Register</a></li>
-            </ul>
+            <div id="login">
+                <form ng-keyup="$event.keyCode == 27 && ($ctrl.close() || $hide())">
+                    <div class="modal-body">
 
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane active" id="login">
-                    <form ng-keyup="$event.keyCode == 27 && ($ctrl.close() || $hide())">
-                        <div class="modal-body">
-
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label>Username:</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input id="username" type="text" ng-model="$ctrl.username" autofocus><br/>
-                                </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Username:</label>
                             </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label>Password:</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input id="password" type="password" ng-model="$ctrl.password"><br/>
-                                </div>
+                            <div class="col-md-8">
+                                <input id="username" type="text" ng-model="$ctrl.username" autofocus><br/>
                             </div>
-
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-lg" ng-click="$ctrl.close(); $hide()">Cancel</button>
-                            <button type="submit" class="btn btn-lg btn-default" ng-click="$ctrl.login(); $hide()">Login
-                            </button>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Password:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input id="password" type="password" ng-model="$ctrl.password"><br/>
+                            </div>
                         </div>
-                    </form>
-                </div>
-                <div class="tab-pane" id="register">
-                    <p class="bg-warning">This is not yet implemented. If you don't have an account, just logging in with new credentials will create one.</p>
-                    <form ng-keyup="$event.keyCode == 27 && ($ctrl.close() || $hide())">
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label>Username:</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input id="usernameregister" type="text" ng-model="$ctrl.usernamereg" autofocus><br/>
-                                </div>
+                        <div ng-show="$ctrl.state.href('app.enrolment') !== null">
+                            <div class="text-info">Don't have an account?
+                                <a class="pull-right" ng-click="$hide()" href="#!/enrolment">Enrol yourself!</a></div>
+                            <div class="text-info">Forgot your password or username?
+                                <a class="pull-right" ng-click="$hide()" href="#!/resetaccount">Request a reset.</a>
                             </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label>Password:</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input id="passwordregister" type="password" ng-model="$ctrl.passwordreg"><br/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label>Password (again):</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input id="passwordverifyregister" type="password" ng-model="$ctrl.passwordregverify"><br/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label ng-show="$ctrl.tos">Accept <a href="$ctrl.tos">terms of service</a></label>
-                                    <label ng-hide="$ctrl.tos">Accept terms of service</label>
-                                </div>
-                                <div>
-                                    <input id="accepttos" type="checkbox" ng-model="$ctrl.accepttos">
-                                </div>
-                            </div>
-
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-lg" ng-click="$ctrl.close(); $hide()">Cancel</button>
-                            <button type="submit" class="btn btn-lg btn-default" ng-click="$ctrl.login(); $hide()">Register
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-lg btn-link" ng-click="$ctrl.close(); $hide()">Cancel</button>
+                        <button type="submit" class="btn btn-lg btn-default" ng-click="$ctrl.login(); $hide()">Login
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
