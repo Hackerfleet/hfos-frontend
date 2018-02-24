@@ -52,6 +52,7 @@ require('moment');
 require('fullcalendar');
 import angular from 'angular';
 import sanitize from 'angular-sanitize';
+import 'angular-gettext';
 import 'underscore/underscore';
 import 'angular-underscore';
 import 'angular-ui-utils/modules/utils';
@@ -100,14 +101,13 @@ import objects from './objects/objects.module';
 import about from './about/about.module';
 import systemlog from './systemlog/systemlog.module';
 import doc from './doc/doc.module';
-import password from './password/password.module'
 
 // HFOS Plugin Modules
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
-    'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable', 'ui.calendar', 'ngEmbed',
+    'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable', 'ui.calendar', 'ngEmbed', 'gettext',
     animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, systemlog,
-    doc, clipboard.name, ngcalendar, tree, localstorage, ngQrcode, password
+    doc, clipboard.name, ngcalendar, tree, localstorage, ngQrcode
 ];
 
 /* COMPONENT SECTION */
