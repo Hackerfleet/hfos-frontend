@@ -167,7 +167,7 @@ class ObjectProxy {
             let deferred = self.q.defer();
             self.callbacks[reqid] = deferred;
 
-            return deferred.promise.then(function (msg) {
+            let query = deferred.promise.then(function (msg) {
                 console.log('[OP] OP ASYNC Delivering:', msg);
                 function compare(a, b) {
                     if (a.name < b.name)
@@ -183,6 +183,8 @@ class ObjectProxy {
 
                 return msg;
             });
+
+            return query;
         };
 
         this.get = function(schema, uuid) {
