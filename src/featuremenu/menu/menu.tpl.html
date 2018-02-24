@@ -27,18 +27,24 @@
             <tr id="login-notice">
                 <div class="dark" ng-show="$ctrl.socket.connected">
                     <div ng-hide="$ctrl.user.signedin">
-                    <h2>Login required</h2>
-                    <span>Please <a ng-click="$ctrl.user.login()">login or register your account</a> to use this node.</span>
+                    <h2 translate>Login required</h2>
+                        <span>
+                            <span translate>Please</span>
+                            <a ng-click="$ctrl.user.login()">
+                                <span translate>login or register your account</span>
+                            </a>
+                            <span translate>to use this node.</span>
+                        </span>
                     </div>
                     <div ng-show="$ctrl.user.signedin">
-                    <h2 ng-if="$ctrl.user.signedin">Logging in...</h2>
+                        <h2 ng-if="$ctrl.user.signedin" translate>Logging in...</h2>
                     </div>
                 </div>
             </tr>
             <tr id="disconnected-notice">
                 <div class="dark" ng-show="!$ctrl.socket.connected">
-                        <h2>No connection</h2>
-                        <span>Your client is not connected to the node.</span>
+                        <h2 translate>No connection</h2>
+                        <span translate>Your client is not connected to the node.</span>
                     </div>
                 </div>
             </tr>
