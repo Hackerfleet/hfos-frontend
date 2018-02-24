@@ -172,7 +172,9 @@ class objecteditor {
             self.schemadata = self.schemata.get(self.config.schema);
             if (self.config.action !== 'Create' && self.config.uuid !== '') {
                 console.log('[OE] Requesting object.');
-                self.objectproxy.getObject(self.config.schema, self.config.uuid, true);
+                self.objectproxy.get(self.config.schema, self.config.uuid, true).then(function(data) {
+                    console.log('DATA:', data);
+                });
             }
         };
 
@@ -181,9 +183,15 @@ class objecteditor {
             if (search === '') {
                 console.log("INSIDEMODEL:", options.scope.insidemodel);
             }
-            let result = self.objectproxy.search(options.type, search);
+
+            let result = self.objectproxy.search(options.type, search).then(function(msg) {
+                console.log('OE-Data',msg);
+                return msg.data.list;
+
+            });
             console.log('[OE] Result: ', result);
-            return result.data.list;
+            return result;
+
         };
 
         this.updateModel = function (uuid) {
