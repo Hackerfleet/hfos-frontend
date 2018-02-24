@@ -137,6 +137,16 @@ class configurator {
 
     }
 
+    formAction(component, action, data) {
+        console.log('[OE] FormAction initiated: ', component, action, data);
+
+        this.socket.send({
+            'component': component,
+            'action': action,
+            'data': data
+        });
+    }
+
     showConfig(uuid) {
         console.log('UUID:', uuid);
 
