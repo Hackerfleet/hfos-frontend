@@ -8,6 +8,8 @@ let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let CleanWebpackPlugin = require('clean-webpack-plugin');
 let OpenBrowserWebpackPlugin = require('open-browser-webpack-plugin');
+let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+let AngularGetTextPlugin = require('angular-gettext-plugin');
 
 let PARAMS_DEFAULT = {
     resolve: {
@@ -50,9 +52,21 @@ let PARAMS_DEFAULT = {
     },
     output: {
         filename: '[name].[chunkhash].js',
-        sourceMapFilename: '[name].[chunkhash].map'
+        sourceMapFilename: '[name].[chunkhash].map',
+        jsonpFunction:'webpackJsonp'
     },
     plugins: [
+        new AngularGetTextPlugin({
+            compileTranslations: {
+                input: 'po/*.po',
+                outputFolder: '../locale',
+                format: 'json'
+            },
+            extractStrings: {
+                input: 'src/**/*.html',
+                destination: '../locale/frontend.pot'
+            }
+        }),
         new HtmlWebpackPlugin({
             template: './src/index.html',
             inject: 'body'
@@ -63,7 +77,7 @@ let PARAMS_DEFAULT = {
             c3: 'c3',
             qrcode: 'qrcode-generator',
         }),
-
+        //new BundleAnalyzerPlugin(),
     ],
     devServer: {
         port: 8081,
@@ -72,7 +86,7 @@ let PARAMS_DEFAULT = {
 };
 let PARAMS_PER_TARGET = {
     DEV: {
-        devtool: 'eval',
+        devtool: 'cheap-source-map',
         output: {
             filename: '[name].js'
         },
@@ -92,7 +106,7 @@ let PARAMS_PER_TARGET = {
         output: {
             path: __dirname + '/build'
         },
-        devtool: 'eval',
+        devtool: 'cheap-source-map',
         plugins: [
             new CleanWebpackPlugin(['build']),
             new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[chunkhash].js'}),
