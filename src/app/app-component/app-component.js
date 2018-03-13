@@ -26,7 +26,7 @@ let themes = requireAll(require.context("../../themes", true, /\.scss$/));
 
 class AppComponent {
 
-    constructor(scope, user, socket, rootscope, objectproxy, state, notification, fullscreen, infoscreen, statusbar) {
+    constructor(scope, user, socket, rootscope, objectproxy, state, notification, fullscreen, infoscreen, statusbar, systemconfig) {
         this.scope = scope;
         this.user = user;
         this.socket = socket;
@@ -37,11 +37,13 @@ class AppComponent {
         this.fullscreen = fullscreen;
         this.infoscreen = infoscreen;
         this.statusbar = statusbar;
+        this.systemconfig = systemconfig;
 
         this.rotationenabled = infoscreen.enabled;
         this.rotationpaused = false;
 
         this.search_string = '';
+        this.search_collapsed = true;
 
         this.clientconfiglist = [];
 
@@ -167,6 +169,14 @@ class AppComponent {
         console.log('[MAIN] Main profile: ', this.user.profile);
     }
 
+    search(event) {
+        if (this.search_string !== '') {
+            console.log('Would search now');
+        } else {
+            this.search_collapsed = !this.search_collapsed;
+        }
+    }
+
     fullscreentoggle() {
         if (this.fullscreen.isEnabled()) {
             this.fullscreen.cancel();
@@ -197,6 +207,6 @@ class AppComponent {
     }
 }
 
-AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'notification', 'Fullscreen', 'infoscreen', 'statusbar'];
+AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'notification', 'Fullscreen', 'infoscreen', 'statusbar', 'systemconfig'];
 
 export default AppComponent;

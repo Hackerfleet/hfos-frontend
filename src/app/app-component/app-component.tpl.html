@@ -72,10 +72,10 @@
 
             <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right" id="mainmenunavbar">
-                    <li>
+                    <li ng-hide="$ctrl.search_collapsed">
                         <form class="navbar-form">
                             <div class="form-group clearable" style="display:inline;">
-                                <input ng-show="searchCollapsed" type="search" class="form-control"
+                                <input type="search" class="form-control"
                                        ng-model="$ctrl.search_string">
                                 <span ng-show="$ctrl.search_string !== ''"
                                       class="clearable__clear"
@@ -83,10 +83,10 @@
                             </div>
                         </form>
                     </li>
-                    <li>
-                        <a ng-click="searchCollapsed = !searchCollapsed"
-                           ng-style="{'color': searchCollapsed && '#fff'}"
-                           class="glyphicon glyphicon-search"></span>
+                    <li class="hidden">
+                        <a ng-click="$ctrl.search()"
+                           ng-style="{'color': $ctrl.search_string !== '' && 'var(--color-primary-0)'}"
+                           class="glyphicon glyphicon-search">
                         </a>
                     </li>
                     <li id="nav-home"><a href="/#!/"><span class="glyphicon glyphicon-home"></span></a></li>
