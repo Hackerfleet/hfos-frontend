@@ -23,7 +23,13 @@ export function routing($stateProvider) {
 
     $stateProvider
         .state('app.editor', {
-            url: '/editor/:schema/:uuid/:action',
+            url: '/editor/:schema/:uuid/:action?:initial}',
+            params: {
+                initial: {
+                    type: 'json',
+                    value: null
+                }
+            },
             template: '<objecteditor></objecteditor>'
         })
         .state('app.list', {

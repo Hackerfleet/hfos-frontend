@@ -56,13 +56,13 @@ class objecteditor {
 
         let self = this;
 
-        this.scope.$on('Changed.UUID', function(event, val) {
+        this.scope.$on('Changed.UUID', function (event, val) {
             console.log('[OE] UUID changed:', self.uuid);
             self.config.uuid = val;
             self.getData();
         });
 
-        this.scope.$on('Changed.Initial', function(event, val) {
+        this.scope.$on('Changed.Initial', function (event, val) {
             console.log('[OE] Initial model changed:', val);
             self.model = val;
         });
@@ -127,8 +127,19 @@ class objecteditor {
             console.log('[OE] Marking object as stored.');
             $('#objStored').removeClass('hidden');
             $('#objModified').addClass('hidden');
-            self.config.action = 'Edit';
+
             self.notification.add('success', 'Editor', 'Object successfully stored.', 5);
+
+            if (this.config.action === 'New') {
+                if (this.config.initial !== null) {
+                    this.model = this.config.initial;
+                } else {
+                    this.model = {};
+                }
+                self.config.action = 'Create';
+            } else {
+                self.config.action = 'Edit';
+            }
         };
 
         this.putupdate = this.rootscope.$on('OP.Put', function (ev, uuid) {
@@ -172,7 +183,7 @@ class objecteditor {
             self.schemadata = self.schemata.get(self.config.schema);
             if (self.config.action !== 'Create' && self.config.uuid !== '') {
                 console.log('[OE] Requesting object.');
-                self.objectproxy.get(self.config.schema, self.config.uuid, true).then(function(data) {
+                self.objectproxy.get(self.config.schema, self.config.uuid, true).then(function (data) {
                     console.log('DATA:', data);
                 });
             }
@@ -184,8 +195,8 @@ class objecteditor {
                 console.log("INSIDEMODEL:", options.scope.insidemodel);
             }
 
-            let result = self.objectproxy.search(options.type, search).then(function(msg) {
-                console.log('OE-Data',msg);
+            let result = self.objectproxy.search(options.type, search).then(function (msg) {
+                console.log('OE-Data', msg);
                 return msg.data.list;
 
             });
@@ -231,15 +242,23 @@ class objecteditor {
 
     $onInit() {
         if (typeof this.scope.stateParams.uuid !== 'undefined') {
+            console.log('[OE] Getting params from stateparams');
             this.config = {
                 uuid: this.scope.stateParams.uuid,
                 schema: this.scope.stateParams.schema,
-                action: this.scope.stateParams.action
+                action: this.scope.stateParams.action,
+                initial: this.scope.stateParams.initial
             };
+            console.log('[OE] Resulting config:', this.config);
+
+            if (this.config.initial !== null) {
+                this.model = this.config.initial;
+            }
         } else {
-            console.log("INITIAL:", this.scope.initial, this.initial);
+            console.log("[OE] Getting params from scope:", this.scope.initial, this.initial);
+            /*
             let self = this;
-            /*this.scope.$watch('$scope.uuid', function (newVal, oldVal, scope) {
+            this.scope.$watch('$scope.uuid', function (newVal, oldVal, scope) {
                 console.log('UUID has changed', newVal, oldVal);
             }, true);*/
 
@@ -299,6 +318,12 @@ class objecteditor {
         }
         console.log('[OE] Object update initiated with ', model);
         this.objectproxy.putObject(this.config.schema, model);
+    }
+
+    save_createObject() {
+        this.submitObject();
+
+        this.config.action = 'New';
     }
 
     test_onchange(a, b) {
