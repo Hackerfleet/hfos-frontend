@@ -64,6 +64,46 @@ class UserService {
 
         this.has_password = true;
 
+
+        this.embed_external = false;
+
+        this.embed_options = {
+            watchEmbedData: true,
+            sanitizeHtml: false,
+            linkTarget: '_blank',
+            code: {
+                highlight: false
+            },
+            Video: {
+                embed: this.embed_external
+            },
+            pdf: {
+                embed: this.embed_external
+            },
+            image: {
+                embed: this.embed_external
+            },
+            audio: {
+                embed: this.embed_external
+            },
+            twitchtvEmbed: this.embed_external,
+            dailymotionEmbed: this.embed_external,
+            tedEmbed: this.embed_external,
+            dotsubEmbed: this.embed_external,
+            liveleakEmbed: this.embed_external,
+            ustreamEmbed: this.embed_external,
+            soundCloudEmbed: this.embed_external,
+            spotifyEmbed: this.embed_external,
+            tweetEmbed: false, //this.embed_external,
+            codepenEmbed: this.embed_external,
+            jsfiddleEmbed: this.embed_external,
+            jsbinEmbed: this.embed_external,
+            plunkerEmbed: this.embed_external,
+            githubgistEmbed: this.embed_external,
+            ideoneEmbed: this.embed_external
+        };
+
+
         let self = this;
 
         self.greet_new_user = function () {
