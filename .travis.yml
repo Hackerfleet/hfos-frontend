@@ -9,10 +9,6 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 install:
-- npm install -g babel
-- npm install -g webpack
-- npm install -g webpack-dev-server
-- npm install -g eslint
 - npm install
 - mkdir ../locale
 - touch ../locale/frontend.pot
