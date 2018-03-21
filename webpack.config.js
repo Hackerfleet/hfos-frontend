@@ -1,15 +1,14 @@
 "use strict";
 
 let _ = require('lodash');
-let minimist = require('minimist');
 let chalk = require('chalk');
 let webpack = require('webpack');
 
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let CleanWebpackPlugin = require('clean-webpack-plugin');
-let OpenBrowserWebpackPlugin = require('open-browser-webpack-plugin');
 let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 let AngularGetTextPlugin = require('angular-gettext-plugin');
+let Uglify = require("uglifyjs-webpack-plugin");
 
 let PARAMS_DEFAULT = {
     resolve: {
@@ -81,7 +80,9 @@ let PARAMS_DEFAULT = {
     ],
     devServer: {
         port: 8081,
-        host: '0.0.0.0'
+        host: '0.0.0.0',
+        compress: true,
+        hot: true
     },
 };
 let PARAMS_PER_TARGET = {
@@ -94,9 +95,6 @@ let PARAMS_PER_TARGET = {
             new webpack.HotModuleReplacementPlugin(),
             new webpack.SourceMapDevToolPlugin({filename: '[file].map'}),
             new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.js'}),
-            //new OpenBrowserWebpackPlugin({
-            //    url: 'http://localhost:' + PARAMS_DEFAULT.devServer.port
-            //})
             new webpack.LoaderOptionsPlugin({
                 debug: true
             })
@@ -123,16 +121,13 @@ let PARAMS_PER_TARGET = {
         plugins: [
             new CleanWebpackPlugin(['dist']),
             new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[chunkhash].js'}),
-            new webpack.optimize.UglifyJsPlugin({
-                mangle: false
-            })
+            new Uglify()
         ]
     }
 };
-let TARGET = minimist(process.argv.slice(2)).TARGET || 'BUILD';
 
+let TARGET = process.env.NODE_ENV || 'BUILD';
 let params = _.mergeWith(PARAMS_DEFAULT, PARAMS_PER_TARGET[TARGET], _mergeArraysCustomizer);
-console.log(params);
 
 _printBuildInfo(params);
 
