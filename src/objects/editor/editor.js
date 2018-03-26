@@ -40,6 +40,8 @@ class objecteditor {
         this.initial = {};
 
         this.debug = false;
+        this.readonly = false;
+        this.form_options = {};
 
         this.live = false;
         this.livewatcher = null;
@@ -237,7 +239,7 @@ class objecteditor {
     }
 
 
-//console.log("[OE] CB Results: ", this.Callback('mapview'));
+    //console.log("[OE] CB Results: ", this.Callback('mapview'));
 
 
     $onInit() {
@@ -277,8 +279,10 @@ class objecteditor {
         if (this.config.uuid === "" || typeof this.config.uuid === 'undefined') {
             this.config.action = 'Create';
             $('#objModified').removeClass('hidden');
-        } else {
-            this.config.action = 'Edit';
+        } else if (this.config.action === 'view') {
+            console.log('[OE] Read only!');
+            this.readonly = true;
+            this.model.readonly = true;
         }
 
         if (this.user.signedin) {
@@ -297,6 +301,7 @@ class objecteditor {
     }
 
 
+
     /*let editorChange = function () {
      if (this.model !== objectproxy.obj[$scope.uuid]) {
      console.log('[OE] Content has been modified locally.');
@@ -312,6 +317,8 @@ class objecteditor {
      */
 
     submitObject() {
+        if (this.readonly) return;
+
         let model = this.model;
         if (this.config.action.toUpperCase() === 'CREATE') {
             model.uuid = 'create';
@@ -321,17 +328,15 @@ class objecteditor {
     }
 
     save_createObject() {
+        if (this.readonly) return;
         this.submitObject();
 
         this.config.action = 'New';
     }
 
-    test_onchange(a, b) {
-        console.log('HELLO!', a, b);
-    }
-
-
     submitObjectChange() {
+        if (this.readonly) return;
+
         let model = this.model;
 
         console.log('[OE] Object update initiated with ', model);
@@ -340,14 +345,24 @@ class objecteditor {
 
 
     deleteObject() {
+        if (this.readonly) return;
+
         let model = this.model;
+        let self = this;
+
         if (this.config.action.toUpperCase() === 'CREATE') {
             model.uuid = 'create';
             this.notification.add('warning', 'Editor', 'Cannot delete object - it is not stored yet.');
             return;
         }
         console.log('[OE] Object deletion initiated with ', this.config.uuid);
-        this.objectproxy.deleteObject(this.config.schema, this.config.uuid);
+        this.objectproxy.deleteObject(this.config.schema, this.config.uuid).then(function (result) {
+            if (result.uuid === model.uuid) {
+                self.notification.add('success', 'Editor', 'Object has been deleted.');
+            } else {
+                self.notification.add('warning', 'Editor', 'Could not delete object.');
+            }
+        });
     }
 }
 
