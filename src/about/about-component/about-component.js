@@ -36,6 +36,8 @@ class AboutComponent {
         this.schemata = [];
         this.debug = false;
 
+        this.commitHash = __COMMIT_HASH__;
+
         this.serverport = socket.port;
         this.ssloverride = socket.protocol === 'wss';
 
