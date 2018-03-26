@@ -337,7 +337,28 @@ class ObjectProxy {
 
     deleteObject(schema, uuid) {
         console.log('[OP] Deleting object ', schema, uuid);
-        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'delete', 'data': {'schema': schema, 'uuid': uuid}});
+
+        let reqid = this.getRequestId();
+
+        this.socket.send({
+            'component': 'hfos.events.objectmanager',
+            'action': 'delete',
+            'data': {
+                'req': reqid,
+                'schema': schema,
+                'uuid': uuid
+            }
+        });
+
+        let deferred = this.q.defer();
+        this.callbacks[reqid] = deferred;
+
+        let query = deferred.promise.then(function (response) {
+            console.log('[OP] Delete response:', response);
+            return response;
+        });
+
+        return query;
     }
 
 
