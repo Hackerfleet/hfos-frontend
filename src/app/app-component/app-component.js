@@ -21,8 +21,8 @@ function requireAll(r) {
     return r;
 }
 
-let backgrounds = requireAll(require.context("../../../assets/images/backgrounds", true, /^(.*\.(jpg$))[^.]*$/igm));
-let themes = requireAll(require.context("../../themes", true, /\.scss$/));
+let backgrounds = null; //requireAll(require.context("../../../assets/images/backgrounds", true, /^(.*\.(jpg$))[^.]*$/igm));
+let themes = null; //requireAll(require.context("../../themes", true, /\.scss$/));
 
 class AppComponent {
 
