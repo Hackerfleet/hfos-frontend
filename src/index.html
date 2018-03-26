@@ -35,9 +35,44 @@
 <body>
 
 <div ui-view class="slide">
+    <style>
+        .app-loading {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .app-loading .spinner {
+            animation: rotate 2s linear infinite;
+            transform-origin: center center;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .vertical-center {
+            min-height: 90%; /* Fallback for browsers do NOT support vh unit */
+            min-height: 90vh; /* These two lines are counted as one :-)       */
+
+            display: flex;
+            align-items: center;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #266DAD;
+        }
+    </style>
     <div id="app-loading" style="display: none;" class="app-loading vertical-center">
         <img class="spinner"
-             src="/assets/images/logo_75_white.png" />
+             src="/assets/images/logo_75_white.png"/>
     </div>
     <script type="application/javascript">
         document.getElementById('app-loading').style.display = 'block';
