@@ -9,6 +9,11 @@ let CleanWebpackPlugin = require('clean-webpack-plugin');
 let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 let AngularGetTextPlugin = require('angular-gettext-plugin');
 let Uglify = require("uglifyjs-webpack-plugin");
+let CompressionPlugin = require("compression-webpack-plugin");
+
+let commitHash = require('child_process')
+    .execSync('git rev-parse --short HEAD')
+    .toString();
 
 let PARAMS_DEFAULT = {
     resolve: {
@@ -52,7 +57,7 @@ let PARAMS_DEFAULT = {
     output: {
         filename: '[name].[chunkhash].js',
         sourceMapFilename: '[name].[chunkhash].map',
-        jsonpFunction:'webpackJsonp'
+        jsonpFunction: 'webpackJsonp'
     },
     plugins: [
         new AngularGetTextPlugin({
@@ -75,6 +80,9 @@ let PARAMS_DEFAULT = {
             jQuery: 'jquery',
             c3: 'c3',
             qrcode: 'qrcode-generator',
+        }),
+        new webpack.DefinePlugin({
+            __COMMIT_HASH__: JSON.stringify(commitHash),
         }),
         //new BundleAnalyzerPlugin(),
     ],
@@ -121,7 +129,14 @@ let PARAMS_PER_TARGET = {
         plugins: [
             new CleanWebpackPlugin(['dist']),
             new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.[chunkhash].js'}),
-            new Uglify()
+            //new Uglify()
+            new CompressionPlugin({
+                asset: '[path].gz[query]',
+                algorithm: 'gzip',
+                test: /\.(js|css|ttf|svg|eot)$/,
+                threshold: 10240,
+                minRatio: 0.8,
+            }),
         ]
     }
 };
