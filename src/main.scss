@@ -273,25 +273,6 @@ html, body {
     display: flex;
     align-items: center;
 }
-.app-loading {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-}
-
-.app-loading .spinner {
-    animation: rotate 2s linear infinite;
-    transform-origin: center center;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-}
 
 @keyframes rotate {
     100% {
@@ -664,6 +645,19 @@ footer ul {
         right: 25px;
         top: 10px;
     }
+}
+
+#content > objecteditor .well {
+    padding-bottom: 45px;
+}
+
+#content > objecteditor .well form .schema-form-actions {
+    position: fixed;
+    bottom: 20px;
+    background: mix($color-primary-3, rgba(0,0,0,0.5), 25%);
+    width: 100%;
+    padding: 10px;
+    left: 0;
 }
 
 .mce-branding {
