@@ -31,14 +31,6 @@ class LoginComponent {
         this.user.logincancel();
     }
 
-    logout() {
-        this.user.logout(true, true);
-    }
-
-    showprofile() {
-        this.user.showprofile();
-    }
-
     login() {
         console.log('[LOGIN] Trying to login: ', this.username, '******');
         this.user.login(this.username, this.password);
