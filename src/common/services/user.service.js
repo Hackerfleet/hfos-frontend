@@ -350,6 +350,11 @@ class UserService {
         this.state.go('app.editor', {schema: 'profile', action: 'edit', 'uuid': this.profile.uuid});
     }
 
+    changePassword() {
+        // TODO: Check if state is installed via enrol module
+        this.state.go('app.password');
+    }
+
     showlogin() {
         if (this.signingIn !== true) {
 
