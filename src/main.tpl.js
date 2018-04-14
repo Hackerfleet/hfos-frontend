@@ -74,6 +74,8 @@ require('angular-strap/dist/angular-strap.tpl.min');
 
 import hlsj from 'highlight.js/lib/index';
 
+require('tv4/tv4');
+require('objectpath/lib/ObjectPath');
 require('ng-embed/dist/ng-embed.min');
 require('spectrum-colorpicker');
 require('angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker');
@@ -85,6 +87,7 @@ require('angular-bootstrap-slider');
 require('angular-uuid');
 require('angularjs-scroll-glue/src/scrollglue');
 require('angular-moment');
+require('schema-form-datetimepicker/schema-form-date-time-picker.min');
 import ngTableModule from 'ng-table/bundles/ng-table';
 
 require('humanize-duration');
@@ -106,6 +109,7 @@ import doc from './doc/doc.module';
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
     'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable', 'ui.calendar', 'ngEmbed', 'gettext',
+    'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker',
     animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, systemlog,
     doc, clipboard.name, ngcalendar, tree, localstorage, ngQrcode
 ];
