@@ -145,28 +145,34 @@ body {
 .navbar-nav .open .dropdown-menu {
     background-color: $color-white;
 }
+
 /* Clearable text inputs */
-.clearable{
-  position: relative;
-  display: inline-block;
+.clearable {
+    position: relative;
+    display: inline-block;
 }
-.clearable input[type=text]{
-  padding-right: 24px;
-  width: 100%;
-  box-sizing: border-box;
+
+.clearable input[type=text] {
+    padding-right: 24px;
+    width: 100%;
+    box-sizing: border-box;
 }
-.clearable__clear{
-  position: absolute;
-  right:0; top:0;
-  padding: 0 8px;
-  font-style: normal;
-  font-size: 1.2em;
-  user-select: none;
-  cursor: pointer;
+
+.clearable__clear {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 8px;
+    font-style: normal;
+    font-size: 1.2em;
+    user-select: none;
+    cursor: pointer;
 }
-.clearable input::-ms-clear {  /* Remove IE default X */
-  display: none;
+
+.clearable input::-ms-clear { /* Remove IE default X */
+    display: none;
 }
+
 .aside {
     margin-top: 51px;
 }
@@ -294,6 +300,7 @@ html, body {
         stroke-dashoffset: -124px;
     }
 }
+
 .gradient {
     z-index: 0;
     background: linear-gradient(82deg, rgba(58, 117, 168, 0), rgba(58, 117, 168, 0.41), rgba(200, 200, 220, 1));
@@ -431,7 +438,7 @@ html, body {
     display: inline-block;
     padding: 0px 20px 0px 20px;
     &:hover {
-//        background: #e8e8e8;
+        //        background: #e8e8e8;
     }
 }
 
@@ -654,10 +661,39 @@ footer ul {
 #content > objecteditor .well form .schema-form-actions {
     position: fixed;
     bottom: 20px;
-    background: mix($color-primary-3, rgba(0,0,0,0.5), 25%);
+    background: mix($color-primary-3, rgba(0, 0, 0, 0.5), 25%);
     width: 100%;
     padding: 10px;
     left: 0;
+    z-index: 10000;
+}
+
+.schema-form-array {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    margin: 5px;
+}
+
+.form-group .row {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.section-column {
+    margin-left: 0;
+    margin-right: 0;
+
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.schema-form-section.row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.schema-form-array > ol > li {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .mce-branding {
@@ -672,6 +708,11 @@ span.off {
 
 span.fa.btn {
     font-size: 28px;
+}
+
+span.fa.btn:hover {
+    background: $color-white;
+    color: $color-primary-3;
 }
 
 .textlabel {
@@ -700,6 +741,7 @@ span.fa.btn {
         }
     }
 }
+
 /* Have to set height explicity on ui-view
 to prevent collapsing during animation */
 /*
@@ -753,47 +795,53 @@ main [ui-view].ng-leave-active {
 .slide-left.ng-leave,
 .slide-right.ng-enter,
 .slide-right.ng-leave {
-  position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
-  background: inherit;
-  -ms-transition: .7s ease-in-out;
-  -webkit-transition: .7s ease-in-out;
-  transition:  .7s ease-in-out;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: inherit;
+    -ms-transition: .7s ease-in-out;
+    -webkit-transition: .7s ease-in-out;
+    transition: .7s ease-in-out;
 }
 
-.slide-left.ng-enter {}
+.slide-left.ng-enter {
+}
+
 .slide-left.ng-enter.ng-enter-active {
-  -webkit-transform: translateX(0);
-  transform: translateX(0);
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
 }
 
 .slide-left.ng-leave {
-  z-index: 100;
-  -webkit-transform: translateX(0);
-  transform: translateX(0);
-}
-.slide-left.ng-leave.ng-leave-active {
-  -webkit-transform: translateX(-100%);
-  transform: translateX(-100%);
+    z-index: 100;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
 }
 
+.slide-left.ng-leave.ng-leave-active {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+}
 
 .slide-right.ng-enter {
-  -webkit-transform: translateX(-100%);
-  transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
 }
 
 .slide-right.ng-enter.ng-enter-active,
 .slide-right.ng-leave {
-  position: absolute;
-  -webkit-transform: translateX(0);
-  transform: translateX(0);
+    position: absolute;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
 }
 
 .slide-right.ng-leave.ng-leave-active {
-  -webkit-transform: translateX(100%);
-  transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
 }
+
 #bootscreen {
     position: absolute;
     top: 51px;
@@ -903,3 +951,30 @@ main [ui-view].ng-leave-active {
         background-position: 1000% 10%
     }
 }
+
+// Rating widget
+
+.rating {
+    direction: rtl;
+    text-align: left;
+
+}
+
+.rating > span {
+    display: inline-block;
+    //position: relative;
+    width: 1.1em;
+}
+
+.rating > span:hover,
+.rating > span:hover ~ span {
+    color: transparent;
+}
+
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+    //position: absolute;
+    //left: 0;
+    color: gold;
+}
+
