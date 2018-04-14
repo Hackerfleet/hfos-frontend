@@ -35,8 +35,8 @@ class SchemataService {
         this.user = $user;
         this.socket = $socket;
         this.rootscope = $rootScope;
-        this.schemata = {};
-        this.configschemata = {};
+        this.schemata = null;
+        this.configschemata = null;
 
         let self = this;
 
