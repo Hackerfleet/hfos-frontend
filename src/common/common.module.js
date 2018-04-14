@@ -32,7 +32,9 @@ import SystemconfigService from './services/system.service';
 import ObjectProxy from './services/objectproxy.service';
 import InfoscreenService from './services/infoscreen.service';
 import StatusbarService from './services/statusbar.service';
-import {capitalize, toLength} from './utils/filters';
+import capitalize from './utils/capitalize';
+import toLength from './utils/toLength';
+import range from './utils/range';
 import OrderedObject from './utils/orderedObject';
 import ObjectLength from './utils/objectLength';
 
@@ -44,7 +46,8 @@ export default angular
     .module('main.app.common', [])
     .directive('resizer', resizer)
     .filter('capitalize', capitalize)
-    .filter('tolength', toLength)
+    .filter('toLength', toLength)
+    .filter('range', range)
     .filter('orderedObject', OrderedObject)
     .filter('objectLength', ObjectLength)
     .component('userInfoComponent', UserInfoComponent)
