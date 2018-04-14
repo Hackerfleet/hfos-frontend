@@ -46,34 +46,34 @@
     <form sf-schema="$ctrl.schemadata.schema" sf-form="$ctrl.schemadata.form" sf-model="$ctrl.model" sf-options="$ctrl.form_options">
     </form>
 
-    <div ng-show="$ctrl.debug">
-            <span class="fa" ng-click="argsCollapsed = !argsCollapsed" ng-class="{'fa-chevron-up': argsCollapsed,
-            'fa-chevron-right': !argsCollapsed}"></span>
+    <div ng-show="$ctrl.user.debug">
+            <span class="fa" ng-click="argsCollapsed = !argsCollapsed" ng-class="{'fa-chevron-right': argsCollapsed,
+            'fa-chevron-down': !argsCollapsed}"></span>
         <pre uib-collapse="argsCollapsed">{{$ctrl.action}} - {{$ctrl.schema}}:{{$ctrl.uuid}}</pre>
 
         <hr>
 
-        <span class="fa" ng-click="configCollapsed = !configCollapsed" ng-class="{'fa-chevron-up': configCollapsed,
-            'fa-chevron-right': !configCollapsed}"></span>Configuration:
+        <span class="fa" ng-click="configCollapsed = !configCollapsed" ng-class="{'fa-chevron-right': configCollapsed,
+            'fa-chevron-down': !configCollapsed}"></span>Configuration:
         <pre uib-collapse="configCollapsed">{{$ctrl.config | json}}</pre>
 
         <hr>
 
-        <span class="fa" ng-click="modelCollapsed = !modelCollapsed" ng-class="{'fa-chevron-up': argsCollapsed,
-            'fa-chevron-right': !argsCollapsed}"></span>Model:
-        <pre uib-collapse="argsCollapsed">{{$ctrl.model | json}}</pre>
+        <span class="fa" ng-click="modelCollapsed = !modelCollapsed" ng-class="{'fa-chevron-right': modelCollapsed,
+            'fa-chevron-down': !modelCollapsed}"></span>Model:
+        <pre uib-collapse="modelCollapsed">{{$ctrl.model | json}}</pre>
 
         <hr>
 
-        <span class="fa" ng-click="schemaCollapsed = !schemaCollapsed" ng-class="{'fa-chevron-up': schemaCollapsed,
-            'fa-chevron-right': !schemaCollapsed}"></span>Schema:
+        <span class="fa" ng-click="schemaCollapsed = !schemaCollapsed" ng-class="{'fa-chevron-right': schemaCollapsed,
+            'fa-chevron-down': !schemaCollapsed}"></span>Schema:
         <pre uib-collapse="schemaCollapsed">{{$ctrl.schemadata.schema | json}}</pre>
         </span>
 
         <hr>
 
-        <span class="fa" ng-click="formCollapsed = !formCollapsed" ng-class="{'fa-chevron-up': formCollapsed,
-            'fa-chevron-right': !formCollapsed}"></span>Form:
+        <span class="fa" ng-click="formCollapsed = !formCollapsed" ng-class="{'fa-chevron-right': formCollapsed,
+            'fa-chevron-down': !formCollapsed}"></span>Form:
         <pre uib-collapse="formCollapsed">{{$ctrl.schemadata.form | json}}</pre>
         </span>
         <br>

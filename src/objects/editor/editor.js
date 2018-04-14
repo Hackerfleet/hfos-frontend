@@ -300,7 +300,9 @@ class objecteditor {
         });
     }
 
-
+    attachFile(thing) {
+        console.log('I think, the user wants to attach a file:', thing);
+    }
 
     /*let editorChange = function () {
      if (this.model !== objectproxy.obj[$scope.uuid]) {
@@ -352,15 +354,15 @@ class objecteditor {
 
         if (this.config.action.toUpperCase() === 'CREATE') {
             model.uuid = 'create';
-            this.notification.add('warning', 'Editor', 'Cannot delete object - it is not stored yet.');
+            this.notification.add('warning', 'Editor', 'Cannot delete object - it is not stored yet.', 5);
             return;
         }
         console.log('[OE] Object deletion initiated with ', this.config.uuid);
         this.objectproxy.deleteObject(this.config.schema, this.config.uuid).then(function (result) {
             if (result.uuid === model.uuid) {
-                self.notification.add('success', 'Editor', 'Object has been deleted.');
+                self.notification.add('success', 'Editor', 'Object has been deleted.', 3);
             } else {
-                self.notification.add('warning', 'Editor', 'Could not delete object.');
+                self.notification.add('warning', 'Editor', 'Could not delete object.', 3);
             }
         });
     }
