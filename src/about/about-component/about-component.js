@@ -34,7 +34,6 @@ class AboutComponent {
         this.storage = localStorageService;
 
         this.schemata = [];
-        this.debug = false;
 
         this.commitHash = __COMMIT_HASH__;
 
@@ -76,8 +75,8 @@ class AboutComponent {
 
     toggleDebug() {
         console.log('[ABOUT] Toggling Debug tools');
-        if (this.debug !== true) {
-            this.debug = true;
+        if (this.user.debug !== true) {
+            this.user.debug = true;
 
             showAngularStats({
                 position: 'bottom',
@@ -85,10 +84,8 @@ class AboutComponent {
 
             });
         } else {
-            this.debug = false;
+            this.user.debug = false;
         }
-
-        this.user.debug = this.debug;
     }
 
     opentab(tabname) {

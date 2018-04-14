@@ -19,9 +19,9 @@
 
 <div class="container">
     <div class="well">
-        <div style="height:48px;" ng-class="{hidden: $ctrl.debug}">
+        <div style="height:48px;" ng-class="{hidden: $ctrl.user.debug}">
         </div>
-        <ul id="debug" ng-show="$ctrl.debug" class="nav nav-pills" role="tablist">
+        <ul id="debug" ng-show="$ctrl.user.debug" class="nav nav-pills" role="tablist">
             <li class="active"><a role="tab" ng-click="$ctrl.opentab('about')" data-toggle="tab">About</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('objects')" data-toggle="tab">Objects</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('network')" data-toggle="tab">Network</a></li>
@@ -29,7 +29,7 @@
             <li><a role="tab" ng-click="$ctrl.opentab('commands')" data-toggle="tab">Commands</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('server')" data-toggle="tab">Server</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('schemata')" data-toggle="tab">Schemata</a></li>
-            <li><a role="tab" ng-click="$ctrl.opentab('widgettests')" data-toggle="tab">Widgettests</a></li>
+            <li><a role="tab" ng-click="$ctrl.opentab('tests')" data-toggle="tab">UI Tests</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -61,7 +61,7 @@
                         </ul>
                     </div>
                     <a ng-click="$ctrl.toggleDebug()" type="button" class="btn btn-block btn-warning"
-                       style="align: center" ng-class="{active: $ctrl.debug}"><span
+                       style="align: center" ng-class="{active: $ctrl.user.debug}"><span
                         class="glyphicon glyphicon-alert"></span></a>
                 </div>
             </div>
@@ -125,7 +125,7 @@
                             <th>Schemaname</th>
                             <th>Actions</th>
                         </tr>
-                        <tr ng-repeat="(schema, data) in $ctrl.schemaservice.schemata">
+                        <tr ng-repeat="(schema, data) in $ctrl.schemaservice.schemata | orderedObject">
                             <td>{{schema}}</td>
                             <td>
                                 <a ng-click="$ctrl.viewlist(schema)">View list</a>
@@ -190,9 +190,20 @@
                 </div>
             </div>
 
-            <div class="tab-pane" id="widgettests">
+            <div class="tab-pane" id="tests">
                 <div class="well">
-                    <h3>Angular widgettests</h3>
+                    <h3>Angular things</h3>
+                    <h4>Filters</h4>
+                    capitalize: <span ng-bind="$ctrl.user.username | capitalize"></span>
+                    <br>
+                    range: <span ng-repeat="n in [] | range:10">Hello World!</span>
+                    <br>
+                    toLength: <span ng-bind="$ctrl.user.username | toLength:2"></span>
+                    <br>
+                    objectLength: <span ng-bind="$ctrl.user | objectLength"></span>
+                    <br>
+
+                    <h4>Widgets</h4>
                     <table>
                         <tr>
                             <th>Type</th>
@@ -211,6 +222,15 @@
                             <td>
                                 <input type="color" name="color2" value="#3355cc"/>
                                 <spectrum-colorpicker ng-model="$ctrl.colorValue"></spectrum-colorpicker>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rating</td>
+                            <td>
+                                <span class="rating">
+                                    <span class="fa fa-star" ng-repeat="n in []|range:7"></span>
+                                    <span class="fa fa-star-o" ng-repeat="n in []|range:3"></span>
+                                </span>
                             </td>
                         </tr>
                     </table>
