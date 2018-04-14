@@ -64,7 +64,7 @@ class ObjectProxy {
 
         let self = this;
 
-        this.update_status = function() {
+        this.update_status = function () {
             if (self.requests === 0) {
                 self.statusbar.set_status('Ready.')
             } else {
@@ -91,7 +91,11 @@ class ObjectProxy {
                     return;
                 }
                 let signal = '';
-                if (msg.action === 'get') { signal = 'OP.Get' } else { signal = 'OP.Update'}
+                if (msg.action === 'get') {
+                    signal = 'OP.Get'
+                } else {
+                    signal = 'OP.Update'
+                }
                 self.rootscope.$broadcast(signal, uuid, data, schema);
             } else if (msg.action === 'fail') {
                 console.log('[OP] Object manager reported failure:', msg.data);
@@ -134,7 +138,22 @@ class ObjectProxy {
             // console.log('[OP] Proxied lists: ', self.lists);
         }
 
+        function handleFilemanagerResponse(msg) {
+            let data = msg.data;
+            let requestId = data.req;
+
+
+            if (angular.isDefined(self.callbacks[requestId])) {
+                let callback = self.callbacks[requestId];
+                delete self.callbacks[requestId];
+                callback.resolve(data);
+            } else {
+                console.log('[OP] Filemanager request without callback: ', msg.action, msg.data);
+            }
+        }
+
         self.socket.listen('hfos.events.objectmanager', handleResponse);
+        self.socket.listen('hfos.filemanager.manager', handleFilemanagerResponse);
 
         this.search = function (schema, search, fields, fulltext, subscribe, limit, skip) {
             console.log('[OP] Async-getting list for schema ', schema, search);
@@ -169,6 +188,7 @@ class ObjectProxy {
 
             let query = deferred.promise.then(function (msg) {
                 console.log('[OP] OP ASYNC Delivering:', msg);
+
                 function compare(a, b) {
                     if (a.name < b.name)
                         return -1;
@@ -187,7 +207,7 @@ class ObjectProxy {
             return query;
         };
 
-        this.get = function(schema, uuid) {
+        this.get = function (schema, uuid) {
             console.log('[OP] Async-getting object ', schema, uuid);
 
             let reqid = self.getRequestId();
@@ -213,7 +233,7 @@ class ObjectProxy {
             return query;
         };
 
-        this.put = function(schema, obj) {
+        this.put = function (schema, obj) {
             console.log('[OP] Async-putting object ', schema, obj);
 
             let reqid = self.getRequestId();
@@ -238,6 +258,56 @@ class ObjectProxy {
 
             return query;
         };
+
+
+        this.sendFile = function (file, volume, path) {
+            console.log('[OP] SendFile initiated.');
+
+            let reader = new FileReader();
+            let raw = new ArrayBuffer();
+            if (typeof path === 'undefined') {
+                path = '';
+            }
+
+            let reqid = self.getRequestId();
+
+            reader.loadend = function () {
+                console.log('[OP] SendFile: Load end');
+            };
+
+            reader.onload = function (e) {
+                console.log('[OP] SendFile event:', e);
+                raw = e.target.result;
+                let msg = {
+                    'component': 'hfos.filemanager.manager',
+                    'action': 'put',
+                    'data': {
+                        'req': reqid,
+                        'name': file.name,
+                        'raw': window.btoa(raw),
+                        'volume': volume,
+                        'path': path
+                    }
+                };
+                console.log('[OP] MSG:', msg);
+                self.socket.send(msg);
+                console.log("[OP] File has been transferred.");
+            };
+
+            reader.readAsBinaryString(file);
+
+            let deferred = self.q.defer();
+            self.callbacks[reqid] = deferred;
+
+            let query = deferred.promise.then(function (response) {
+                console.log('[OP] Get response:', response);
+                return response;
+            });
+
+            return query;
+
+        }
+
     }
 
     getRequestId() {
@@ -307,7 +377,11 @@ class ObjectProxy {
 
     putObject(schema, obj) {
         console.log('[OP] Putting object ', schema, obj);
-        this.socket.send({'component': 'hfos.events.objectmanager', 'action': 'put', 'data': {'schema': schema, 'obj': obj}});
+        this.socket.send({
+            'component': 'hfos.events.objectmanager',
+            'action': 'put',
+            'data': {'schema': schema, 'obj': obj}
+        });
     }
 
     putObjectChange(schema, obj) {
