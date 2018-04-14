@@ -11,9 +11,11 @@
 
                 <div class="modal-footer">
                     <form>
-                        <button type="button" ng-click="$ctrl.showprofile(); $hide()" class="btn btn-large">Edit Profile
+                        <button type="button" ng-click="$ctrl.user.changePassword(); $hide()" class="btn btn-large">Change Password
                         </button>
-                        <button type="button" ng-click="$ctrl.logout(); $hide()" class="btn btn-danger btn-large">Logout
+                        <button type="button" ng-click="$ctrl.user.showprofile(); $hide()" class="btn btn-large">Edit Profile
+                        </button>
+                        <button type="button" ng-click="$ctrl.user.logout(true, true); $hide()" class="btn btn-danger btn-large">Logout
                         </button>
                         <button id="usercancel" type="button" ng-click="$modalCancel(); $hide()" class="btn btn-default btn-large">
                             Cancel

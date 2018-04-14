@@ -28,9 +28,9 @@
                         </div>
                         <div ng-show="$ctrl.state.href('app.enrolment') !== null">
                             <div class="text-info">Don't have an account?
-                                <a class="pull-right" ng-click="$hide()" href="#!/enrolment">Enrol yourself!</a></div>
+                                <a class="pull-right" ng-click="$ctrl.close(); $hide()" href="#!/enrolment">Enrol yourself!</a></div>
                             <div class="text-info">Forgot your password or username?
-                                <a class="pull-right" ng-click="$hide()" href="#!/resetaccount">Request a reset.</a>
+                                <a class="pull-right" ng-click="$ctrl.close(); $hide()" href="#!/resetaccount">Request a reset.</a>
                             </div>
                         </div>
                     </div>
