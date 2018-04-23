@@ -99,7 +99,7 @@ class ObjectProxy {
                 self.rootscope.$broadcast(signal, uuid, data, schema);
             } else if (msg.action === 'fail') {
                 console.log('[OP] Object manager reported failure:', msg.data);
-                delete self.callbacks[msg.data.req];
+
             } else if (msg.action === 'put') {
                 data = msg.data;
                 self.objects[data.uuid] = data.object;
@@ -130,7 +130,7 @@ class ObjectProxy {
             if (angular.isDefined(self.callbacks[requestId])) {
                 let callback = self.callbacks[requestId];
                 delete self.callbacks[requestId];
-                callback.resolve(data);
+                callback.resolve(msg);
             } else {
                 console.log('[OP] Request without callback: ', msg.action, msg.data);
             }
@@ -252,7 +252,7 @@ class ObjectProxy {
             self.callbacks[reqid] = deferred;
 
             let query = deferred.promise.then(function (response) {
-                console.log('[OP] Get response:', response);
+                console.log('[OP] Put response:', response);
                 return response;
             });
 
