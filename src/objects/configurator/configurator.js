@@ -31,6 +31,12 @@ class configurator {
         this.scope = $scope;
 
         this.modified = false;
+        this.stored = false;
+
+        this.model = {};
+        this.form = {};
+        this.schema = {};
+
         this.success = null;
         this.components = null;
         this.changewatcher = null;
@@ -152,9 +158,12 @@ class configurator {
 
         this.modified = false;
         this.stored = null;
-        this.model = this.form = this.schema = null;
 
-        if (this.changewatcher != null) this.changewatcher();
+        this.model = {};
+        this.form = {};
+        this.schema = {};
+
+        if (this.changewatcher !== null) this.changewatcher();
 
         this.socket.send({
             component: 'hfos.ui.configurator',
