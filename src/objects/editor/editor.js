@@ -122,7 +122,6 @@ class objecteditor {
             self.loginupdate();
             self.objupdate();
             self.getupdate();
-            self.putupdate();
         });
 
         this.markStored = function () {
@@ -143,19 +142,6 @@ class objecteditor {
                 self.config.action = 'Edit';
             }
         };
-
-        this.putupdate = this.rootscope.$on('OP.Put', function (ev, uuid) {
-            if (uuid === self.config.uuid) {
-                self.markStored();
-            } else if (self.config.uuid === "") {
-                // TODO: What if another object is being created right now?
-                // We could check if the object body is the same.
-                // (Works bad on objects that are somehow modified before saving them)
-                self.config.uuid = uuid;
-                self.markStored();
-            }
-        });
-
 
         this.getupdate = this.rootscope.$on('OP.Get', function (ev, uuid) {
             self.updateModel(uuid);
@@ -185,6 +171,7 @@ class objecteditor {
             self.schemadata = self.schemata.get(self.config.schema);
             if (self.config.action !== 'Create' && self.config.uuid !== '') {
                 console.log('[OE] Requesting object.');
+                // TODO: What? Uuh:
                 self.objectproxy.get(self.config.schema, self.config.uuid, true).then(function (data) {
                     console.log('DATA:', data);
                 });
@@ -210,12 +197,16 @@ class objecteditor {
         this.updateModel = function (uuid) {
             console.log('[OE] Object has been updated from node, checking..', uuid, self);
             console.log('[OE] Self Scope UUID: ', self.config.uuid);
-            console.log('[OE] Object changed, updating content.');
-            self.model = _.clone(self.objectproxy.objects[uuid]);
-            console.log('[OE] Object model: ', self.model);
-            $('#objectModified').addClass('hidden');
-            $('#objectEditButton').removeClass('hidden');
-            self.scope.$apply();
+            if (uuid === self.config.uuid) {
+                console.log('[OE] Object changed, updating content.');
+                self.model = _.clone(self.objectproxy.objects[uuid]);
+                console.log('[OE] Object model: ', self.model);
+                $('#objectModified').addClass('hidden');
+                $('#objectEditButton').removeClass('hidden');
+                self.scope.$apply();
+            } else {
+                console.log('[OE] Not for us.')
+            }
         };
 
         //console.log('End of constructor:', self.config.uuid);
@@ -321,12 +312,28 @@ class objecteditor {
     submitObject() {
         if (this.readonly) return;
 
+        let self = this;
+
+        console.log('OE: ', this);
+
         let model = this.model;
         if (this.config.action.toUpperCase() === 'CREATE') {
             model.uuid = 'create';
         }
         console.log('[OE] Object update initiated with ', model);
-        this.objectproxy.putObject(this.config.schema, model);
+
+        this.objectproxy.put(this.config.schema, model).then(function (msg) {
+            if (msg.action === 'put') {
+                if (msg.data.uuid === self.config.uuid) {
+                    self.markStored();
+                } else if (self.config.uuid === "") {
+                    self.config.uuid = msg.data.uuid;
+                    self.markStored();
+                }
+            } else {
+                self.notification.add('warning', 'Not stored', msg.reason, 5);
+            }
+        });
     }
 
     save_createObject() {
@@ -358,8 +365,8 @@ class objecteditor {
             return;
         }
         console.log('[OE] Object deletion initiated with ', this.config.uuid);
-        this.objectproxy.deleteObject(this.config.schema, this.config.uuid).then(function (result) {
-            if (result.uuid === model.uuid) {
+        this.objectproxy.deleteObject(this.config.schema, this.config.uuid).then(function (msg) {
+            if (msg.action !== 'fail') {
                 self.notification.add('success', 'Editor', 'Object has been deleted.', 3);
             } else {
                 self.notification.add('warning', 'Editor', 'Could not delete object.', 3);
