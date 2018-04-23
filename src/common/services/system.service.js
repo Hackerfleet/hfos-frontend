@@ -42,26 +42,24 @@ class SystemconfigService {
 
         function updateConfig() {
             console.log('[SYS] Getting system config.');
-            self.op.getObject('systemconfig', '', true, {active: true})
+            self.op.get('systemconfig', '', true, {active: true})
+                .then(function (msg) {
+                    if (msg.action === 'get') {
+                        let obj = msg.data.object;
+                        console.log('[SYS] Systemconfiguration received!');
+                        self.config = obj;
+                        self.rootscope.$broadcast('System.Config', obj);
+                    }
+                });
         }
 
-        rootscope.$on('User.Login', function(ev) {
+        rootscope.$on('User.Login', function (ev) {
             updateConfig();
         });
 
         if (user.signedin === true) {
             updateConfig();
         }
-
-        rootscope.$on('OP.Get', function(event, objuuid, obj, schema) {
-            console.log('[SYS] Listened to: ', schema, obj);
-            if (schema == 'systemconfig' && obj.active == true) {
-                console.log('[SYS] Systemconfiguration received!');
-                self.config = obj;
-                self.rootscope.$broadcast('System.Config', obj);
-            }
-        });
-
     }
 
 }
