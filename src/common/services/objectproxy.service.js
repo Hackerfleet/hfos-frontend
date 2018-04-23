@@ -207,7 +207,7 @@ class ObjectProxy {
             return query;
         };
 
-        this.get = function (schema, uuid) {
+        this.get = function (schema, uuid, subscribe, filter) {
             console.log('[OP] Async-getting object ', schema, uuid);
 
             let reqid = self.getRequestId();
@@ -218,7 +218,9 @@ class ObjectProxy {
                 'data': {
                     'req': reqid,
                     'schema': schema,
-                    'uuid': uuid
+                    'uuid': uuid,
+                    'subscribe': subscribe,
+                    'filter': filter
                 }
             });
 
