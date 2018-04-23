@@ -64,7 +64,7 @@
                         aria-label="Center Align">
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
-                <span id="custom_buttons">
+                <span id="custom_buttons" ng-show="$ctrl.user.signedin == true">
                     <chatbutton></chatbutton>
                     <alertbutton></alertbutton>
                 </span>
@@ -93,16 +93,13 @@
                     <li id="nav-fullscreen">
 
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown" ng-show="$ctrl.user.signedin == true">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false"><span translate>Modules</span><span class="caret"></span></a>
                         <ul class="dropdown-menu componentmenu" id="modulemenu">
-                            <!-- TODO: Remove these two: -->
-                            <li><a href="#!/dashboard">Dashboard</a></li>
-                            <li><a href="#!/map">Map</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown" ng-show="$ctrl.user.signedin == true">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Client<span class="caret"></span></a>
                         <ul class="dropdown-menu componentmenu" id="clientmenu">
