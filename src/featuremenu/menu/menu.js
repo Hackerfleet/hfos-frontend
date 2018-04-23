@@ -183,11 +183,12 @@ class featureMenu {
                 } else {
                     console.log('[MENU] Item has either no icon or is disabled:', state);
                 }
-
-                if (store_state) {
-                    self.storeMenuConfig();
-                }
             }
+
+            if (store_state) {
+                self.storeMenuConfig();
+            }
+
             let labels = Object.keys(menu_dict);
             labels.sort();
 
