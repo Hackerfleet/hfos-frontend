@@ -129,6 +129,10 @@ class AboutComponent {
         this.command('graph');
     }
 
+    testAlert() {
+        this.notification.add('warning', 'Caption', 'Alert text', 0);
+    }
+
 }
 
 AboutComponent.$inject = ['$rootScope', 'user', 'socket', '$interval', 'notification', '$modal', 'schemata', 'objectproxy', '$state', 'localStorageService'];
