@@ -27,6 +27,9 @@ import * as _ from 'lodash';
 class SocketService {
 
     constructor($location, $alert, $timeout, $interval, $cookies, $rootscope, statusbar) {
+        // TODO: Switch to notification service instead of using $alert
+        // TODO: Repair reconnection facility
+
         console.log('[SOCKET] SocketService constructing');
         this.$alert = $alert;
         this.$timeout = $timeout;
@@ -318,6 +321,7 @@ class SocketService {
         this.sock.onopen = OpenEvent;
         this.sock.onclose = CloseEvent;
         this.sock.onmessage = receive;
+
         this.listen('hfos.ui.clientmanager', function (msg) {
             if (msg.action === 'Flooding') {
                 console.log('[SOCKET] Clientmanager wants us to stop flooding.');
@@ -328,8 +332,18 @@ class SocketService {
                     self.statusbar.add('danger', 'High latency', 'Roundtrip took ' + self.stats.latency + ' ms');
                 }
                 console.log('[SOCKET] Stats:', self.stats);
+            } else if (msg.action === 'Permission') {
+                $alert({
+                    'title': 'No permission',
+                    'content': 'You have insufficient permissions to do that.',
+                    'placement': 'top-left',
+                    'type': 'warning',
+                    'show': true,
+                    'duration': 5
+                });
             }
         });
+
         doReconnect();
     }
 
@@ -346,7 +360,11 @@ class SocketService {
 
     send(msg) {
         let json = JSON.stringify(msg);
-        console.log('[SOCKET] Transmitting msg: ', json);
+        if (json.indexOf('password') === -1) {
+            console.log('[SOCKET] Transmitting msg: ', json);
+        } else {
+            console.log('[SOCKET] Transmitting msg: ***');
+        }
 
         function reset() {
             $('#ledoutgoing').css({'color': 'green'});
@@ -354,12 +372,9 @@ class SocketService {
 
         try {
             this.sock.send(json);
-
             this.stats.tx++;
 
-
             $('#ledoutgoing').css({'color': 'red'});
-
 
             this.$timeout(reset, 250);
         } catch (e) {
