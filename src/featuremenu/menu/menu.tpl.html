@@ -29,11 +29,13 @@
                     <div ng-hide="$ctrl.user.signedin">
                     <h2 translate>Login required</h2>
                         <span>
-                            <span translate>Please</span>
                             <a ng-click="$ctrl.user.login()">
-                                <span translate>login or register your account</span>
-                            </a>
-                            <span translate>to use this node.</span>
+                                <span translate>Please login</span>
+                                <span translate ng-show="$ctrl.state.href('app.enrolment') !== null">
+                                    or register
+                                </span>
+                                <span translate>your account to use this node.</span>
+                        </a>
                         </span>
                     </div>
                     <div ng-show="$ctrl.user.signedin">
