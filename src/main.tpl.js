@@ -44,6 +44,7 @@ import 'highlight.js/styles/default.css';
 import 'ng-embed/dist/ng-embed.min.css';
 
 import './main.scss';
+import './customization.scss';
 
 // 3rd party modules
 require('jquery');
