@@ -222,6 +222,10 @@ a:focus {
     color: $color-secondary-1-1;
 }
 
+.alert a {
+    text-decoration: underline;
+}
+
 .panel-hover:hover {
     //background: $color-primary-3;
     //color: $color-primary-1;
@@ -702,6 +706,10 @@ footer ul {
 }
 
 // Fontawesome Buttons
+
+button span.fa {
+    margin-right: 3px;
+}
 
 span.off {
     color: $color-gray-light;
