@@ -29,10 +29,9 @@
 
 class SchemataService {
 
-    constructor($user, $socket, $rootScope) {
+    constructor($socket, $rootScope) {
         console.log('[SCHEMATA] SchemataService initializing.');
         // AngularJS will instantiate a singleton by calling "new" on this function
-        this.user = $user;
         this.socket = $socket;
         this.rootscope = $rootScope;
         this.schemata = null;
@@ -63,11 +62,11 @@ class SchemataService {
         }
 
         this.socket.listen('hfos.events.schemamanager', registerschemata);
-        this.user.onAuth(updateschemata);
+        this.rootscope.$on('User.Login', updateschemata);
 
-        if (this.user.signedin === true) {
+        /*if (this.user.signedin === true) {
             updateschemata();
-        }
+        }*/
 
     }
 
@@ -86,11 +85,11 @@ class SchemataService {
         console.log('[SCHEMATA] Schema requested: ', schemaname);
         console.log(this.schemata, schemaname);
         console.log(schemaname, this.schemata[schemaname].schema);
-        if (this.user.signedin) {
+        //if (this.user.signedin) {
             return this.schemata[schemaname].schema;
-        } else {
+        /*} else {
             console.log('[SCHEMATA] But we are not logged in!');
-        }
+        }*/
     }
 
     form(schemaname) {
@@ -106,6 +105,6 @@ class SchemataService {
 }
 
 
-SchemataService.$inject = ['user', 'socket', '$rootScope'];
+SchemataService.$inject = ['socket', '$rootScope'];
 
 export default SchemataService;
