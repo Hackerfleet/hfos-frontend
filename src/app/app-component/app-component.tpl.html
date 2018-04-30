@@ -160,7 +160,9 @@
     </button>
     <div id="content" ui-view></div>
 
-    <footer class="navbar-fixed-bottom" ng-class="{'navbar-inverse': !hideStatusbar}">
+    <footer class="navbar-fixed-bottom"
+            ng-class="{'navbar-inverse': !hideStatusbar}"
+            ng-style="{'max-height': showStatusHistory ? '50vh' : '1.5em'}">
         <div class="row">
             <div id="statusLeft" class="col-xs-2">
                 <span>
@@ -192,7 +194,7 @@
                         </span>
                     </li>
                 </ul>
-                <span ng-show="!showStatusHistory">
+                <span id="statusbar_history" ng-show="!showStatusHistory">
                     <span class="text-{{$ctrl.statusbar.last_message.type}}">
                         <span ng-show="showStatusTimestamps">{{$ctrl.statusbar.last_message.time}}</span>
                         <b>{{$ctrl.statusbar.last_message.title}}:</b>

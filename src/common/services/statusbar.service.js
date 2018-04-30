@@ -35,11 +35,16 @@ class StatusbarService {
 
     add(type, title, text) {
         console.log('[STATUSBAR] Emitting new statusbar');
+        function strip(html) {
+            let tmp = document.createElement("DIV");
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || "";
+        }
         let msg = {
             'time': new Date().toISOString(),
             'type': type,
-            'title': title,
-            'text': text
+            'title': strip(title),
+            'text': strip(text)
         };
         this.messages.push(msg);
         this.last_message = msg;
