@@ -22,7 +22,8 @@ let showAngularStats = require('ng-stats');
 
 class AboutComponent {
 
-    constructor(rootscope, user, socket, $interval, notification, modal, schemaservice, op, state, localStorageService) {
+    constructor(rootscope, user, socket, $interval, notification, modal, schemaservice, op, state, localStorageService,
+                systemconfig) {
         this.rootscope = rootscope;
         this.user = user;
         this.socket = socket;
@@ -32,6 +33,7 @@ class AboutComponent {
         this.state = state;
         this.schemaservice = schemaservice;
         this.storage = localStorageService;
+        this.systemconfig = systemconfig;
 
         this.schemata = [];
 
@@ -135,6 +137,9 @@ class AboutComponent {
 
 }
 
-AboutComponent.$inject = ['$rootScope', 'user', 'socket', '$interval', 'notification', '$modal', 'schemata', 'objectproxy', '$state', 'localStorageService'];
+AboutComponent.$inject = [
+    '$rootScope', 'user', 'socket', '$interval', 'notification', '$modal', 'schemata',
+    'objectproxy', '$state', 'localStorageService', 'systemconfig'
+];
 
 export default AboutComponent;

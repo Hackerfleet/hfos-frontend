@@ -111,8 +111,9 @@ class UserService {
             self.notification.add(
                 'success',
                 'Registration successful',
-                '<br />Welcome to HFOS! Your account has been successfully created.<br />' +
-                    'Click this button again to edit your profile or logout.',
+                '<br />Welcome to this HFOS node! Now is a good time to fill out your profile.<br />' +
+                'Click the user button <a href="/#!/editor/profile/' + self.useruuid + '/edit">to edit your profile</a>, ' +
+                'logout or change your password.<br /> <small>Adding some user data will prevent this notification.</small>',
                 30
             );
         };
@@ -157,7 +158,7 @@ class UserService {
             } else if (schema === 'profile' && String(uuid) === String(self.profile.uuid)) {
                 console.log('[USER] Got a profile update from OP:', newobj);
                 msg = {data: newobj};
-                self.storeprofile(msg);
+                self.storeprofile(msg, true);
             }
         }
 
@@ -189,7 +190,7 @@ class UserService {
 
         }
 
-        function storeprofile(msg) {
+        function storeprofile(msg, login) {
             console.log('[USER] Got profile data: ', msg.data);
             self.profile = msg.data;
 
@@ -197,6 +198,11 @@ class UserService {
             console.log('[USER] Profile: ', self.profile, self);
 
             self.changeCurrentTheme();
+
+            if (typeof login === 'undefined' && (Object.keys(self.profile.userdata).length === 0 && self.profile.userdata.constructor === Object)) {
+                self.greet_new_user();
+            }
+
             console.log('[USER] Emitting update');
 
             self.rootscope.$broadcast('Profile.Update');
@@ -362,7 +368,7 @@ class UserService {
                 template: loginmodal,
                 controller: logincontroller,
                 controllerAs: '$ctrl',
-                title: 'Login to HFOS',
+                title: 'Login to this node',
                 keyboard: false,
                 id: 'loginDialog'
             });
@@ -372,7 +378,7 @@ class UserService {
             this.timeout(function () {
                 if (self.signingIn === true) {
                     self.signinIn = false;
-                    self.login_failed('No response from HFOS node within 30 seconds!');
+                    self.login_failed('No response from node within 30 seconds!');
                 }
             }, 30000);
             this.signingIn = true;

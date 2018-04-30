@@ -41,10 +41,12 @@ import ObjectLength from './utils/objectLength';
 import LoginController from './component/login-component';
 
 import resizer from './component/resizer';
+import pagetitle from './component/pagetitle';
 
 export default angular
     .module('main.app.common', [])
     .directive('resizer', resizer)
+    .directive('pagetitle', pagetitle)
     .filter('capitalize', capitalize)
     .filter('toLength', toLength)
     .filter('range', range)

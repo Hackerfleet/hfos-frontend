@@ -26,15 +26,14 @@
 
 class SystemconfigService {
 
-    constructor(rootscope, user, objectproxy, notification, modal) {
+    constructor(rootscope, objectproxy, modal) {
         console.log('[SYS] SystemconfigService constructing');
         this.rootscope = rootscope;
-        this.user = user;
         this.op = objectproxy;
-        this.notification = notification;
         this.modal = modal;
 
         this.config = null;
+        this.nodename = 'Node';
 
         console.log('[SYS] SystemconfigService constructed');
 
@@ -48,6 +47,7 @@ class SystemconfigService {
                         let obj = msg.data.object;
                         console.log('[SYS] Systemconfiguration received!');
                         self.config = obj;
+                        self.nodename = obj.name;
                         self.rootscope.$broadcast('System.Config', obj);
                     }
                 });
@@ -56,14 +56,9 @@ class SystemconfigService {
         rootscope.$on('User.Login', function (ev) {
             updateConfig();
         });
-
-        if (user.signedin === true) {
-            updateConfig();
-        }
     }
-
 }
 
-SystemconfigService.$inject = ['$rootScope', 'user', 'objectproxy', 'notification', '$modal'];
+SystemconfigService.$inject = ['$rootScope', 'objectproxy', '$modal'];
 
 export default SystemconfigService;
