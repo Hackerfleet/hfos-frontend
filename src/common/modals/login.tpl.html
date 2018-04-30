@@ -29,14 +29,19 @@
                         <div ng-show="$ctrl.state.href('app.enrolment') !== null">
                             <div class="text-info">Don't have an account?
                                 <a class="pull-right" ng-click="$ctrl.close(); $hide()" href="#!/enrolment">Enrol yourself!</a></div>
-                            <div class="text-info">Forgot your password or username?
+
+                            <!--TODO: Build password reset:
+                                <div class="text-info">Forgot your password or username?
                                 <a class="pull-right" ng-click="$ctrl.close(); $hide()" href="#!/resetaccount">Request a reset.</a>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-lg btn-link" ng-click="$ctrl.close(); $hide()">Cancel</button>
-                        <button type="submit" class="btn btn-lg btn-default" ng-click="$ctrl.login(); $hide()">Login
+                        <button type="button" class="btn btn-lg btn-info" ng-click="$ctrl.close(); $hide()">
+                             <span class="fa fa-times"></span>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-lg btn-success btn-default" ng-click="$ctrl.login(); $hide()">
+                            <span class="fa fa-sign-in"></span>Login
                         </button>
                     </div>
                 </form>
