@@ -113,7 +113,7 @@ class UserService {
                 'Registration successful',
                 '<br />Welcome to this HFOS node! Now is a good time to fill out your profile.<br />' +
                 'Click the user button <a href="/#!/editor/profile/' + self.useruuid + '/edit">to edit your profile</a>, ' +
-                'logout or change your password.<br /> <small>Adding some user data will prevent this notification.</small>',
+                'logout or change your password.<br /> <small>Adding some user data will prevent this notification from reappearing.</small>',
                 30
             );
         };
