@@ -63,7 +63,7 @@ class UserService {
         this.clientconfiglist = {};
 
         this.has_password = true;
-
+        this.errortimeout = null;
 
         this.embed_external = false;
 
@@ -125,7 +125,7 @@ class UserService {
                 reason = 'Either the username or the supplied password is invalid.';
             }
             self.notification.add('danger', 'Login failed', '<br />' + reason, 10);
-
+            if (this.errortimeout !== null) this.timeout.cancel(this.errortimeout);
             self.logout(true);
         };
 
@@ -312,6 +312,15 @@ class UserService {
             };
 
             this.socket.send(authpacket);
+            let self = this;
+
+            this.errortimeout = this.timeout(function () {
+                if (self.signingIn === true) {
+                    self.signinIn = false;
+                    self.login_failed('No response from node within 30 seconds!');
+                }
+            }, 30000);
+
         } else {
             console.log('[USER] Not connected, cannot login.');
         }
@@ -325,6 +334,8 @@ class UserService {
         this.rootscope.has_password = true;
         this.has_password = true;
         this.rootscope.logged_in = true;
+
+        if (this.errortimeout !== null) this.timeout.cancel(this.errortimeout);
 
         if (this.rootscope.has_password === false && this.rootscope.logged_in === true) {
             console.log('Redirecting to new password entry');
@@ -373,14 +384,6 @@ class UserService {
                 id: 'loginDialog'
             });
 
-            let self = this;
-
-            this.timeout(function () {
-                if (self.signingIn === true) {
-                    self.signinIn = false;
-                    self.login_failed('No response from node within 30 seconds!');
-                }
-            }, 30000);
             this.signingIn = true;
         }
     }
