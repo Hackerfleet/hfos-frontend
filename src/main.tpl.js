@@ -50,6 +50,7 @@ import './customization.scss';
 require('jquery');
 //import bootstrap from 'bootstrap';
 require('moment');
+require('moment-timezone');
 require('fullcalendar');
 import angular from 'angular';
 import sanitize from 'angular-sanitize';
