@@ -118,8 +118,7 @@ class ObjectProxy {
 
                 self.rootscope.$broadcast('OP.ListUpdate', schema);
             } else if (msg.action === 'search') {
-                data = msg;
-                console.log('[OP] Search result came back: ', data);
+                console.log('[OP] Search result came back: ', msg.data.list);
             }
 
             if (typeof requestId !== 'undefined' && self.requests > 0) {
@@ -138,22 +137,7 @@ class ObjectProxy {
             // console.log('[OP] Proxied lists: ', self.lists);
         }
 
-        function handleFilemanagerResponse(msg) {
-            let data = msg.data;
-            let requestId = data.req;
-
-
-            if (angular.isDefined(self.callbacks[requestId])) {
-                let callback = self.callbacks[requestId];
-                delete self.callbacks[requestId];
-                callback.resolve(data);
-            } else {
-                console.log('[OP] Filemanager request without callback: ', msg.action, msg.data);
-            }
-        }
-
         self.socket.listen('hfos.events.objectmanager', handleResponse);
-        self.socket.listen('hfos.filemanager.manager', handleFilemanagerResponse);
 
         this.search = function (schema, search, fields, fulltext, subscribe, limit, skip) {
             console.log('[OP] Async-getting list for schema ', schema, search);
@@ -260,56 +244,6 @@ class ObjectProxy {
 
             return query;
         };
-
-
-        this.sendFile = function (file, volume, path) {
-            console.log('[OP] SendFile initiated.');
-
-            let reader = new FileReader();
-            let raw = new ArrayBuffer();
-            if (typeof path === 'undefined') {
-                path = '';
-            }
-
-            let reqid = self.getRequestId();
-
-            reader.loadend = function () {
-                console.log('[OP] SendFile: Load end');
-            };
-
-            reader.onload = function (e) {
-                console.log('[OP] SendFile event:', e);
-                raw = e.target.result;
-                let msg = {
-                    'component': 'hfos.filemanager.manager',
-                    'action': 'put',
-                    'data': {
-                        'req': reqid,
-                        'name': file.name,
-                        'raw': window.btoa(raw),
-                        'volume': volume,
-                        'path': path
-                    }
-                };
-                console.log('[OP] MSG:', msg);
-                self.socket.send(msg);
-                console.log("[OP] File has been transferred.");
-            };
-
-            reader.readAsBinaryString(file);
-
-            let deferred = self.q.defer();
-            self.callbacks[reqid] = deferred;
-
-            let query = deferred.promise.then(function (response) {
-                console.log('[OP] Get response:', response);
-                return response;
-            });
-
-            return query;
-
-        }
-
     }
 
     getRequestId() {
@@ -389,7 +323,7 @@ class ObjectProxy {
     putObjectChange(schema, obj) {
         console.log('[OP] Putting object change', schema, obj);
 
-        console.log('[OP] OLD:', obj, 'NEW:', this.objects[obj.uuid]);
+        console.debug('[OP] OLD:', obj, 'NEW:', this.objects[obj.uuid]);
 
         let uuid = obj.uuid;
 
