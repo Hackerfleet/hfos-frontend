@@ -987,3 +987,11 @@ main [ui-view].ng-leave-active {
     color: gold;
 }
 
+// Color picker enhancements
+
+.sp-container,
+.sp-picker-container,
+.sp-replacer {
+    border-radius: 5px !important;
+}
+
