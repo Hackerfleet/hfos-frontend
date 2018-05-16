@@ -44,7 +44,7 @@ class SocketService {
 
         if ($location.protocol() !== 'https') {
             this.protocol = 'ws';
-            console.log('[SOCKET] Running on insecure protocol!');
+            console.warn('[SOCKET] Running on insecure protocol!');
             $('#hfos-icon').addClass('icon-glow-red');
         }
 
@@ -55,7 +55,7 @@ class SocketService {
 
         this.websocketurl += '/websocket';
 
-        console.log('[SOCKET] Websocket url', this.websocketurl);
+        console.info('[SOCKET] Websocket url', this.websocketurl);
 
         this.sock = new WebSocket(this.websocketurl);
 
@@ -119,7 +119,7 @@ class SocketService {
 
         function doReconnect() {
             if (self.connected !== true && self.trying !== true) {
-                console.log('[SOCKET] Trying to reconnect.');
+                console.warn('[SOCKET] Trying to reconnect.');
                 self.sock.close();
                 self.websocketurl = self.protocol + '://' + self.host + ':' + self.port + '/websocket';
 
@@ -193,7 +193,7 @@ class SocketService {
         this.OpenEvent = OpenEvent;
 
         function finallyClosed() {
-            console.log('[SOCKET] Something closed the websocket!');
+            console.warn('[SOCKET] Something closed the websocket!');
             self.connected = false;
             $('#btnhome').css('color', 'red');
 
@@ -204,7 +204,7 @@ class SocketService {
         this.finallyClosed = finallyClosed;
 
         function CloseEvent() {
-            console.log('[SOCKET] Close event called.');
+            console.info('[SOCKET] Close event called.');
 
             self.connected = false;
 
@@ -219,7 +219,7 @@ class SocketService {
             self.rootscope.$broadcast('Client.Connectionloss');
 
             if (self.trying === true) {
-                console.log('[SOCKET] Already trying');
+                console.info('[SOCKET] Already trying');
                 self.trying = false;
                 return;
             }
@@ -240,32 +240,32 @@ class SocketService {
             }
 
             self.$timeout(reset, 250);
-            console.log('Raw message received: ', packedmsg);
+            console.debug('Raw message received: ', packedmsg);
             let msg = JSON.parse(packedmsg.data);
 
-            console.log('[SOCKET] Parsed message: ', msg, self.handlers);
+            console.debug('[SOCKET] Parsed message: ', msg, self.handlers);
 
             self.stats.rx++;
 
             if (_.has(msg, 'component')) {
                 if (_.has(msg, 'action')) {
-                    //console.log('Correct message received. Handlers: ', self.handlers, msg.component);
+                    //console.info('Correct message received. Handlers: ', self.handlers, msg.component);
                     if (msg.component in self.handlers) {
-                        //console.log('Found a matching handler.');
+                        //console.info('Found a matching handler.');
                         for (let handler in self.handlers[msg.component]) {
-                            //console.log('Calling handler:', self.handlers[msg.component], handler);
+                            //console.info('Calling handler:', self.handlers[msg.component], handler);
                             self.handlers[msg.component][handler](msg);
                         }
                         /*_.forIn(handlers[msg.compoennt], function (value, key) {
-                         console.log('Executing handler: ', value, key, msg);
+                         console.info('Executing handler: ', value, key, msg);
                          key(msg);
                          });*/
                     }
                 } else {
-                    console.log('Incorrect message: no action!', msg);
+                    console.error('Incorrect message: no action!', msg);
                 }
             } else {
-                console.log('Incorrect message: component!', msg);
+                console.error('Incorrect message: component!', msg);
             }
         }
 
@@ -277,11 +277,11 @@ class SocketService {
             let raw = new ArrayBuffer();
 
             reader.loadend = function () {
-                console.log('[SOCKET] SendFile: Load end');
+                console.info('[SOCKET] SendFile: Load end');
             };
 
             reader.onload = function (e) {
-                console.log('[SOCKET] SendFile event:', e);
+                console.info('[SOCKET] SendFile event:', e);
                 raw = e.target.result;
                 let msg = JSON.stringify(
                     {
@@ -293,7 +293,7 @@ class SocketService {
                         }
                     }
                 );
-                console.log('[SOCKET] MSG:', msg);
+                console.info('[SOCKET] MSG:', msg);
                 self.sock.send(msg);
                 console.log("[SOCKET] File has been transferred.");
             };
@@ -307,7 +307,7 @@ class SocketService {
 
         function ping() {
             if (self.connected) {
-                console.log('[SOCKET] Transmitting ping');
+                console.debug('[SOCKET] Transmitting ping');
                 let packet = {
                     component: 'hfos.ui.clientmanager',
                     action: 'ping',
@@ -324,14 +324,14 @@ class SocketService {
 
         this.listen('hfos.ui.clientmanager', function (msg) {
             if (msg.action === 'Flooding') {
-                console.log('[SOCKET] Clientmanager wants us to stop flooding.');
+                console.warn('[SOCKET] Clientmanager wants us to stop flooding.');
             } else if (msg.action === 'pong') {
                 self.stats.latency = new Date().getTime() - msg.data[0];
-                console.log('[SOCKET] Latency: ', self.stats.latency);
+                console.debug('[SOCKET] Latency: ', self.stats.latency);
                 if (self.stats.latency > 20) {
                     self.statusbar.add('danger', 'High latency', 'Roundtrip took ' + self.stats.latency + ' ms');
                 }
-                console.log('[SOCKET] Stats:', self.stats);
+                console.debug('[SOCKET] Stats:', self.stats);
             } else if (msg.action === 'Permission') {
                 $alert({
                     'title': 'No permission',
@@ -361,9 +361,9 @@ class SocketService {
     send(msg) {
         let json = JSON.stringify(msg);
         if (json.indexOf('password') === -1) {
-            console.log('[SOCKET] Transmitting msg: ', json);
+            console.debug('[SOCKET] Transmitting msg: ', json);
         } else {
-            console.log('[SOCKET] Transmitting msg: ***');
+            console.debug('[SOCKET] Transmitting msg: ***');
         }
 
         function reset() {
@@ -378,7 +378,7 @@ class SocketService {
 
             this.$timeout(reset, 250);
         } catch (e) {
-            console.log('[SOCKET] Exception upon transmit: ', e);
+            console.error('[SOCKET] Exception upon transmit: ', e);
         }
     }
 
@@ -386,25 +386,25 @@ class SocketService {
 
         if (_.has(this.handlers, topic)) {
             this.handlers[topic].push(handler);
-            console.log('[SOCKET] New handler registered for topic ', topic);
+            console.debug('[SOCKET] New handler registered for topic ', topic);
         } else {
             this.handlers[topic] = [handler];
-            console.log('[SOCKET] First handler registered for topic ', topic);
+            console.debug('[SOCKET] First handler registered for topic ', topic);
         }
 
-        console.log(this.handlers);
+        console.debug(this.handlers);
     }
 
     unlisten(topic, handler) {
-        console.log('[SOCKET] Trying to dismiss listener: ', topic, handler, this.handlers);
+        console.info('[SOCKET] Trying to dismiss listener: ', topic, handler, this.handlers);
         if (typeof this.handlers[topic] !== 'undefined') {
-            console.log('[SOCKET] Topic found!');
+            console.info('[SOCKET] Topic found!');
             if (this.handlers[topic].indexOf(handler) > -1) {
-                console.log('[SOCKET] Unlisting handler for topic: ', topic);
+                console.info('[SOCKET] Unlisting handler for topic: ', topic);
                 this.handlers[topic].splice(this.handlers[topic].indexOf(handler), 1);
             }
         }
-        console.log('[SOCKET] Handlers after unlisten: ', this.handlers);
+        console.info('[SOCKET] Handlers after unlisten: ', this.handlers);
     }
 
     doDisconnect() {

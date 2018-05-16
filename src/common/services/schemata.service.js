@@ -47,15 +47,15 @@ class SchemataService {
         function registerschemata(msg) {
             // Schemata reception hook
 
-            console.log('[SCHEMATA] Schemata interaction:', msg.action);
+            console.debug('[SCHEMATA] Schemata interaction:', msg.action);
 
             if (msg.action === 'all') {
                 self.schemata = msg.data;
-                console.log('[SCHEMATA] New schemata received:', self.schemata);
+                console.debug('[SCHEMATA] New schemata received:', self.schemata);
                 self.rootscope.$broadcast('Schemata.Update');
             } else if (msg.action === 'configuration') {
                     self.configschemata = msg.data;
-                    console.log('[SCHEMATA] New configuration schemata received:', self.configschemata);
+                    console.debug('[SCHEMATA] New configuration schemata received:', self.configschemata);
                     self.rootscope.$broadcast('Schemata.ConfigUpdate');
                 }
 
@@ -77,7 +77,7 @@ class SchemataService {
 
     get(schemaname) {
         console.log('[SCHEMATA] Full schema requested: ');
-        console.log(schemaname, this.schemata[schemaname]);
+        console.debug(schemaname, this.schemata[schemaname]);
         return this.schemata[schemaname];
     }
 

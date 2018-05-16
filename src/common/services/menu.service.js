@@ -59,7 +59,7 @@ class MenuService {
 
         $rootScope.$on('$stateChangeSuccess',
             function (event, toState, toParams, fromState, fromParams) {
-                console.log('Deleting menus');
+                console.debug('Deleting menus');
                 for (let item of self.menus) {
                     $('#menu' + item).remove();
                 }
@@ -89,7 +89,7 @@ class MenuService {
 
     addMenu(title, menu) {
         if (title in this.menus) {
-            console.log('Replacing menu:', title);
+            console.debug('Replacing menu:', title);
             $('#'+title).remove();
         } else {
             this.menus.push(title);

@@ -66,7 +66,7 @@ class NotificationService {
     }
 
     add(type, title, msg, duration) {
-        console.log('[NOTIFY] Emitting new alert');
+        console.debug('[NOTIFY] Emitting new alert');
 
         this.alert({
             'title': title,

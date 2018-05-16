@@ -45,14 +45,14 @@ class InfoscreenService {
             }
 
             let nextstate = self.rotations[self.current_screen];
-            console.log('WOULD NOW ROTATE TO:', nextstate);
+            console.debug('WOULD NOW ROTATE TO:', nextstate);
 
             let kwargs = {};
             for (let arg of nextstate.args) {
                 kwargs[arg.name] = arg.value;
             }
 
-            console.log(nextstate.state, kwargs);
+            console.debug(nextstate.state, kwargs);
             $state.go('app.' + nextstate.state, kwargs);
             self.timeout.cancel(self.timer);
             self.timer = self.timeout(self.rotate, self.rotations[self.current_screen].duration*1000);
