@@ -124,7 +124,6 @@ let PARAMS_PER_TARGET = {
     DIST: {
         output: {
             path: __dirname + '/dist',
-            publicPath: '/hfos-frontend/'
         },
         plugins: [
             new CleanWebpackPlugin(['dist']),
