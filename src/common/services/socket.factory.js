@@ -271,7 +271,7 @@ class SocketService {
 
         this.receive = receive;
 
-
+        // TODO: Remove this, it is now part of the filemanager module
         function sendFile(file, component, action) {
             let reader = new FileReader();
             let raw = new ArrayBuffer();
@@ -360,10 +360,10 @@ class SocketService {
 
     send(msg) {
         let json = JSON.stringify(msg);
-        if (json.indexOf('password') === -1) {
+        if (json.indexOf('password') === -1 && json.length < 5000) {
             console.debug('[SOCKET] Transmitting msg: ', json);
         } else {
-            console.debug('[SOCKET] Transmitting msg: ***');
+            console.debug('[SOCKET] Transmitting msg: *** (Too long or contains sensitive information)');
         }
 
         function reset() {
