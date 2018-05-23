@@ -139,7 +139,7 @@ class ObjectProxy {
 
         self.socket.listen('hfos.events.objectmanager', handleResponse);
 
-        this.search = function (schema, search, fields, fulltext, subscribe, limit, skip) {
+        this.search = function (schema, search, fields, fulltext, subscribe, limit, skip, sort) {
             console.log('[OP] Async-getting list for schema ', schema, search);
 
             if (typeof search === 'undefined') {
@@ -163,7 +163,8 @@ class ObjectProxy {
                     fulltext: fulltext,
                     subscribe: subscribe,
                     limit: limit,
-                    skip: skip
+                    skip: skip,
+                    sort: sort
                 }
             });
 
