@@ -78,7 +78,7 @@ export default angular
     .component('objecteditor', {
         controller: editor,
         template: editortemplate,
-        bindings: {schema: '@', uuid: '@', action: '@', initial:'='},
+        bindings: {schema: '@', uuid: '@', action: '@', initial:'=', eid: '@'},
         link: function(scope, elem, attrs) {
             attrs.$observe(function() {
                 console.log('OBSERVING');

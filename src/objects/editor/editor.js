@@ -38,6 +38,7 @@ class objecteditor {
         this.schemadata = {};
         this.model = {};
         this.initial = {};
+        this.eid = null;
 
         this.debug = false;
         this.readonly = false;
@@ -59,9 +60,12 @@ class objecteditor {
         let self = this;
 
         this.scope.$on('Changed.UUID', function (event, val) {
-            console.log('[OE] UUID changed:', self.uuid);
-            self.config.uuid = val;
-            self.getData();
+            console.debug('[OE] Change Event:', event, val);
+            if (val.eid === self.config.eid) {
+                console.log('[OE] UUID changed:', self.uuid);
+                self.config.uuid = val.uuid;
+                self.getData();
+            }
         });
 
         this.scope.$on('Changed.Initial', function (event, val) {
@@ -260,9 +264,11 @@ class objecteditor {
                 schema: this.schema,
                 action: this.action,
                 model: this.initial,
+                eid: this.eid,
                 initial: this.initial
             };
             this.model = this.initial;
+            console.debug('[OE] Configuration: ', this.config);
         }
         console.log('[OE] Handling object of type: ' + this.config.schema + 'UUID:' + this.config.uuid + ' Action:' + this.config.action);
 
