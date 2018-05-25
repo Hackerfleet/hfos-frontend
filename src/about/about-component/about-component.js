@@ -54,6 +54,7 @@ class AboutComponent {
         };
         this.sliderValue = 5;
         this.colorValue = "";
+        this.datetimeValue = new Date();
 
         let self = this;
 
