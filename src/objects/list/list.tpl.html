@@ -230,7 +230,7 @@
                                         <li class="menu-item dropdown dropdown-submenu">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Revoke</a>
                                             <ul class="dropdown-menu">
-                                                <li ng-repeat="role in item.perms.write">
+                                                <li ng-repeat="role in item.perms.read">
                                                     <a ng-click="$ctrl.remove_role(item.uuid, 'read', role)"
                                                        ng-class="{'disabled': role === 'admin' || role === 'owner'}">
                                                         <span class="fa fa-times"></span> {{role}}
@@ -261,7 +261,7 @@
                                         <li class="menu-item dropdown dropdown-submenu">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Revoke</a>
                                             <ul class="dropdown-menu">
-                                                <li ng-repeat="role in item.perms.write">
+                                                <li ng-repeat="role in item.perms.list">
                                                     <a ng-click="$ctrl.remove_role(item.uuid, 'list', role)"
                                                        ng-class="{'disabled': role === 'admin' || role === 'owner'}">
                                                         <span class="fa fa-times"></span> {{role}}
