@@ -120,7 +120,7 @@
     "ngtemplate-loader": "2.0.1",
     "node-sass": "^4.5.2",
     "open-browser-webpack-plugin": "0.0.5",
-    "sass-loader": "6.0.7",
+    "sass-loader": "7.0.2",
     "serve-static": "^1.13.2",
     "sinon": "^5.0.0",
     "source-map-loader": "^0.2.1",
