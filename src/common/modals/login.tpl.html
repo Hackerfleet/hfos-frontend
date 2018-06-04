@@ -27,8 +27,14 @@
                             </div>
                         </div>
                         <div ng-show="$ctrl.state.href('app.enrolment') !== null">
-                            <div class="text-info">Don't have an account?
-                                <a class="pull-right" ng-click="$ctrl.close(); $hide()" href="#!/enrolment">Enrol yourself!</a></div>
+                            <div class="text-info">
+                                <a ng-click="$ctrl.close(); $hide()" href="#!/enrolment">
+                                    Don't have an account?
+                                    <span class="pull-right">
+                                          Register yourself!
+                                    </span>
+                                </a>
+                            </div>
 
                             <!--TODO: Build password reset:
                                 <div class="text-info">Forgot your password or username?
