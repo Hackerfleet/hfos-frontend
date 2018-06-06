@@ -26,7 +26,7 @@ let themes = null; //requireAll(require.context("../../themes", true, /\.scss$/)
 
 class AppComponent {
 
-    constructor(scope, user, socket, rootscope, objectproxy, state, notification, fullscreen, infoscreen, statusbar, systemconfig) {
+    constructor(scope, user, socket, rootscope, objectproxy, state, notification, infoscreen, statusbar, systemconfig) {
         this.scope = scope;
         this.user = user;
         this.socket = socket;
@@ -34,7 +34,6 @@ class AppComponent {
         this.objectproxy = objectproxy;
         this.state = state;
         this.notification = notification;
-        this.fullscreen = fullscreen;
         this.infoscreen = infoscreen;
         this.statusbar = statusbar;
         this.systemconfig = systemconfig;
@@ -56,11 +55,13 @@ class AppComponent {
 
         let self = this;
 
+        // TODO: Move to infoscreen service
         this.rotationpause = function () {
             this.rotationpaused = !this.rotationpaused;
             this.infoscreen.toggleRotations(!this.rotationpaused);
         };
 
+        // TODO: Move to infoscreen service
         this.rootscope.$on('Clientconfig.Update', function () {
             self.rotationenabled = self.infoscreen.enabled;
             console.log('Updating rotation to: ', self.rotationenabled);
@@ -177,36 +178,8 @@ class AppComponent {
         }
     }
 
-    fullscreentoggle() {
-        if (this.fullscreen.isEnabled()) {
-            this.fullscreen.cancel();
-            $('#mainmenu').collapse('show');
-            $('#spanfullscreen').addClass('fa-expand')
-                .removeClass('fa-compress');
-        }
-        else {
-            this.fullscreen.all();
-            $('#mainmenu').collapse('hide');
-            $('#spanfullscreen').removeClass('fa-expand')
-                .addClass('fa-compress');
-        }
-    }
-
-    mainmenutoggle() {
-        if ($('#fullscreengrab').css('top') === '42px') {
-            $('#fullscreengrab').animate().css({top: '-8px'});
-            $('#mainmenu').fadeOut(50);
-            $('#content').css({'padding-top': '0px'});
-            $('#fullscreengrabicon').removeClass('fa-arrow-up').addClass('fa-arrow-down');
-        } else {
-            $('#fullscreengrab').animate().css({top: '42px'});
-            $('#mainmenu').fadeIn(50);
-            $('#content').css({'padding-top': '50px'});
-            $('#fullscreengrabicon').removeClass('fa-arrow-down').addClass('fa-arrow-up');
-        }
-    }
 }
 
-AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'notification', 'Fullscreen', 'infoscreen', 'statusbar', 'systemconfig'];
+AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'notification', 'infoscreen', 'statusbar', 'systemconfig'];
 
 export default AppComponent;

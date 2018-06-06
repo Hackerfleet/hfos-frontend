@@ -43,7 +43,7 @@
                     <span class="glyphicon glyphicon-user"></span>
                 </button>
 
-                <button id="btnfullscreen" type="button" ng-click="$ctrl.fullscreentoggle();"
+                <button id="btnfullscreen" type="button" ng-click="$ctrl.user.fullscreentoggle();"
                         class="navbar-brand navbar-inverse btn"
                         title="Toggle Fullscreen"
                         style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
@@ -57,13 +57,28 @@
                     <span class="glyphicon"
                           ng-class="{'glyphicon-pause': $ctrl.rotationpaused,'glyphicon-play': !$ctrl.rotationpaused}"></span>
                 </button>
-                <button id="btnaddscreen" type="button" ng-click="$ctrl.user.addinfoscreen();"
+                <button id="btnforward" type="button" ng-click="$ctrl.infoscreen.rotate();"
+                        class="pagination-centered navbar-brand navbar-inverse btn"
+                        ng-show="$ctrl.rotationenabled"
+                        style="text-align: center; border-color: transparent; margin-left:5px; color: red"
+                        aria-label="Center Align">
+                    <span class="glyphicon glyphicon-step-forward"></span>
+                </button>
+                <button id="btnaddscreen" type="button" ng-click="$ctrl.user.addinfoscreen(infoscreenDelay);"
                         class="pagination-centered navbar-brand navbar-inverse btn"
                         ng-show="$ctrl.rotationenabled"
                         style="text-align: center; border-color: transparent; margin-left:5px; color: red"
                         aria-label="Center Align">
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
+
+                <form class="navbar-form" ng-show="$ctrl.rotationenabled" style="display: inline;">
+                    <div class="form-group" style="margin-top: 8px;">
+                        <input class="form-control" maxlength="5" type="number" ng-model="infoscreenDelay">
+                        <label>s</label>
+                    </div>
+                </form>
+
                 <span id="custom_buttons" ng-show="$ctrl.user.signedin == true">
                     <chatbutton></chatbutton>
                     <alertbutton></alertbutton>
@@ -155,9 +170,13 @@
             </table>
         </div>
     </div>
-    <button id="fullscreengrab" type="button" ng-click="$ctrl.mainmenutoggle();">
+
+    <button id="fullscreengrab" type="button" ng-click="$ctrl.user.mainmenutoggle();">
         <span id="fullscreengrabicon" class="fa fa-arrow-up"></span>
     </button>
+
+    <div id="fullscreen_spacer" ng-show="$ctrl.user.mainmenu_visible"></div>
+
     <div id="content" ui-view></div>
 
     <footer class="navbar-fixed-bottom"

@@ -31,7 +31,8 @@ import logincontroller from '../component/login-component';
 class UserService {
 
     /*@ngInject*/
-    constructor($cookies, $socket, notification, $modal, $rootScope, $location, $state, $timeout, infoscreen, $window) {
+    constructor($cookies, $socket, notification, $modal, $rootScope, $location, $state, $timeout, infoscreen,
+                fullscreen, $window) {
         console.log('UserService constructing');
         this.cookies = $cookies;
         this.socket = $socket;
@@ -42,6 +43,7 @@ class UserService {
         this.state = $state;
         this.timeout = $timeout;
         this.infoscreen = infoscreen;
+        this.fullscreen = fullscreen;
         this.window = $window;
 
         this.signedin = false;
@@ -64,6 +66,8 @@ class UserService {
 
         this.has_password = true;
         this.errortimeout = null;
+
+        this.mainmenu_visible = true;
 
         this.embed_external = false;
 
@@ -144,17 +148,12 @@ class UserService {
         function updateclientconfig(ev, uuid, newobj, schema) {
             let msg;
 
+            console.log('[USER] Updating client config:', uuid, newobj);
+
             if (schema === 'clientconfig' && String(uuid) === String(self.clientuuid)) {
                 console.log('[USER] Got selected config from OP:', newobj);
                 msg = {data: newobj};
                 self.storeclientconfigcookie(msg);
-                if (newobj.infoscreen) {
-                    self.infoscreen.setRotations(newobj.infoscreenrotations);
-                    self.infoscreen.toggleRotations(true);
-                } else {
-                    self.infoscreen.toggleRotations(false);
-                }
-                self.rootscope.$broadcast('Clientconfig.Update');
             } else if (schema === 'profile' && String(uuid) === String(self.profile.uuid)) {
                 console.log('[USER] Got a profile update from OP:', newobj);
                 msg = {data: newobj};
@@ -178,13 +177,21 @@ class UserService {
         }
 
         function storeclientconfigcookie(msg) {
-            console.log('[USER] Got a clientconfig: ', msg.data);
+            console.log('[USER] Storing cookie. Got a clientconfig: ', msg.data);
             self.clientconfig = msg.data;
 
             console.log('[USER] Client config: ', self.clientconfig);
             self.storeCookie(self.clientconfig.uuid, self.clientconfig.autologin);
 
             $('#clientname').html('<a href="#!/editor/client/' + self.clientconfig.uuid + '/edit">' + self.clientconfig.name + '</a>');
+
+            if (self.clientconfig.infoscreen) {
+                console.log('[USER] Is activated infoscreen, adding rotations');
+                self.infoscreen.setRotations(self.clientconfig.infoscreenrotations);
+                self.infoscreen.toggleRotations(true);
+            } else {
+                self.infoscreen.toggleRotations(false);
+            }
 
             self.rootscope.$broadcast('Clientconfig.Update');
 
@@ -225,7 +232,39 @@ class UserService {
         console.log('UserService constructed');
     }
 
-    addinfoscreen() {
+
+    fullscreentoggle() {
+        if (this.fullscreen.isEnabled()) {
+            this.fullscreen.cancel();
+            $('#mainmenu').collapse('show');
+            $('#spanfullscreen').addClass('fa-expand')
+                .removeClass('fa-compress');
+        }
+        else {
+            this.fullscreen.all();
+            $('#mainmenu').collapse('hide');
+            $('#spanfullscreen').removeClass('fa-expand')
+                .addClass('fa-compress');
+        }
+    }
+
+    mainmenutoggle() {
+        if ($('#fullscreengrab').css('top') === '42px') {
+            $('#fullscreengrab').animate().css({top: '-8px'});
+            $('#mainmenu').fadeOut(50);
+            //$('#content').css({'padding-top': '0px'});
+            $('#fullscreengrabicon').removeClass('fa-arrow-up').addClass('fa-arrow-down');
+            this.mainmenu_visible = false;
+        } else {
+            $('#fullscreengrab').animate().css({top: '42px'});
+            $('#mainmenu').fadeIn(50);
+            //$('#content').css({'padding-top': '50px'});
+            $('#fullscreengrabicon').removeClass('fa-arrow-down').addClass('fa-arrow-up');
+            this.mainmenu_visible = true;
+        }
+    }
+
+    addinfoscreen(delay) {
         console.log('Would now append new state:', this.state);
         let args = [];
 
@@ -240,11 +279,13 @@ class UserService {
         console.log('replaced args');
         let rotation = {
             'state': statename,
-            'duration': 10,
+            'duration': delay,
             'args': args
         };
         this.clientconfig.infoscreenrotations.push(rotation);
         console.log('ROTATIONS:', this.clientconfig.infoscreenrotations);
+        this.saveClientconfig();
+
     }
 
     logout(force, notify) {
@@ -487,6 +528,6 @@ class UserService {
 
 
 UserService.$inject = ['$cookies', 'socket', 'notification', '$modal', '$rootScope', '$location', '$state', '$timeout',
-    'infoscreen', '$window'];
+    'infoscreen', 'Fullscreen', '$window'];
 
 export default UserService;
