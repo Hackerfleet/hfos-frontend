@@ -48,6 +48,7 @@ import './customization.scss';
 
 // 3rd party modules
 require('jquery');
+require('jqueryui');
 //import bootstrap from 'bootstrap';
 require('moment');
 require('moment-timezone');
@@ -61,6 +62,7 @@ import 'angular-ui-utils/modules/utils';
 import animate from 'angular-animate';
 import cookies from 'angular-cookies';
 import 'ui-select/dist/select';
+import 'angular-dragdrop/src/angular-dragdrop';
 import 'ng-draggable';
 import '@kariudo/angular-fullscreen';
 import touch from 'angular-touch';
@@ -111,7 +113,7 @@ import doc from './doc/doc.module';
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
     'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable', 'ui.calendar', 'ngEmbed', 'gettext',
-    'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker',
+    'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker', 'ngDragDrop',
     animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, systemlog,
     doc, clipboard.name, ngcalendar, tree, localstorage, ngQrcode
 ];
