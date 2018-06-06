@@ -118,7 +118,7 @@ class SocketService {
         this.unsetPort = unsetPort;
 
         function doReconnect() {
-            if (self.connected !== true && self.trying !== true) {
+            if (self.connected !== true) {
                 console.warn('[SOCKET] Trying to reconnect.');
                 self.sock.close();
                 self.websocketurl = self.protocol + '://' + self.host + ':' + self.port + '/websocket';
