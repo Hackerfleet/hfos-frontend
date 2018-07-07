@@ -32,7 +32,7 @@ class UserService {
 
     /*@ngInject*/
     constructor($cookies, $socket, notification, $modal, $rootScope, $location, $state, $timeout, infoscreen,
-                fullscreen, $window) {
+                fullscreen, $window, systemconfig) {
         console.log('UserService constructing');
         this.cookies = $cookies;
         this.socket = $socket;
@@ -45,6 +45,7 @@ class UserService {
         this.infoscreen = infoscreen;
         this.fullscreen = fullscreen;
         this.window = $window;
+        this.systemconfig = systemconfig;
 
         this.signedin = false;
         this.signingIn = false;
@@ -422,7 +423,8 @@ class UserService {
                 controllerAs: '$ctrl',
                 title: 'Login to this node',
                 keyboard: false,
-                id: 'loginDialog'
+                id: 'loginDialog',
+                backdrop: 'static'
             });
 
             this.signingIn = true;
@@ -524,10 +526,46 @@ class UserService {
         this.rootscope.$broadcast('Clientconfig.Update');
     }
 
+
+    getModuleDefault(thing) {
+        console.log('[USER] Getting configured default value:', thing);
+
+        console.log('[USER] Module sections:', this.clientconfig, this.profile, this.systemconfig.config);
+
+        let data;
+
+        try {
+            data = this.clientconfig.modules[thing];
+        } catch (e) {
+            console.debug('No clientconfig default:', this.clientconfig.modules);
+        }
+
+        if (typeof data === 'undefined') {
+            try {
+                data = this.profile.modules[thing];
+            } catch (e) {
+                console.debug('No profile default:', this.profile.modules);
+            }
+        }
+
+        if (typeof data === 'undefined') {
+            try {
+                data = this.systemconfig.config.modules[thing];
+            } catch (e) {
+                console.log('Could not find a default value:', this.systemconfig.config.modules);
+                data = null;
+            }
+        }
+
+        console.log('[USER] Default value for ', thing, ':', data);
+        return data;
+    }
+
+
 }
 
 
 UserService.$inject = ['$cookies', 'socket', 'notification', '$modal', '$rootScope', '$location', '$state', '$timeout',
-    'infoscreen', 'Fullscreen', '$window'];
+    'infoscreen', 'Fullscreen', '$window', 'systemconfig'];
 
 export default UserService;
