@@ -42,6 +42,7 @@ class AboutComponent {
         this.serverport = socket.port;
         this.ssloverride = socket.protocol === 'wss';
 
+        this.counter = 0;
         this.consoleinput = '';
 
         $('#path').css({fill: '#afafff'});
@@ -63,6 +64,10 @@ class AboutComponent {
             this.toggleDebug();
             this.opentab(this.storage.get('debugTab'));
         }
+    }
+
+    increment() {
+        this.counter++;
     }
 
     command(cmd) {
