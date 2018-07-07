@@ -28,61 +28,73 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-
-                <button id="btnhome" type="button" ng-click="$ctrl.home($event);"
-                        class="navbar-brand navbar-inverse btn"
-                        style="border-color: transparent; margin-left: 2px;" aria-label="Left Align"
-                        title="Connection status button">
-                    <span class="glyphicon icon-hf-logo" id="hfos-icon"></span>
-                </button>
-
-                <button id="btnuser" type="button" ng-click="$ctrl.userbutton($event);"
-                        class="hidden navbar-brand navbar-inverse btn"
-                        style="border-color: transparent; margin-left:5px;"
-                        aria-label="Left Align">
-                    <span class="glyphicon glyphicon-user"></span>
-                </button>
-
-                <button id="btnfullscreen" type="button" ng-click="$ctrl.user.fullscreentoggle();"
-                        class="navbar-brand navbar-inverse btn"
-                        title="Toggle Fullscreen"
-                        style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
-                    <span id="spanfullscreen" class="fa fa-expand"></span>
-                </button>
-                <button id="btnpause" type="button" ng-click="$ctrl.rotationpause();"
-                        class="pagination-centered navbar-brand navbar-inverse btn"
-                        ng-show="$ctrl.rotationenabled"
-                        style="text-align: center; border-color: transparent; margin-left:5px; color: red"
-                        aria-label="Center Align">
+                <ul class="nav navbar-nav" id="topnavbar">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle navbar-brand btn node-button" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" ng-click="$ctrl.home($event);">
+                            <ng-include src="'/assets/images/logo32.svg'" class="instance-logo instance-logo-small" ></ng-include>
+                        </a>
+                        <featuremenu ng-if="$ctrl.user.signedin === true" class="dropdown-menu">
+                        </featuremenu>
+                    </li>
+                    <li>
+                        <button id="btnuser" type="button" ng-click="$ctrl.userbutton($event);"
+                                class="hidden navbar-brand navbar-inverse btn"
+                                style="border-color: transparent; margin-left:5px;"
+                                aria-label="Left Align">
+                            <span class="glyphicon glyphicon-user"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button id="btnfullscreen" type="button" ng-click="$ctrl.user.fullscreentoggle();"
+                                class="navbar-brand navbar-inverse btn"
+                                title="Toggle Fullscreen"
+                                style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
+                            <span id="spanfullscreen" class="fa fa-expand"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button id="btnpause" type="button" ng-click="$ctrl.rotationpause();"
+                                class="pagination-centered navbar-brand navbar-inverse btn"
+                                ng-show="$ctrl.rotationenabled"
+                                style="text-align: center; border-color: transparent; margin-left:5px; color: red"
+                                aria-label="Center Align">
                     <span class="glyphicon"
                           ng-class="{'glyphicon-pause': $ctrl.rotationpaused,'glyphicon-play': !$ctrl.rotationpaused}"></span>
-                </button>
-                <button id="btnforward" type="button" ng-click="$ctrl.infoscreen.rotate();"
-                        class="pagination-centered navbar-brand navbar-inverse btn"
-                        ng-show="$ctrl.rotationenabled"
-                        style="text-align: center; border-color: transparent; margin-left:5px; color: red"
-                        aria-label="Center Align">
-                    <span class="glyphicon glyphicon-step-forward"></span>
-                </button>
-                <button id="btnaddscreen" type="button" ng-click="$ctrl.user.addinfoscreen(infoscreenDelay);"
-                        class="pagination-centered navbar-brand navbar-inverse btn"
-                        ng-show="$ctrl.rotationenabled"
-                        style="text-align: center; border-color: transparent; margin-left:5px; color: red"
-                        aria-label="Center Align">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
+                        </button>
+                    </li>
+                    <li>
+                        <button id="btnforward" type="button" ng-click="$ctrl.infoscreen.rotate();"
+                                class="pagination-centered navbar-brand navbar-inverse btn"
+                                ng-show="$ctrl.rotationenabled"
+                                style="text-align: center; border-color: transparent; margin-left:5px; color: red"
+                                aria-label="Center Align">
+                            <span class="glyphicon glyphicon-step-forward"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button id="btnaddscreen" type="button" ng-click="$ctrl.user.addinfoscreen(infoscreenDelay);"
+                                class="pagination-centered navbar-brand navbar-inverse btn"
+                                ng-show="$ctrl.rotationenabled"
+                                style="text-align: center; border-color: transparent; margin-left:5px; color: red"
+                                aria-label="Center Align">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <form class="navbar-form" ng-show="$ctrl.rotationenabled" style="display: inline;">
+                            <div class="form-group" style="margin-top: 8px;">
+                                <input class="form-control" maxlength="5" type="number" ng-model="infoscreenDelay">
+                                <label>s</label>
+                            </div>
+                        </form>
+                    </li>
+                    <li>
+                    <span id="custom_buttons" ng-show="$ctrl.user.signedin == true">
+                    </span>
+                    </li>
+                </ul>
 
-                <form class="navbar-form" ng-show="$ctrl.rotationenabled" style="display: inline;">
-                    <div class="form-group" style="margin-top: 8px;">
-                        <input class="form-control" maxlength="5" type="number" ng-model="infoscreenDelay">
-                        <label>s</label>
-                    </div>
-                </form>
-
-                <span id="custom_buttons" ng-show="$ctrl.user.signedin == true">
-                    <chatbutton></chatbutton>
-                    <alertbutton></alertbutton>
-                </span>
             </div>
 
             <div class="collapse navbar-collapse" id="main-navbar-collapse-1">
@@ -98,7 +110,7 @@
                             </div>
                         </form>
                     </li>
-                    <li class="hidden">
+                    <li>
                         <a ng-click="$ctrl.search()"
                            ng-style="{'color': $ctrl.search_string !== '' && 'var(--color-primary-0)'}"
                            class="glyphicon glyphicon-search">
@@ -108,12 +120,14 @@
                     <li id="nav-fullscreen">
 
                     </li>
+                    <!-- TODO: Remove functionality for menu
                     <li class="dropdown" ng-show="$ctrl.user.signedin == true">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false"><span translate>Modules</span><span class="caret"></span></a>
                         <ul class="dropdown-menu componentmenu" id="modulemenu">
                         </ul>
                     </li>
+                    -->
                     <li class="dropdown" ng-show="$ctrl.user.signedin == true">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Client<span class="caret"></span></a>
@@ -142,7 +156,8 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">?<span class="caret"></span></a>
                         <ul class="dropdown-menu componentmenu">
-                            <li><a href="#!/doc"><span class="fa fa-question"></span><span translate>Documentation</span></a></li>
+                            <li><a href="#!/doc"><span class="fa fa-question"></span><span
+                                translate>Documentation</span></a></li>
                             <li><a href="#!/about"><span class="fa fa-info"></span><span translate>About</span></a></li>
                         </ul>
                     </li>
@@ -177,7 +192,8 @@
 
     <div id="fullscreen_spacer" ng-show="$ctrl.user.mainmenu_visible"></div>
 
-    <div id="content" ui-view></div>
+    <div ng-style="{'margin-top': $ctrl.user.mainmenu_visible ? '50px' : '0',
+                    'height': $ctrl.user.mainmenu_visible ? 'calc(100vh - 50px)' : '100vh'}" id="content" ui-view></div>
 
     <footer class="navbar-fixed-bottom"
             ng-class="{'navbar-inverse': !hideStatusbar}"

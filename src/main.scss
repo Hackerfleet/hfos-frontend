@@ -113,6 +113,50 @@
     border-radius: 10px;
 }
 
+.node-button {
+    padding: 9px !important;
+}
+
+#mainmenu > div > div.navbar-header {
+    margin-left: 0 !important;
+}
+
+#topnavbar > li.dropdown.open > featuremenu {
+    overflow: auto;
+}
+
+#topnavbar > li.dropdown.open > featuremenu > div.bootscreen {
+    display: none;
+}
+
+#topnavbar > li.dropdown.open > featuremenu > div.well {
+    padding: 2px;
+    margin: 0;
+    min-width: 50vw;
+    max-height: 66vh;
+    overflow: auto;
+}
+
+.navbar-nav {
+    margin: 0 !important;
+}
+
+#content > featuremenu > div.well {
+    padding-left: 5px;
+
+}
+
+/*#topnavbar > li.dropdown.open > featuremenu > div.well.animate-show > div.menu-nav.navbar {
+    display: none
+}*/
+
+a.node-button {
+    fill: $color-primary-0;
+    &:hover {
+        fill: $color-primary-1;
+    }
+}
+
 p.customfont {
     font-family: "Clear Sans", sans-serif;
 }
@@ -122,6 +166,8 @@ body {
     font-family: "Clear Sans", sans-serif;
     margin: 0;
     padding: 0;
+
+    overscroll-behavior: contain;
 
     /*color : $color-primary-1;*/
     color: $color-primary-3;
@@ -137,10 +183,13 @@ body {
     margin: auto;
 }
 
+/*
+// TODO: REMOVE
 .navbar-mob {
     float: none;
     width: 33%;
 }
+*/
 
 .navbar-nav .open .dropdown-menu {
     background-color: $color-white;
@@ -174,7 +223,7 @@ body {
 }
 
 .aside {
-    margin-top: 51px;
+    //margin-top: 51px;
 }
 
 .jumbotron {
@@ -246,14 +295,22 @@ a:focus {
 
 /* Space out content a bit */
 
+/*
 html, body {
     height: 100%;
     min-height: 100%;
 }
+*/
+
+.aside-content {
+    max-height: calc(100vh - 50px);
+    overflow-x: auto;
+    overflow-y: hidden
+}
 
 #content {
     height: 100vh;
-    padding-top: 50px;
+    position: relative;
 }
 
 #docs {
@@ -411,7 +468,7 @@ html, body {
 
 .menu-icon-list {
     text-align: right;
-    display: inline;
+    display: inline-flex;
 }
 
 .componentmenu {
@@ -433,6 +490,7 @@ html, body {
 
 #clientmenu {
     text-align: center;
+    min-width: 400px;
 }
 
 .client_entry {
@@ -445,6 +503,9 @@ html, body {
     &:hover {
         //        background: #e8e8e8;
     }
+    flex-wrap: wrap;
+    width: 180px;
+    line-height: 1em;
 }
 
 .dropdown-submenu {
@@ -553,7 +614,7 @@ html, body {
 }
 
 #sidebargrab {
-    z-index: 101;
+    z-index: 10001;
     outline: 0;
     opacity: 0.5;
     position: fixed;
@@ -903,9 +964,9 @@ main [ui-view].ng-leave-active {
     transform: translateX(100%);
 }
 
-#bootscreen {
+.bootscreen {
     position: absolute;
-    top: 51px;
+    top: 0px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -959,18 +1020,16 @@ main [ui-view].ng-leave-active {
 
 .animate-show.ng-hide-add.ng-hide-add-active,
 .animate-show.ng-hide-remove {
-    line-height: 0;
     opacity: 0;
-    padding: 0 10px;
 }
 
 .animate-show.ng-hide-add,
 .animate-show.ng-hide-remove.ng-hide-remove-active {
-    line-height: 20px;
     opacity: 1;
-    padding: 10px;
-    border: 1px solid black;
-    background: white;
+    /*.well {
+        border: 1px solid black;
+        background: white;
+    }*/
 }
 
 .gradient {

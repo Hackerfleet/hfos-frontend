@@ -19,10 +19,11 @@
 
 class featureMenu {
 
-    constructor(userservice, $state, $scope, $timeout, notification, socket) {
+    constructor(userservice, $state, $rootScope, $scope, $timeout, notification, socket) {
         this.signedin = false;
         this.state = $state;
         this.user = userservice;
+        this.rootscope = $rootScope;
         this.scope = $scope;
         this.timeout = $timeout;
         this.notification = notification;
@@ -30,6 +31,8 @@ class featureMenu {
 
         this.changetimeout = null;
         this.gridChangeWatcher = null;
+
+        this.search_string = '';
 
         this.lockState = false;
 
@@ -63,12 +66,15 @@ class featureMenu {
         this.gridsterOptions = {
             // any options that you can set for angular-gridster (see:  http://manifestwebdesign.github.io/angular-gridster/)
             columns: screen.width / 70,
+            width: 'auto',
             rowHeight: 70,
             colWidth: 70,
             defaultSizeX: 5,
             defaultSizeY: 5,
             margins: [5, 5],
-            mobileBreakPoint: 200,
+            mobileBreakPoint: 10,
+            mobileModeEnabled: false,
+            isMobile: false,
             draggable: {
                 enabled: false
             },
@@ -210,10 +216,12 @@ class featureMenu {
                 this.updateMenu();
             }
         }
-        this.scope.$on('Profile.Update', self.updateMenu);
+
+        this.rootscope.$on('Profile.Update', self.updateMenu);
+        this.rootscope.$on('User.Login', self.updateMenu);
     }
 
-    toggleLock() {
+    toggleLock(event) {
         this.lockState = !this.lockState;
         this.gridsterOptions.draggable.enabled = this.lockState;
         this.gridsterOptions.resizable.enabled = this.lockState;
@@ -223,10 +231,11 @@ class featureMenu {
         } else {
             this.gridChangeWatcher();
         }
+        event.stopPropagation();
     }
 }
 
 
-featureMenu.$inject = ['user', '$state', '$scope', '$timeout', 'notification', 'socket'];
+featureMenu.$inject = ['user', '$state', '$rootScope', '$scope', '$timeout', 'notification', 'socket'];
 
 export default featureMenu;

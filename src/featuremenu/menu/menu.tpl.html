@@ -17,7 +17,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div ng-hide="$ctrl.user.signedin" id="bootscreen" class="well vertical-center gradient"
+<div ng-hide="$ctrl.user.signedin" class="well vertical-center gradient bootscreen"
     ng-class="{fadeout: $ctrl.user.signedin}">
     <div class="center-block">
         <table>
@@ -58,6 +58,19 @@
 <div ng-show="$ctrl.user.signedin" class="well animate-show">
     <div class="menu-nav navbar">
         <ul class="nav nav-pills" role="tablist">
+            <li ng-show="$ctrl.lockState">
+                <form class="navbar-form">
+                    <div class="form-group clearable">
+                        <input type="search" class="form-control"
+                               ng-model="$ctrl.search_string">
+                        <span class="clearable__clear fa"
+                              style="top: 9px"
+                              ng-click="$ctrl.search_string = ''"
+                              ng-class="{'fa-search': $ctrl.search_string === '',
+                                         'fa-times': $ctrl.search_string !== ''}"></span>
+                    </div>
+                </form>
+            </li>
             <li class="pull-right">
                 <span class="taskGridLock fa"
                       ng-click="$ctrl.toggleLock()"
@@ -76,7 +89,8 @@
                 data-sizex="item.size"
                 data-sizey="item.size"
                 ng-repeat="item in $ctrl.items"
-                class="menu-box">
+                ng-hide="$ctrl.search_string !== '' && item.title.toLowerCase().indexOf($ctrl.search_string.toLowerCase()) < 0"
+                class="menu-box animate-show">
                 <span class="menu-mover fa fa-arrows" ng-show="$ctrl.lockState"></span>
                 <a href="#!{{item.url}}" class="center-block menu-block">
                     <img src="{{item.svg}}" type="image/svg+xml" class="module-icon-big"/>
