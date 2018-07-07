@@ -24,7 +24,6 @@ import FileUploadComponent from './component/file-upload-component';
 
 import UserService from './services/user.service';
 import MenuService from './services/menu.service';
-import TodoService from './services/todo.service';
 import NotificationService from './services/notification.service';
 import SocketService from './services/socket.factory';
 import SchemataService from './services/schemata.service';
@@ -32,6 +31,7 @@ import SystemconfigService from './services/system.service';
 import ObjectProxy from './services/objectproxy.service';
 import InfoscreenService from './services/infoscreen.service';
 import StatusbarService from './services/statusbar.service';
+import NavbarService from './services/navbar.service';
 import capitalize from './utils/capitalize';
 import toLength from './utils/toLength';
 import range from './utils/range';
@@ -54,7 +54,6 @@ export default angular
     .filter('objectLength', ObjectLength)
     .component('userInfoComponent', UserInfoComponent)
     .component('fileUploadComponent', FileUploadComponent)
-    .service('TodoService', TodoService)
     .service('notification', NotificationService)
     .service('infoscreen', InfoscreenService)
     .service('user', UserService)
@@ -64,5 +63,6 @@ export default angular
     .service('systemconfig', SystemconfigService)
     .service('objectproxy', ObjectProxy)
     .service('statusbar', StatusbarService)
+    .service('navbar', NavbarService)
     .controller('LoginCtrl', LoginController)
     .name;
