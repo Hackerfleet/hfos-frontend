@@ -22,7 +22,6 @@
  */
 
 let humanizeDuration = require('humanize-duration');
-import * as _ from 'lodash';
 
 class SocketService {
 
@@ -247,19 +246,13 @@ class SocketService {
 
             self.stats.rx++;
 
-            if (_.has(msg, 'component')) {
-                if (_.has(msg, 'action')) {
-                    //console.info('Correct message received. Handlers: ', self.handlers, msg.component);
+            if ('component' in msg) {
+                if ('action' in msg) {
                     if (msg.component in self.handlers) {
-                        //console.info('Found a matching handler.');
                         for (let handler in self.handlers[msg.component]) {
-                            //console.info('Calling handler:', self.handlers[msg.component], handler);
+                            console.debug('Calling handler:', self.handlers[msg.component], handler);
                             self.handlers[msg.component][handler](msg);
                         }
-                        /*_.forIn(handlers[msg.compoennt], function (value, key) {
-                         console.info('Executing handler: ', value, key, msg);
-                         key(msg);
-                         });*/
                     }
                 } else {
                     console.error('Incorrect message: no action!', msg);
@@ -384,7 +377,7 @@ class SocketService {
 
     listen(topic, handler) {
 
-        if (_.has(this.handlers, topic)) {
+        if (topic in this.handlers) {
             this.handlers[topic].push(handler);
             console.debug('[SOCKET] New handler registered for topic ', topic);
         } else {
