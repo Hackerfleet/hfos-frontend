@@ -26,7 +26,7 @@ let themes = null; //requireAll(require.context("../../themes", true, /\.scss$/)
 
 class AppComponent {
 
-    constructor(scope, user, socket, rootscope, objectproxy, state, notification, infoscreen, statusbar, systemconfig) {
+    constructor(scope, user, socket, rootscope, objectproxy, state, notification, infoscreen, statusbar, navbar, systemconfig) {
         this.scope = scope;
         this.user = user;
         this.socket = socket;
@@ -36,6 +36,7 @@ class AppComponent {
         this.notification = notification;
         this.infoscreen = infoscreen;
         this.statusbar = statusbar;
+        this.navbar = navbar;
         this.systemconfig = systemconfig;
 
         this.rotationenabled = infoscreen.enabled;
@@ -49,11 +50,17 @@ class AppComponent {
         console.log('[APP] Backgrounds:', backgrounds);
         console.log('[APP] Themes:', themes);
 
+        this.navbar.set_scope(scope);
+
         for (let theme in themes) {
             console.log('[APP] Theme:', theme, theme.id, theme.resolve, theme.keys);
         }
 
         let self = this;
+
+        this.socket.listen('hfos.ui.tagmanager', function(msg)  {
+            console.log('[APP] Tag manager result:', msg);
+        });
 
         // TODO: Move to infoscreen service
         this.rotationpause = function () {
@@ -158,21 +165,28 @@ class AppComponent {
     home(event) {
         if (event.shiftKey === true) {
             console.log('[MAIN] Reloading route.');
-            // TODO: Reimplement this
             this.socket.check();
-        } else if (event.ctrlKey === true) {
-            console.log('[MAIN] Disconnecting');
-            //socket.disconnect();
+            event.stopPropagation();
+        } else if (event.ctrlKey === true && evnt.shiftKey === true) {
+            console.log('[MAIN] Reconnecting');
+            this.socket.reconnect();
+            event.stopPropagation();
+        } else if (!this.user.signedin) {
+            this.userbutton();
+            event.stopPropagation();
         }
-        /*socket.check();
-         user.check();
-         schemata.check();*/
-        console.log('[MAIN] Main profile: ', this.user.profile);
+
     }
 
     search(event) {
         if (this.search_string !== '') {
             console.log('Would search now');
+            let request = {
+                component: 'hfos.ui.tagmanager',
+                action: 'get_tagged',
+                data: this.search_string
+            };
+            this.socket.send(request);
         } else {
             this.search_collapsed = !this.search_collapsed;
         }
@@ -180,6 +194,6 @@ class AppComponent {
 
 }
 
-AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'notification', 'infoscreen', 'statusbar', 'systemconfig'];
+AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'notification', 'infoscreen', 'statusbar', 'navbar', 'systemconfig'];
 
 export default AppComponent;
