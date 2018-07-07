@@ -33,8 +33,6 @@ let PARAMS_DEFAULT = {
             'lodash',
             'jquery',
             'bootstrap',
-            'moment',
-            'fullcalendar',
 
             'angular',
             'angular-aria',
@@ -50,8 +48,6 @@ let PARAMS_DEFAULT = {
             'angular-strap/dist/angular-strap.tpl.js',
 
             'humanize-duration',
-            'qrcode-generator/qrcode_UTF8.js',
-            //'angular-qr'
         ]
     },
     output: {
@@ -84,6 +80,7 @@ let PARAMS_DEFAULT = {
         new webpack.DefinePlugin({
             __COMMIT_HASH__: JSON.stringify(commitHash),
         }),
+        // TODO: Make this an argument or so:
         //new BundleAnalyzerPlugin(),
     ],
     devServer: {

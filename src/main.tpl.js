@@ -34,14 +34,13 @@ import 'bootstrap/dist/css/bootstrap-theme.min.css';
 //import './themes/nightshift/bootstrap.css';
 
 import 'bootstrap-additions/dist/bootstrap-additions.css';
-import 'angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css';
 import 'ui-select/dist/select.css';
 import 'bootstrap-slider/dist/css/bootstrap-slider.min.css';
 import 'angular-ui-tree/dist/angular-ui-tree.min.css';
 import 'ng-table/bundles/ng-table.css';
-import 'fullcalendar/dist/fullcalendar.min.css';
 import 'highlight.js/styles/default.css';
 import 'ng-embed/dist/ng-embed.min.css';
+import 'angular-pull-to-refresh/dist/angular-pull-to-refresh.css';
 
 import './main.scss';
 import './customization.scss';
@@ -52,7 +51,6 @@ require('jqueryui');
 //import bootstrap from 'bootstrap';
 require('moment');
 require('moment-timezone');
-require('fullcalendar');
 import angular from 'angular';
 import sanitize from 'angular-sanitize';
 import 'angular-gettext';
@@ -69,8 +67,6 @@ import touch from 'angular-touch';
 import translate from 'angular-translate';
 import clipboard from 'angular-clipboard';
 import ui from 'angular-ui-bootstrap';
-import ngcalendar from 'angular-bootstrap-calendar';
-import 'angular-ui-calendar';
 import tree from 'angular-ui-tree';
 import localstorage from 'angular-local-storage';
 require('angular-strap/dist/angular-strap.min');
@@ -92,12 +88,12 @@ require('angular-uuid');
 require('angularjs-scroll-glue/src/scrollglue');
 require('angular-moment');
 require('schema-form-datetimepicker/schema-form-date-time-picker.min');
+require('angular-pull-to-refresh/dist/angular-pull-to-refresh');
+require('angular-media-queries/match-media');
 import ngTableModule from 'ng-table/bundles/ng-table';
 
 require('humanize-duration');
 
-import qrcode from 'qrcode-generator';
-//import qrcode_UTF8 from '/node_modules/qrcode-generator/qrcode_UTF8.js';
 import ngQrcode from 'angular-qrcode';
 
 // HFOS Core (Sails) Modules
@@ -112,10 +108,10 @@ import doc from './doc/doc.module';
 // HFOS Plugin Modules
 
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
-    'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable', 'ui.calendar', 'ngEmbed', 'gettext',
-    'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker', 'ngDragDrop',
+    'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable', 'ngEmbed', 'gettext', 'matchMedia',
+    'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker', 'ngDragDrop', 'mgcrea.pullToRefresh',
     animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, systemlog,
-    doc, clipboard.name, ngcalendar, tree, localstorage, ngQrcode
+    doc, clipboard.name, tree, localstorage, ngQrcode
 ];
 
 /* COMPONENT SECTION */
