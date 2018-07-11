@@ -39,6 +39,7 @@ import OrderedObject from './utils/orderedObject';
 import ObjectLength from './utils/objectLength';
 
 import LoginController from './component/login-component';
+import LoginTemplate from './component/login.tpl.html';
 
 import resizer from './component/resizer';
 import pagetitle from './component/pagetitle';
@@ -52,6 +53,7 @@ export default angular
     .filter('range', range)
     .filter('orderedObject', OrderedObject)
     .filter('objectLength', ObjectLength)
+    .component('logindialog', {controller: LoginController, template: LoginTemplate})
     .component('userInfoComponent', UserInfoComponent)
     .component('fileUploadComponent', FileUploadComponent)
     .service('notification', NotificationService)

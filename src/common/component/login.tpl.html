@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+  ~ Hackerfleet Operating System
+  ~ ============================
+  ~ Copyright (C) 2011 - 2018 riot <riot@c-base.org> and others.
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<div class="row login-form">
+    <input id="username" class="form-control input-lg login-textbox-top"
+           placeholder="Username" type="text" ng-model="$ctrl.username" autofocus>
+    <input id="password" class="form-control input-lg login-textbox-bottom"
+           placeholder="Password" type="password" ng-model="$ctrl.password"><br/>
+
+    <button type="submit" class="btn-block btn btn-lg btn-login btn-success" ng-click="$ctrl.login(); $hide()">
+        <span class="fa fa-sign-in"></span>
+        <span translate>Login</span>
+    </button>
+    <a ng-show="$ctrl.state.href('app.enrolment') !== null"
+       ng-click="$ctrl.close(); $hide()"
+       class="btn-block btn btn-lg btn-login btn-info"
+       type="button"
+       href="#!/enrolment">
+        <span class="fa fa-address-card-o"></span>
+        <span translate>Register</span>
+    </a>
+
+    <div class="checkbox">
+        <label for="stayloggedin">
+            <input type="checkbox" id="stayloggedin"/>
+            <span translate>Stay logged in</span>
+        </label>
+    </div>
+</div>
+
+<!--TODO: Build password reset:
+    <div class="text-info">Forgot your password or username?
+    <a class="pull-right" ng-click="$ctrl.close(); $hide()" href="#!/resetaccount">Request a reset.</a>
+</div>-->
