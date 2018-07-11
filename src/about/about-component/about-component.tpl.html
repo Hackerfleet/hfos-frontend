@@ -41,33 +41,34 @@
                     </div>
 
                     <H2>{{$ctrl.systemconfig.nodename}}</H2>
-                    <H5>An isomer node</H5>
+                    <H5 translate>An isomer node</H5>
 
                     <ul>
-                        <li>Client version: <b>{{$ctrl.commitHash}}</b></li>
+                        <li><span translate>Client version:</span> <b>{{$ctrl.commitHash}}</b></li>
                         <li ng-show="{{$ctrl.user.clientconfig.name !== undefined}}">
-                            Client name: <b>{{$ctrl.user.clientconfig.name}}</b>
+                            <span translate>Client name:</span> <b>{{$ctrl.user.clientconfig.name}}</b>
                         </li>
 
                         <li ng-show="{{$ctrl.systemconfig.contact !== undefined}}">
-                            <a href="mailto:{{$ctrl.systemconfig.contact}}">Contact this node's maintainer</a>
+                            <a href="mailto:{{$ctrl.systemconfig.contact}}" translate>Contact this node's maintainer</a>
                         </li>
                         <li>
-                            <a href="mailto:riot@c-base.org">Contact the isomer framework maintainers</a>
+                            <a href="mailto:riot@c-base.org" translate>Contact the isomer framework maintainers</a>
                         </li>
                     </ul>
 
                     <div class="btn-group btn-block">
                         <button type="button" class="btn btn-block btn-success dropdown-toggle" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                            Report Bugs<span class="caret"></span>
+                            <span translate>Report Bugs</span><span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="https://github.com/hackerfleet/hfos/issues" target="_blank">Browse on
-                                Github</a></li>
-                            <li><a href="https://github.com/hackerfleet/hfos/issues/new" target="_blank">Report
-                                on
-                                Github</a></li>
+                            <li><a href="https://github.com/hackerfleet/hfos/issues" target="_blank" translate>
+                                Browse on Github
+                            </a></li>
+                            <li><a href="https://github.com/hackerfleet/hfos/issues/new" target="_blank" translate>
+                                Report on Github
+                            </a></li>
                         </ul>
                     </div>
                     <a ng-click="$ctrl.toggleDebug()" ng-show="$ctrl.counter >= 5" type="button"

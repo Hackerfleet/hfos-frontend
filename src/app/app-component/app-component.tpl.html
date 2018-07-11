@@ -18,21 +18,25 @@
   -->
 
 <div>
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="mainmenu">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation"
+         id="mainmenu">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse"
                         data-target="#main-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
+                    <span class="sr-only" translate>Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 <ul class="nav navbar-nav" id="topnavbar">
                     <li class="dropdown">
-                        <a class="dropdown-toggle navbar-brand btn node-button" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        <a class="dropdown-toggle navbar-brand btn node-button" data-toggle="dropdown" role="button"
+                           title="{{'Node menu'|translate}}"
+                           aria-haspopup="true"
                            aria-expanded="false" ng-click="$ctrl.home($event);">
-                            <ng-include src="'/assets/images/logo32.svg'" class="instance-logo instance-logo-small" ></ng-include>
+                            <ng-include src="'/assets/images/logo32.svg'"
+                                        class="instance-logo instance-logo-small"></ng-include>
                         </a>
                         <featuremenu ng-if="$ctrl.user.signedin === true" class="dropdown-menu">
                         </featuremenu>
@@ -41,6 +45,7 @@
                         <button id="btnuser" type="button" ng-click="$ctrl.userbutton($event);"
                                 class="hidden navbar-brand navbar-inverse btn"
                                 style="border-color: transparent; margin-left:5px;"
+                                title="User actions"
                                 aria-label="Left Align">
                             <span class="glyphicon glyphicon-user"></span>
                         </button>
@@ -48,7 +53,7 @@
                     <li>
                         <button id="btnfullscreen" type="button" ng-click="$ctrl.user.fullscreentoggle();"
                                 class="navbar-brand navbar-inverse btn"
-                                title="Toggle Fullscreen"
+                                title="{{'Toggle Fullscreen'|translate}}"
                                 style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
                             <span id="spanfullscreen" class="fa fa-expand"></span>
                         </button>
@@ -113,27 +118,19 @@
                     <li>
                         <a ng-click="$ctrl.search()"
                            ng-style="{'color': $ctrl.search_string !== '' && 'var(--color-primary-0)'}"
+                           title="Search objects"
                            class="glyphicon glyphicon-search">
                         </a>
                     </li>
-                    <li id="nav-home"><a href="/#!/"><span class="glyphicon glyphicon-home"></span></a></li>
-                    <li id="nav-fullscreen">
+                    <li id="nav-home"><a title="Module menu" href="/#!/"><span class="glyphicon glyphicon-home"></span></a>
+                    </li>
 
-                    </li>
-                    <!-- TODO: Remove functionality for menu
                     <li class="dropdown" ng-show="$ctrl.user.signedin == true">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false"><span translate>Modules</span><span class="caret"></span></a>
-                        <ul class="dropdown-menu componentmenu" id="modulemenu">
-                        </ul>
-                    </li>
-                    -->
-                    <li class="dropdown" ng-show="$ctrl.user.signedin == true">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Client<span class="caret"></span></a>
+                           aria-expanded="false" translate>Client<span class="caret"></span></a>
                         <ul class="dropdown-menu componentmenu" id="clientmenu">
                             <li>
-                                <div id="clientname">N/A</div>
+                                <div id="clientname" translate>N/A</div>
                             </li>
                             <li role="separator" class="divider"></li>
                             <li class="client_entry" ng-repeat="config in $ctrl.clientconfiglist">
@@ -154,7 +151,24 @@
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">?<span class="caret"></span></a>
+                           aria-expanded="false">
+                            <countryflag country="{{$ctrl.user.language}}">
+                                {{$ctrl.user.language|uppercase}}
+                            </countryflag>
+                        </a>
+                        <ul class="dropdown-menu componentmenu" id="languagesmenu">
+                            <li ng-repeat="(token, lang) in $ctrl.user.languages|orderedObject">
+                                <a ng-click="$ctrl.user.setLanguage(token)">
+                                    <countryflag country="{{token}}">
+                                        {{lang}}
+                                    </countryflag>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false" title="Help & About">?<span class="caret"></span></a>
                         <ul class="dropdown-menu componentmenu">
                             <li><a href="#!/doc"><span class="fa fa-question"></span><span
                                 translate>Documentation</span></a></li>
@@ -186,14 +200,15 @@
         </div>
     </div>
 
-    <button id="fullscreengrab" type="button" ng-click="$ctrl.user.mainmenutoggle();">
+    <button id="fullscreengrab" type="button" title="Hide menu"
+            ng-click="$ctrl.user.mainmenutoggle();">
         <span id="fullscreengrabicon" class="fa fa-arrow-up"></span>
     </button>
 
-    <div id="fullscreen_spacer" ng-show="$ctrl.user.mainmenu_visible"></div>
-
     <div ng-style="{'margin-top': $ctrl.user.mainmenu_visible ? '50px' : '0',
-                    'height': $ctrl.user.mainmenu_visible ? 'calc(100vh - 50px)' : '100vh'}" id="content" ui-view></div>
+                    'height': $ctrl.user.mainmenu_visible ? 'calc(100vh - 50px)' : '100vh'}"
+         id="content" ui-view>
+    </div>
 
     <footer class="navbar-fixed-bottom"
             ng-class="{'navbar-inverse': !hideStatusbar}"
@@ -201,7 +216,7 @@
         <div class="row">
             <div id="statusLeft" class="col-xs-2">
                 <span>
-                    <a class="fa" title="Show/Hide status bar" ng-click="hideStatusbar = !hideStatusbar"
+                    <a class="fa" title="Toggle status bar" ng-click="hideStatusbar = !hideStatusbar"
                        ng-class="{'fa-circle-o': hideStatusbar,
                                   'fa-dot-circle-o': !hideStatusbar}">
                     </a>
@@ -212,11 +227,11 @@
                 </span>
             </div>
             <div id="statusCenter" ng-show="!hideStatusbar" class="col-xs-8">
-                <a class="fa"
+                <a class="fa" title="Toggle notification history"
                    ng-class="{'fa-chevron-up': !showStatusHistory,
                               'fa-chevron-down': showStatusHistory}"
                    ng-click="showStatusHistory = !showStatusHistory"></a>
-                <a class="fa" title="Show/Hide timestamps" ng-click="showStatusTimestamps = !showStatusTimestamps"
+                <a class="fa" title="Toggle timestamps" ng-click="showStatusTimestamps = !showStatusTimestamps"
                    ng-class="{'fa-circle-o': !showStatusTimestamps,
                                   'fa-clock-o': showStatusTimestamps}">
                 </a>

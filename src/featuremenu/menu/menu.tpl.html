@@ -22,23 +22,13 @@
     <div class="center-block">
         <table>
             <tr>
-                <div id="fleetlogo" class="center"></div>
+                <div id="nodelogo" class="center"></div>
             </tr>
             <tr id="login-notice">
                 <div class="dark" ng-show="$ctrl.socket.connected">
                     <div ng-hide="$ctrl.user.signedin">
-                    <h2 translate>Login required</h2>
-                        <span>
-                            <a ng-click="$ctrl.user.login()">
-                                <span translate>Please login</span>
-                                <span translate ng-show="$ctrl.state.href('app.enrolment') !== null">
-                                    or register
-                                </span>
-                                <span translate>your account to use this node.</span>
-                        </a>
-                        </span>
-                    </div>
-                    <div ng-show="$ctrl.user.signedin">
+                        <logindialog></logindialog>
+                   <div ng-show="$ctrl.user.signedin">
                         <h2 ng-if="$ctrl.user.signedin" translate>Logging in...</h2>
                     </div>
                 </div>

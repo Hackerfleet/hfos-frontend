@@ -23,7 +23,7 @@ let showAngularStats = require('ng-stats');
 class AboutComponent {
 
     constructor(rootscope, user, socket, $interval, notification, modal, schemaservice, op, state, localStorageService,
-                systemconfig) {
+                systemconfig, gettextCatalog) {
         this.rootscope = rootscope;
         this.user = user;
         this.socket = socket;
@@ -34,6 +34,7 @@ class AboutComponent {
         this.schemaservice = schemaservice;
         this.storage = localStorageService;
         this.systemconfig = systemconfig;
+        this.gettextCatalog = gettextCatalog;
 
         this.schemata = [];
 
@@ -85,7 +86,6 @@ class AboutComponent {
         console.log('[ABOUT] Toggling Debug tools');
         if (this.user.debug !== true) {
             this.user.debug = true;
-
             showAngularStats({
                 position: 'bottom',
                 htmlId: 'ngstats'
@@ -94,6 +94,7 @@ class AboutComponent {
         } else {
             this.user.debug = false;
         }
+        this.gettextCatalog.debug = this.user.debug;
     }
 
     opentab(tabname) {
@@ -145,7 +146,7 @@ class AboutComponent {
 
 AboutComponent.$inject = [
     '$rootScope', 'user', 'socket', '$interval', 'notification', '$modal', 'schemata',
-    'objectproxy', '$state', 'localStorageService', 'systemconfig'
+    'objectproxy', '$state', 'localStorageService', 'systemconfig', 'gettextCatalog'
 ];
 
 export default AboutComponent;

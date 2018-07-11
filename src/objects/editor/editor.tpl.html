@@ -20,6 +20,9 @@
 <div class="well">
     <H1>{{$ctrl.config.action}}: <a href="#!/list/{{$ctrl.schemadata.schema.name}}">{{$ctrl.schemascreenname}}</a>/<a
         href="#!/editor/{{$ctrl.schemadata.schema.name}}/{{$ctrl.model.uuid}}/edit">{{$ctrl.model.name}}</a></H1>
+    <div class="bg-danger" ng-show="$ctrl.schemata.indexOf($ctrl.schema) < 0" translate>
+        Unknown schema!
+    </div>
     <div ng-show="$ctrl.user.debug">
         <div id="edit_flags" ng-hide="$ctrl.readonly">
             <span id="editLive">

@@ -7,21 +7,21 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                <span>Hello {{$ctrl.greetingname}}!</span>
+                <span translate>Hello {{$ctrl.greetingname}}!</span>
 
                 <div class="modal-footer">
                     <form>
                         <button type="button" ng-click="$ctrl.user.changePassword(); $hide()" class="btn btn-large">
-                            <span class="fa fa-lock"></span>Change Password
+                            <span class="fa fa-lock"></span><span translate>Change Password</span>
                         </button>
                         <button type="button" ng-click="$ctrl.user.showprofile(); $hide()" class="btn btn-large">
-                            <span class="fa fa-id-card-o"></span>Edit Profile
+                            <span class="fa fa-id-card-o"></span><span translate>Edit Profile</span>
                         </button>
                         <button type="button" ng-click="$ctrl.user.logout(true, true); $hide()" class="btn btn-danger btn-large">
-                            <span class="fa fa-sign-out"></span>Logout
+                            <span class="fa fa-sign-out"></span><span translate>Logout</span>
                         </button>
                         <button id="usercancel" type="button" ng-click="$modalCancel(); $hide()" class="btn btn-default btn-large">
-                            <span class="fa fa-times"></span>Cancel
+                            <span class="fa fa-times"></span><span translate>Cancel</span>
                         </button>
                     </form>
                 </div>

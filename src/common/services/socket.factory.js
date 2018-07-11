@@ -25,7 +25,7 @@ let humanizeDuration = require('humanize-duration');
 
 class SocketService {
 
-    constructor($location, $alert, $timeout, $interval, $cookies, $rootscope, statusbar) {
+    constructor($location, $alert, $timeout, $interval, $cookies, $rootscope, statusbar, gettext) {
         // TODO: Switch to notification service instead of using $alert
         // TODO: Repair reconnection facility
 
@@ -36,7 +36,10 @@ class SocketService {
         this.cookies = $cookies;
         this.rootscope = $rootscope;
         this.statusbar = statusbar;
+        this.gettext = gettext;
+
         //this.humanizer = humanizer;
+
         this.host = $location.host();
         this.port = $location.port();
         this.protocol = 'wss';
@@ -135,8 +138,8 @@ class SocketService {
                 self.disconnectalert.hide();
 
                 self.disconnectalert = $alert({
-                    'title': 'Offline',
-                    'content': 'You have been disconnected from the node. Retry interval is at ' + humanizeDuration(interval),
+                    'title': self.gettext('Offline'),
+                    'content': self.gettext('You have been disconnected from the node. Retry interval is at ') + humanizeDuration(interval),
                     'placement': 'top-left',
                     'type': 'warning',
                     'show': true,
@@ -175,8 +178,8 @@ class SocketService {
             self.stats.start = currentdate;
 
             self.disconnectalert = self.$alert({
-                'title': 'Online',
-                'content': 'The connection to the node has been established. You\'re online!',
+                'title': self.gettext('Online'),
+                'content': self.gettext('The connection to the node has been established. You\'re online!'),
                 'placement': 'top-left',
                 'type': 'info',
                 'show': true,
@@ -322,13 +325,13 @@ class SocketService {
                 self.stats.latency = new Date().getTime() - msg.data[0];
                 console.debug('[SOCKET] Latency: ', self.stats.latency);
                 if (self.stats.latency > 20) {
-                    self.statusbar.add('danger', 'High latency', 'Roundtrip took ' + self.stats.latency + ' ms');
+                    self.statusbar.add('danger', self.gettext('High latency'), self.gettext('Roundtrip took ') + self.stats.latency + ' ms');
                 }
                 console.debug('[SOCKET] Stats:', self.stats);
             } else if (msg.action === 'Permission') {
                 $alert({
-                    'title': 'No permission',
-                    'content': 'You have insufficient permissions to do that.',
+                    'title': self.gettext('No permission'),
+                    'content': self.gettext('You have insufficient permissions to do that.'),
                     'placement': 'top-left',
                     'type': 'warning',
                     'show': true,
@@ -418,6 +421,6 @@ class SocketService {
     }
 }
 
-SocketService.$inject = ['$location', '$alert', '$timeout', '$interval', '$cookies', '$rootScope', 'statusbar'];
+SocketService.$inject = ['$location', '$alert', '$timeout', '$interval', '$cookies', '$rootScope', 'statusbar', 'gettext'];
 
 export default SocketService;

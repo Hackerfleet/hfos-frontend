@@ -58,12 +58,13 @@ let PARAMS_DEFAULT = {
     plugins: [
         new AngularGetTextPlugin({
             compileTranslations: {
-                input: 'po/*.po',
-                outputFolder: '../locale',
-                format: 'json'
+                input: '../locale/**/LC_MESSAGES/frontend.po',
+                outputFolder: 'l10n',
+                format: 'json',
+                compileCatalog: true
             },
             extractStrings: {
-                input: 'src/**/*.html',
+                input: 'src/**/*.@(html|js)',
                 destination: '../locale/frontend.pot'
             }
         }),

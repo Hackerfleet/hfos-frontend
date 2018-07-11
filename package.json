@@ -28,6 +28,7 @@
     "angular-dragdrop": "^1.0.13",
     "angular-fullscreen": "kariudo/angular-fullscreen",
     "angular-gettext": "^2.3.10",
+    "angular-gettext-loader": "^1.0.1",
     "angular-gettext-plugin": "^1.0.1",
     "angular-gridster": "^0.13.14",
     "angular-local-storage": "^0.7.1",
@@ -68,6 +69,7 @@
     "lodash": "^4.17.5",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
+    "ng-country-flags": "^1.0.6",
     "ng-draggable": "^1.0.0",
     "ng-embed": "^2.2.0",
     "ng-split": "^0.2.0",
@@ -84,8 +86,8 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "angular-gettext-cli": "^1.2.0",
     "angular-mocks": "^1.6.0",
-    "angular-translate": "^2.11.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-runtime": "^6.23.0",

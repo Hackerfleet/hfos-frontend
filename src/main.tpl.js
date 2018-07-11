@@ -41,6 +41,7 @@ import 'ng-table/bundles/ng-table.css';
 import 'highlight.js/styles/default.css';
 import 'ng-embed/dist/ng-embed.min.css';
 import 'angular-pull-to-refresh/dist/angular-pull-to-refresh.css';
+import 'ng-country-flags/dist/css/flag-icon.css';
 
 import './main.scss';
 import './customization.scss';
@@ -64,13 +65,14 @@ import 'angular-dragdrop/src/angular-dragdrop';
 import 'ng-draggable';
 import '@kariudo/angular-fullscreen';
 import touch from 'angular-touch';
-import translate from 'angular-translate';
+//import translate from 'angular-translate';
 import clipboard from 'angular-clipboard';
 import ui from 'angular-ui-bootstrap';
 import tree from 'angular-ui-tree';
 import localstorage from 'angular-local-storage';
 require('angular-strap/dist/angular-strap.min');
 require('angular-strap/dist/angular-strap.tpl.min');
+require('ng-country-flags/dist/js/ng-countryflags');
 
 import hlsj from 'highlight.js/lib/index';
 
@@ -110,7 +112,8 @@ import doc from './doc/doc.module';
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
     'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable', 'ngEmbed', 'gettext', 'matchMedia',
     'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker', 'ngDragDrop', 'mgcrea.pullToRefresh',
-    animate, app, common, objects, cookies, sanitize, touch, translate, ui, featuremenu, about, systemlog,
+    'ng-countryflags',
+    animate, app, common, objects, cookies, sanitize, touch, ui, featuremenu, about, systemlog,
     doc, clipboard.name, tree, localstorage, ngQrcode
 ];
 

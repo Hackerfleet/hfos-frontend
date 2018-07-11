@@ -26,7 +26,7 @@
                 <div class="panel-heading" role="tab" id="filterHeading">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-parent="#accordion"
-                           aria-expanded="true" aria-controls="filterCollapse">
+                           aria-expanded="true" aria-controls="filterCollapse" translate>
                             Filters
                         </a>
                     </h4>
@@ -42,7 +42,7 @@
                 <div class="panel-heading" role="tab" id="fieldsHeading">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-parent="#accordion"
-                           aria-expanded="true" aria-controls="fieldsCollapse">
+                           aria-expanded="true" aria-controls="fieldsCollapse" translate>
                             Fields
                         </a>
                     </h4>
@@ -51,10 +51,10 @@
                      aria-labelledby="fieldsHeading">
                     <div class="panel-body">
                         <ul>
-                            <li>No</li>
-                            <li>Checkbox</li>
-                            <li>Name</li>
-                            <li>Controls</li>
+                            <li translate>No</li>
+                            <li translate>Checkbox</li>
+                            <li translate>Name</li>
+                            <li translate>Controls</li>
                         </ul>
                     </div>
                 </div>
@@ -64,24 +64,24 @@
         <div class="well" id="ObjectList">
             <div class="row">
                 <div class="col-md-3">
-                    <span ng-if="$ctrl.selected_objects.length > 0">
+                    <span ng-if="$ctrl.selected_objects.length > 0" translate>
                         With {{$ctrl.selected_objects.length}} selected, do:
                     </span>
-                    <span ng-if="$ctrl.selected_objects.length === 0">
+                    <span ng-if="$ctrl.selected_objects.length === 0" translate>
                         Select multiple objects to:
                     </span>
                 </div>
                 <div class="btn-group" uib-dropdown is-open="dropdownOpen">
                     <button id="all-button" type="button" class="btn btn-primary btn-xs"
                             ng-click="$ctrl.update_select_permissions()" uib-dropdown-toggle>
-                        Change Permissions <span class="caret"></span>
+                        <span translate>Change Permissions</span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                         <li class="menu-item dropdown dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Write</a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Write</a>
                             <ul class="dropdown-menu">
                                 <li class="menu-item dropdown dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Revoke</a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Revoke</a>
                                     <ul class="dropdown-menu">
                                         <li ng-repeat="role in $ctrl.selected_permissions.write">
                                             <a ng-click="$ctrl.remove_role($ctrl.selected_objects, 'write', role)"
@@ -92,14 +92,14 @@
                                     </ul>
                                 </li>
                                 <li class="menu-item dropdown dropdown-submenu keepopen">
-                                    <a class="dropdown-toggle keepopen" data-toggle="dropdown">Add</a>
+                                    <a class="dropdown-toggle keepopen" data-toggle="dropdown" translate>Add</a>
                                     <ul class="dropdown-menu keepopen">
                                         <li>
                                             <input type="text" ng-model="role_all_write" ng-click="$event.stopPropagation()">
                                         </li>
                                         <li>
                                             <a ng-click="$ctrl.add_role($ctrl.selected_objects, 'write', role_all_write)">
-                                                <span class="fa fa-plus"></span> Add {{role_all_write}}
+                                                <span class="fa fa-plus"></span> <span translate>Add</span> {{role_all_write}}
                                             </a>
                                         </li>
                                     </ul>
@@ -108,10 +108,10 @@
                             </ul>
                         </li>
                         <li class="menu-item dropdown dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Read</a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Read</a>
                             <ul class="dropdown-menu">
                                 <li class="menu-item dropdown dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Revoke</a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Revoke</a>
                                     <ul class="dropdown-menu">
                                         <li ng-repeat="role in $ctrl.selected_permissions.read">
                                             <a ng-click="$ctrl.remove_role($ctrl.selected_objects, 'read', role)"
@@ -122,14 +122,14 @@
                                     </ul>
                                 </li>
                                 <li class="menu-item dropdown dropdown-submenu keepopen">
-                                    <a class="dropdown-toggle keepopen" data-toggle="dropdown">Add</a>
+                                    <a class="dropdown-toggle keepopen" data-toggle="dropdown" translate>Add</a>
                                     <ul class="dropdown-menu keepopen">
                                         <li>
                                             <input type="text" ng-model="role_all_read" ng-click="$event.stopPropagation()">
                                         </li>
                                         <li>
                                             <a ng-click="$ctrl.add_role($ctrl.selected_objects, 'read', role_all_read)">
-                                                <span class="fa fa-plus"></span> Add {{role_all_read}}
+                                                <span class="fa fa-plus"></span><span translate>Add</span> {{role_all_read}}
                                             </a>
                                         </li>
                                     </ul>
@@ -137,10 +137,10 @@
                             </ul>
                         </li>
                         <li class="menu-item dropdown dropdown-submenu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">List</a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>List</a>
                             <ul class="dropdown-menu">
                                 <li class="menu-item dropdown dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Revoke</a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Revoke</a>
                                     <ul class="dropdown-menu">
                                         <li ng-repeat="role in $ctrl.selected_permissions.list">
                                             <a ng-click="$ctrl.remove_role($ctrl.selected_objects, 'list', role)"
@@ -151,14 +151,14 @@
                                     </ul>
                                 </li>
                                 <li class="menu-item dropdown dropdown-submenu keepopen">
-                                    <a class="dropdown-toggle keepopen" data-toggle="dropdown">Add</a>
+                                    <a class="dropdown-toggle keepopen" data-toggle="dropdown" translate>Add</a>
                                     <ul class="dropdown-menu keepopen">
                                         <li>
                                             <input type="text" ng-model="role_all_list" ng-click="$event.stopPropagation()">
                                         </li>
                                         <li>
                                             <a ng-click="$ctrl.add_role($ctrl.selected_objects, 'list', role_all_list)">
-                                                <span class="fa fa-plus"></span> Add {{role_all_list}}
+                                                <span class="fa fa-plus"></span><span translate>Add</span> {{role_all_list}}
                                             </a>
                                         </li>
                                     </ul>
@@ -173,8 +173,8 @@
                 <tr>
                     <th>#</th>
                     <th><span class="fa fa-check" ng-click="$ctrl.select_all()"></span></th>
-                    <th>Name</th>
-                    <th>Actions</th>
+                    <th translate>Name</th>
+                    <th translate>Actions</th>
                 </tr>
                 <tr ng-repeat="(uuid, item) in $ctrl.objectlistdata">
                     <td>{{$index+1}}</td>
@@ -183,20 +183,20 @@
                     <td><a href="#!/editor/{{$ctrl.schemaname}}/{{item.uuid}}/edit">{{item.name}}</a></td>
                     <td>
                         <a type="button" href="#!/editor/{{$ctrl.schemaname}}/{{item.uuid}}/edit"
-                           class="btn btn-xs btn-success">Edit</a>
+                           class="btn btn-xs btn-success" translate>Edit</a>
                         <a type="button" href="#!/editor/{{$ctrl.schemaname}}/{{item.uuid}}/view"
-                           class="btn btn-xs btn-default">View</a>
-                        <a type="button" ng-click="$ctrl.del(item.uuid)" class="btn btn-xs btn-danger">Delete</a>
+                           class="btn btn-xs btn-default" translate>View</a>
+                        <a type="button" ng-click="$ctrl.del(item.uuid)" class="btn btn-xs btn-danger" translate>Delete</a>
                         <div class="btn-group" uib-dropdown is-open="dropdownOpen">
                             <button id="single-button" type="button" class="btn btn-primary btn-xs" uib-dropdown-toggle>
-                                Permissions <span class="caret"></span>
+                                <span translate>Permissions</span> <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                                 <li class="menu-item dropdown dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Write</a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Write</a>
                                     <ul class="dropdown-menu">
                                         <li class="menu-item dropdown dropdown-submenu">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Revoke</a>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Revoke</a>
                                             <ul class="dropdown-menu">
                                                 <li ng-repeat="role in item.perms.write">
                                                     <a ng-click="$ctrl.remove_role(item.uuid, 'write', role)"
@@ -208,7 +208,7 @@
 
                                         </li>
                                         <li class="menu-item dropdown dropdown-submenu keepopen">
-                                            <a class="dropdown-toggle keepopen" data-toggle="dropdown">Add</a>
+                                            <a class="dropdown-toggle keepopen" data-toggle="dropdown" translate>Add</a>
                                             <ul class="dropdown-menu keepopen">
                                                 <li>
                                                     <input type="text" ng-model="role"
@@ -216,7 +216,7 @@
                                                 </li>
                                                 <li>
                                                     <a ng-click="$ctrl.add_role(item.uuid, 'write', role)">
-                                                        <span class="fa fa-plus"></span> Add {{role}}
+                                                        <span class="fa fa-plus"></span><span translate>Add</span> {{role}}
                                                     </a>
                                                 </li>
                                             </ul>
@@ -225,10 +225,10 @@
                                     </ul>
                                 </li>
                                 <li class="menu-item dropdown dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Read</a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Read</a>
                                     <ul class="dropdown-menu">
                                         <li class="menu-item dropdown dropdown-submenu">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Revoke</a>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Revoke</a>
                                             <ul class="dropdown-menu">
                                                 <li ng-repeat="role in item.perms.read">
                                                     <a ng-click="$ctrl.remove_role(item.uuid, 'read', role)"
@@ -240,7 +240,7 @@
 
                                         </li>
                                         <li class="menu-item dropdown dropdown-submenu keepopen">
-                                            <a class="dropdown-toggle keepopen" data-toggle="dropdown">Add</a>
+                                            <a class="dropdown-toggle keepopen" data-toggle="dropdown" translate>Add</a>
                                             <ul class="dropdown-menu keepopen">
                                                 <li>
                                                     <input type="text" ng-model="role"
@@ -248,7 +248,7 @@
                                                 </li>
                                                 <li>
                                                     <a ng-click="$ctrl.add_role(item.uuid, 'read', role)">
-                                                        <span class="fa fa-plus"></span> Add {{role}}
+                                                        <span class="fa fa-plus"></span><span translate>Add</span> {{role}}
                                                     </a>
                                                 </li>
                                             </ul>
@@ -256,10 +256,10 @@
                                     </ul>
                                 </li>
                                 <li class="menu-item dropdown dropdown-submenu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">List</a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>List</a>
                                     <ul class="dropdown-menu">
                                         <li class="menu-item dropdown dropdown-submenu">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Revoke</a>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" translate>Revoke</a>
                                             <ul class="dropdown-menu">
                                                 <li ng-repeat="role in item.perms.list">
                                                     <a ng-click="$ctrl.remove_role(item.uuid, 'list', role)"
@@ -271,7 +271,7 @@
 
                                         </li>
                                         <li class="menu-item dropdown dropdown-submenu keepopen">
-                                            <a class="dropdown-toggle keepopen" data-toggle="dropdown">Add</a>
+                                            <a class="dropdown-toggle keepopen" data-toggle="dropdown" translate>Add</a>
                                             <ul class="dropdown-menu keepopen">
                                                 <li>
                                                     <input type="text" ng-model="role"
@@ -279,7 +279,7 @@
                                                 </li>
                                                 <li>
                                                     <a ng-click="$ctrl.add_role(item.uuid, 'list', role)">
-                                                        <span class="fa fa-plus"></span> Add {{role}}
+                                                        <span class="fa fa-plus"></span><span translate>Add</span> {{role}}
                                                     </a>
                                                 </li>
                                             </ul>

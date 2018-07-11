@@ -32,7 +32,7 @@ class UserService {
 
     /*@ngInject*/
     constructor($cookies, $socket, notification, $modal, $rootScope, $location, $state, $timeout, infoscreen,
-                fullscreen, $window, systemconfig) {
+                fullscreen, $window, systemconfig, gettextCatalog, gettext) {
         console.log('UserService constructing');
         this.cookies = $cookies;
         this.socket = $socket;
@@ -46,6 +46,8 @@ class UserService {
         this.fullscreen = fullscreen;
         this.window = $window;
         this.systemconfig = systemconfig;
+        this.gettextCatalog = gettextCatalog;
+        this.gettext = gettext;
 
         this.signedin = false;
         this.signingIn = false;
@@ -67,6 +69,15 @@ class UserService {
 
         this.has_password = true;
         this.errortimeout = null;
+
+        this.language = 'en';
+
+        this.languages = {
+            'de': 'Deutsch',
+            'en': 'English',
+            'it': 'Italian',
+            'cn': 'Chinese',
+        };
 
         this.mainmenu_visible = true;
 
@@ -115,10 +126,10 @@ class UserService {
             console.log('[USER] New user registered. Displaying welcome.');
             self.notification.add(
                 'success',
-                'Registration successful',
-                '<br />Welcome to this HFOS node! Now is a good time to fill out your profile.<br />' +
+                self.gettext('Registration successful'),
+                self.gettext('<br />Welcome to this HFOS node! Now is a good time to fill out your profile.<br />' +
                 'Click the user button <a href="/#!/editor/profile/' + self.useruuid + '/edit">to edit your profile</a>, ' +
-                'logout or change your password.<br /> <small>Adding some user data will prevent this notification from reappearing.</small>',
+                'logout or change your password.<br /> <small>Adding some user data will prevent this notification from reappearing.</small>'),
                 30
             );
         };
@@ -127,9 +138,9 @@ class UserService {
         self.login_failed = function (reason) {
             console.log('[USER] Login failed, displaying warning and resetting.');
             if (reason === null) {
-                reason = 'Either the username or the supplied password is invalid.';
+                reason = self.gettext('Either the username or the supplied password is invalid.');
             }
-            self.notification.add('danger', 'Login failed', '<br />' + reason, 10);
+            self.notification.add('danger', self.gettext('Login failed'), '<br />' + reason, 10);
             if (this.errortimeout !== null) this.timeout.cancel(this.errortimeout);
             self.logout(true);
         };
@@ -359,7 +370,7 @@ class UserService {
             this.errortimeout = this.timeout(function () {
                 if (self.signingIn === true) {
                     self.signinIn = false;
-                    self.login_failed('No response from node within 30 seconds!');
+                    self.login_failed(self.gettext('No response from node within 30 seconds!'));
                 }
             }, 30000);
 
@@ -416,12 +427,13 @@ class UserService {
 
     showlogin() {
         if (this.signingIn !== true) {
+            let self = this;
 
             this.modal({
                 template: loginmodal,
                 controller: logincontroller,
                 controllerAs: '$ctrl',
-                title: 'Login to this node',
+                title: self.gettext('Login to this node'),
                 keyboard: false,
                 id: 'loginDialog',
                 backdrop: 'static'
@@ -433,12 +445,13 @@ class UserService {
 
     showuseractions() {
         if (this.signingIn !== true) {
+            let self = this;
 
             this.modal({
                 template: useractionmodal,
                 controller: logincontroller,
                 controllerAs: '$ctrl',
-                title: 'User actions',
+                title: self.gettext('User actions'),
                 id: 'useractionDialog'
             });
         }
@@ -482,6 +495,24 @@ class UserService {
         } else {
             console.log('[USER] Not switching to undefined theme.');
         }
+    }
+
+    setLanguage(token) {
+        console.log('[USER] Setting client to language:', token);
+        this.language = token;
+
+        let self = this;
+
+        self.gettextCatalog.setCurrentLanguage(token);
+        self.gettextCatalog.loadRemote("/l10n/frontend." + token + ".json");
+
+        let request = {
+            component: 'hfos.ui.clientmanager',
+            action: 'selectlanguage',
+            data: token
+        };
+
+        this.socket.send(request);
     }
 
     logincancel() {
@@ -566,6 +597,6 @@ class UserService {
 
 
 UserService.$inject = ['$cookies', 'socket', 'notification', '$modal', '$rootScope', '$location', '$state', '$timeout',
-    'infoscreen', 'Fullscreen', '$window', 'systemconfig'];
+    'infoscreen', 'Fullscreen', '$window', 'systemconfig', 'gettextCatalog', 'gettext'];
 
 export default UserService;
