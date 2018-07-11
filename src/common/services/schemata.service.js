@@ -28,12 +28,12 @@
  */
 
 class SchemataService {
-
     constructor($socket, $rootScope) {
         console.log('[SCHEMATA] SchemataService initializing.');
         // AngularJS will instantiate a singleton by calling "new" on this function
         this.socket = $socket;
         this.rootscope = $rootScope;
+
         this.schemata = null;
         this.configschemata = null;
 
@@ -41,7 +41,11 @@ class SchemataService {
 
         function updateschemata() {
             console.log('[SCHEMATA] Getting update of schemata.');
-            self.socket.send({'component': 'hfos.events.schemamanager', 'action': 'all'});
+            let request = {
+                component: 'hfos.events.schemamanager',
+                action: 'all'
+            };
+            self.socket.send(request);
         }
 
         function registerschemata(msg) {
@@ -54,10 +58,10 @@ class SchemataService {
                 console.debug('[SCHEMATA] New schemata received:', self.schemata);
                 self.rootscope.$broadcast('Schemata.Update');
             } else if (msg.action === 'configuration') {
-                    self.configschemata = msg.data;
-                    console.debug('[SCHEMATA] New configuration schemata received:', self.configschemata);
-                    self.rootscope.$broadcast('Schemata.ConfigUpdate');
-                }
+                self.configschemata = msg.data;
+                console.debug('[SCHEMATA] New configuration schemata received:', self.configschemata);
+                self.rootscope.$broadcast('Schemata.ConfigUpdate');
+            }
 
         }
 
@@ -86,7 +90,7 @@ class SchemataService {
         console.log(this.schemata, schemaname);
         console.log(schemaname, this.schemata[schemaname].schema);
         //if (this.user.signedin) {
-            return this.schemata[schemaname].schema;
+        return this.schemata[schemaname].schema;
         /*} else {
             console.log('[SCHEMATA] But we are not logged in!');
         }*/
