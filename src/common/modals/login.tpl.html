@@ -9,45 +9,11 @@
             <div id="login">
                 <form ng-keyup="$event.keyCode == 27 && ($ctrl.close() || $hide())">
                     <div class="modal-body">
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label>Username:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input id="username" type="text" ng-model="$ctrl.username" autofocus><br/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label>Password:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input id="password" type="password" ng-model="$ctrl.password"><br/>
-                            </div>
-                        </div>
-                        <div ng-show="$ctrl.state.href('app.enrolment') !== null">
-                            <div class="text-info">
-                                <a ng-click="$ctrl.close(); $hide()" href="#!/enrolment">
-                                    Don't have an account?
-                                    <span class="pull-right">
-                                          Register yourself!
-                                    </span>
-                                </a>
-                            </div>
-
-                            <!--TODO: Build password reset:
-                                <div class="text-info">Forgot your password or username?
-                                <a class="pull-right" ng-click="$ctrl.close(); $hide()" href="#!/resetaccount">Request a reset.</a>
-                            </div>-->
-                        </div>
+                        <logindialog></logindialog>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-lg btn-info" ng-click="$ctrl.close(); $hide()">
-                             <span class="fa fa-times"></span>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-lg btn-success btn-default" ng-click="$ctrl.login(); $hide()">
-                            <span class="fa fa-sign-in"></span>Login
+                        <button type="button" class="btn btn-lg btn-default" ng-click="$ctrl.close(); $hide()">
+                            <span class="fa fa-times"></span><span translate>Cancel</span>
                         </button>
                     </div>
                 </form>
