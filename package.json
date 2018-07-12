@@ -55,7 +55,7 @@
     "angular-uuid": "^0.0.4",
     "angularjs-scroll-glue": "^2.2.0",
     "babel-preset-es2015": "^6.24.1",
-    "bootstrap": "3.3.7",
+    "bootstrap": "4.1.2",
     "bootstrap-additions": "^0.3.1",
     "bootstrap-slider": "^10.0.0",
     "expose-loader": "^0.7.3",
