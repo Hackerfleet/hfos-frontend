@@ -29,7 +29,7 @@
     "angular-fullscreen": "kariudo/angular-fullscreen",
     "angular-gettext": "^2.3.10",
     "angular-gettext-loader": "^1.0.1",
-    "angular-gettext-plugin": "^1.0.1",
+    "angular-gettext-plugin": "git+https://git@github.com/ri0t/angular-gettext-plugin.git",
     "angular-gridster": "^0.13.14",
     "angular-local-storage": "^0.7.1",
     "angular-media-queries": "^0.6.1",
