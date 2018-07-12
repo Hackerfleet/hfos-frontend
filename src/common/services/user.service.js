@@ -72,12 +72,7 @@ class UserService {
 
         this.language = 'en';
 
-        this.languages = {
-            'de': 'Deutsch',
-            'en': 'English',
-            'it': 'Italian',
-            'cn': 'Chinese',
-        };
+        this.languages = {};
 
         this.mainmenu_visible = true;
 
@@ -134,7 +129,6 @@ class UserService {
             );
         };
 
-
         self.login_failed = function (reason) {
             console.log('[USER] Login failed, displaying warning and resetting.');
             if (reason === null) {
@@ -144,6 +138,22 @@ class UserService {
             if (this.errortimeout !== null) this.timeout.cancel(this.errortimeout);
             self.logout(true);
         };
+
+        function handleLanguages(msg) {
+            if (msg.action === 'getlanguages') {
+                console.log('[USER] Got a list of languages:', msg.data);
+                self.languages = msg.data;
+            }
+        }
+
+        function requestLanguages() {
+            let request = {
+                component: 'hfos.ui.clientmanager',
+                action: 'getlanguages'
+            };
+
+            self.socket.send(request);
+        }
 
         function checkautologin() {
             let cookie = self.getCookie();
@@ -188,11 +198,13 @@ class UserService {
             }
         }
 
-        function storeclientconfigcookie(msg) {
-            console.log('[USER] Storing cookie. Got a clientconfig: ', msg.data);
+        function store_client_configuration(msg) {
+            console.debug('[USER] Got a clientconfig: ', msg.data);
             self.clientconfig = msg.data;
 
-            console.log('[USER] Client config: ', self.clientconfig);
+            self.setLanguage(self.clientconfig.language);
+            console.debug('[USER] Language set to', self.language);
+
             self.storeCookie(self.clientconfig.uuid, self.clientconfig.autologin);
 
             $('#clientname').html('<a href="#!/editor/client/' + self.clientconfig.uuid + '/edit">' + self.clientconfig.name + '</a>');
@@ -228,13 +240,15 @@ class UserService {
         }
 
         self.storeprofile = storeprofile;
-        self.storeclientconfigcookie = storeclientconfigcookie;
+        self.storeclientconfigcookie = store_client_configuration;
 
+        this.socket.listen('hfos.ui.clientmanager', handleLanguages);
         this.socket.listen('auth', loginaction);
         this.socket.listen('profile', storeprofile);
-        this.socket.listen('clientconfig', storeclientconfigcookie);
+        this.socket.listen('clientconfig', store_client_configuration);
 
         this.rootscope.$on('Client.Connect', checkautologin);
+        this.rootscope.$on('Client.Connect', requestLanguages);
         this.rootscope.$on('Client.Disconnect', clearlogin);
         this.rootscope.$on('Client.Connectionloss', clearlogin);
 
