@@ -120,8 +120,8 @@ class UserService {
             console.log('[USER] New user registered. Displaying welcome.');
             self.notification.add(
                 'success',
-                self.gettextcatalog.getString('Registration successful'),
-                self.gettextcatalog.getString('<br />Welcome to this HFOS node! Now is a good time to fill out your profile.<br />' +
+                self.gettextCatalog.getString('Registration successful'),
+                self.gettextCatalog.getString('<br />Welcome to this HFOS node! Now is a good time to fill out your profile.<br />' +
                 'Click the user button <a href="/#!/editor/profile/' + self.useruuid + '/edit">to edit your profile</a>, ' +
                 'logout or change your password.<br /> <small>Adding some user data will prevent this notification from reappearing.</small>'),
                 30
@@ -131,9 +131,9 @@ class UserService {
         self.login_failed = function (reason) {
             console.log('[USER] Login failed, displaying warning and resetting.');
             if (reason === null) {
-                reason = self.gettextcatalog.getString('Either the username or the supplied password is invalid.');
+                reason = self.gettextCatalog.getString('Either the username or the supplied password is invalid.');
             }
-            self.notification.add('danger', self.gettextcatalog.getString('Login failed'), '<br />' + reason, 10);
+            self.notification.add('danger', self.gettextCatalog.getString('Login failed'), '<br />' + reason, 10);
             if (this.errortimeout !== null) this.timeout.cancel(this.errortimeout);
             self.logout(true);
         };
@@ -383,7 +383,7 @@ class UserService {
             this.errortimeout = this.timeout(function () {
                 if (self.signingIn === true) {
                     self.signinIn = false;
-                    self.login_failed(self.gettextcatalog.getString('No response from node within 30 seconds!'));
+                    self.login_failed(self.gettextCatalog.getString('No response from node within 30 seconds!'));
                 }
             }, 30000);
 
@@ -446,7 +446,7 @@ class UserService {
                 template: loginmodal,
                 controller: logincontroller,
                 controllerAs: '$ctrl',
-                title: self.gettextcatalog.getString('Login to this node'),
+                title: self.gettextCatalog.getString('Login to this node'),
                 keyboard: false,
                 id: 'loginDialog',
                 backdrop: 'static'
@@ -464,7 +464,7 @@ class UserService {
                 template: useractionmodal,
                 controller: logincontroller,
                 controllerAs: '$ctrl',
-                title: self.gettextcatalog.getString('User actions'),
+                title: self.gettextCatalog.getString('User actions'),
                 id: 'useractionDialog'
             });
         }

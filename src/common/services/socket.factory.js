@@ -25,7 +25,7 @@ let humanizeDuration = require('humanize-duration');
 
 class SocketService {
 
-    constructor($location, $alert, $timeout, $interval, $cookies, $rootscope, statusbar, gettextcatalog) {
+    constructor($location, $alert, $timeout, $interval, $cookies, $rootscope, statusbar, gettextCatalog) {
         // TODO: Switch to notification service instead of using $alert
         // TODO: Repair reconnection facility
 
@@ -36,7 +36,7 @@ class SocketService {
         this.cookies = $cookies;
         this.rootscope = $rootscope;
         this.statusbar = statusbar;
-        this.gettextcatalog = gettextcatalog;
+        this.gettextCatalog = gettextCatalog;
 
         //this.humanizer = humanizer;
 
@@ -138,8 +138,8 @@ class SocketService {
                 self.disconnectalert.hide();
 
                 self.disconnectalert = $alert({
-                    'title': self.gettextcatalog.getString('Offline'),
-                    'content': self.gettextcatalog.getString('You have been disconnected from the node. Retry interval is at ') + humanizeDuration(interval),
+                    'title': self.gettextCatalog.getString('Offline'),
+                    'content': self.gettextCatalog.getString('You have been disconnected from the node. Retry interval is at ') + humanizeDuration(interval),
                     'placement': 'top-left',
                     'type': 'warning',
                     'show': true,
@@ -178,8 +178,8 @@ class SocketService {
             self.stats.start = currentdate;
 
             self.disconnectalert = self.$alert({
-                'title': self.gettextcatalog.getString('Online'),
-                'content': self.gettextcatalog.getString('The connection to the node has been established. You\'re online!'),
+                'title': self.gettextCatalog.getString('Online'),
+                'content': self.gettextCatalog.getString('The connection to the node has been established. You\'re online!'),
                 'placement': 'top-left',
                 'type': 'info',
                 'show': true,
@@ -325,13 +325,13 @@ class SocketService {
                 self.stats.latency = new Date().getTime() - msg.data[0];
                 console.debug('[SOCKET] Latency: ', self.stats.latency);
                 if (self.stats.latency > 20) {
-                    self.statusbar.add('danger', self.gettextcatalog.getString('High latency'), self.gettextcatalog.getString('Roundtrip took ') + self.stats.latency + ' ms');
+                    self.statusbar.add('danger', self.gettextCatalog.getString('High latency'), self.gettextCatalog.getString('Roundtrip took ') + self.stats.latency + ' ms');
                 }
                 console.debug('[SOCKET] Stats:', self.stats);
             } else if (msg.action === 'Permission') {
                 $alert({
-                    'title': self.gettextcatalog.getString('No permission'),
-                    'content': self.gettextcatalog.getString('You have insufficient permissions to do that.'),
+                    'title': self.gettextCatalog.getString('No permission'),
+                    'content': self.gettextCatalog.getString('You have insufficient permissions to do that.'),
                     'placement': 'top-left',
                     'type': 'warning',
                     'show': true,

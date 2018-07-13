@@ -24,11 +24,11 @@
 
 class StatusbarService {
 
-    constructor(gettextcatalog) {
+    constructor(gettextCatalog) {
         console.log('StatusbarService constructing');
         this.messages = [];
         this.last_message = "";
-        this.status = gettextcatalog.getString("Ready.");
+        this.status = gettextCatalog.getString("Ready.");
 
         let self = this;
     }
