@@ -421,6 +421,6 @@ class SocketService {
     }
 }
 
-SocketService.$inject = ['$location', '$alert', '$timeout', '$interval', '$cookies', '$rootScope', 'statusbar', 'gettextcatalog'];
+SocketService.$inject = ['$location', '$alert', '$timeout', '$interval', '$cookies', '$rootScope', 'statusbar', 'gettextCatalog'];
 
 export default SocketService;

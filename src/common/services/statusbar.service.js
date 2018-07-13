@@ -55,6 +55,6 @@ class StatusbarService {
     }
 }
 
-StatusbarService.$inject = ['gettextcatalog'];
+StatusbarService.$inject = ['gettextCatalog'];
 
 export default StatusbarService;
