@@ -45,7 +45,7 @@
                         <button id="btnuser" type="button" ng-click="$ctrl.userbutton($event);"
                                 class="hidden navbar-brand navbar-inverse btn"
                                 style="border-color: transparent; margin-left:5px;"
-                                title="User actions"
+                                title="{{'User actions'|translate}}"
                                 aria-label="Left Align">
                             <span class="glyphicon glyphicon-user"></span>
                         </button>
@@ -122,7 +122,7 @@
                            class="hidden glyphicon glyphicon-search">
                         </a>
                     </li>
-                    <li id="nav-home"><a title="Module menu" href="/#!/"><span class="glyphicon glyphicon-home"></span></a>
+                    <li id="nav-home"><a title="{{'Module menu'|translate}}" href="/#!/"><span class="glyphicon glyphicon-home"></span></a>
                     </li>
 
                     <li class="dropdown" ng-show="$ctrl.user.signedin == true">
@@ -151,7 +151,7 @@
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">
+                           aria-expanded="false" title="{{'Language'|translate}}">
                             <countryflag country="{{$ctrl.user.language}}">
                                 {{$ctrl.user.language|uppercase}}
                             </countryflag>
@@ -168,7 +168,7 @@
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false" title="Help & About">?<span class="caret"></span></a>
+                           aria-expanded="false" title="{{'Help & About'|translate}}">?<span class="caret"></span></a>
                         <ul class="dropdown-menu componentmenu">
                             <li><a href="#!/doc"><span class="fa fa-question"></span><span
                                 translate>Documentation</span></a></li>
@@ -200,7 +200,7 @@
         </div>
     </div>
 
-    <button id="fullscreengrab" type="button" title="Hide menu"
+    <button id="fullscreengrab" type="button" title="{{'Hide menu'|translate}}"
             ng-click="$ctrl.user.mainmenutoggle();">
         <span id="fullscreengrabicon" class="fa fa-arrow-up"></span>
     </button>
@@ -227,11 +227,11 @@
                 </span>
             </div>
             <div id="statusCenter" ng-show="!hideStatusbar" class="col-xs-8">
-                <a class="fa" title="Toggle notification history"
+                <a class="fa" title="{{'Toggle notification history'|translate}}"
                    ng-class="{'fa-chevron-up': !showStatusHistory,
                               'fa-chevron-down': showStatusHistory}"
                    ng-click="showStatusHistory = !showStatusHistory"></a>
-                <a class="fa" title="Toggle timestamps" ng-click="showStatusTimestamps = !showStatusTimestamps"
+                <a class="fa" title="{{'Toggle timestamps'|translate}}" ng-click="showStatusTimestamps = !showStatusTimestamps"
                    ng-class="{'fa-circle-o': !showStatusTimestamps,
                                   'fa-clock-o': showStatusTimestamps}">
                 </a>
@@ -239,20 +239,20 @@
                     <li ng-repeat="msg in $ctrl.statusbar.messages">
                         <span class="text-{{msg.type}}">
                             <span ng-show="showStatusTimestamps">{{msg.time}}</span>
-                            <b>{{msg.title}}:</b>
-                            {{msg.text}}
+                            <b>{{msg.title|translate}}:</b>
+                            {{msg.text|translate}}
                         </span>
                     </li>
                 </ul>
                 <span id="statusbar_history" ng-show="!showStatusHistory">
                     <span class="text-{{$ctrl.statusbar.last_message.type}}">
                         <span ng-show="showStatusTimestamps">{{$ctrl.statusbar.last_message.time}}</span>
-                        <b>{{$ctrl.statusbar.last_message.title}}:</b>
-                        {{$ctrl.statusbar.last_message.text}}
+                        <b>{{$ctrl.statusbar.last_message.title|translate}}:</b>
+                        {{$ctrl.statusbar.last_message.text|translate}}
                     </span>
                 </span>
             </div>
-            <div id="statusRight" ng-show="!hideStatusbar" class="col-xs-2">{{$ctrl.statusbar.status}}</div>
+            <div id="statusRight" ng-show="!hideStatusbar" class="col-xs-2">{{$ctrl.statusbar.status|translate}}</div>
         </div>
     </footer>
 </div>

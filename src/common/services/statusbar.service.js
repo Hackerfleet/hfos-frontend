@@ -24,11 +24,12 @@
 
 class StatusbarService {
 
-    constructor() {
+    constructor(gettext) {
         console.log('StatusbarService constructing');
         this.messages = [];
+        this.gettext = gettext;
         this.last_message = "";
-        this.status = "Ready.";
+        this.status = gettext("Ready.");
 
         let self = this;
     }
@@ -55,6 +56,6 @@ class StatusbarService {
     }
 }
 
-//StatusbarService.$inject = ['socket', '$statusbar', '$modal'];
+StatusbarService.$inject = ['gettext'];
 
 export default StatusbarService;
