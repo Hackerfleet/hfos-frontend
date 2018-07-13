@@ -24,12 +24,11 @@
 
 class StatusbarService {
 
-    constructor(gettext) {
+    constructor(gettextcatalog) {
         console.log('StatusbarService constructing');
         this.messages = [];
-        this.gettext = gettext;
         this.last_message = "";
-        this.status = gettext("Ready.");
+        this.status = gettextcatalog.getString("Ready.");
 
         let self = this;
     }
@@ -56,6 +55,6 @@ class StatusbarService {
     }
 }
 
-StatusbarService.$inject = ['gettext'];
+StatusbarService.$inject = ['gettextcatalog'];
 
 export default StatusbarService;
