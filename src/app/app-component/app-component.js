@@ -167,12 +167,16 @@ class AppComponent {
             console.log('[MAIN] Reloading route.');
             this.socket.check();
             event.stopPropagation();
-        } else if (event.ctrlKey === true && evnt.shiftKey === true) {
+        } else if (event.ctrlKey === true && event.shiftKey === true) {
             console.log('[MAIN] Reconnecting');
             this.socket.reconnect();
             event.stopPropagation();
         } else if (!this.user.signedin) {
-            this.userbutton();
+            if (this.socket.connected) {
+                this.userbutton();
+            } else {
+                this.notification.add('danger', 'Not connected', 'This client is not connected to the node.', 3);
+            }
             event.stopPropagation();
         }
 
