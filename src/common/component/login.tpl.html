@@ -19,33 +19,37 @@
   -->
 
 <div class="row login-form">
-    <input id="username" class="form-control input-lg login-textbox-top"
-           placeholder="Username" type="text" ng-model="$ctrl.username" autofocus>
-    <input id="password" class="form-control input-lg login-textbox-bottom"
-           placeholder="Password" type="password" ng-model="$ctrl.password"><br/>
+    <form>
+        <input id="username" class="form-control input-lg login-textbox-top"
+               placeholder="Username" type="text" ng-model="$ctrl.username" autofocus>
+        <input id="password" class="form-control input-lg login-textbox-bottom"
+               placeholder="Password" type="password" ng-model="$ctrl.password"><br/>
 
-    <button type="submit" class="btn-block btn btn-lg btn-login btn-success" ng-click="$ctrl.login(); $hide()">
-        <span class="fa fa-sign-in"></span>
-        <span translate>Login</span>
-    </button>
-    <a ng-show="$ctrl.state.href('app.enrolment') !== null"
-       ng-click="$ctrl.close(); $hide()"
-       class="btn-block btn btn-lg btn-login btn-info"
-       type="button"
-       href="#!/enrolment">
-        <span class="fa fa-address-card-o"></span>
-        <span translate>Register</span>
-    </a>
+        <button type="submit" class="btn-block btn btn-lg btn-login btn-default btn-success"
+                ng-click="$ctrl.login(); $hide()">
+            <span class="fa fa-sign-in"></span>
+            <span translate>Login</span>
+        </button>
+        <a ng-show="$ctrl.state.href('app.enrolment') !== null"
+           ng-click="$ctrl.close(); $hide()"
+           class="btn-block btn btn-lg btn-login btn-info"
+           type="button"
+           href="#!/enrolment">
+            <span class="fa fa-address-card-o"></span>
+            <span translate>Register</span>
+        </a>
 
-    <div class="checkbox">
-        <label for="stayloggedin">
-            <input type="checkbox" id="stayloggedin"/>
-            <span translate>Stay logged in</span>
-        </label>
-    </div>
+        <div class="checkbox">
+            <label for="stayloggedin">
+                <input type="checkbox" id="stayloggedin"/>
+                <span translate>Stay logged in</span>
+            </label>
+        </div>
+
+        <div class="text-info small">
+            <a ng-click="$ctrl.close(); $hide()" href="#!/resetaccount" translate>
+                Forgot your password or username?
+            </a>
+        </div>
+    </form>
 </div>
-
-<!--TODO: Build password reset:
-    <div class="text-info">Forgot your password or username?
-    <a class="pull-right" ng-click="$ctrl.close(); $hide()" href="#!/resetaccount">Request a reset.</a>
-</div>-->
