@@ -324,7 +324,7 @@ class SocketService {
             } else if (msg.action === 'pong') {
                 self.stats.latency = new Date().getTime() - msg.data[0];
                 console.debug('[SOCKET] Latency: ', self.stats.latency);
-                if (self.stats.latency > 20) {
+                if (self.stats.latency > 100) {
                     self.statusbar.add('danger', self.gettextCatalog.getString('High latency'), self.gettextCatalog.getString('Roundtrip took ') + self.stats.latency + ' ms');
                 }
                 console.debug('[SOCKET] Stats:', self.stats);
