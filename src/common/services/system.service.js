@@ -51,7 +51,13 @@ class SystemconfigService {
                         self.nodename = obj.name;
                         self.rootscope.$broadcast('System.Config', obj);
                         if (self.config.loginstate !== '') {
-                            let state_args = JSON.parse(self.config.initial_state_args);
+                            let state_args;
+                            try {
+                                state_args = JSON.parse(self.config.initial_state_args);
+                            } catch (e) {
+                                state_args = null;
+                            }
+
                             console.log('[SYS] Initial logon state:', self.config.initial_state, state_args);
                             self.state.go(self.config.initial_state, state_args);
                         }
