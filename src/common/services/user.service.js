@@ -216,6 +216,13 @@ class UserService {
                 self.infoscreen.toggleRotations(false);
             }
 
+            if (self.clientconfig.fullscreen) {
+                self.fullscreentoggle();
+            }
+            if (self.clientconfig.hide_menu) {
+                self.mainmenutoggle();
+            }
+
             self.rootscope.$broadcast('Clientconfig.Update');
 
         }
