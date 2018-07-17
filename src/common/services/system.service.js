@@ -26,11 +26,12 @@
 
 class SystemconfigService {
 
-    constructor(rootscope, objectproxy, modal) {
+    constructor(rootscope, objectproxy, modal, state) {
         console.log('[SYS] SystemconfigService constructing');
         this.rootscope = rootscope;
         this.op = objectproxy;
         this.modal = modal;
+        this.state = state;
 
         this.config = null;
         this.nodename = 'Node';
@@ -49,6 +50,11 @@ class SystemconfigService {
                         self.config = obj;
                         self.nodename = obj.name;
                         self.rootscope.$broadcast('System.Config', obj);
+                        if (self.config.loginstate !== '') {
+                            let state_args = JSON.parse(self.config.initial_state_args);
+                            console.log('[SYS] Initial logon state:', self.config.initial_state, state_args);
+                            self.state.go(self.config.initial_state, state_args);
+                        }
                     }
                 });
         }
@@ -59,6 +65,6 @@ class SystemconfigService {
     }
 }
 
-SystemconfigService.$inject = ['$rootScope', 'objectproxy', '$modal'];
+SystemconfigService.$inject = ['$rootScope', 'objectproxy', '$modal', '$state'];
 
 export default SystemconfigService;
