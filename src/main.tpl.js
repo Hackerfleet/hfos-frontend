@@ -42,6 +42,7 @@ import 'highlight.js/styles/default.css';
 import 'ng-embed/dist/ng-embed.min.css';
 import 'angular-pull-to-refresh/dist/angular-pull-to-refresh.css';
 import 'ng-country-flags/dist/css/flag-icon.css';
+import 'angular-hotkeys/build/hotkeys.css';
 
 import './main.scss';
 import './customization.scss';
@@ -70,6 +71,7 @@ import clipboard from 'angular-clipboard';
 import ui from 'angular-ui-bootstrap';
 import tree from 'angular-ui-tree';
 import localstorage from 'angular-local-storage';
+import 'angular-hotkeys/build/hotkeys';
 require('angular-strap/dist/angular-strap.min');
 require('angular-strap/dist/angular-strap.tpl.min');
 require('ng-country-flags/dist/js/ng-countryflags');
@@ -112,7 +114,7 @@ import doc from './doc/doc.module';
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
     'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable', 'ngEmbed', 'gettext', 'matchMedia',
     'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker', 'ngDragDrop', 'mgcrea.pullToRefresh',
-    'ng-countryflags',
+    'ng-countryflags', 'cfp.hotkeys',
     animate, app, common, objects, cookies, sanitize, touch, ui, featuremenu, about, systemlog,
     doc, clipboard.name, tree, localstorage, ngQrcode
 ];

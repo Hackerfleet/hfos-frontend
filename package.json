@@ -31,6 +31,7 @@
     "angular-gettext-loader": "^1.0.1",
     "angular-gettext-plugin": "git+https://git@github.com/ri0t/angular-gettext-plugin.git",
     "angular-gridster": "^0.13.14",
+    "angular-hotkeys": "^1.7.0",
     "angular-local-storage": "^0.7.1",
     "angular-media-queries": "^0.6.1",
     "angular-moment": "^1.0.1",
