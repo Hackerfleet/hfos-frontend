@@ -32,7 +32,7 @@ class UserService {
 
     /*@ngInject*/
     constructor($cookies, $socket, notification, $modal, $rootScope, $location, $state, $timeout, infoscreen,
-                fullscreen, $window, systemconfig, gettextCatalog) {
+                fullscreen, $window, systemconfig, gettextCatalog, hotkeys) {
         console.log('UserService constructing');
         this.cookies = $cookies;
         this.socket = $socket;
@@ -217,10 +217,11 @@ class UserService {
             }
 
             if (self.clientconfig.fullscreen) {
-                self.fullscreentoggle();
+                self.fullscreen.all();
+                self.fullscreen_enabled = true;
             }
             if (self.clientconfig.hide_menu) {
-                self.mainmenutoggle();
+                self.mainmenu_visible = false;
             }
 
             self.rootscope.$broadcast('Clientconfig.Update');
@@ -248,6 +249,20 @@ class UserService {
         self.storeprofile = storeprofile;
         self.storeclientconfigcookie = store_client_configuration;
 
+        hotkeys.add({
+            combo: 'alt+u',
+            description: 'Open user actions',
+            callback: function() {
+                self.login();
+            }
+        });
+        hotkeys.add({
+            combo: 'ctrl+alt+d',
+            callback: function() {
+                self.debug = !self.debug;
+            }
+        });
+
         this.socket.listen('hfos.ui.clientmanager', handleLanguages);
         this.socket.listen('auth', loginaction);
         this.socket.listen('profile', storeprofile);
@@ -268,31 +283,11 @@ class UserService {
     fullscreentoggle() {
         if (this.fullscreen.isEnabled()) {
             this.fullscreen.cancel();
-            $('#mainmenu').collapse('show');
-            $('#spanfullscreen').addClass('fa-expand')
-                .removeClass('fa-compress');
+            this.fullscreen_enabled = false;
         }
         else {
             this.fullscreen.all();
-            $('#mainmenu').collapse('hide');
-            $('#spanfullscreen').removeClass('fa-expand')
-                .addClass('fa-compress');
-        }
-    }
-
-    mainmenutoggle() {
-        if ($('#fullscreengrab').css('top') === '42px') {
-            $('#fullscreengrab').animate().css({top: '-8px'});
-            $('#mainmenu').fadeOut(50);
-            //$('#content').css({'padding-top': '0px'});
-            $('#fullscreengrabicon').removeClass('fa-arrow-up').addClass('fa-arrow-down');
-            this.mainmenu_visible = false;
-        } else {
-            $('#fullscreengrab').animate().css({top: '42px'});
-            $('#mainmenu').fadeIn(50);
-            //$('#content').css({'padding-top': '50px'});
-            $('#fullscreengrabicon').removeClass('fa-arrow-down').addClass('fa-arrow-up');
-            this.mainmenu_visible = true;
+            this.fullscreen_enabled = true;
         }
     }
 
@@ -617,6 +612,6 @@ class UserService {
 
 
 UserService.$inject = ['$cookies', 'socket', 'notification', '$modal', '$rootScope', '$location', '$state', '$timeout',
-    'infoscreen', 'Fullscreen', '$window', 'systemconfig', 'gettextCatalog'];
+    'infoscreen', 'Fullscreen', '$window', 'systemconfig', 'gettextCatalog', 'hotkeys'];
 
 export default UserService;
