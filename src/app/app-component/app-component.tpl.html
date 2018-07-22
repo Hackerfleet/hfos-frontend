@@ -19,7 +19,7 @@
 
 <div>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation"
-         id="mainmenu">
+         id="mainmenu" ng-show="$ctrl.user.mainmenu_visible">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -30,8 +30,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 <ul class="nav navbar-nav" id="topnavbar">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle navbar-brand node-button" data-toggle="dropdown" role="button"
+                    <li keyboard-nav class="dropdown">
+                        <a href class="dropdown-toggle navbar-brand node-button"
+                           data-toggle="dropdown" type="button"
                            title="{{'Node menu'|translate}}"
                            aria-haspopup="true"
                            aria-expanded="false" ng-click="$ctrl.home($event);">
@@ -55,7 +56,10 @@
                                 class="navbar-brand navbar-inverse btn"
                                 title="{{'Toggle Fullscreen'|translate}}"
                                 style="border-color: transparent; margin-left:5px;" aria-label="Left Align">
-                            <span id="spanfullscreen" class="fa fa-expand"></span>
+                            <span id="spanfullscreen" class="fa"
+                                  ng-class="{'fa-expand': !$ctrl.user.fullscreen_enabled,
+                                             'fa-compress': $ctrl.user.fullscreen_enabled}">
+                            </span>
                         </button>
                     </li>
                     <li>
@@ -122,18 +126,21 @@
                            class="hidden glyphicon glyphicon-search">
                         </a>
                     </li>
-                    <li id="nav-home"><a title="{{'Module menu'|translate}}" href="/#!/"><span class="glyphicon glyphicon-home"></span></a>
+                    <li id="nav-home"><a title="{{'Module menu'|translate}}" href="/#!/"><span
+                        class="glyphicon glyphicon-home"></span></a>
                     </li>
 
-                    <li class="dropdown" ng-show="$ctrl.user.signedin == true">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false" translate>Client<span class="caret"></span></a>
-                        <ul class="dropdown-menu componentmenu" id="clientmenu">
-                            <li>
-                                <div id="clientname" translate>N/A</div>
+                    <li uib-dropdown keyboard-nav ng-show="$ctrl.user.signedin == true">
+                        <a href id="client-menu-nav" type="button"
+                           class="dropdown-toggle" uib-dropdown-toggle
+                           translate>Client<span class="caret"></span></a>
+                        <ul class="dropdown-menu componentmenu" uib-dropdown-menu role="menu"
+                            aria-labelledby="client-menu-nav">
+                            <li role="menuitem">
+                                <div id="clientname" translate>{{$ctrl.user.clientconfig.name}}</div>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li class="client_entry" ng-repeat="config in $ctrl.clientconfiglist">
+                            <li role="menuitem" class="client_entry" ng-repeat="config in $ctrl.clientconfiglist">
                                 <div>
                                     <a ng-click="$ctrl.switchClientConfig(config.uuid)">{{config.name}}</a>
 
@@ -149,16 +156,19 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false" title="{{'Language'|translate}}">
+
+                    <li uib-dropdown keyboard-nav ng-class="{'open': $ctrl.language_selector_open}">
+                        <a href id="language-menu-nav" type="button"
+                           class="dropdown-toggle" uib-dropdown-toggle>
                             <countryflag country="{{$ctrl.user.language}}">
                                 {{$ctrl.user.language|uppercase}}
                             </countryflag>
+                            <span class="caret"></span>
                         </a>
-                        <ul class="dropdown-menu componentmenu" id="languagesmenu">
-                            <li ng-repeat="(token, lang) in $ctrl.user.languages|orderedObject">
-                                <a ng-click="$ctrl.user.setLanguage(token)">
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu"
+                            aria-labelledby="language-menu-nav">
+                            <li role="menuitem" ng-repeat="(token, lang) in $ctrl.user.languages|orderedObject">
+                                <a href ng-click="$ctrl.user.setLanguage(token)">
                                     <countryflag country="{{token}}">
                                         {{lang}}
                                     </countryflag>
@@ -166,13 +176,17 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false" title="{{'Help & About'|translate}}">?<span class="caret"></span></a>
-                        <ul class="dropdown-menu componentmenu">
-                            <li><a href="#!/doc"><span class="fa fa-question"></span><span
+                    <li uib-dropdown keyboard-nav>
+                        <a href id="help-menu-nav" class="dropdown-toggle" uib-dropdown-toggle type="button"
+                           title="{{'Help & About'|translate}}">
+                            ?<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu componentmenu" uib-dropdown-menu role="menu"
+                            aria-labelledby="help-menu-nav">
+                            <li role="menuitem"><a href="#!/doc"><span class="fa fa-question"></span><span
                                 translate>Documentation</span></a></li>
-                            <li><a href="#!/about"><span class="fa fa-info"></span><span translate>About</span></a></li>
+                            <li role="menuitem"><a href="#!/about"><span class="fa fa-info"></span><span
+                                translate>About</span></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -201,8 +215,12 @@
     </div>
 
     <button id="fullscreengrab" type="button" title="{{'Hide menu'|translate}}"
-            ng-click="$ctrl.user.mainmenutoggle();">
-        <span id="fullscreengrabicon" class="fa fa-arrow-up"></span>
+            ng-click="$ctrl.user.mainmenu_visible = !$ctrl.user.mainmenu_visible"
+            ng-style="{'top': $ctrl.user.mainmenu_visible ? '42px' : '-8px'}">
+        <span id="fullscreengrabicon" class="fa"
+              ng-class="{'fa-arrow-up': $ctrl.user.mainmenu_visible,
+                         'fa-arrow-down': !$ctrl.user.mainmenu_visible}">
+        </span>
     </button>
 
     <div ng-style="{'margin-top': $ctrl.user.mainmenu_visible ? '50px' : '0',
@@ -211,14 +229,15 @@
     </div>
 
     <footer class="navbar-fixed-bottom"
-            ng-class="{'navbar-inverse': !hideStatusbar}"
+            ng-class="{'navbar-inverse': $ctrl.statusbar_visible}"
             ng-style="{'max-height': showStatusHistory ? '50vh' : '1.5em'}">
         <div class="row">
             <div id="statusLeft" class="col-xs-2">
                 <span>
-                    <a class="fa" title="Toggle status bar" ng-click="hideStatusbar = !hideStatusbar"
-                       ng-class="{'fa-circle-o': hideStatusbar,
-                                  'fa-dot-circle-o': !hideStatusbar}">
+                    <a class="fa" title="Toggle status bar"
+                       ng-click="$ctrl.statusbar_visible = !$ctrl.statusbar_visible"
+                       ng-class="{'fa-circle-o': !$ctrl.statusbar_visible,
+                                  'fa-dot-circle-o': $ctrl.statusbar_visible}">
                     </a>
                 </span>
                 <span>
@@ -226,12 +245,13 @@
                     <span id="ledoutgoing" class="fa fa-arrow-circle-up" title="Outgoing data"></span>
                 </span>
             </div>
-            <div id="statusCenter" ng-show="!hideStatusbar" class="col-xs-8">
+            <div id="statusCenter" ng-show="$ctrl.statusbar_visible" class="col-xs-8">
                 <a class="fa" title="{{'Toggle notification history'|translate}}"
                    ng-class="{'fa-chevron-up': !showStatusHistory,
                               'fa-chevron-down': showStatusHistory}"
                    ng-click="showStatusHistory = !showStatusHistory"></a>
-                <a class="fa" title="{{'Toggle timestamps'|translate}}" ng-click="showStatusTimestamps = !showStatusTimestamps"
+                <a class="fa" title="{{'Toggle timestamps'|translate}}"
+                   ng-click="showStatusTimestamps = !showStatusTimestamps"
                    ng-class="{'fa-circle-o': !showStatusTimestamps,
                                   'fa-clock-o': showStatusTimestamps}">
                 </a>
@@ -252,7 +272,9 @@
                     </span>
                 </span>
             </div>
-            <div id="statusRight" ng-show="!hideStatusbar" class="col-xs-2">{{$ctrl.statusbar.status|translate}}</div>
+            <div id="statusRight" ng-show="$ctrl.statusbar_visible" class="col-xs-2">
+                {{$ctrl.statusbar.status|translate}}
+            </div>
         </div>
     </footer>
 </div>

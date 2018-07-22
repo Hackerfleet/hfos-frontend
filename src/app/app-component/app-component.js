@@ -26,7 +26,7 @@ let themes = null; //requireAll(require.context("../../themes", true, /\.scss$/)
 
 class AppComponent {
 
-    constructor(scope, user, socket, rootscope, objectproxy, state, notification, infoscreen, statusbar, navbar, systemconfig) {
+    constructor(scope, user, socket, rootscope, objectproxy, state, notification, infoscreen, statusbar, navbar, systemconfig, hotkeys) {
         this.scope = scope;
         this.user = user;
         this.socket = socket;
@@ -46,9 +46,60 @@ class AppComponent {
         this.search_collapsed = true;
 
         this.clientconfiglist = [];
+        this.clutter_visible = false;
+        this.statusbar_visible = false;
+        this.language_selector_open = false;
 
         console.log('[APP] Backgrounds:', backgrounds);
         console.log('[APP] Themes:', themes);
+
+        hotkeys.add({
+            combo: '~',
+            description: 'Toggle statusbar details',
+            callback: function () {
+                self.statusbar_visible = !self.statusbar_visible;
+            }
+        });
+        hotkeys.add({
+            combo: 'f2',
+            description: 'Go to feature menu',
+            callback: function() {
+                self.state.go('app.menu');
+            }
+        });
+        hotkeys.add({
+            combo: 'ctrl+alt+a',
+            description: 'Go to About',
+            callback: function() {
+                self.state.go('app.about');
+            }
+        });
+        hotkeys.add({
+            combo: 'ctrl+alt+o',
+            description: 'Immediately log out',
+            callback: function() {
+                console.log('[APP] Logging out.');
+                self.user.logout(true, true);
+            }
+        });
+        hotkeys.add({
+            combo: 'alt+h',
+            description: 'Hide navigation and sidebars',
+            callback: function() {
+                self.clutter_visible = !self.clutter_visible;
+                self.user.mainmenu_visible = self.clutter_visible;
+                self.statusbar_visible = self.clutter_visible;
+            }
+        });
+        hotkeys.add({
+            // TODO: Switch focus to language selector on hotkey
+            //  otherwise this one is not really helpful...
+            combo: 'alt+i',
+            description: 'Open & focus language selector',
+            callback: function() {
+                self.language_selector_open = !self.language_selector_open;
+            }
+        });
 
         this.navbar.set_scope(scope);
 
@@ -198,6 +249,6 @@ class AppComponent {
 
 }
 
-AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'notification', 'infoscreen', 'statusbar', 'navbar', 'systemconfig'];
+AppComponent.$inject = ['$scope', 'user', 'socket', '$rootScope', 'objectproxy', '$state', 'notification', 'infoscreen', 'statusbar', 'navbar', 'systemconfig', 'hotkeys'];
 
 export default AppComponent;
