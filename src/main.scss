@@ -199,6 +199,22 @@ body {
     background-color: $color-white;
 }
 
+.vertical-divider {
+    height: 50px;
+    margin: 0 7px 0 4px;
+    border-right: 2px solid $color-gray-dark;
+    font-size: 1.7em;
+    display: inline;
+    vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+    .vertical-divider {
+        display: none;
+     }
+}
+
+
 /* Clearable text inputs */
 .clearable {
     position: relative;
