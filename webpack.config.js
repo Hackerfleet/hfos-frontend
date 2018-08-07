@@ -156,7 +156,19 @@ module.exports = {
             {test: /\.tpl.html/, loader: 'html-loader', exclude: /(index.html)/},
             {test: /\.json/, loader: 'json-loader'},
             //{test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff(2)?)(\?[a-z0-9]+)?$/, loader: 'file-loader'}, //  url?limit=50000'}
-            {test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff(2)).*$/, loader: 'file-loader'},
+            {
+                test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff(2)).*$/,
+                use: [
+                    'file-loader',
+                    {
+                        loader: 'image-webpack-loader',
+                        options: {
+                            bypassOnDebug: true, // webpack@1.x
+                            //disable: true, // webpack@2.x and newer
+                        },
+                    }
+                ]
+            },
             {test: /[\/]angular\.js$/, loader: "exports-loader?angular"},
             {test: /\.scss/, loaders: ['style-loader', 'css-loader', 'sass-loader']},
             {
