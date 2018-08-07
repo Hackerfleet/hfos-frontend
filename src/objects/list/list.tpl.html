@@ -72,6 +72,7 @@
                     </span>
                 </div>
                 <div class="btn-group" uib-dropdown is-open="dropdownOpen">
+                    <a type="button" ng-click="$ctrl.del($ctrl.selected_objects)" class="btn btn-xs btn-danger" translate>Delete</a>
                     <button id="all-button" type="button" class="btn btn-primary btn-xs"
                             ng-click="$ctrl.update_select_permissions()" uib-dropdown-toggle>
                         <span translate>Change Permissions</span> <span class="caret"></span>

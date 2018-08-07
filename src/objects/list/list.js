@@ -73,6 +73,21 @@ class objectlist {
                 }
             }
         });
+
+        this.socket.listen('hfos.events.objectmanager', function(msg) {
+            if (msg.action === 'delete') {
+                delete self.objectlistdata[msg.data.uuid];
+                delete self.objectlisttoggles[msg.data.uuid];
+            }
+        });
+    }
+
+    unselect() {
+        for (let uuid of Object.keys(this.objectlisttoggles)) {
+            this.objectlisttoggles[uuid] = false;
+        }
+
+        this.selected_objects = [];
     }
 
     reveal() {
@@ -83,6 +98,10 @@ class objectlist {
     del(uuid) {
         console.log('[OE] Deleting object: ', uuid);
         this.objectproxy.deleteObject(this.schemaname, uuid);
+
+        if (uuid.constructor === Array) {
+            this.unselect();
+        }
     }
 
     remove_role(uuid, action, role) {
