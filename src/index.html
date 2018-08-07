@@ -22,14 +22,14 @@
 <head>
     <meta charset="UTF-8">
 
-    <title pagetitle>HFOS - The Hackerfleet Operating System</title>
+    <title pagetitle>Isomer Node</title>
     <link rel="icon" href="/assets/images/icons/favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="/assets/images/icons/favicon.ico" type="image/x-icon"/>
 
-    <link rel="icon" href="/assets/images/hackerfleet.svg" type="image/svg+xml"/>
-    <link rel="shortcut icon" href="/assets/images/hackerfleet.svg" type="image/svg+xml"/>
+    <link rel="icon" href="/assets/images/node_logo.svg" type="image/svg+xml"/>
+    <link rel="shortcut icon" href="/assets/images/node_logo.svg" type="image/svg+xml"/>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
     <base href="/">
 
 </head>
@@ -47,8 +47,6 @@
         }
 
         .app-loading .spinner {
-            animation: rotate 2s linear infinite;
-            transform-origin: center center;
             position: absolute;
             top: 0;
             bottom: 0;
@@ -79,9 +77,10 @@
     </style>
     <div id="app-loading" style="display: none;" class="app-loading vertical-center">
         <img class="spinner"
-             src="/assets/images/logo_75_white.png"/>
+             src="/assets/images/bootlogo.gif"/>
+        <h1>Loading</h1>
     </div>
-    <h1>Loading</h1>
+
     <script type="application/javascript">
         document.getElementById('app-loading').style.display = 'block';
     </script>
@@ -103,6 +102,7 @@
 
         body {
             background: #4384BF;
+            font-family: Sans-serif;
         }
 
         .well {
@@ -114,7 +114,7 @@
 
         #warning {
             color: #95C0E6;
-            font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+            font-family: monospace;
         }
 
         h1 {

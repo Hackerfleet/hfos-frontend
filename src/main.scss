@@ -100,11 +100,6 @@
     content: "\e975";
 }
 
-.icon-hf-logo:before {
-    content: "\e600";
-    font-size: 120%;
-}
-
 .icon-glow-red {
     box-shadow: 0 0 10px 5px firebrick;
     background: firebrick;
@@ -148,6 +143,29 @@
 #content > featuremenu > div.well {
     padding-left: 5px;
 
+}
+
+#about > div.center-block {
+    width: 95vw;
+    text-align: center;
+}
+
+#about > div > div.center-block > span {
+    text-align: center;
+}
+
+ng-include.node-logo > svg {
+    width: 50vw;
+    height: 50vw;
+    max-height: 33vh;
+    max-width: 512px;
+}
+
+#about > div.center-block > ul {
+    display: inline-block;
+    li {
+        text-align: left;
+    }
 }
 
 /*#topnavbar > li.dropdown.open > featuremenu > div.well.animate-show > div.menu-nav.navbar {
@@ -211,9 +229,8 @@ body {
 @media (max-width: 767px) {
     .vertical-divider {
         display: none;
-     }
+    }
 }
-
 
 /* Clearable text inputs */
 .clearable {
@@ -342,15 +359,10 @@ html, body {
     height: 83vh;
 }
 
-.hflogo {
-    font-size: 350px;
-    color: white;
-    text-align: center;
-}
-
-.hflogodark {
-    font-size: 20vw;
-    color: $color-primary-3;
+.node-logo {
+    width: 75vw;
+    height: 75vw;
+    max-height: 50vh;
     text-align: center;
 }
 
@@ -360,6 +372,10 @@ html, body {
 
     display: flex;
     align-items: center;
+}
+
+.jumbotron.bootscreen {
+    box-shadow: none;
 }
 
 @keyframes rotate {
@@ -1055,7 +1071,6 @@ div.modal-content #login {
     border-bottom-width: 0;
 }
 
-
 .login-textbox-bottom {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -1174,4 +1189,3 @@ div.modal-content #login {
 .sp-replacer {
     border-radius: 5px !important;
 }
-

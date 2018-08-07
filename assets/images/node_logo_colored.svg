@@ -7,7 +7,6 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="512"
@@ -16,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.1 r15371"
-   sodipodi:docname="VectorLogoSimpleAWeissTransparent512.svg">
+   sodipodi:docname="VectorLogoSimpleBBlau512.svg">
   <defs
      id="defs2">
     <inkscape:perspective
@@ -26,32 +25,6 @@
        inkscape:vp_z="677.3332 : 211.66667 : 1"
        inkscape:persp3d-origin="338.66657 : 141.11111 : 1"
        id="perspective4733" />
-    <linearGradient
-       inkscape:collect="always"
-       id="ALPHA_OUTER-1">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.02745098"
-         offset="0"
-         id="stop4611" />
-      <stop
-         id="stop4619"
-         offset="0.50311565"
-         style="stop-color:#ffffff;stop-opacity:1" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:0.02745098"
-         offset="1"
-         id="stop4613" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#ALPHA_OUTER-1"
-       id="linearGradient4617"
-       x1="-291.06519"
-       y1="148.75565"
-       x2="251.54951"
-       y2="148.75565"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.24401022,0,0,0.24401022,-285.767,273.40208)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -61,8 +34,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4142136"
-     inkscape:cx="156.06361"
-     inkscape:cy="193.63251"
+     inkscape:cx="257.0411"
+     inkscape:cy="233.54149"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -71,7 +44,7 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      units="px"
-     showguides="false"
+     showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="1916"
      inkscape:window-height="1168"
@@ -80,18 +53,20 @@
      inkscape:window-maximized="0"
      width="49px">
     <sodipodi:guide
-       position="338.66666,311.21615"
+       position="338.63339,311.18292"
        orientation="1,0"
        id="guide4680"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="203.01459,211.62067"
+       position="202.98133,211.58744"
        orientation="0,1"
        id="guide4682"
        inkscape:locked="false" />
     <inkscape:grid
        type="xygrid"
-       id="grid4631" />
+       id="grid4631"
+       originx="-0.033263021"
+       originy="-0.033227939" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -109,18 +84,25 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(358.32141,-258.89999)">
+     transform="translate(358.28815,-258.86676)">
+    <rect
+       style="opacity:0.98999999;fill:none;fill-opacity:0.99607843;fill-rule:evenodd;stroke:none;stroke-width:0.05717172;stroke-miterlimit:6;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4590"
+       width="135.40016"
+       height="101.6"
+       x="-358.25488"
+       y="258.86676" />
     <path
        id="path4600"
-       style="fill:url(#linearGradient4617);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.06466271;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -323.60393,309.73259 33.04846,-23.38011 33.04845,23.36381 -33.05294,23.44534 z m 33.06476,-46.77653 -66.19474,46.76023 66.19474,46.72762 66.09693,-46.66239 z"
+       style="fill:#4384bf;fill-opacity:0.99607843;fill-rule:evenodd;stroke:none;stroke-width:0.06466271;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -323.57067,309.69937 33.04846,-23.38011 33.04845,23.36381 -33.05294,23.44533 z m 33.06476,-46.77653 -66.19474,46.76023 66.19474,46.72762 66.09693,-46.6624 z"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccccc" />
     <path
        inkscape:connector-curvature="0"
        id="path4600-3"
        style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.06466271;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -323.63653,309.67553 33.04846,-23.38011 33.04845,23.36381 -33.05294,23.44533 z"
+       d="m -323.60327,309.6423 33.04846,-23.38011 33.04845,23.36381 -33.05294,23.44533 z"
        sodipodi:nodetypes="ccccc" />
   </g>
 </svg>

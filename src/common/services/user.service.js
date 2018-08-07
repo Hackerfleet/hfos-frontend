@@ -121,7 +121,7 @@ class UserService {
             self.notification.add(
                 'success',
                 self.gettextCatalog.getString('Registration successful'),
-                self.gettextCatalog.getString('<br />Welcome to this HFOS node! Now is a good time to fill out your profile.<br />' +
+                self.gettextCatalog.getString('<br />Welcome to this Isomer node! Now is a good time to fill out your profile.<br />' +
                 'Click the user button <a href="/#!/editor/profile/' + self.useruuid + '/edit">to edit your profile</a>, ' +
                 'logout or change your password.<br /> <small>Adding some user data will prevent this notification from reappearing.</small>'),
                 30

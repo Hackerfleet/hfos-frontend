@@ -17,30 +17,31 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div ng-hide="$ctrl.user.signedin" class="well vertical-center gradient bootscreen"
-    ng-class="{fadeout: $ctrl.user.signedin}">
+<div ng-hide="$ctrl.user.signedin" class="jumbotron vertical-center gradient bootscreen"
+     ng-class="{fadeout: $ctrl.user.signedin}">
     <div class="center-block">
         <table>
             <tr>
-                <div id="nodelogo" class="center"></div>
+                <span class="center-block">
+                    <ng-include class="node-logo" src="'/assets/images/node_logo.svg'"></ng-include>
+                </span>
             </tr>
             <tr id="login-notice">
-                <div class="dark" ng-show="$ctrl.socket.connected">
+                <span class="dark" ng-show="$ctrl.socket.connected">
                     <div ng-hide="$ctrl.user.signedin">
                         <logindialog></logindialog>
-                   <div ng-show="$ctrl.user.signedin">
-                        <h2 ng-if="$ctrl.user.signedin" translate>Logging in...</h2>
+                        <div ng-show="$ctrl.user.signedin">
+                            <h2 ng-if="$ctrl.user.signedin" translate>Logging in...</h2>
+                        </div>
                     </div>
-                </div>
+                </span>
             </tr>
             <tr id="disconnected-notice">
-                <div class="dark" ng-show="!$ctrl.socket.connected">
-                        <h2 translate>No connection</h2>
-                        <span translate>Your client is not connected to the node.</span>
-                    </div>
-                </div>
+                <span class="dark" ng-show="!$ctrl.socket.connected">
+                    <h2 translate>No connection</h2>
+                    <span translate>Your client is not connected to the node.</span>
+                </span>
             </tr>
-
         </table>
     </div>
 </div>
@@ -85,7 +86,9 @@
                 <a href="#!{{item.url}}" class="center-block menu-block">
                     <img src="{{item.svg}}" type="image/svg+xml" class="module-icon-big"/>
 
-                    <div class="menu-label center-block" ng-style="{'font-size': 10 + 2 * item.size +'px'}">{{item.title}}</div>
+                    <div class="menu-label center-block" ng-style="{'font-size': 10 + 2 * item.size +'px'}">
+                        {{item.title}}
+                    </div>
                 </a>
             </li>
         </ul>

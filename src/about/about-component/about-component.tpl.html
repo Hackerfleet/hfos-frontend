@@ -37,7 +37,9 @@
             <div class="tab-pane active" id="about">
                 <div class="center-block" style="width:95%">
                     <div class="center-block" ng-click="$ctrl.increment()">
-                        <span class="center-block glyphicon icon-hf-logo hflogodark"></span>
+                        <span class="center-block hflogodark">
+                            <ng-include class="node-logo" src="'/assets/images/node_logo_colored.svg'"></ng-include>
+                        </span>
                     </div>
 
                     <H2>{{$ctrl.systemconfig.nodename}}</H2>
@@ -48,34 +50,39 @@
                         <li ng-show="{{$ctrl.user.clientconfig.name !== undefined}}">
                             <span translate>Client name:</span> <b>{{$ctrl.user.clientconfig.name}}</b>
                         </li>
-
-                        <li ng-show="{{$ctrl.systemconfig.contact !== undefined}}">
-                            <a href="mailto:{{$ctrl.systemconfig.contact}}" translate>Contact this node's maintainer</a>
-                        </li>
-                        <li>
-                            <a href="mailto:riot@c-base.org" translate>Contact the isomer framework maintainers</a>
-                        </li>
                     </ul>
 
-                    <div class="btn-group btn-block">
-                        <button type="button" class="btn btn-block btn-success dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                            <span translate>Report Bugs</span><span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="https://github.com/hackerfleet/hfos/issues" target="_blank" translate>
-                                Browse on Github
-                            </a></li>
-                            <li><a href="https://github.com/hackerfleet/hfos/issues/new" target="_blank" translate>
-                                Report on Github
-                            </a></li>
-                        </ul>
+                    <div role="group">
+                        <a href="mailto:{{$ctrl.systemconfig.config.contact}}?subject=Isomer node {{$ctrl.systemconfig.nodename}}"
+                           ng-show="{{$ctrl.systemconfig.config.contact !== undefined}}"
+                           role="link" class="btn btn-block btn-info" translate>
+                            Contact this node's maintainer
+                        </a>
+                        <a href="mailto:riot@c-base.org?subject=Isomer Framework Contact"
+                           role="link" class="btn btn-block btn-info" translate>
+                            Contact the isomer framework maintainers
+                        </a>
+                        <a ng-click="$ctrl.toggleDebug()" ng-show="$ctrl.counter >= 5" type="button"
+                           class="btn btn-block btn-warning"
+                           style="align: center" ng-class="{active: $ctrl.user.debug}">
+                            <span class="glyphicon glyphicon-alert"></span>
+                        </a>
+                        <div class="btn-group btn-block">
+                            <button type="button" class="btn btn-block btn-success dropdown-toggle"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span translate>Report Bugs</span><span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="https://github.com/hackerfleet/hfos/issues" target="_blank" translate>
+                                    Browse on Github
+                                </a></li>
+                                <li><a href="https://github.com/hackerfleet/hfos/issues/new" target="_blank" translate>
+                                    Report on Github
+                                </a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <a ng-click="$ctrl.toggleDebug()" ng-show="$ctrl.counter >= 5" type="button"
-                       class="btn btn-block btn-warning"
-                       style="align: center" ng-class="{active: $ctrl.user.debug}">
-                        <span class="glyphicon glyphicon-alert"></span>
-                    </a>
                 </div>
             </div>
 
@@ -257,7 +264,8 @@
                         <tr>
                             <td>Notification</td>
                             <td>
-                                <button class="btn btn-sm btn-default" ng-click="$ctrl.testAlert()">Add notification</button>
+                                <button class="btn btn-sm btn-default" ng-click="$ctrl.testAlert()">Add notification
+                                </button>
                             </td>
                         </tr>
                     </table>
