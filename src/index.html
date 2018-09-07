@@ -44,6 +44,7 @@
             align-items: center;
             justify-content: center;
             height: 100%;
+            overflow: hidden;
         }
 
         .app-loading .spinner {
@@ -55,9 +56,29 @@
             margin: auto;
         }
 
+        .spinner {
+            image-rendering: pixelated;
+            width: 500%;
+            max-width: 500%;
+            -webkit-animation:bounce 60s infinite;
+
+        }
+
+        @-webkit-keyframes bounce {
+            0% { left: -100%; top: -100% }
+            12% { left: -150%; top: -50% }
+            25% { left: -100%; top: 50% }
+            36% { left:  -50%; top: -100% }
+            50% { left:  0%; top: 50%; width: 150% }
+            66% { left:  0%; top: -50% }
+            75% { left: -100%; top: 50% }
+            85% { left: -50%; top: 100% }
+            100% { left: -100%; top: -100% }
+        }
+
         .vertical-center {
-            min-height: 90%; /* Fallback for browsers do NOT support vh unit */
-            min-height: 90vh; /* These two lines are counted as one :-)       */
+            min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+            min-height: 100vh; /* These two lines are counted as one :-)       */
 
             display: flex;
             align-items: center;
@@ -73,12 +94,21 @@
 
         h1 {
             text-align: center;
+            position: relative;
+            top: 42vh;
+            padding: 10px;
+            margin-left: 25%;
+            margin-right: 25%;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.1);
+            z-index: 100000000;
+            border: solid 1px rgba(255, 255, 255, 0.5);
         }
     </style>
+
     <div id="app-loading" style="display: none;" class="app-loading vertical-center">
-        <img class="spinner"
-             src="/assets/images/bootlogo.gif"/>
         <h1>Loading</h1>
+        <img class="spinner" src="/assets/images/bootlogo.gif"/>
     </div>
 
     <script type="application/javascript">
