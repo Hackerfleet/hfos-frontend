@@ -76,9 +76,12 @@ let resizer = function ($document) {
                 left: x + 'px'
             });
 
-            $($attrs.resizerLeft).css({
-                width: x + 'px'
-            });
+            if ($attrs.resizerKeep !== "true") {
+                console.log($attrs.resizerKeep, 'Resizing left panel to:', x);
+                $($attrs.resizerLeft).css({
+                    width: (x + parseInt($attrs.resizerWidth)) + 'px'
+                });
+            }
             $($attrs.resizerRight).css({
                 left: (x + parseInt($attrs.resizerWidth)) + 'px'
             });
@@ -125,10 +128,10 @@ let resizer = function ($document) {
             if ($attrs.resizer == 'vertical') {	// Handles vertical resizer
                 let x = event.pageX;
 
-                if (x === 0) {
+                if (x === 0 || typeof x === 'undefined') {
                     x = event.changedTouches[event.changedTouches.length - 1].pageX;
                 }
-                resize_vertical(x);
+                resize_vertical(x - 5);
             } else if ($attrs.resizer == 'horizontal') {	// Handle horizontal resizer
                 let y = event.pageY;
 
