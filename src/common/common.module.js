@@ -37,6 +37,7 @@ import toLength from './utils/toLength';
 import range from './utils/range';
 import OrderedObject from './utils/orderedObject';
 import ObjectLength from './utils/objectLength';
+import focusMe from './utils/focusme';
 
 import LoginController from './component/login-component';
 import LoginTemplate from './component/login.tpl.html';
@@ -48,6 +49,7 @@ export default angular
     .module('main.app.common', [])
     .directive('resizer', resizer)
     .directive('pagetitle', pagetitle)
+    .directive('focusMe', focusMe)
     .filter('capitalize', capitalize)
     .filter('toLength', toLength)
     .filter('range', range)
