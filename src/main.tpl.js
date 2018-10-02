@@ -55,6 +55,7 @@ require('moment');
 require('moment-timezone');
 import angular from 'angular';
 import sanitize from 'angular-sanitize';
+import 'angular-filter';
 import 'angular-gettext';
 import 'underscore/underscore';
 import 'angular-underscore';
@@ -72,6 +73,7 @@ import ui from 'angular-ui-bootstrap';
 import tree from 'angular-ui-tree';
 import localstorage from 'angular-local-storage';
 import 'angular-hotkeys/build/hotkeys';
+
 require('angular-strap/dist/angular-strap.min');
 require('angular-strap/dist/angular-strap.tpl.min');
 require('ng-country-flags/dist/js/ng-countryflags');
@@ -114,7 +116,7 @@ import doc from './doc/doc.module';
 let modules = ['mgcrea.ngStrap', 'gridster', 'ngDraggable', 'FBAngular', 'ui.bootstrap-slider', 'angularSpectrumColorpicker',
     'angularSpinner', 'angular-uuid', 'luegg.directives', 'angularMoment', 'ngTable', 'ngEmbed', 'gettext', 'matchMedia',
     'schemaForm-datepicker', 'schemaForm-timepicker', 'schemaForm-datetimepicker', 'ngDragDrop', 'mgcrea.pullToRefresh',
-    'ng-countryflags', 'cfp.hotkeys',
+    'ng-countryflags', 'cfp.hotkeys', 'angular.filter',
     animate, app, common, objects, cookies, sanitize, touch, ui, featuremenu, about, systemlog,
     doc, clipboard.name, tree, localstorage, ngQrcode
 ];
@@ -136,7 +138,7 @@ angular.module('main', modules)
     .run(function ($rootScope, $state) {
         // register listener to watch route changes
         $rootScope.$on("$stateChangeStart", function (event, nextState, nextParams, fromState, fromParams) {
-            console.log('Changing route, rootscope:', $rootScope, $rootScope.has_password, $rootScope.logged_in);
+            console.debug('Changing route, rootscope:', $rootScope, $rootScope.has_password, $rootScope.logged_in);
             if ($rootScope.has_password === false && $rootScope.logged_in === true) {
                 console.log('Logged in, but no password', nextState);
                 // no logged user, we should be going to #login
