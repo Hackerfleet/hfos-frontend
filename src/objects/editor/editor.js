@@ -183,17 +183,17 @@ class objecteditor {
         };
 
         this.getFormData = function (options, search) {
-            console.log('[OE] Trying to obtain proxy list.', options, search);
+            console.debug('[OE] Trying to obtain proxy list.', options, search);
             if (search === '') {
-                console.log("INSIDEMODEL:", options.scope.insidemodel);
+                console.debug("[OE] Insidemodel:", options.scope.insidemodel);
             }
 
             let result = self.objectproxy.search(options.type, search).then(function (msg) {
-                console.log('OE-Data', msg);
+                console.debug('[OE] FormData:', msg);
                 return msg.data.list;
 
             });
-            console.log('[OE] Result: ', result);
+            console.debug('[OE] Result: ', result);
             return result;
 
         };
