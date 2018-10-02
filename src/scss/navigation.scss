@@ -1,0 +1,243 @@
+/*!
+ * Hackerfleet Operating System
+ * ============================
+ * Copyright (C) 2011 - 2018 riot <riot@c-base.org> and others.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+#mainmenu > div > div.navbar-header {
+    margin-left: 0 !important;
+}
+
+
+#mainmenu {
+    z-index: 1000;
+}
+
+#topnavbar > li.dropdown.open > featuremenu {
+    overflow: auto;
+}
+
+#topnavbar > li.dropdown.open > featuremenu > div.bootscreen {
+    display: none;
+}
+
+#topnavbar > li.dropdown.open > featuremenu > div.well {
+    padding: 2px;
+    margin: 0;
+    min-width: 50vw;
+    max-height: 66vh;
+    overflow: auto;
+}
+
+.navbar-nav {
+    margin: 0 !important;
+}
+
+
+a.node-button {
+    fill: $color-primary-0;
+    &:hover {
+        fill: $color-primary-1;
+    }
+}
+
+
+.navbar-center {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin: auto;
+}
+
+/*
+// TODO: REMOVE
+.navbar-mob {
+    float: none;
+    width: 33%;
+}
+*/
+
+.navbar-nav .open .dropdown-menu {
+    background-color: $color-white;
+}
+
+
+
+.menu-nav {
+    min-height: 0;
+    margin-bottom: 0;
+}
+
+.menuitem {
+    white-space: nowrap;
+}
+
+.menu-box {
+    /*background-color: #fff;*/
+    text-align: center;
+}
+
+.menu-block {
+    padding: 5px;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.menu-block:hover {
+    //background: $color-primary-2;
+    color: $color-black;
+}
+
+.gridster .gridster-item:hover .menu-mover {
+    display: block;
+}
+
+.gridster-item-resizable-handler {
+    z-index: 50000;
+}
+
+.menu-mover {
+    z-index: 80;
+    position: absolute;
+    display: none;
+    font-size: 18px;
+    bottom: 0px;
+    left: 0px;
+    color: $color-gray-light;
+}
+
+.menu-label {
+    text-align: center;
+}
+
+.module-icon-big {
+    text-align: center;
+    width: 75%;
+    height: 75%;
+}
+
+.module-icon-tiny {
+    width: 32px;
+    height: 32px;
+    margin: 0px 5px 0px 10px;
+}
+
+.menu-icon-tiny {
+    font-size: 20px;
+    margin: 5px;
+    width: 24px;
+    text-align: center;
+}
+
+.menu-icon-list {
+    text-align: right;
+    display: inline-flex;
+}
+
+.componentmenu {
+    min-width: 300px;
+    line-height: 30px;
+    overflow: auto;
+    max-height: 70vh;
+}
+
+.componentmenu div {
+    padding: 0 20px;
+}
+
+.componentmenu .fa {
+    padding-right: 3px;
+    font-size: 16px;
+    width: 24px;
+}
+
+#clientmenu {
+    text-align: center;
+    min-width: 400px;
+}
+
+.client_entry {
+    text-align: right;
+}
+
+.dropdown-menu > li > div > a {
+    display: inline-block;
+    padding: 0px 20px 0px 20px;
+    &:hover {
+        //        background: #e8e8e8;
+    }
+    flex-wrap: wrap;
+    width: 180px;
+    line-height: 1em;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #cccccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover > a:after {
+    border-left-color: #ffffff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+.dropdown-menu > li > a.disabled {
+    color: $color-gray-light;
+}
+
+footer {
+    z-index: 10000000;
+}

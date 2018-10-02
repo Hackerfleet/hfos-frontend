@@ -1,0 +1,89 @@
+/*!
+ * Hackerfleet Operating System
+ * ============================
+ * Copyright (C) 2011 - 2018 riot <riot@c-base.org> and others.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'misc-icons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.flag-icon {
+    margin-right: 5px;
+}
+
+.icon-qrcode:before {
+    content: "\e938";
+}
+
+.icon-bubble:before {
+    content: "\e96b";
+}
+
+.icon-bubbles:before {
+    content: "\e96c";
+}
+
+.icon-bubbles2:before {
+    content: "\e96d";
+}
+
+.icon-user:before {
+    content: "\e971";
+}
+
+.icon-users:before {
+    content: "\e972";
+}
+
+.icon-user-plus:before {
+    content: "\e973";
+}
+
+.icon-user-minus:before {
+    content: "\e974";
+}
+
+.icon-user-check:before {
+    content: "\e975";
+}
+
+.icon-glow-red {
+    box-shadow: 0 0 10px 5px firebrick;
+    background: firebrick;
+    border-radius: 10px;
+}
+
+.icon-glow-blue {
+    box-shadow: 0 0 10px 5px $color-primary-0;
+    background: $color-primary-0;
+    border-radius: 10px;
+}
+
+.node-button {
+    padding: 9px !important;
+}

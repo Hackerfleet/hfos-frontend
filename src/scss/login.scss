@@ -1,0 +1,172 @@
+/*!
+ * Hackerfleet Operating System
+ * ============================
+ * Copyright (C) 2011 - 2018 riot <riot@c-base.org> and others.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+.bootscreen {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    vertical-align: middle;
+    color: white;
+}
+
+#nodelogo {
+    position: relative;
+    width: 330px;
+    height: 330px;
+    background-image: url('/assets/images/node_logo.svg');
+    background-size: 100% auto;
+    margin-bottom: 20px;
+}
+
+.vertical-center {
+    align-items: center;
+}
+
+div.modal-content #login {
+    padding: 5px;
+}
+
+#login-notice {
+    height: 70px;
+}
+
+#content > featuremenu > div.well {
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+#content logindialog button.btn-login,
+#content logindialog a.btn-login {
+    background: transparent none;
+    border: 1px solid $color-white;
+
+    &:hover {
+        background: $color-white;
+        color: $color-primary-4;
+    }
+
+}
+
+#content logindialog button.btn-login {
+    font-weight: bolder;
+}
+
+.login-textbox {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.login-textbox-top {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-width: 0;
+}
+
+.login-textbox-bottom {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+
+.node-logo {
+    width: 75vw;
+    height: 75vw;
+    max-height: 50vh;
+    text-align: center;
+}
+
+.vertical-center {
+    min-height: 90%; /* Fallback for browsers do NOT support vh unit */
+    min-height: 90vh; /* These two lines are counted as one :-)       */
+
+    display: flex;
+    align-items: center;
+}
+
+.jumbotron.bootscreen {
+    box-shadow: none;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+    }
+}
+
+.gradient {
+    z-index: 0;
+    background: linear-gradient(82deg, rgba(58, 117, 168, 0), rgba(58, 117, 168, 0.41), rgba(200, 200, 220, 1));
+    background-size: 80% 400%;
+    background-position: -400% 0%;
+    background-repeat: no-repeat;
+    -webkit-animation: bootgradient 2s linear 5;
+    -moz-animation: bootgradient 2s linear 5;
+    animation: bootgradient 5s linear 5;
+    animation-iteration-count: 5;
+    animation-duration: 2s;
+    animation-delay: 1s;
+}
+
+@-moz-keyframes bootgradient {
+    0% {
+        background-position: -400% 0%
+    }
+    100% {
+        background-position: 1000% 0%
+    }
+}
+
+@-webkit-keyframes bootgradient {
+    0% {
+        background-position: -400% 0%
+    }
+    100% {
+        background-position: 1000% 0%
+    }
+}
+
+@keyframes bootgradient {
+    0% {
+        background-position: -400% 10%
+    }
+    100% {
+        background-position: 1000% 10%
+    }
+}

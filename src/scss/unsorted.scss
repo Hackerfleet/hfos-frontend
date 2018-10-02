@@ -1,0 +1,236 @@
+/*!
+ * Hackerfleet Operating System
+ * ============================
+ * Copyright (C) 2011 - 2018 riot <riot@c-base.org> and others.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+#content > featuremenu > div.well {
+    padding-left: 5px;
+
+}
+
+#about > div.center-block {
+    width: 95vw;
+    text-align: center;
+}
+
+#about > div > div.center-block > span {
+    text-align: center;
+}
+
+ng-include.node-logo > svg {
+    width: 50vw;
+    height: 50vw;
+    max-height: 33vh;
+    max-width: 512px;
+}
+
+#about > div.center-block > ul {
+    display: inline-block;
+    li {
+        text-align: left;
+    }
+}
+
+/*#topnavbar > li.dropdown.open > featuremenu > div.well.animate-show > div.menu-nav.navbar {
+    display: none
+}*/
+
+
+p.customfont {
+    font-family: "Clear Sans", sans-serif;
+}
+
+body {
+    //padding-top: 23px;
+    font-family: "Clear Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+
+    overscroll-behavior: contain;
+
+    /*color : $color-primary-1;*/
+    color: $color-primary-3;
+    background-color: $color-primary-3;
+    background-image: url('../assets/images/backdrop_texture.png');
+}
+
+.vertical-divider {
+    height: 50px;
+    margin: 0 7px 0 4px;
+    border-right: 2px solid $color-gray-dark;
+    font-size: 1.7em;
+    display: inline;
+    vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+    .vertical-divider {
+        display: none;
+    }
+}
+
+/* Clearable text inputs */
+.clearable {
+    position: relative;
+    display: inline-block;
+}
+
+.clearable input[type=text] {
+    padding-right: 24px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.clearable__clear {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 8px;
+    font-style: normal;
+    font-size: 1.2em;
+    user-select: none;
+    cursor: pointer;
+}
+
+.clearable input::-ms-clear { /* Remove IE default X */
+    display: none;
+}
+
+.aside {
+    //margin-top: 51px;
+}
+
+.jumbotron {
+    margin-right: 5px;
+    margin-left: 5px;
+    //background-color: rgba(255, 255, 255, 1);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.jumbotron,
+.well {
+    background-color: rgba(255, 255, 255, 0.75);
+    background-image: none;
+    padding-top: 5px;
+    h1 {
+        margin-top: 5px;
+    }
+}
+
+a {
+    color: $color-link;
+    cursor: pointer;
+}
+
+a:link,
+a:visited,
+a:active {
+    text-decoration: none;
+    -webkit-transition: .2s;
+    -moz-transition: .2s;
+    -ms-transition: .2s;
+    -o-transition: .2s;
+}
+
+a:hover {
+    color: $color-primary-1;
+    text-decoration: none;
+}
+
+a:focus {
+    color: $color-secondary-1-1;
+}
+
+.alert a {
+    text-decoration: underline;
+}
+
+.panel-hover:hover {
+    //background: $color-primary-3;
+    //color: $color-primary-1;
+}
+
+.panel-heading, .panel-title {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0 0;
+}
+
+.panel-heading a {
+    display: block;
+    margin: 0;
+    padding: 1em 1em;
+}
+
+/* Space out content a bit */
+
+/*
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+*/
+
+.aside-content {
+    max-height: calc(100vh - 50px);
+    overflow-x: auto;
+    overflow-y: hidden
+}
+
+#content {
+    height: 100vh;
+    position: relative;
+}
+
+#docs {
+    height: 84vh;
+}
+
+#docs_frame {
+    min-height: 83vh;
+    height: 83vh;
+}
+
+.col {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+    z-index: 10;
+}
+
+.col-wrap {
+    overflow: hidden;
+}
+
+.thumbnail {
+    height: 280px !important;
+}
+
+.btn-droppable {
+    width: 180px;
+    height: 30px;
+    padding-left: 4px;
+}
+
+.btn-draggable {
+    width: 160px;
+}
+
+.debug {
+    display: none;
+}

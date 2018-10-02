@@ -1,0 +1,148 @@
+/*!
+ * Hackerfleet Operating System
+ * ============================
+ * Copyright (C) 2011 - 2018 riot <riot@c-base.org> and others.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+#sidebar {
+    height: inherit;
+    background: $color-white;
+}
+
+.sidebar {
+    //  float:right;
+    //  display: none;
+    padding: 0;
+    z-index: 101;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}
+
+
+.sidebar-header {
+    background: $color-primary-0;
+    color: $color-white;
+    margin: 0;
+    padding: 2px 10px 2px 10px;
+}
+
+.sidebar-body {
+    background: $color-white;
+    padding: 10px 5px 10px 10px;
+    overflow: scroll;
+    height: calc(100% - 43px);
+}
+
+.sidebar-editor {
+    //background: hotpink;
+    overflow: auto;
+}
+
+.sidebar-header .close {
+    color: $color-white;
+    font-size: 2em;
+    opacity: 0.8;
+    padding: 5px;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+
+#leftmostpane {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 25%;
+    overflow: hidden;
+}
+
+
+#middlepane {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 25%;
+    width: 75%;
+    overflow: hidden;
+}
+
+
+#leftpane {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+#rightpane {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 75%;
+    right: 0;
+    overflow: auto;
+}
+
+#toppane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+}
+
+#bottompane {
+    position: absolute;
+    height: 100px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+}
+
+/* Vertical Resizer */
+#vResizer {
+    background-color: $color-gray-light;
+    position: absolute;
+    top: 1px;
+    bottom: 0;
+    left: calc(75% - 10px);
+    width: 15px;
+    cursor: ew-resize;
+    z-index: 999;
+}
+
+/* Horizontal Resizer */
+#hResizer {
+    background-color: $color-gray-light;
+    position: absolute;
+    height: 10px;
+    bottom: 100px;
+    left: 0;
+    right: 0;
+    cursor: n-resize;
+}
+
+#vResizer:hover, #hResizer:hover {
+    background-color: $color-gray-dark;
+}

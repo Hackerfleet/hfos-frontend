@@ -1,0 +1,133 @@
+/*!
+ * Hackerfleet Operating System
+ * ============================
+ * Copyright (C) 2011 - 2018 riot <riot@c-base.org> and others.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+#fullscreengrab {
+    z-index: 99;
+    outline: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 42px;
+    left: 48.5vw;
+    width: 3vw;
+    min-width: 30px;
+    background-color: white;
+    border-radius: 8px;
+    border-top: none;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    height: 30px;
+}
+
+#fullscreengrab span {
+    margin-top: 10px;
+}
+
+#fullscreengrabicon {
+    margin-right: 0;
+}
+
+#sidebargrab {
+    z-index: 99;
+    outline: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 50vh;
+    right: -10px;
+    width: 30px;
+    min-height: 40px;
+    background-color: white;
+    border-radius: 8px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: none;
+    padding-left: 0;
+    height: 40px;
+}
+
+#fullscreengrab:hover,
+#sidebargrab:hover {
+    opacity: 0.9;
+}
+
+footer {
+    //color: $color-black;
+    opacity: 0.6;
+    padding-left: 10px;
+    padding-right: 10px;
+    max-height: 30vh;
+}
+
+footer:hover {
+    color: lightgray;
+    -webkit-transition: .2s;
+    -moz-transition: .2s;
+    -ms-transition: .2s;
+    -o-transition: .2s;
+    opacity: 0.9;
+}
+
+footer a {
+    color: $color-primary-3
+}
+
+footer > div > div.row > div:hover {
+    color: white;
+}
+
+footer ul {
+    list-style-type: none;
+    overflow: auto;
+    max-height: 30vh;
+    margin-top: -20px;
+    margin-left: 30px;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+#ledoutgoing,
+#ledincoming {
+    color: green;
+    cursor: default;
+}
+
+.select.dropdown-menu {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+#ngstats {
+    background: none !important;
+    opacity: 0.7;
+    left: 50px;
+    font-family: "Clear Sans", sans-serif;
+}
+
+#ngstats > canvas {
+    right: 0px;
+    position: absolute;
+    height: 40px;
+    bottom: 20px;
+}
+
+#ngstats > div {
+    color: inherit;
+}
