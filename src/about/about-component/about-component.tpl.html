@@ -27,7 +27,6 @@
             <li><a role="tab" ng-click="$ctrl.opentab('network')" data-toggle="tab">Network</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('console')" data-toggle="tab">Console</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('commands')" data-toggle="tab">Commands</a></li>
-            <li><a role="tab" ng-click="$ctrl.opentab('server')" data-toggle="tab">Server</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('schemata')" data-toggle="tab">Schemata</a></li>
             <li><a role="tab" ng-click="$ctrl.opentab('tests')" data-toggle="tab">UI Tests</a></li>
         </ul>
@@ -110,30 +109,6 @@
                     <a ng-click="$ctrl.command('logtail')" type="button" class="btn btn-danger">Follow logfile</a>
                     <a ng-click="$ctrl.command('trigger_anchorwatch')" type="button" class="btn btn-danger">Trigger
                         Anchorwatcher</a>
-                </div>
-            </div>
-
-            <div class="tab-pane" id="server">
-                <div class="well">
-                    <h3>Server</h3>
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <label>Port</label>
-                            <input class="form-control" type="number"
-                                   ng-change="$ctrl.ssloverride = $ctrl.serverport === 443" ng-model="$ctrl.serverport">
-                        </div>
-                        <div class="form-group">
-                            <label>SSL</label>
-                            <input class="form-control" type="checkbox" ng-model="$ctrl.ssloverride">
-                        </div>
-
-                        <a ng-click="$ctrl.serverport = 8055; $ctrl.setserverport()" type="button"
-                           class="btn btn-info">Development</a>
-                        <a ng-click="$ctrl.setserverport()" type="button"
-                           class="btn btn-danger">Override server port</a>
-                        <a ng-click="$ctrl.unsetserverport()" type="button"
-                           class="btn btn-success">Remove override</a>
-                    </div>
                 </div>
             </div>
 

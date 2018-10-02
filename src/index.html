@@ -58,10 +58,11 @@
 
         .spinner {
             image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
             width: 500%;
             max-width: 500%;
             -webkit-animation:bounce 60s infinite;
-
         }
 
         @-webkit-keyframes bounce {
@@ -76,7 +77,7 @@
             100% { left: -100%; top: -100% }
         }
 
-        .vertical-center {
+        #app-loading.vertical-center {
             min-height: 100%; /* Fallback for browsers do NOT support vh unit */
             min-height: 100vh; /* These two lines are counted as one :-)       */
 
@@ -92,7 +93,7 @@
             font-family: Sans-serif;
         }
 
-        h1 {
+        #app-loading h1 {
             text-align: center;
             position: relative;
             top: 42vh;

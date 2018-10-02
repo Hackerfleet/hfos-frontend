@@ -58,6 +58,8 @@ class UserService {
         this.username = '';
         this.useruuid = '';
 
+        this.stay_logged_in = false;
+
         this.desiredcontext = '';
 
         this.user = {};
@@ -65,6 +67,9 @@ class UserService {
         this.clientconfig = {};
         this.clientuuid = '';
         this.clientconfiglist = {};
+
+        this.privacy_enabled = false;
+        this.privacy_level = 0;
 
         this.has_password = true;
         this.errortimeout = null;
@@ -74,6 +79,8 @@ class UserService {
         this.languages = {};
 
         this.mainmenu_visible = true;
+
+        this.login_dialog = null;
 
         this.embed_external = false;
 
@@ -167,6 +174,9 @@ class UserService {
         }
 
         function updateclientconfig(ev, uuid, newobj, schema) {
+            if (schema !== 'clientconfig') {
+                return
+            }
             let msg;
 
             console.log('[USER] Updating client config:', uuid, newobj);
@@ -245,6 +255,28 @@ class UserService {
 
             self.rootscope.$broadcast('Profile.Update');
         }
+
+
+        this.get_module_default = function (key) {
+            console.log('[USER] Getting settings for:', key);
+
+            let result = this.clientconfig.modules[key];
+
+            console.debug('[TODO] Clientconfig value: ', result);
+
+            if (result === '' || typeof result === 'undefined') {
+                console.debug('[TODO] Picking user profile setting', self.profile);
+                result = this.profile.modules[key];
+            }
+            if (result === '' || typeof result === 'undefined') {
+                console.debug('[TODO] Picking system profile setting', self.profile);
+                result = self.systemconfig.config.modules[key];
+            }
+            console.log('[TODO] Final setting: ', result);
+
+            return result
+        };
+
 
         self.storeprofile = storeprofile;
         self.storeclientconfigcookie = store_client_configuration;
@@ -358,6 +390,7 @@ class UserService {
                 this.showlogin();
             } else {
                 this.dologin(username, password);
+                if (this.login_dialog !== null) this.login_dialog.hide();
             }
         }
     }
@@ -431,6 +464,10 @@ class UserService {
 
     }
 
+    set_privacy(new_level) {
+        console.log('[USER] Adjusting privacy to:', new_level);
+    }
+
     showprofile() {
         this.state.go('app.editor', {schema: 'profile', action: 'edit', 'uuid': this.profile.uuid});
     }
@@ -444,7 +481,7 @@ class UserService {
         if (this.signingIn !== true) {
             let self = this;
 
-            this.modal({
+            this.login_dialog = this.modal({
                 template: loginmodal,
                 controller: logincontroller,
                 controllerAs: '$ctrl',
@@ -532,6 +569,7 @@ class UserService {
 
     logincancel() {
         console.log('[USER] Login cancelled');
+        if (this.login_dialog !== null) this.login_dialog.hide();
         this.signingIn = false;
     }
 

@@ -98,6 +98,9 @@ class SocketService {
         }
 
         function setPort(port, secure) {
+            if (typeof port === 'undefined') port = self.port;
+            if (typeof secure === 'undefined') secure = self.secure;
+
             console.log('[SOCKET] Storing development port cookie:', port, secure);
             self.cookies.put('hfosclient-dev', JSON.stringify({port: port, secure: secure}));
             self.port = port;

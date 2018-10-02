@@ -27,20 +27,16 @@
                 </span>
             </tr>
             <tr id="login-notice">
-                <span class="dark" ng-show="$ctrl.socket.connected">
-                    <div ng-hide="$ctrl.user.signedin">
-                        <logindialog></logindialog>
-                        <div ng-show="$ctrl.user.signedin">
-                            <h2 ng-if="$ctrl.user.signedin" translate>Logging in...</h2>
-                        </div>
+                <div ng-hide="$ctrl.user.signedin">
+                    <logindialog></logindialog>
+                    <span class="text-dark" ng-show="!$ctrl.socket.connected">
+                            <h2 class="text-center" translate>No connection</h2>
+                            <div class="text-center" translate>Your client is not connected to the node.</div>
+                        </span>
+                    <div ng-show="$ctrl.user.signedin">
+                        <h2 ng-if="$ctrl.user.signedin" translate>Logging in...</h2>
                     </div>
-                </span>
-            </tr>
-            <tr id="disconnected-notice">
-                <span class="dark" ng-show="!$ctrl.socket.connected">
-                    <h2 translate>No connection</h2>
-                    <span translate>Your client is not connected to the node.</span>
-                </span>
+                </div>
             </tr>
         </table>
     </div>
