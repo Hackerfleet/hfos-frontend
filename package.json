@@ -38,7 +38,7 @@
     "angular-moment": "^1.0.1",
     "angular-pull-to-refresh": "^0.3.0",
     "angular-qrcode": "^7.2.0",
-    "angular-sanitize": "1.6.9",
+    "angular-sanitize": "1.7.5",
     "angular-schema-form": "git+https://git@github.com/json-schema-form/angular-schema-form.git",
     "angular-schema-form-bootstrap": "git+https://git@github.com/json-schema-form/angular-schema-form-bootstrap.git",
     "angular-schema-form-colorpicker": "git+https://git@github.com/textalk/angular-schema-form-colorpicker.git",
