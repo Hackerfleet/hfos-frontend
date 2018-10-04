@@ -19,7 +19,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@uirouter/angularjs": "latest",
-    "angular": "1.6.9",
+    "angular": "1.7.5",
     "angular-animate": "1.6.9",
     "angular-aria": "1.6.9",
     "angular-bootstrap-slider": "git+https://git@github.com/seiyria/angular-bootstrap-slider.git",
