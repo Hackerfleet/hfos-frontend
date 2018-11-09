@@ -77,7 +77,7 @@
     "ng-split": "^0.2.0",
     "ng-stats": "^2.5.4",
     "ng-table": "^3.0.1",
-    "objectpath": "^1.2.1",
+    "objectpath": "1.2.1",
     "qrcode-generator": "^1.2.0",
     "schema-form-datetimepicker": "git+https://git@github.com/hackerfleet/schema-form-datetimepicker.git",
     "spectrum-colorpicker": "^1.8.0",
