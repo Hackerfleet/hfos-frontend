@@ -24,7 +24,7 @@
     "angular-aria": "1.7.8",
     "angular-bootstrap-slider": "git+https://git@github.com/seiyria/angular-bootstrap-slider.git",
     "angular-clipboard": "^1.5.0",
-    "angular-cookies": "1.6.9",
+    "angular-cookies": "1.7.8",
     "angular-dragdrop": "^1.0.13",
     "angular-filter": "^0.5.17",
     "angular-fullscreen": "kariudo/angular-fullscreen",
