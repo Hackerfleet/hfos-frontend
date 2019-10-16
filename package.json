@@ -70,7 +70,7 @@
     "jsondiffpatch": "^0.3.5",
     "lodash": "^4.17.5",
     "moment": "^2.18.1",
-    "moment-timezone": "^0.5.13",
+    "moment-timezone": "^0.5.27",
     "ng-country-flags": "^1.0.6",
     "ng-draggable": "^1.0.0",
     "ng-embed": "^2.2.0",
